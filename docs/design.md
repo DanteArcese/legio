@@ -220,7 +220,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 - the woods and fields outside the walls, with a copper/tin quarry and an iron outcrop
 - the *Barrow of the Lemures*, a small dungeon
 
-**Skills.** Attack, Strength, Defence, Vitality, Slayer, Mining, Smithing, Cooking.
+**Skills.** Attack, Strength, Defence, Vitality, Ranged, Slayer, Mining, Smithing, Cooking. (Ranged was added after the first build, in #36.)
 
 **Monsters:**
 
@@ -241,7 +241,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Systems.** Inventory, equipment, the shared bank, death and graves, Slayer contracts, save and load, and controller plus mouse/keyboard input.
 
-**Out of scope for the slice:** Ranged, Ritus, Pietas, quests, the villa, Mercatura, the danger zone, and the market.
+**Out of scope for the slice:** Ritus, Pietas, quests, the villa, Mercatura, the danger zone, and the market.
 
 ## Villa
 
@@ -269,8 +269,11 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - **Banking:** one shared bank, accessible from every bank in the world, as in OSRS. Mercatura gets its value from trade contracts and regional prices, not from moving your own items around.
 - **Start:** an open frontier town with an **optional** tutorial. New players get a guided starter questline that they can skip at any time.
 
+- **Tick length:** 0.6 s, for now. The F3 toggle stays as a debug tool for comparison.
+- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats and the training dummy first.
+
 ## Open questions
 
-1. Game ticks: use OSRS's 0.6 s, or a slightly faster tick to suit free movement? Being prototyped in #4.
+None right now.
 
 Title: **Legio** (decided unless something better comes along).

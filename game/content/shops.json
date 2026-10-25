@@ -37,6 +37,23 @@
         "item": "lead_sheet",
         "price": 60,
         "quantity": 5
+      },
+      {
+        "item": "lituus",
+        "price": 40
+      },
+      {
+        "item": "ritual_robe",
+        "price": 80
+      },
+      {
+        "item": "ritual_hood",
+        "price": 40
+      },
+      {
+        "item": "binding_tablet",
+        "price": 30,
+        "quantity": 10
       }
     ]
   }

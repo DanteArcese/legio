@@ -7,6 +7,8 @@ const TickClock := preload("res://scripts/sim/tick_clock.gd")
 const LootPile := preload("res://scripts/world/loot_pile.gd")
 const GraveMarker := preload("res://scripts/world/grave_marker.gd")
 const Projectile := preload("res://scripts/world/projectile.gd")
+const CurseVisuals := preload("res://scripts/world/curse_visuals.gd")
+const CURSE_TINTS := {"binding": Color(0.1, 0.06, 0.16), "withering": Color(0.12, 0.14, 0.06)}
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
 ## Entities with entity_id 0 get ids from here up.
@@ -116,6 +118,15 @@ func _mirror_ground(event: Dictionary) -> void:
 		"hit":
 			if event.get("ranged", false):
 				_shoot(event)
+			elif event.get("kind", "") == "ritus":
+				var target: Node = _entities.get(event["target"])
+				if target:
+					CurseVisuals.puff(get_parent(), target.body().global_position + Vector3(0, 1.0, 0))
+		"curse":
+			var cursed: Node = _entities.get(event["id"])
+			if cursed:
+				var seconds: float = maxi(event["until"] - event["tick"], 1) * clock.tick_length
+				CurseVisuals.aura(cursed.body(), seconds, CURSE_TINTS.get(event["curse"], Color.BLACK))
 		"ground_add":
 			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
 		"ground_update":

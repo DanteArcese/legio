@@ -123,9 +123,19 @@ def test_ranged_weapons_need_range_and_ammo_type(content):
 
 def test_melee_weapons_cannot_have_range(content):
     errors = errors_after(content, lambda c: c["items"]["bronze_gladius"]["equip"].update(range=3.0))
-    assert any("only ranged weapons have range" in e for e in errors)
+    assert any("only ranged and ritus weapons have range" in e for e in errors)
 
 
 def test_batch_recipes_need_stackable_output(content):
     errors = errors_after(content, lambda c: c["skilling"]["recipes"]["smith"][2].update(quantity=3))
     assert any("only stackable outputs" in e for e in errors)
+
+
+def test_tablets_need_a_known_curse(content):
+    def mutate(c):
+        c["items"]["binding_tablet"]["equip"]["curse"] = "hexing"
+        del c["items"]["withering_tablet"]["equip"]["curse"]
+
+    errors = errors_after(content, mutate)
+    assert any("binding_tablet.equip.curse: must be one of" in e for e in errors)
+    assert any("withering_tablet.equip.curse: tablets, and only tablets" in e for e in errors)

@@ -157,7 +157,8 @@
       "bonuses": {
         "attack": 0,
         "strength": 0,
-        "defence": 3
+        "defence": 3,
+        "ritus_defence": -2
       }
     }
   },
@@ -170,7 +171,8 @@
       "bonuses": {
         "attack": 0,
         "strength": 0,
-        "defence": 8
+        "defence": 8,
+        "ritus_defence": -6
       }
     }
   },
@@ -183,7 +185,8 @@
       "bonuses": {
         "attack": 0,
         "strength": 0,
-        "defence": 6
+        "defence": 6,
+        "ritus_defence": -3
       }
     }
   },
@@ -230,7 +233,8 @@
       "bonuses": {
         "attack": 0,
         "strength": 0,
-        "defence": 6
+        "defence": 6,
+        "ritus_defence": -4
       }
     },
     "requirements": {
@@ -246,7 +250,8 @@
       "bonuses": {
         "attack": 0,
         "strength": 0,
-        "defence": 16
+        "defence": 16,
+        "ritus_defence": -12
       }
     },
     "requirements": {
@@ -262,7 +267,8 @@
       "bonuses": {
         "attack": 0,
         "strength": 0,
-        "defence": 12
+        "defence": 12,
+        "ritus_defence": -6
       }
     },
     "requirements": {
@@ -393,12 +399,74 @@
     "name": "Binding tablet",
     "value": 6,
     "stackable": true,
-    "examine": "A rolled lead curse, nailed shut. 'I bind his tongue, his hands, his feet.'"
+    "examine": "A rolled lead curse, nailed shut. 'I bind his tongue, his hands, his feet.'",
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ritus_strength": 4
+      },
+      "ammo_type": "tablet",
+      "curse": "binding"
+    }
   },
   "withering_tablet": {
     "name": "Withering tablet",
     "value": 14,
     "stackable": true,
-    "examine": "Grave ash pressed into the lead. 'May his limbs waste as this lead grows cold.'"
+    "examine": "Grave ash pressed into the lead. 'May his limbs waste as this lead grows cold.'",
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ritus_strength": 3
+      },
+      "ammo_type": "tablet",
+      "curse": "withering"
+    },
+    "requirements": {
+      "ritus": 15
+    }
+  },
+  "lituus": {
+    "name": "Lituus",
+    "value": 40,
+    "examine": "An augur's curved staff. The Manes listen to those who carry one.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ritus_attack": 6
+      },
+      "attack_speed": 4,
+      "style": "ritus",
+      "range": 6.0,
+      "ammo": "tablet"
+    }
+  },
+  "ritual_robe": {
+    "name": "Ritual robe",
+    "value": 80,
+    "examine": "Dark wool, unbleached. It wards off curses, not arrows.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "defence": 2,
+        "ritus_attack": 4,
+        "ritus_defence": 6,
+        "ranged_defence": -4
+      }
+    }
+  },
+  "ritual_hood": {
+    "name": "Ritual hood",
+    "value": 40,
+    "examine": "Worn so the gods don't see your face.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "defence": 1,
+        "ritus_attack": 2,
+        "ritus_defence": 3,
+        "ranged_defence": -2
+      }
+    }
   }
 }

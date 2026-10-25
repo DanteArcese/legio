@@ -5,7 +5,8 @@ const ContentDB := preload("res://scripts/content/content_db.gd")
 
 const SLOTS := ["head", "body", "weapon", "shield", "neck", "ammo"]
 const UNARMED_SPEED := 4
-const BONUS_KEYS := ["attack", "strength", "defence", "ranged_attack", "ranged_strength"]
+const BONUS_KEYS := ["attack", "strength", "defence", "ranged_attack", "ranged_strength",
+	"ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"]
 
 ## slot -> item id, or "" for empty.
 var worn := {}
@@ -53,11 +54,26 @@ func weapon() -> Dictionary:
 	return ContentDB.item(worn["weapon"])["equip"] if not worn["weapon"].is_empty() else {}
 
 
+## "melee", "ranged", or "ritus", from the worn weapon.
+func combat_kind() -> String:
+	return weapon().get("style", "melee")
+
+
 func is_ranged() -> bool:
-	return weapon().get("style", "melee") == "ranged"
+	return combat_kind() == "ranged"
 
 
-## Whether the worn ammo suits the worn ranged weapon, and there is some.
+## Ranged weapons fire ammo and Ritus foci use up tablets from the ammo slot.
+func uses_ammo() -> bool:
+	return combat_kind() != "melee"
+
+
+## The curse of the worn tablets ("" if none).
+func curse() -> String:
+	return ContentDB.item(worn["ammo"])["equip"].get("curse", "") if not worn["ammo"].is_empty() else ""
+
+
+## Whether the worn ammo suits the worn weapon, and there is some.
 func has_ammo() -> bool:
 	if worn["ammo"].is_empty() or ammo_count <= 0:
 		return false

@@ -42,6 +42,12 @@ const WANDER_CHANCE := 0.1
 const AGGRO_LEVEL_MULTIPLIER := 2
 ## Chance that a fired arrow or sling bullet can be picked up again.
 const AMMO_RECOVERY_CHANCE := 0.75
+## Binding: chance per landed curse, and how long the target stays slowed.
+const BINDING_CHANCE := 0.6
+const BINDING_TICKS := 10
+## Withering: damage every few ticks, a set number of times.
+const WITHERING_INTERVAL := 3
+const WITHERING_PULSES := 5
 ## Monsters give up on targets farther away than this (e.g. who left the area).
 const CHASE_RANGE := 30.0
 
@@ -214,6 +220,7 @@ func step() -> Array[Dictionary]:
 			_think(combatant)
 	for id in ids:
 		_process_attack(_combatants[id], events)
+	_process_curses(events)
 	skilling.process(ids.map(func(i): return _combatants[i]).filter(func(c): return c.inventory != null), events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
@@ -237,7 +244,7 @@ func _apply_commands(events: Array[Dictionary]) -> void:
 			"stop":
 				actor.target_id = -1
 			"style":
-				var allowed: Array = Skills.RANGED_STYLES if actor.is_ranged() else Skills.MELEE_STYLES
+				var allowed: Array = Skills.styles_for(actor.combat_kind())
 				if not actor.skills or command["style"] in allowed:
 					if command["style"] in Skills.STYLES:
 						actor.style = command["style"]
@@ -500,8 +507,8 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		return
 	if _flat_distance(attacker.position, target.position) > attacker.attack_range():
 		return
-	var ranged := attacker.is_ranged()
-	if ranged and not attacker.equipment.has_ammo():
+	var kind := attacker.combat_kind()
+	if attacker.uses_ammo() and not attacker.equipment.has_ammo():
 		attacker.target_id = -1
 		_message(attacker, "You have no suitable ammunition equipped.", events)
 		return
@@ -518,7 +525,7 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		effect = Slayer.unwarded_effect(attacker.monster_id, target.equipment)
 
 	var roll: Array = attacker.attack_roll_parts()
-	var chance := CombatMath.hit_chance(roll[0], roll[1], target.effective_level("defence"), target.bonuses["defence"])
+	var chance := CombatMath.hit_chance(roll[0], roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
 	var damage := 0
 	var lands := rng.randf() < chance
 	if effect == "drain_vitality" and target.is_player():
@@ -529,15 +536,15 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	target.last_attacker_id = attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
-	attacker.next_attack_tick = tick + attacker.current_attack_speed()
-	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage, "ranged": ranged, "tick": tick})
-	if ranged:
+	attacker.next_attack_tick = tick + attacker.current_attack_speed(tick)
+	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage,
+		"ranged": kind == "ranged", "kind": kind, "tick": tick})
+	var curse: String = attacker.equipment.curse() if kind == "ritus" else ""
+	if attacker.uses_ammo():
 		_use_ammo(attacker, target.position, events)
-	if attacker.skills and damage > 0:
-		var style_skills: Array = Skills.STYLE_SKILLS[attacker.style]
-		for skill in style_skills:
-			_award_xp(attacker, skill, damage * Skills.STYLE_XP_PER_DAMAGE / style_skills.size(), events)
-		_award_xp(attacker, "vitality", damage * Skills.VITALITY_XP_PER_DAMAGE, events)
+	if lands and target.is_alive() and not curse.is_empty():
+		_apply_curse(attacker, target, curse, events)
+	_award_combat_xp(attacker, damage, events)
 
 	if target.target_id == -1 and target.auto_retaliate and target.can_fight and not target.returning \
 			and _meets_slayer_requirement(target, attacker):
@@ -546,6 +553,64 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
 	if not target.is_alive():
 		_kill(target, events)
+
+
+func _award_combat_xp(attacker: Combatant, damage: int, events: Array) -> void:
+	if not attacker.skills or damage <= 0:
+		return
+	var style_skills: Array = Skills.STYLE_SKILLS[attacker.style]
+	for skill in style_skills:
+		_award_xp(attacker, skill, damage * Skills.STYLE_XP_PER_DAMAGE / style_skills.size(), events)
+	_award_xp(attacker, "vitality", damage * Skills.VITALITY_XP_PER_DAMAGE, events)
+
+
+func _apply_curse(caster: Combatant, target: Combatant, curse: String, events: Array[Dictionary]) -> void:
+	var until := tick
+	match curse:
+		"binding":
+			if rng.randf() >= BINDING_CHANCE:
+				return
+			until = tick + BINDING_TICKS
+			target.curses["bound"] = until
+		"withering":
+			until = tick + WITHERING_INTERVAL * WITHERING_PULSES
+			var damage := 1 + floori(caster.level("ritus") / 25.0)
+			target.curses["withering"] = {"until": until, "next": tick + WITHERING_INTERVAL, "damage": damage, "source": caster.id}
+	events.append({"type": "curse", "id": target.id, "curse": curse, "until": until, "source": caster.id, "tick": tick})
+
+
+## Withering pulses, and expired curses falling away.
+func _process_curses(events: Array[Dictionary]) -> void:
+	var ids := _combatants.keys()
+	ids.sort()
+	for id in ids:
+		var victim: Combatant = _combatants[id]
+		if victim.curses.is_empty():
+			continue
+		if not victim.is_alive():
+			victim.curses.clear()
+			continue
+		if victim.curses.get("bound", tick) <= tick:
+			victim.curses.erase("bound")
+		var wither: Dictionary = victim.curses.get("withering", {})
+		if wither.is_empty():
+			continue
+		if tick >= wither["next"]:
+			wither["next"] = tick + WITHERING_INTERVAL
+			var damage := mini(wither["damage"], victim.hp)
+			victim.hp -= damage
+			var caster: Combatant = _combatants.get(wither["source"])
+			if caster:
+				victim.last_attacker_id = caster.id
+			events.append({"type": "hit", "attacker": wither["source"], "target": victim.id, "damage": damage,
+				"ranged": false, "kind": "withering", "tick": tick})
+			if caster:
+				_award_combat_xp(caster, damage, events)
+			if not victim.is_alive():
+				_kill(victim, events)
+				continue
+		if tick >= wither["until"]:
+			victim.curses.erase("withering")
 
 
 ## Each shot uses one ammo; most of it lands near the target to pick up.
@@ -558,7 +623,8 @@ func _use_ammo(attacker: Combatant, at: Vector3, events: Array[Dictionary]) -> v
 		attacker.apply_equipment()
 		_message(attacker, "That was your last %s." % ContentDB.item(ammo)["name"].to_lower(), events)
 	events.append({"type": "equipment_changed", "id": attacker.id, "tick": tick})
-	if rng.randf() < AMMO_RECOVERY_CHANCE:
+	# Tablets are spent for good; arrows and bullets can be found again.
+	if attacker.is_ranged() and rng.randf() < AMMO_RECOVERY_CHANCE:
 		_drop_near(at, ammo, 1, events)
 
 
@@ -599,6 +665,7 @@ func _award_xp(combatant: Combatant, skill: String, amount: float, events: Array
 
 
 func _kill(victim: Combatant, events: Array[Dictionary]) -> void:
+	victim.curses.clear()
 	victim.target_id = -1
 	victim.move_target = null
 	for combatant in _combatants.values():

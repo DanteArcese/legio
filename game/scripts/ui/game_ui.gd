@@ -216,9 +216,10 @@ func _refresh() -> void:
 		if slot == "ammo" and not item_id.is_empty():
 			label += " x%d" % c.equipment.ammo_count
 		_equipment_buttons[slot].text = "%s: %s" % [slot.capitalize(), label]
-	_bonus_label.text = "Melee: Att +%d  Str +%d     Ranged: Acc +%d  Str +%d\nDefence +%d     Speed %d" % [
+	_bonus_label.text = "Melee +%d/+%d   Ranged +%d/+%d   Ritus +%d/+%d\nDefence +%d (vs Ranged %+d, vs Ritus %+d)   Speed %d" % [
 		c.bonuses["attack"], c.bonuses["strength"], c.bonuses["ranged_attack"], c.bonuses["ranged_strength"],
-		c.bonuses["defence"], c.current_attack_speed()]
+		c.bonuses["ritus_attack"], c.bonuses["ritus_strength"], c.bonuses["defence"],
+		c.defence_bonus_against("ranged"), c.defence_bonus_against("ritus"), c.current_attack_speed()]
 	if _bank_panel.visible:
 		_refresh_bank(c)
 

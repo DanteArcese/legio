@@ -17,8 +17,9 @@ FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops")
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "slayer", "mining", "smithing", "cooking"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
-BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength"}
-AMMO_TYPES = {"arrow", "sling_bullet"}
+BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
+AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
+CURSES = {"binding", "withering"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
 RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
@@ -85,7 +86,7 @@ def _check_item(where, item_id, item, items, errors):
         _check_levels(f"{where}.requirements", item["requirements"], SKILLS, errors)
     if "equip" in item:
         equip = item["equip"]
-        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type"}, {"slot", "bonuses"}, errors)
+        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type", "curse"}, {"slot", "bonuses"}, errors)
         if equip.get("slot") not in EQUIP_SLOTS:
             errors.append(f"{where}.equip.slot: unknown slot {equip.get('slot')!r}")
         bonuses = equip.get("bonuses", {})
@@ -97,14 +98,20 @@ def _check_item(where, item_id, item, items, errors):
             _check_int(f"{where}.equip", "attack_speed", equip.get("attack_speed"), 1, errors)
         elif "attack_speed" in equip:
             errors.append(f"{where}.equip.attack_speed: only weapons have an attack speed")
-        if equip.get("style", "melee") not in ("melee", "ranged"):
-            errors.append(f"{where}.equip.style: must be melee or ranged")
-        if equip.get("style") == "ranged":
+        if equip.get("style", "melee") not in ("melee", "ranged", "ritus"):
+            errors.append(f"{where}.equip.style: must be melee, ranged, or ritus")
+        if equip.get("style") in ("ranged", "ritus"):
             _check_number(f"{where}.equip", "range", equip.get("range"), 1, 20, errors)
             if equip.get("ammo") not in AMMO_TYPES:
                 errors.append(f"{where}.equip.ammo: must be one of {sorted(AMMO_TYPES)}")
         elif "range" in equip or "ammo" in equip:
-            errors.append(f"{where}.equip: only ranged weapons have range and ammo")
+            errors.append(f"{where}.equip: only ranged and ritus weapons have range and ammo")
+        if equip.get("style") == "ritus" and equip.get("ammo") != "tablet":
+            errors.append(f"{where}.equip.ammo: ritus weapons use tablets")
+        if (equip.get("ammo_type") == "tablet") != ("curse" in equip):
+            errors.append(f"{where}.equip.curse: tablets, and only tablets, have a curse")
+        elif "curse" in equip and equip["curse"] not in CURSES:
+            errors.append(f"{where}.equip.curse: must be one of {sorted(CURSES)}")
         if equip.get("slot") == "ammo":
             if equip.get("ammo_type") not in AMMO_TYPES:
                 errors.append(f"{where}.equip.ammo_type: must be one of {sorted(AMMO_TYPES)}")

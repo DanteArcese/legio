@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://scripts/world/day_night.gd" id="21_daynight"]
 [ext_resource type="Script" path="res://scripts/world/lamp_post.gd" id="22_lamp"]
 [ext_resource type="Script" path="res://scripts/world/kit_dresser.gd" id="23_dresser"]
+[ext_resource type="Script" path="res://scripts/world/npc_model.gd" id="24_npc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -245,6 +246,12 @@ mesh = SubResource("undertaker_mesh")
 [node name="Collision" type="CollisionShape3D" parent="Libitinarius"]
 shape = SubResource("undertaker_shape")
 
+[node name="Look" type="Node" parent="Libitinarius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+weapon = ""
+hide_meshes = Array[String](["Mage_Hat"])
+
 [node name="Label" type="Label3D" parent="Libitinarius"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
@@ -266,6 +273,12 @@ mesh = SubResource("venator_mesh")
 
 [node name="Collision" type="CollisionShape3D" parent="VenatorAulus"]
 shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="VenatorAulus"]
+script = ExtResource("24_npc")
+scene = "adventurers/Barbarian"
+weapon = "weapons/dagger"
+hide_meshes = Array[String](["Barbarian_Hat"])
 
 [node name="Label" type="Label3D" parent="VenatorAulus"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)

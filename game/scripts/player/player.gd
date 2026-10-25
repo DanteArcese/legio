@@ -22,9 +22,9 @@ signal message_requested(text: String)
 const MoveMath := preload("res://scripts/player/move_math.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
-const CreatureModel := preload("res://scripts/world/creature_model.gd")
+const KaykitCharacter := preload("res://scripts/world/kaykit_character.gd")
+const PlayerLook := preload("res://scripts/player/player_look.gd")
 const WorldMenu := preload("res://scripts/player/world_menu.gd")
-const LOOK := {"model": "humanoid", "color": "#a3241c", "accent": "#6b4a2a", "size": 1.0, "features": ["helmet", "bare_legs"]}
 
 const CLICK_RAY_LENGTH := 300.0
 ## Terrain (1), monsters (4), props (8), and structures (16) can be clicked.
@@ -51,15 +51,51 @@ var _on_arrival := {}
 @onready var _entity: Node = $SimEntity
 
 var _model: Node3D
+var _look_key := "?"
 
 
 func _ready() -> void:
 	add_to_group("player")
 	$Mesh.visible = false
-	_model = CreatureModel.create(LOOK)
+	_entity.combat_moment.connect(_on_combat_moment)
+
+
+func has_animated_model() -> bool:
+	return _model is KaykitCharacter
+
+
+## Rebuilds the character when what's worn changes.
+func _refresh_look() -> void:
+	var combatant: RefCounted = _entity.combatant
+	if combatant == null:
+		return
+	var key := PlayerLook.key(combatant.equipment.worn)
+	if key == _look_key:
+		return
+	_look_key = key
+	var was_dead: bool = _model is KaykitCharacter and _model.is_dead()
+	if _model:
+		_model.queue_free()
+	_model = KaykitCharacter.create(PlayerLook.appearance(combatant.equipment.worn))
 	# The body's origin is at its centre (capsule), the model's at its feet.
 	_model.position.y = -1.0
 	add_child(_model)
+	if was_dead:
+		_model.die()
+
+
+func _on_combat_moment(moment: String, info: Dictionary) -> void:
+	if not _model is KaykitCharacter:
+		return
+	match moment:
+		"attack":
+			_model.attack(info.get("kind", "") if info.get("kind", "") == "ritus" else "")
+		"hurt":
+			_model.hurt()
+		"die":
+			_model.die()
+		"revive":
+			_model.revive()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -277,6 +313,11 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	move_and_slide()
 	_entity.rescue_if_fallen()
+	_refresh_look()
+	if _model == null:
+		return
+	var action: Dictionary = _entity.combatant.skill_action if _entity.combatant else {}
+	_model.set_work(action.get("kind", action.get("type", "")) if not action.is_empty() else "")
 	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 
 	var facing := direction

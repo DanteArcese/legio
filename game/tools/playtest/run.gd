@@ -18,6 +18,10 @@ class ErrorCapture extends Logger:
 
 	func _log_error(_function: String, file: String, line: int, code: String, rationale: String,
 			_editor_notify: bool, error_type: int, _script_backtraces: Array[ScriptBacktrace]) -> void:
+		# Headless runs use Godot's dummy renderer, which reports harmless
+		# errors for material overrides that the real renderer handles fine.
+		if file.begins_with("servers/rendering/dummy/"):
+			return
 		if error_type != ERROR_TYPE_WARNING:
 			errors.append("%s:%d %s" % [file, line, rationale if not rationale.is_empty() else code])
 

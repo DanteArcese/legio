@@ -5,10 +5,11 @@ extends CharacterBody3D
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
 const CreatureModel := preload("res://scripts/world/creature_model.gd")
+const KaykitCharacter := preload("res://scripts/world/kaykit_character.gd")
 
 ## Collision height and label height per model kind, as multiples of size.
-const BODY_HEIGHT := {"quadruped": 0.9, "humanoid": 1.9, "bird": 1.2}
-const LABEL_HEIGHT := {"quadruped": 1.3, "humanoid": 2.4, "bird": 1.7}
+const BODY_HEIGHT := {"quadruped": 0.9, "humanoid": 1.9, "bird": 1.2, "kaykit": 1.9}
+const LABEL_HEIGHT := {"quadruped": 1.3, "humanoid": 2.4, "bird": 1.7, "kaykit": 2.4}
 
 @export var monster_id := "rat"
 @export var move_speed := 2.5
@@ -25,8 +26,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	var look: Dictionary = ContentDB.monster(monster_id)["appearance"]
-	_model = CreatureModel.create(look)
+	_model = KaykitCharacter.create(look) if look["model"] == "kaykit" else CreatureModel.create(look)
 	add_child(_model)
+	_entity.combat_moment.connect(_on_combat_moment)
 	var size := float(look["size"])
 	var shape := CapsuleShape3D.new()
 	shape.radius = 0.35 * size
@@ -34,6 +36,24 @@ func _ready() -> void:
 	$Collision.shape = shape
 	$Collision.position.y = shape.height / 2.0
 	$HpLabel.position.y = LABEL_HEIGHT[look["model"]] * size
+
+
+func has_animated_model() -> bool:
+	return _model is KaykitCharacter
+
+
+func _on_combat_moment(moment: String, info: Dictionary) -> void:
+	if not _model is KaykitCharacter:
+		return
+	match moment:
+		"attack":
+			_model.attack()
+		"hurt":
+			_model.hurt()
+		"die":
+			_model.die()
+		"revive":
+			_model.revive()
 
 
 func _physics_process(delta: float) -> void:

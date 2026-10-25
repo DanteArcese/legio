@@ -31,6 +31,7 @@ MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
+    "kaykit": set(),
     "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail"},
     "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs"},
     "bird": {"ear_tufts"},
@@ -135,7 +136,15 @@ def _check_monster(where, monster_id, monster, items, drops, errors):
         errors.append(f"{where}.stats: expected keys {sorted(COMBAT_STATS)}")
     _check_levels(f"{where}.stats", stats, COMBAT_STATS, errors)
     appearance = monster.get("appearance", {})
-    _check_keys(f"{where}.appearance", appearance, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)
+    _check_keys(f"{where}.appearance", appearance, {"model", "color", "accent", "size", "features", "scene", "weapon", "shield", "attack"}, {"model", "color", "size"}, errors)
+    if appearance.get("model") == "kaykit":
+        for key in ("scene", "weapon", "shield"):
+            path = appearance.get(key, "")
+            ext = ".glb" if key == "scene" else ".gltf"
+            if key == "scene" and not path:
+                errors.append(f"{where}.appearance.scene: kaykit models need a scene")
+            elif path and not (CONTENT_DIR.parent / "assets" / "kaykit" / (path + ext)).exists():
+                errors.append(f"{where}.appearance.{key}: no asset at assets/kaykit/{path}{ext}")
     if appearance.get("model") not in MODEL_FEATURES:
         errors.append(f"{where}.appearance.model: must be one of {sorted(MODEL_FEATURES)}")
     for key in ("color", "accent"):

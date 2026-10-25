@@ -17,6 +17,8 @@ It is single-player first. The architecture should still leave room for an MMO l
 
 ## Setting
 
+Decided (tentatively): **Greco-Roman Mediterranean.** We also considered Norse, feudal Japan, Bronze Age Mesopotamia, and Byzantium. Rome won because it gives the clearest contrast with OSRS's medieval fantasy, a deep public-domain bestiary for Slayer, real trades to build skills around, and a natural progression ladder in citizenship and military rank.
+
 A fictionalized Roman world, around the early Empire, with history used loosely. A fictional province (working name **Provincia Ulterior**) gives us freedom to invent towns and factions, while real places can appear as distant destinations.
 
 | Region (idea) | Inspired by | Role |
@@ -40,7 +42,7 @@ A first pass at Roman-themed skills. Names are working names.
 | Vitality | Hitpoints. |
 | Ranged | Bows, slings (*funditores*), throwing javelins, later the hand-held *manuballista*. |
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods: Mars (strength), Minerva (defence), Diana (ranged), Mercury (movement and run energy). XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. |
-| Third style | **Open.** See [Replacing magic](#replacing-magic). |
+| Ritus | The third combat style. See [Replacing magic](#replacing-magic). |
 
 ### Slayer
 
@@ -85,7 +87,9 @@ Kept as a core skill and the center of progression.
 
 OSRS magic does three jobs: a third combat style, teleportation, and utility spells such as alchemy and enchanting. Each needs a replacement.
 
-### Third combat style (**Open**)
+### Third combat style
+
+Decided: **A. Ritus.** The options we compared are kept below for reference.
 
 | Option | How it works | Pros | Cons |
 |---|---|---|---|
@@ -93,7 +97,7 @@ OSRS magic does three jobs: a third combat style, teleportation, and utility spe
 | **B. Machina (siege and incendiaries)** | Hand-held artillery, incendiary pots, caltrops. | No supernatural elements at all. | Overlaps with Ranged, and the triangle gets muddy. |
 | **C. Two styles only** | Melee and Ranged, with gods and Pietas giving the utility. | Simplest. | Loses the rock-paper-scissors depth that makes OSRS bossing interesting. |
 
-**Recommendation:** A. Ritus. The triangle becomes Melee beats Ranged, Ranged beats Ritus, and Ritus beats Melee. It keeps the depth and is still true to Roman beliefs.
+The triangle is Melee beats Ranged, Ranged beats Ritus, and Ritus beats Melee. Ritus uses a light touch: curse tablets, augury, charms, and damage over time, never fireballs. Its supplies are made through Crafting and Medicina: lead tablets, styluses, sacred herbs, and amulets.
 
 ### Travel
 
@@ -119,7 +123,11 @@ OSRS is built on point-and-click. A controller needs a different interaction mod
 - **Radial or grid inventory** that you navigate with the D-pad.
 - Mouse and keyboard keep click-to-move and right-click menus.
 
-**Open:** should movement be tile-based, like OSRS, or free? Free movement feels better on a stick. The simulation could still snap to a grid for pathing and server authority.
+Decided: **free movement.** It feels much better on a stick and is the norm for 3D action RPGs. Some notes on how it fits with the rest of the design:
+
+- Free movement and tick-based logic work together. Movement is continuous, and actions (attacks, skilling attempts, XP) resolve on ticks. Inputs are queued so a tick never swallows a button press.
+- Attack range is measured as a distance (melee reach, bow range) rather than in tiles. OSRS-style precise movement tricks such as safespotting and step-under come back as obstacles and line of sight.
+- For a later MMO, the server owns the true positions and the client predicts its own movement, which is the standard approach for free-movement online games.
 
 ## Architecture
 
@@ -132,7 +140,26 @@ Principles that keep an MMO possible without building one now:
 3. **Content is data.** Items, monsters, drop tables, Slayer tasks, and XP curves live in data files rather than code. The Python/uv tooling in this repo validates content with pytest.
 4. **Saves are versioned.** Saves are serialized state that a server could store later.
 
-Art direction (**Open**): low-poly 3D from a fixed-pitch, rotatable camera, which is closest to the OSRS feel and cheap to produce. The alternative is 2D isometric.
+Art direction (decided): **low-poly 3D** with a third-person orbit camera that can zoom out to an OSRS-like high angle. Use flat or vertex colors and very few textures, so one person can make art quickly and it stays readable from a distance.
+
+## Progression
+
+### Grind
+
+Decided: **grindy, on the OSRS scale.** Skills go up to level 99, and maxing a skill should take hundreds of hours.
+
+- The XP curve is exponential, so every level takes more XP than the one before. We write our own formula and table rather than copying OSRS's.
+- Every few levels unlock something real: a new resource, item, area, or training method. That keeps the long climb from feeling empty.
+- Each skill has at least one fast, attention-heavy training method and one slow, low-effort method, as in OSRS.
+- Skilling outfits, pets, and log-style collections (like OSRS's collection log) give long-term goals.
+
+### Quests and career
+
+Decided: **both.**
+
+- **Auxilia career track.** This fits the history neatly. Non-citizens joined the auxilia, the non-citizen units of the Roman army, and earned citizenship when they were discharged. Your career runs from *tiro* (recruit) through *miles*, *duplicarius*, and *decurio*, and ends with your honorable discharge and **citizenship**. After that, the legions open up, up to *centurion*. Each rank is a multi-part quest, gated by skill and combat levels, and it unlocks equipment, areas, and the capital.
+- **Standalone story quests** for side stories, region lore, and mythic adventures, with skill requirements and XP rewards in the OSRS style.
+- Citizenship is the game's main mid-game milestone. It unlocks the capital's forum market, owning a villa, and higher-level venatores.
 
 ## IP guardrails
 
@@ -155,9 +182,7 @@ The smallest build that proves the core loop:
 
 ## Open questions
 
-1. Rome: are you committed, or keeping other settings on the table?
-2. The third combat style: Ritus, Machina, or two styles only?
-3. Tile-based or free movement?
-4. Low-poly 3D or 2D isometric?
-5. How grindy should it be? OSRS-level (99s take hundreds of hours) or compressed for single-player?
-6. Quests: OSRS-style story quests, or a legion-rank career track (*tiro* to *centurion*), or both?
+1. Death and risk: what do you lose when you die, and how much worse is it Beyond the Limes?
+2. Combat feel: OSRS-style tick timing with an auto-attack, or more active combat with dodges and blocks?
+3. Mercatura: is it a full skill or folded into the forum market?
+4. The game's real title (`legio` is a working name).

@@ -5,6 +5,7 @@ extends Node
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
 const LootPile := preload("res://scripts/world/loot_pile.gd")
+const GraveMarker := preload("res://scripts/world/grave_marker.gd")
 
 ## Entities with entity_id 0 get ids from here up.
 const AUTO_ID_START := 1000
@@ -21,6 +22,7 @@ var clock := TickClock.new()
 var _entities := {}
 var _next_auto_id := AUTO_ID_START
 var _piles := {}
+var _graves := {}
 
 
 func _ready() -> void:
@@ -30,6 +32,8 @@ func _ready() -> void:
 		register(entity)
 	for bank in get_tree().get_nodes_in_group("banks"):
 		sim.add_bank(bank.global_position)
+	for undertaker in get_tree().get_nodes_in_group("libitinarii"):
+		sim.add_libitinarius(undertaker.global_position)
 
 
 func register(entity: Node) -> void:
@@ -89,6 +93,13 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
 		"ground_update":
 			_piles[event["pile"]].set_items(event["items"])
+		"grave_add":
+			_graves[event["grave"]] = GraveMarker.spawn(get_parent(), self, event["position"], event["expires_at"])
+		"grave_remove":
+			var marker: Node = _graves.get(event["grave"])
+			if marker:
+				marker.queue_free()
+				_graves.erase(event["grave"])
 		"ground_remove":
 			var pile: Node = _piles.get(event["pile"])
 			if pile:

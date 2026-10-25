@@ -39,6 +39,8 @@ func _ready() -> void:
 		sim.add_libitinarius(undertaker.global_position)
 	for venator in get_tree().get_nodes_in_group("venatores"):
 		sim.add_venator(venator.get_meta("venator_id"), venator.global_position)
+	for shopkeeper in get_tree().get_nodes_in_group("shopkeepers"):
+		sim.add_shopkeeper(shopkeeper.get_meta("shop_id"), shopkeeper.global_position)
 	for rock in get_tree().get_nodes_in_group("rocks"):
 		rock.rock_id = _rocks.size() + 1
 		_rocks[rock.rock_id] = rock

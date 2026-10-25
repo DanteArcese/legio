@@ -42,6 +42,21 @@ static func options_kind(node: Node) -> String:
 
 
 static func options_for(player: Node3D, node: Node) -> Array:
+	var options := _options_by_kind(player, node)
+	if node.has_meta("shop_id"):
+		# Shop entries go just before Examine (always last for shopkeepers).
+		var examine: Array = options.pop_back() if not options.is_empty() else []
+		for offer in ContentDB.shop(node.get_meta("shop_id")).get("offers", []):
+			var item_name: String = ContentDB.item(offer["item"])["name"].to_lower()
+			if offer.get("quantity", 1) > 1:
+				item_name += " x%d" % offer["quantity"]
+			options.append(["Buy %s (%d denarii)" % [item_name, offer["price"]], player.buy.bind(node, offer["item"])])
+		if not examine.is_empty():
+			options.append(examine)
+	return options
+
+
+static func _options_by_kind(player: Node3D, node: Node) -> Array:
 	match options_kind(node):
 		"monster":
 			var entity: Node = node.get_node("SimEntity")
@@ -63,14 +78,8 @@ static func options_for(player: Node3D, node: Node) -> Array:
 			return [["Reclaim items", player.reclaim.bind(node)],
 				["Examine libitinarius", player.examine.bind(node.get_meta("examine", ""))]]
 		"venatores":
-			var options := [["Ask for a contract", player.ask_for_contract.bind(node)]]
-			for offer in ContentDB.venator(node.get_meta("venator_id")).get("shop", []):
-				var item_name: String = ContentDB.item(offer["item"])["name"].to_lower()
-				if offer.get("quantity", 1) > 1:
-					item_name += " x%d" % offer["quantity"]
-				options.append(["Buy %s (%d denarii)" % [item_name, offer["price"]], player.buy.bind(node, offer["item"])])
-			options.append(["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))])
-			return options
+			return [["Ask for a contract", player.ask_for_contract.bind(node)],
+				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
 		"transitions":
 			return [[node.verb, player.travel.bind(node)], ["Examine " + node.title.to_lower(), player.examine.bind(node.examine_text)]]
 		"loot_piles":

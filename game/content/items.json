@@ -358,5 +358,47 @@
       },
       "ammo_type": "sling_bullet"
     }
+  },
+  "galena": {
+    "name": "Galena",
+    "value": 10,
+    "examine": "Heavy grey ore. Rome's lead comes from this."
+  },
+  "lead_sheet": {
+    "name": "Lead sheet",
+    "value": 12,
+    "examine": "A thin, soft sheet of lead, ready to take an inscription.",
+    "stackable": true
+  },
+  "bronze_nails": {
+    "name": "Bronze nails",
+    "value": 1,
+    "examine": "Small bronze nails. Good for binding things in place.",
+    "stackable": true
+  },
+  "iron_nails": {
+    "name": "Iron nails",
+    "value": 2,
+    "examine": "Iron nails, square-shanked.",
+    "stackable": true
+  },
+  "stylus": {
+    "name": "Stylus",
+    "value": 15,
+    "examine": "A pointed bronze pen for writing on wax, or on lead.",
+    "tool": "stylus",
+    "tool_tier": 1
+  },
+  "binding_tablet": {
+    "name": "Binding tablet",
+    "value": 6,
+    "stackable": true,
+    "examine": "A rolled lead curse, nailed shut. 'I bind his tongue, his hands, his feet.'"
+  },
+  "withering_tablet": {
+    "name": "Withering tablet",
+    "value": 14,
+    "stackable": true,
+    "examine": "Grave ash pressed into the lead. 'May his limbs waste as this lead grows cold.'"
   }
 }

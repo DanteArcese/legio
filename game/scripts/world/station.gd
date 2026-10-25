@@ -5,11 +5,12 @@ const LOOKS := {
 	"furnace": ["Furnace", Color(0.45, 0.25, 0.2), Vector3(1.2, 1.4, 1.2), "Hot enough to smelt ore into bars."],
 	"anvil": ["Anvil", Color(0.25, 0.25, 0.28), Vector3(0.9, 0.6, 0.5), "Bring bars and a hammer."],
 	"range": ["Cooking range", Color(0.55, 0.45, 0.35), Vector3(1.3, 0.9, 0.8), "A clay oven with a fire beneath."],
+	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
 }
 ## Recipe kinds made at each station.
-const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook"}
+const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "tomb": "inscribe"}
 
-@export_enum("furnace", "anvil", "range") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb") var kind := "furnace"
 
 
 func recipe_kind() -> String:

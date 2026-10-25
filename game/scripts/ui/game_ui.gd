@@ -7,6 +7,7 @@ extends CanvasLayer
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Equipment := preload("res://scripts/sim/equipment.gd")
+const Skilling := preload("res://scripts/sim/skilling.gd")
 
 const SLOT_SIZE := Vector2(92, 60)
 const MESSAGE_DURATION := 4.0
@@ -77,7 +78,7 @@ func open_bank() -> void:
 ## Shows what can be made at a station; picking one makes as many as possible.
 func open_station(station: Node) -> void:
 	var kind: String = station.recipe_kind()
-	var skill: String = "cooking" if kind == "cook" else "smithing"
+	var skill: String = Skilling.SKILL_FOR_KIND[kind]
 	var options := []
 	for recipe in ContentDB.recipes(kind):
 		var label := "%s  (%s %d)" % [ContentDB.item(recipe["output"])["name"], skill.capitalize(), recipe["level"]]

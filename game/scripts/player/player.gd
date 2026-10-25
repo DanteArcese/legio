@@ -54,6 +54,7 @@ var _model: Node3D
 
 
 func _ready() -> void:
+	add_to_group("player")
 	$Mesh.visible = false
 	_model = CreatureModel.create(LOOK)
 	# The body's origin is at its centre (capsule), the model's at its feet.

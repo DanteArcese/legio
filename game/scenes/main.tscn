@@ -136,7 +136,7 @@ outline_size = 8
 [node name="SimEntity" type="Node" parent="TrainingDummy" node_paths=PackedStringArray("hp_label") groups=["sim_entities"]]
 script = ExtResource("4_entity")
 entity_id = 100
-max_hp = 20
+max_hp = 10
 can_fight = false
 auto_retaliate = false
 respawn_ticks = 5

@@ -104,3 +104,8 @@ def test_recipe_tool_must_be_provided_by_an_item(content):
 def test_cooking_recipe_needs_stop_burning_with_burnt(content):
     errors = errors_after(content, lambda c: c["skilling"]["recipes"]["cook"][0].pop("stop_burning"))
     assert any("burnt and stop_burning go together" in e for e in errors)
+
+
+def test_shop_items_must_exist(content):
+    errors = errors_after(content, lambda c: c["slayer"]["venatores"]["aulus"]["shop"].append({"item": "net", "price": 5}))
+    assert any("shop[1].item: unknown item 'net'" in e for e in errors)

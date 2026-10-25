@@ -44,7 +44,8 @@ func _physics_process(delta: float) -> void:
 		var stop_distance: float = combatant.reach * 0.8 if combatant.target_id != -1 else 0.2
 		if offset.length() > stop_distance:
 			var waypoint := Navigation.next_waypoint(get_world_3d(), global_position, combatant.move_target)
-			direction = ((waypoint - global_position) * Vector3(1, 0, 1)).normalized()
+			var step: Vector3 = (waypoint - global_position) * Vector3(1, 0, 1)
+			direction = step.normalized() if step.length() > 0.01 else Vector3.ZERO
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
 	if not is_on_floor():

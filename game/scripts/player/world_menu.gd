@@ -35,7 +35,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "loot_piles", "graves"]:
+	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "transitions", "loot_piles", "graves"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -63,8 +63,14 @@ static func options_for(player: Node3D, node: Node) -> Array:
 			return [["Reclaim items", player.reclaim.bind(node)],
 				["Examine libitinarius", player.examine.bind(node.get_meta("examine", ""))]]
 		"venatores":
-			return [["Ask for a contract", player.ask_for_contract.bind(node)],
-				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
+			var options := [["Ask for a contract", player.ask_for_contract.bind(node)]]
+			for offer in ContentDB.venator(node.get_meta("venator_id")).get("shop", []):
+				var item_name: String = ContentDB.item(offer["item"])["name"]
+				options.append(["Buy %s (%d denarii)" % [item_name.to_lower(), offer["price"]], player.buy.bind(node, offer["item"])])
+			options.append(["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))])
+			return options
+		"transitions":
+			return [[node.verb, player.travel.bind(node)], ["Examine " + node.title.to_lower(), player.examine.bind(node.examine_text)]]
 		"loot_piles":
 			var options := []
 			if node.items.size() > 1:
@@ -83,7 +89,7 @@ static func options_for(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "loot_piles", "graves"]:
+	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "transitions", "loot_piles", "graves"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			var range := NEARBY_LOOT_RANGE if group in ["loot_piles", "graves"] else NEARBY_OBJECT_RANGE
 			var distance := _flat(node.global_position - player.global_position).length()

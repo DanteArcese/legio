@@ -13,6 +13,9 @@
 [ext_resource type="Script" path="res://scripts/world/station.gd" id="11_station"]
 [ext_resource type="PackedScene" path="res://scenes/castra_ferrea.tscn" id="12_town"]
 [ext_resource type="Script" path="res://scripts/world/navigation.gd" id="13_nav"]
+[ext_resource type="PackedScene" path="res://scenes/barrow.tscn" id="14_barrow"]
+[ext_resource type="Script" path="res://scripts/world/transition.gd" id="15_transition"]
+[ext_resource type="Script" path="res://scripts/world/area_lighting.gd" id="16_lighting"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -276,6 +279,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -30.5)
 script = ExtResource("10_rock")
 rock_type = "iron_rock"
 
+[node name="Barrow" parent="." groups=["navigation_source"] instance=ExtResource("14_barrow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, 0)
+
+[node name="BarrowEntrance" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, -38.6)
+script = ExtResource("15_transition")
+verb = "Enter"
+title = "Barrow of the Lemures"
+examine_text = "Cold air breathes out of the dark. Something moves down there."
+destination = Vector3(150, 0, 2.5)
+
+[node name="BarrowExit" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, 5.4)
+script = ExtResource("15_transition")
+verb = "Climb out"
+title = "Barrow stairs"
+examine_text = "Worn steps lead back up to daylight."
+destination = Vector3(-45, 0, -36)
+size = Vector3(2.4, 0.6, 1.0)
+color = Color(0.45, 0.42, 0.38, 1)
+
 [node name="Monsters" type="Node3D" parent="."]
 
 [node name="Rat1" parent="Monsters" instance=ExtResource("7_monster")]
@@ -309,6 +333,26 @@ monster_id = "wild_boar"
 [node name="Latro1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 38)
 monster_id = "latro"
+
+[node name="Lemur1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 145, 0, -23)
+monster_id = "lemur"
+
+[node name="Lemur2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 155, 0, -24)
+monster_id = "lemur"
+
+[node name="Lemur3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, -29)
+monster_id = "lemur"
+
+[node name="Strix1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 177, 0, -28)
+monster_id = "strix"
+
+[node name="Strix2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 180, 0, -23)
+monster_id = "strix"
 
 [node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("2_camera")
@@ -355,3 +399,9 @@ player = NodePath("../Player")
 script = ExtResource("9_save")
 driver = NodePath("../SimDriver")
 player_entity = NodePath("../Player/SimEntity")
+
+[node name="AreaLighting" type="Node" parent="." node_paths=PackedStringArray("environment", "sun", "player")]
+script = ExtResource("16_lighting")
+environment = NodePath("../WorldEnvironment")
+sun = NodePath("../Sun")
+player = NodePath("../Player")

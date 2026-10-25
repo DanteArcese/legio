@@ -219,7 +219,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **Place.** *Castra Ferrea*, a fictional fort town on the frontier, with:
 - a bank, a general store, a smithy (furnace and anvil), a cooking range, and the venator's post
 - the woods and fields outside the walls, with a copper/tin quarry and an iron outcrop
-- the *Barrow of the Lemures*, a small dungeon
+- the *Barrow of the Lemures*, a small torchlit dungeon north-west of town: lemurs in the upper halls, two strix in the depths. Aulus sells the whitethorn charm (150 denarii).
 
 **Skills.** Attack, Strength, Defence, Vitality, Ranged, Slayer, Mining, Smithing, Cooking. (Ranged was added after the first build, in #36.)
 

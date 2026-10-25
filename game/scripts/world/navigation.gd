@@ -31,9 +31,14 @@ func _ready() -> void:
 
 
 ## The next point to walk toward on the way from one position to another.
-## Falls back to a straight line if no path is available yet.
+## Returns from (stand still) when there is no path, such as when the goal
+## is in another area.
 static func next_waypoint(world: World3D, from: Vector3, to: Vector3) -> Vector3:
 	var path := NavigationServer3D.map_get_path(world.navigation_map, from, to, true)
+	if path.is_empty():
+		return from
+	if Vector2(path[-1].x - to.x, path[-1].z - to.z).length() > 2.0:
+		return from
 	for point in path:
 		if Vector2(point.x - from.x, point.z - from.z).length() > WAYPOINT_REACHED:
 			return point

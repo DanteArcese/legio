@@ -118,3 +118,20 @@ func test_killing_a_monster_drops_loot_and_it_respawns_at_spawn() -> void:
 	check(respawned, "respawned")
 	check_eq(wolf.position, Vector3.ZERO, "back at spawn")
 	check_eq(wolf.hp, wolf.max_hp, "full hp")
+
+
+
+func test_repeat_kills_in_one_spot_share_a_pile() -> void:
+	var sim := Simulation.new(8)
+	var player := sim.add_player(PLAYER, Vector3(1, 0, 0))
+	player.bonuses["attack"] = 5000
+	for i in 3:
+		var rat := sim.add_monster(60 + i, "rat", Vector3(0, 0, 0.3 * i))
+		rat.hp = 1
+		sim.queue_attack(PLAYER, 60 + i)
+		for t in 10:
+			sim.step()
+	var piles := sim.ground_piles()
+	check_eq(piles.size(), 1, "one pile for three nearby kills")
+	var meat: Array = piles[0]["items"].filter(func(e): return e["item"] == "raw_meat")
+	check_eq(meat[0]["quantity"], 3, "three raw meat merged")

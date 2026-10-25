@@ -40,6 +40,8 @@ const REGEN_INTERVAL := 100
 const WANDER_CHANCE := 0.1
 ## Aggressive monsters ignore players above this multiple of their level.
 const AGGRO_LEVEL_MULTIPLIER := 2
+## Drops this close to an existing pile join it.
+const PILE_MERGE_RADIUS := 1.5
 ## Chance that a fired arrow or sling bullet can be picked up again.
 const AMMO_RECOVERY_CHANCE := 0.75
 ## Binding: chance per landed curse, and how long the target stays slowed.
@@ -628,10 +630,10 @@ func _use_ammo(attacker: Combatant, at: Vector3, events: Array[Dictionary]) -> v
 		_drop_near(at, ammo, 1, events)
 
 
-## Adds items to a pile within a metre of position, or starts a new one.
+## Adds items to a pile within MERGE_RADIUS of position, or starts a new one.
 func _drop_near(position: Vector3, item_id: String, quantity: int, events: Array) -> void:
 	for pile in _ground.values():
-		if _flat_distance(pile["position"], position) <= 1.0:
+		if _flat_distance(pile["position"], position) <= PILE_MERGE_RADIUS:
 			var merged := false
 			for entry in pile["items"]:
 				if entry["item"] == item_id:
@@ -684,7 +686,9 @@ func _kill(victim: Combatant, events: Array[Dictionary]) -> void:
 		var items := Drops.roll(ContentDB.drop_table(victim.drop_table), rng)
 		if not items.is_empty():
 			events.append({"type": "drop", "id": victim.id, "items": items, "position": victim.position, "tick": tick})
-			_add_ground_pile(victim.position, items, events)
+			# Join a pile already lying here, so repeat kills don't litter the ground.
+			for entry in items:
+				_drop_near(victim.position, entry["item"], entry["quantity"], events)
 
 
 ## Keep the most valuable items; the rest go to a grave at the death spot.

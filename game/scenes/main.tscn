@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scripts/world/kit_dresser.gd" id="23_dresser"]
 [ext_resource type="Script" path="res://scripts/world/npc_model.gd" id="24_npc"]
 [ext_resource type="Script" path="res://scripts/world/barrow_dresser.gd" id="25_barrow_dresser"]
+[ext_resource type="Script" path="res://scripts/world/altar_node.gd" id="26_altar"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -388,6 +389,41 @@ rock_type = "galena_rock"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.5, 0, -0.5)
 script = ExtResource("10_rock")
 rock_type = "galena_rock"
+
+[node name="Altars" type="Node3D" parent="."]
+
+[node name="HeavenlyAltar" type="StaticBody3D" parent="Altars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -10.5)
+script = ExtResource("26_altar")
+title = "Altar of the Capitoline gods"
+
+[node name="UnderworldAltar" type="StaticBody3D" parent="Altars"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.5, 0, 16.5)
+script = ExtResource("26_altar")
+kind = "underworld"
+title = "Altar of Dis Pater"
+
+[node name="Sacerdos" type="StaticBody3D" parent="." groups=["navigation_source", "shopkeepers"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -10.5)
+collision_layer = 8
+metadata/shop_id = "sacerdos"
+metadata/display_name = "Sacerdos"
+metadata/examine = "A priest of the Capitoline gods. He sells incense and wine for the altar."
+
+[node name="Collision" type="CollisionShape3D" parent="Sacerdos"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Sacerdos"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+
+[node name="Label" type="Label3D" parent="Sacerdos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Sacerdos
+(temple priest)"
+font_size = 36
+outline_size = 8
 
 [node name="Monsters" type="Node3D" parent="."]
 

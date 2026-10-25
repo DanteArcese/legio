@@ -23,6 +23,7 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 		"account_mode": player.account_mode,
 		"position": _vec_to_array(player.position),
 		"hp": player.hp,
+		"favour": player.favour,
 		"style": player.style,
 		"skills": player.skills.xp.duplicate(),
 		"inventory": player.inventory.to_array(),
@@ -54,6 +55,7 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
 	player.max_hp = player.skills.level("vitality")
 	player.hp = clampi(int(data["hp"]), 1, player.max_hp)
 	player.style = data["style"]
+	player.favour = clampf(float(data.get("favour", player.skills.level("pietas"))), 0.0, float(player.skills.level("pietas")))
 	player.inventory.slots.fill(null)
 	player.inventory.load_array(_int_quantities(data["inventory"]))
 	player.bank.slots.fill(null)

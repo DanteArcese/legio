@@ -1,0 +1,152 @@
+{
+  "blessings": {
+    "mars_vigour": {
+      "name": "Vigour of Mars",
+      "god": "Mars",
+      "family": "heavenly",
+      "aspect": "strength",
+      "level": 1,
+      "drain_ticks": 12,
+      "boost": {
+        "strength": 0.05
+      }
+    },
+    "minerva_aegis": {
+      "name": "Aegis of Minerva",
+      "god": "Minerva",
+      "family": "heavenly",
+      "aspect": "defence",
+      "level": 4,
+      "drain_ticks": 12,
+      "boost": {
+        "defence": 0.05
+      }
+    },
+    "diana_eye": {
+      "name": "Eye of Diana",
+      "god": "Diana",
+      "family": "heavenly",
+      "aspect": "ranged",
+      "level": 7,
+      "drain_ticks": 12,
+      "boost": {
+        "ranged": 0.05
+      }
+    },
+    "hecate_whisper": {
+      "name": "Whisper of Hecate",
+      "god": "Hecate",
+      "family": "underworld",
+      "aspect": "ritus",
+      "level": 9,
+      "drain_ticks": 12,
+      "boost": {
+        "ritus": 0.08
+      }
+    },
+    "mercury_stride": {
+      "name": "Stride of Mercury",
+      "god": "Mercury",
+      "family": "heavenly",
+      "aspect": "movement",
+      "level": 10,
+      "drain_ticks": 15,
+      "boost": {
+        "run_speed": 0.15
+      }
+    },
+    "mars_fury": {
+      "name": "Fury of Mars",
+      "god": "Mars",
+      "family": "heavenly",
+      "aspect": "strength",
+      "level": 16,
+      "drain_ticks": 8,
+      "boost": {
+        "strength": 0.1
+      }
+    },
+    "minerva_bulwark": {
+      "name": "Bulwark of Minerva",
+      "god": "Minerva",
+      "family": "heavenly",
+      "aspect": "defence",
+      "level": 19,
+      "drain_ticks": 8,
+      "boost": {
+        "defence": 0.1
+      }
+    },
+    "diana_hunt": {
+      "name": "Hunt of Diana",
+      "god": "Diana",
+      "family": "heavenly",
+      "aspect": "ranged",
+      "level": 22,
+      "drain_ticks": 8,
+      "boost": {
+        "ranged": 0.1
+      }
+    },
+    "proserpina_grasp": {
+      "name": "Grasp of Proserpina",
+      "god": "Proserpina",
+      "family": "underworld",
+      "aspect": "withering",
+      "level": 24,
+      "drain_ticks": 8,
+      "boost": {
+        "withering_damage": 1
+      }
+    },
+    "dis_pater_due": {
+      "name": "Due of Dis Pater",
+      "god": "Dis Pater",
+      "family": "underworld",
+      "aspect": "binding",
+      "level": 30,
+      "drain_ticks": 8,
+      "boost": {
+        "binding_chance": 0.25
+      }
+    }
+  },
+  "offerings": {
+    "bones": {
+      "xp": 5,
+      "altar": "heavenly"
+    },
+    "wolf_pelt": {
+      "xp": 10,
+      "altar": "heavenly"
+    },
+    "boar_tusk": {
+      "xp": 12,
+      "altar": "heavenly"
+    },
+    "incense": {
+      "xp": 15,
+      "altar": "heavenly"
+    },
+    "wine": {
+      "xp": 22,
+      "altar": "heavenly"
+    },
+    "lemur_ash": {
+      "xp": 20,
+      "altar": "underworld"
+    },
+    "strix_feather": {
+      "xp": 40,
+      "altar": "underworld"
+    }
+  },
+  "altars": {
+    "heavenly": {
+      "name": "Altar of the Capitoline gods"
+    },
+    "underworld": {
+      "name": "Altar of Dis Pater"
+    }
+  }
+}

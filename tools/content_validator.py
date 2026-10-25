@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "slayer", "mining", "smithing", "cooking"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
@@ -57,6 +57,7 @@ def validate(content: dict) -> list[str]:
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, items, errors)
     _check_skilling(content.get("skilling", {}), items, errors)
+    _check_pietas(content.get("pietas", {}), items, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
     player = content.get("player", {})
@@ -277,6 +278,36 @@ def _check_skilling(skilling, items, errors):
                 errors.append(f"{where}: burnt and stop_burning go together")
             if "stop_burning" in recipe:
                 _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
+
+
+BOOSTS = {"strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance"}
+ALTAR_KINDS = {"heavenly", "underworld"}
+
+
+def _check_pietas(pietas, items, errors):
+    _check_keys("pietas", pietas, {"blessings", "offerings", "altars"}, {"blessings", "offerings", "altars"}, errors)
+    if set(pietas.get("altars", {})) != ALTAR_KINDS:
+        errors.append(f"pietas.altars: expected {sorted(ALTAR_KINDS)}")
+    for blessing_id, blessing in pietas.get("blessings", {}).items():
+        where = f"pietas.blessings.{blessing_id}"
+        _check_id(where, blessing_id, errors)
+        _check_keys(where, blessing, {"name", "god", "family", "aspect", "level", "drain_ticks", "boost"}, {"name", "god", "family", "aspect", "level", "drain_ticks", "boost"}, errors)
+        if blessing.get("family") not in ALTAR_KINDS:
+            errors.append(f"{where}.family: must be one of {sorted(ALTAR_KINDS)}")
+        _check_int(where, "level", blessing.get("level"), 1, errors, 99)
+        _check_int(where, "drain_ticks", blessing.get("drain_ticks"), 1, errors)
+        for key, value in blessing.get("boost", {}).items():
+            if key not in BOOSTS:
+                errors.append(f"{where}.boost.{key}: unknown boost")
+            _check_number(f"{where}.boost", key, value, 0.01, 10, errors)
+    for item_id, offering in pietas.get("offerings", {}).items():
+        where = f"pietas.offerings.{item_id}"
+        if item_id not in items:
+            errors.append(f"{where}: unknown item")
+        _check_keys(where, offering, {"xp", "altar"}, {"xp", "altar"}, errors)
+        _check_number(where, "xp", offering.get("xp"), 0.1, 10000, errors)
+        if offering.get("altar") not in ALTAR_KINDS:
+            errors.append(f"{where}.altar: must be one of {sorted(ALTAR_KINDS)}")
 
 
 def _check_shop(where, shop, items, errors):

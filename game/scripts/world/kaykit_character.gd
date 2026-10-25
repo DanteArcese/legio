@@ -21,7 +21,7 @@ const ATTACKS := {
 }
 ## Looping work animations by skilling action.
 const WORK := {"mine": "1H_Melee_Attack_Chop", "smelt": "Interact", "smith": "1H_Melee_Attack_Chop",
-	"cook": "Interact", "inscribe": "Use_Item"}
+	"cook": "Interact", "inscribe": "Use_Item", "offer": "Interact"}
 
 var kind := "kaykit"
 var attack_style := "unarmed"

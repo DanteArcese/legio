@@ -1,0 +1,270 @@
+{
+  "coins": {
+    "name": "Denarii",
+    "value": 1,
+    "examine": "Silver coins stamped with the emperor's face.",
+    "stackable": true
+  },
+  "copper_ore": {
+    "name": "Copper ore",
+    "value": 4,
+    "examine": "A lump of copper ore."
+  },
+  "tin_ore": {
+    "name": "Tin ore",
+    "value": 4,
+    "examine": "A lump of tin ore."
+  },
+  "iron_ore": {
+    "name": "Iron ore",
+    "value": 17,
+    "examine": "A lump of iron ore."
+  },
+  "bronze_bar": {
+    "name": "Bronze bar",
+    "value": 12,
+    "examine": "Copper and tin, smelted together."
+  },
+  "iron_bar": {
+    "name": "Iron bar",
+    "value": 40,
+    "examine": "A bar of good iron."
+  },
+  "raw_meat": {
+    "name": "Raw meat",
+    "value": 3,
+    "examine": "Fresh, but you'd want to cook it."
+  },
+  "cooked_meat": {
+    "name": "Cooked meat",
+    "value": 6,
+    "examine": "Roasted over a fire.",
+    "heals": 3
+  },
+  "raw_sardine": {
+    "name": "Raw sardine",
+    "value": 4,
+    "examine": "A small silver fish."
+  },
+  "cooked_sardine": {
+    "name": "Sardine",
+    "value": 8,
+    "examine": "Grilled, with a pinch of salt.",
+    "heals": 4
+  },
+  "burnt_food": {
+    "name": "Burnt food",
+    "value": 0,
+    "examine": "Charred beyond saving."
+  },
+  "bread": {
+    "name": "Bread",
+    "value": 10,
+    "examine": "A round loaf of panis quadratus.",
+    "heals": 5
+  },
+  "wolf_pelt": {
+    "name": "Wolf pelt",
+    "value": 20,
+    "examine": "Thick grey fur."
+  },
+  "boar_tusk": {
+    "name": "Boar tusk",
+    "value": 25,
+    "examine": "Curved and sharp."
+  },
+  "lemur_ash": {
+    "name": "Grave ash",
+    "value": 30,
+    "examine": "Ash from the restless dead."
+  },
+  "strix_feather": {
+    "name": "Strix feather",
+    "value": 120,
+    "examine": "It is cold to the touch."
+  },
+  "whitethorn_charm": {
+    "name": "Whitethorn charm",
+    "value": 150,
+    "examine": "A sprig of whitethorn bound with red thread. The strix fear it.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 1
+      }
+    }
+  },
+  "hammer": {
+    "name": "Hammer",
+    "value": 5,
+    "examine": "For smithing."
+  },
+  "bronze_pickaxe": {
+    "name": "Bronze pickaxe",
+    "value": 30,
+    "examine": "For mining copper, tin and iron.",
+    "tool": "pickaxe",
+    "tool_tier": 1
+  },
+  "iron_pickaxe": {
+    "name": "Iron pickaxe",
+    "value": 100,
+    "examine": "Bites deeper than bronze.",
+    "tool": "pickaxe",
+    "tool_tier": 2,
+    "requirements": {
+      "mining": 10
+    }
+  },
+  "bronze_pugio": {
+    "name": "Bronze pugio",
+    "value": 10,
+    "examine": "A bronze pugio.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 4,
+        "strength": 3,
+        "defence": 0
+      },
+      "attack_speed": 3
+    }
+  },
+  "bronze_gladius": {
+    "name": "Bronze gladius",
+    "value": 25,
+    "examine": "A bronze gladius.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 7,
+        "strength": 6,
+        "defence": 0
+      },
+      "attack_speed": 4
+    }
+  },
+  "bronze_galea": {
+    "name": "Bronze galea",
+    "value": 15,
+    "examine": "A bronze galea.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 3
+      }
+    }
+  },
+  "bronze_lorica": {
+    "name": "Bronze lorica",
+    "value": 40,
+    "examine": "A bronze lorica.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 8
+      }
+    }
+  },
+  "bronze_scutum": {
+    "name": "Bronze scutum",
+    "value": 30,
+    "examine": "A bronze scutum.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 6
+      }
+    }
+  },
+  "iron_pugio": {
+    "name": "Iron pugio",
+    "value": 30,
+    "examine": "A iron pugio.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 8,
+        "strength": 6,
+        "defence": 0
+      },
+      "attack_speed": 3
+    },
+    "requirements": {
+      "attack": 10
+    }
+  },
+  "iron_gladius": {
+    "name": "Iron gladius",
+    "value": 75,
+    "examine": "A iron gladius.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 14,
+        "strength": 12,
+        "defence": 0
+      },
+      "attack_speed": 4
+    },
+    "requirements": {
+      "attack": 10
+    }
+  },
+  "iron_galea": {
+    "name": "Iron galea",
+    "value": 45,
+    "examine": "A iron galea.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 6
+      }
+    },
+    "requirements": {
+      "defence": 10
+    }
+  },
+  "iron_lorica": {
+    "name": "Iron lorica",
+    "value": 120,
+    "examine": "A iron lorica.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 16
+      }
+    },
+    "requirements": {
+      "defence": 10
+    }
+  },
+  "iron_scutum": {
+    "name": "Iron scutum",
+    "value": 90,
+    "examine": "A iron scutum.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 12
+      }
+    },
+    "requirements": {
+      "defence": 10
+    }
+  }
+}

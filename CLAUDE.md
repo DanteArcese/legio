@@ -14,7 +14,8 @@ legio: a single-player RPG (MMO later) inspired by Old School RuneScape, set in 
 ```bash
 uv sync              # Install dependencies
 uv add <package>     # Add a dependency
-uv run pytest        # Run Python (content tooling) tests
+uv run pytest        # Run Python tests, including content validation
+uv run python tools/content_validator.py   # Validate game/content/*.json
 scripts/godot-tests.sh   # Run Godot tests headlessly (needs godot 4.7 on PATH, or set GODOT)
 scripts/playtest.sh <scenario> [--render] [--out <dir>]   # Scripted playtest; --render saves screenshots
 godot --path game    # Play the game
@@ -36,3 +37,9 @@ uv run --env-file .env <command>   # Run with local secrets
 - Input bindings are defined in code in `game/scripts/input/bindings.gd`, not in project.godot. Every action needs a keyboard/mouse binding and a gamepad binding.
 - Use `preload` instead of `class_name`, so scripts resolve in a fresh checkout without an editor import.
 - Playtest scenarios live in `game/tools/playtest/scenarios/`, extend `scenario.gd`, and drive the real scene (walk_to, press, seconds, shot, metric, expect). CI runs them all headlessly. Use `--render --out <dir>` to get screenshots for visual review.
+
+## Content
+
+- Items, monsters, drop tables, and Slayer tasks live in `game/content/*.json`, keyed by snake_case id. Add content there, not in code.
+- `tools/content_validator.py` checks structure and cross-references. Extend it when adding new fields. Unknown fields are errors.
+- GDScript reads content through `scripts/content/content_db.gd`, which converts JSON floats to ints. When exporting builds, include `content/*.json` in the export filter.

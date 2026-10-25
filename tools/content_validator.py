@@ -20,7 +20,7 @@ EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck"}
 BONUSES = {"attack", "strength", "defence"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
 RECIPE_KINDS = {"smelt", "smith", "cook"}
-ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color"}
+ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 RECIPE_KEYS = {"id", "inputs", "output", "level", "xp", "success", "tool", "burnt", "stop_burning"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 

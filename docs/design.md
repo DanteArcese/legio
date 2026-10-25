@@ -162,7 +162,8 @@ OSRS is built on point-and-click. A controller needs a different interaction mod
 - **Context interaction:** face a target and press A for the default action, or press Y for a **radial menu** with the other options (this replaces right-click menus).
 - **Soft target lock** in combat, with the bumpers cycling targets.
 - **Radial or grid inventory** that you navigate with the D-pad.
-- Mouse and keyboard keep click-to-move (left-click the ground, a monster, or anything usable). Right-click menus on world objects are still to come.
+- Mouse and keyboard keep click-to-move (left-click the ground, a monster, or anything usable). Right-clicking anything opens an OSRS-style menu of everything you can do with it.
+- On a controller, Y opens the same kind of menu for everything nearby, nearest first.
 
 Decided: **free movement.** It feels much better on a stick and is the norm for 3D action RPGs. Some notes on how it fits with the rest of the design:
 

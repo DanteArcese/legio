@@ -277,7 +277,7 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			_add_ground_pile(player.position, [slot], events)
 			events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
 		"pickup":
-			_pickup(player, command.get("pile", -1), events)
+			_pickup(player, command.get("pile", -1), command.get("item", ""), events)
 		"loot_grave":
 			_loot_grave(player, events)
 		"reclaim":
@@ -349,13 +349,17 @@ func _near_bank(player: Combatant) -> bool:
 	return _banks.any(func(bank): return _flat_distance(bank, player.position) <= BANK_RANGE)
 
 
-func _pickup(player: Combatant, pile_id: int, events: Array[Dictionary]) -> void:
+## Takes everything from a pile, or only one item id when item_id is set.
+func _pickup(player: Combatant, pile_id: int, item_id: String, events: Array[Dictionary]) -> void:
 	var pile: Dictionary = _ground.get(pile_id, {})
 	if pile.is_empty() or _flat_distance(pile["position"], player.position) > PICKUP_RANGE:
 		return
 	var remaining := []
 	var took_any := false
 	for entry in pile["items"]:
+		if not item_id.is_empty() and entry["item"] != item_id:
+			remaining.append(entry)
+			continue
 		var added: int = player.inventory.add(entry["item"], entry["quantity"])
 		took_any = took_any or added > 0
 		if added < entry["quantity"]:
@@ -366,9 +370,11 @@ func _pickup(player: Combatant, pile_id: int, events: Array[Dictionary]) -> void
 		_ground.erase(pile_id)
 		events.append({"type": "ground_remove", "pile": pile_id, "tick": tick})
 	else:
+		var stuck := remaining.any(func(entry): return item_id.is_empty() or entry["item"] == item_id)
 		pile["items"] = remaining
 		events.append({"type": "ground_update", "pile": pile_id, "items": remaining, "tick": tick})
-		_message(player, "You don't have enough inventory space.", events)
+		if stuck:
+			_message(player, "You don't have enough inventory space.", events)
 
 
 func _add_ground_pile(position: Vector3, items: Array, events: Array) -> void:

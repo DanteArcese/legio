@@ -7,7 +7,8 @@
       "xp": 15,
       "difficulty": 0.0,
       "respawn_ticks": 4,
-      "color": "#b8733a"
+      "color": "#b8733a",
+      "examine": "A rock streaked with reddish copper."
     },
     "tin_rock": {
       "name": "Tin rock",
@@ -16,7 +17,8 @@
       "xp": 15,
       "difficulty": 0.0,
       "respawn_ticks": 4,
-      "color": "#a7a9ac"
+      "color": "#a7a9ac",
+      "examine": "A rock flecked with dull grey tin."
     },
     "iron_rock": {
       "name": "Iron rock",
@@ -25,7 +27,8 @@
       "xp": 30,
       "difficulty": 0.25,
       "respawn_ticks": 9,
-      "color": "#6e4a3a"
+      "color": "#6e4a3a",
+      "examine": "A dark rock, heavy with iron."
     }
   },
   "recipes": {

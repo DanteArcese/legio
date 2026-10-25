@@ -65,7 +65,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("run_toggle"):
 		running = not running
 	elif event.is_action_pressed("combat_style") and sim_driver:
-		var styles: Array = Skills.RANGED_STYLES if _entity.combatant.is_ranged() else Skills.MELEE_STYLES
+		var styles: Array = Skills.styles_for(_entity.combatant.combat_kind())
 		var next: String = styles[(styles.find(_entity.combatant.style) + 1) % styles.size()]
 		sim_driver.sim.queue_style(_entity.entity_id, next)
 	elif event.is_action_pressed("interact") and sim_driver:

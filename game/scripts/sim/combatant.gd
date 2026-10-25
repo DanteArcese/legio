@@ -21,7 +21,11 @@ var respawn_ticks := -1
 ## Combat levels for monsters. Players use their skills instead.
 var levels := {"attack": 1, "strength": 1, "defence": 1}
 ## Equipment bonuses.
-var bonuses := {"attack": 0, "strength": 0, "defence": 0, "ranged_attack": 0, "ranged_strength": 0}
+var bonuses := {"attack": 0, "strength": 0, "defence": 0, "ranged_attack": 0, "ranged_strength": 0,
+	"ritus_attack": 0, "ritus_strength": 0, "ranged_defence": 0, "ritus_defence": 0}
+## Curses on this combatant: "bound" -> until tick; "withering" ->
+## {"until", "next", "damage", "source"}.
+var curses := {}
 ## Players have skills and a combat style; monsters leave skills null.
 var skills: Skills = null
 var style := "accurate"
@@ -86,32 +90,66 @@ func effective_level(skill: String) -> int:
 	return CombatMath.effective_level(level(skill), style_bonus)
 
 
+## "melee", "ranged", or "ritus". Monsters fight in melee.
+func combat_kind() -> String:
+	return equipment.combat_kind() if equipment else "melee"
+
+
 func is_ranged() -> bool:
-	return equipment != null and equipment.is_ranged()
+	return combat_kind() == "ranged"
+
+
+func uses_ammo() -> bool:
+	return combat_kind() != "melee"
 
 
 func max_hit() -> int:
-	if is_ranged():
-		return CombatMath.max_hit(effective_level("ranged"), bonuses["ranged_strength"])
+	match combat_kind():
+		"ranged":
+			return CombatMath.max_hit(effective_level("ranged"), bonuses["ranged_strength"])
+		"ritus":
+			return CombatMath.max_hit(effective_level("ritus"), bonuses["ritus_strength"])
 	return CombatMath.max_hit(effective_level("strength"), bonuses["strength"])
 
 
 ## Accuracy level and gear bonus used for attacks with the current weapon.
 func attack_roll_parts() -> Array:
-	if is_ranged():
-		return [effective_level("ranged"), bonuses["ranged_attack"]]
+	match combat_kind():
+		"ranged":
+			return [effective_level("ranged"), bonuses["ranged_attack"]]
+		"ritus":
+			return [effective_level("ritus"), bonuses["ritus_attack"]]
 	return [effective_level("attack"), bonuses["attack"]]
+
+
+## Defence gear bonus against an attack of this kind: the base Defence bonus
+## plus any kind-specific modifier (metal armour is weak to curses, robes
+## are weak to arrows).
+func defence_bonus_against(kind: String) -> int:
+	match kind:
+		"ranged":
+			return bonuses["defence"] + bonuses["ranged_defence"]
+		"ritus":
+			return bonuses["defence"] + bonuses["ritus_defence"]
+	return bonuses["defence"]
+
+
+func is_bound(tick: int) -> bool:
+	return curses.get("bound", -1) > tick
 
 
 ## How far away this combatant can attack from.
 func attack_range() -> float:
-	if not is_ranged():
+	if not uses_ammo():
 		return reach
 	return equipment.weapon()["range"] + (2.0 if style == "longrange" else 0.0)
 
 
-func current_attack_speed() -> int:
-	return attack_speed - 1 if style == "rapid" else attack_speed
+## Ticks between attacks right now: Rapid is a tick faster, and a Binding
+## curse makes the victim a tick slower.
+func current_attack_speed(tick := -1) -> int:
+	var speed := attack_speed - 1 if style == "rapid" else attack_speed
+	return speed + 1 if is_bound(tick) else speed
 
 
 ## Recomputes bonuses and attack speed from worn equipment.
@@ -119,7 +157,7 @@ func apply_equipment() -> void:
 	bonuses = equipment.bonuses()
 	attack_speed = equipment.attack_speed()
 	# Keep the combat style valid for the weapon type.
-	var styles: Array = Skills.RANGED_STYLES if is_ranged() else Skills.MELEE_STYLES
+	var styles: Array = Skills.styles_for(combat_kind())
 	if not styles.has(style):
 		style = styles[0]
 

@@ -21,15 +21,28 @@ const VITALITY_XP_PER_DAMAGE := 4.0 / 3.0
 const STYLE_SKILLS := {
 	"accurate": ["attack"], "aggressive": ["strength"], "defensive": ["defence"],
 	"aimed": ["ranged"], "rapid": ["ranged"], "longrange": ["ranged", "defence"],
+	"focused": ["ritus"], "warding": ["ritus", "defence"],
 }
 ## Combat style -> the skill its +3 effective-level bonus applies to.
 const STYLE_BONUS_SKILL := {
 	"accurate": "attack", "aggressive": "strength", "defensive": "defence",
 	"aimed": "ranged", "rapid": "", "longrange": "defence",
+	"focused": "ritus", "warding": "defence",
 }
 const MELEE_STYLES := ["accurate", "aggressive", "defensive"]
 const RANGED_STYLES := ["aimed", "rapid", "longrange"]
-const STYLES := MELEE_STYLES + RANGED_STYLES
+const RITUS_STYLES := ["focused", "warding"]
+const STYLES := MELEE_STYLES + RANGED_STYLES + RITUS_STYLES
+
+
+## The combat styles available with a weapon of this kind (melee, ranged, ritus).
+static func styles_for(kind: String) -> Array:
+	match kind:
+		"ranged":
+			return RANGED_STYLES
+		"ritus":
+			return RITUS_STYLES
+	return MELEE_STYLES
 
 static var _thresholds: PackedFloat64Array = _build_thresholds()
 

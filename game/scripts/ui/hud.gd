@@ -67,12 +67,12 @@ func _refresh() -> void:
 	if c.account_mode == "solitarius":
 		task_text = "[Solitarius]  " + task_text
 	var ammo_text := ""
-	if c.is_ranged():
+	if c.uses_ammo():
 		var ammo: String = c.equipment.worn["ammo"]
 		ammo_text = "     Ammo: %s" % ("none" if ammo.is_empty() else "%s x%d" % [ContentDB.item(ammo)["name"], c.equipment.ammo_count])
-	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s\nCombat %d   Atk %d   Str %d   Def %d   Rng %d   Vit %d   Slay %d" % [
+	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s\nCombat %d   Atk %d   Str %d   Def %d   Rng %d   Rit %d   Vit %d   Slay %d" % [
 		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), ammo_text, s.combat_level(),
-		s.level("attack"), s.level("strength"), s.level("defence"), s.level("ranged"), s.level("vitality"), s.level("slayer")]
+		s.level("attack"), s.level("strength"), s.level("defence"), s.level("ranged"), s.level("ritus"), s.level("vitality"), s.level("slayer")]
 
 
 ## Top-centre panel naming the current target with an HP bar.
@@ -107,6 +107,13 @@ func _refresh_target(c: RefCounted) -> void:
 	var entity: Node = driver.entity(target.id)
 	var name: String = entity.display_name() if entity else "?"
 	_target_name.text = "%s (level %d)" % [name, target.combat_level()] if not target.monster_id.is_empty() else name
+	var afflictions := PackedStringArray()
+	if target.is_bound(driver.sim.tick):
+		afflictions.append("bound")
+	if target.curses.has("withering"):
+		afflictions.append("withering")
+	if not afflictions.is_empty():
+		_target_name.text += "  [%s]" % ", ".join(afflictions)
 	_target_bar.max_value = target.max_hp
 	_target_bar.value = target.hp
 

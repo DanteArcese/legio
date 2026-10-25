@@ -22,6 +22,7 @@
 [ext_resource type="Script" path="res://scripts/world/terrain.gd" id="20_terrain"]
 [ext_resource type="Script" path="res://scripts/world/day_night.gd" id="21_daynight"]
 [ext_resource type="Script" path="res://scripts/world/lamp_post.gd" id="22_lamp"]
+[ext_resource type="Script" path="res://scripts/world/kit_dresser.gd" id="23_dresser"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -503,3 +504,8 @@ environment = NodePath("../WorldEnvironment")
 sun = NodePath("../Sun")
 moon = NodePath("../Moon")
 area_lighting = NodePath("../AreaLighting")
+
+[node name="KitDresser" type="Node" parent="." node_paths=PackedStringArray("town", "terrain")]
+script = ExtResource("23_dresser")
+town = NodePath("../CastraFerrea")
+terrain = NodePath("../Terrain")

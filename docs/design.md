@@ -42,7 +42,7 @@ A first pass at Roman-themed skills. Names are working names.
 | Vitality | Hitpoints. |
 | Ranged | Bows (*arcus*) and slings (*funda*, with lead *glandes*), with javelins and the hand-held *manuballista* later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods: Mars (strength), Minerva (defence), Diana (ranged), Mercury (movement and run energy). XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. |
-| Ritus | The third combat style. See [Replacing magic](#replacing-magic). |
+| Ritus | The third combat style: curse tablets. See [Ritus](#ritus). |
 
 ### Slayer
 
@@ -106,7 +106,40 @@ Decided: **A. Ritus.** The options we compared are kept below for reference.
 | **B. Machina (siege and incendiaries)** | Hand-held artillery, incendiary pots, caltrops. | No supernatural elements at all. | Overlaps with Ranged, and the triangle gets muddy. |
 | **C. Two styles only** | Melee and Ranged, with gods and Pietas giving the utility. | Simplest. | Loses the rock-paper-scissors depth that makes OSRS bossing interesting. |
 
-The triangle is Melee beats Ranged, Ranged beats Ritus, and Ritus beats Melee. Ritus uses a light touch: curse tablets, augury, charms, and damage over time, never fireballs. Its supplies are made through Crafting and Medicina: lead tablets, styluses, sacred herbs, and amulets.
+The triangle is Melee beats Ranged, Ranged beats Ritus, and Ritus beats Melee.
+
+### Ritus
+
+Decided. Ritus is built on real Roman curse practice. People wrote curses on thin lead sheets (*defixiones*), rolled them up, nailed them, and left them in graves and wells for the underworld gods. Most curses asked for a rival to be *bound*, so Ritus hinders rather than blasts.
+
+**In combat:**
+- A **focus** goes in the weapon slot. The first is the *lituus*, an augur's curved staff. It casts from about 6 m.
+- **Inscribed tablets** go in the ammo slot, and the tablet type decides the curse. Tablets are always used up; unlike arrows, none can be picked up again.
+- **Styles:** Focused (+3 Ritus) and Warding (+3 Defence, XP split with Defence).
+
+| Tablet | Ritus level | Effect |
+|---|---|---|
+| Binding | 1 | A light hit, and often a slowed target: it attacks 1 tick slower for a while |
+| Withering | 15 | Damage over time: "may his limbs waste away" |
+| Silencing | 30 | The target's next attack automatically misses (#47) |
+| Calling the Manes | 50+ | A brief spirit ally (#47) |
+
+**The triangle comes from gear defence bonuses, as in OSRS:**
+- Metal armour such as the lorica has a *negative* curse defence ("iron doesn't stop a curse"), so Ritus beats Melee.
+- Ritual robes give good curse defence but poor Ranged defence, so Ranged beats Ritus.
+- Ranged gear is light and offers little melee defence, so Melee beats Ranged.
+
+**Supplies** tie existing skills together:
+- **Mining:** galena, the ore Rome got its lead from.
+- **Smithing:** galena smelts into lead sheets, and bars become nails.
+- **Slayer drops:** grave ash from lemurs for Withering, and strix feathers for the later tiers.
+- **Inscribing:** done with a stylus at the tomb in the Castra Ferrea cemetery, as the Romans buried their curses with the dead. Inscribing gives some Ritus XP.
+- **The libitinarius** sells the stylus, the lituus, and ritual robes.
+
+**Tone: eerie folk ritual, not dark fantasy.**
+- Effects are subtle: the target shudders, stumbles, or falters under faint dark motes. There are no beams and no fireballs.
+- Curses invoke the powers the real tablets name: Dis Pater, Proserpina, Hecate, and the Manes. Item descriptions quote real tablet wording, such as "I bind his tongue, his hands, his feet."
+- Later (#48): Roman law outlawed harmful magic, so casting inside town walls could draw the guards, and Ritus could weigh against your standing with the gods for Pietas.
 
 ### Travel
 
@@ -221,7 +254,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 - the woods and fields outside the walls, with a copper/tin quarry and an iron outcrop
 - the *Barrow of the Lemures*, a small torchlit dungeon north-west of town: lemurs in the upper halls, two strix in the depths. Aulus sells the whitethorn charm (150 denarii).
 
-**Skills.** Attack, Strength, Defence, Vitality, Ranged, Slayer, Mining, Smithing, Cooking. (Ranged was added after the first build, in #36.)
+**Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking. (Ranged was added in #36 and Ritus in #45 and #46, after the first build.)
 
 **Monsters:**
 
@@ -242,7 +275,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Systems.** Inventory, equipment, the shared bank, death and graves, Slayer contracts, save and load, and controller plus mouse/keyboard input.
 
-**Out of scope for the slice:** Ritus, Pietas, quests, the villa, Mercatura, the danger zone, and the market.
+**Out of scope for the slice:** Pietas, quests, the villa, Mercatura, the danger zone, and the market.
 
 ## Villa
 

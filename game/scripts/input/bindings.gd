@@ -21,7 +21,8 @@ const DEFAULTS := {
 	"camera_down": [["key", KEY_DOWN], ["joy_axis", JOY_AXIS_RIGHT_Y, 1.0]],
 	"camera_zoom_in": [["mouse", MOUSE_BUTTON_WHEEL_UP], ["joy_button", JOY_BUTTON_DPAD_UP]],
 	"camera_zoom_out": [["mouse", MOUSE_BUTTON_WHEEL_DOWN], ["joy_button", JOY_BUTTON_DPAD_DOWN]],
-	"interact": [["key", KEY_E], ["mouse", MOUSE_BUTTON_LEFT], ["joy_button", JOY_BUTTON_A]],
+	# Left-click is handled by click-to-move in player.gd, not bound here.
+	"interact": [["key", KEY_E], ["joy_button", JOY_BUTTON_A]],
 	"context_menu": [["mouse", MOUSE_BUTTON_RIGHT], ["joy_button", JOY_BUTTON_Y]],
 	"target_next": [["key", KEY_TAB], ["joy_button", JOY_BUTTON_RIGHT_SHOULDER]],
 	"target_prev": [["key", KEY_Q], ["joy_button", JOY_BUTTON_LEFT_SHOULDER]],

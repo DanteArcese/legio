@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/world/rock_node.gd" id="10_rock"]
 [ext_resource type="Script" path="res://scripts/world/station.gd" id="11_station"]
 [ext_resource type="PackedScene" path="res://scenes/castra_ferrea.tscn" id="12_town"]
+[ext_resource type="Script" path="res://scripts/world/navigation.gd" id="13_nav"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -87,6 +88,9 @@ material = SubResource("hunter_leather")
 
 [node name="Main" type="Node3D"]
 
+[node name="Navigation" type="Node" parent="."]
+script = ExtResource("13_nav")
+
 [node name="SimDriver" type="Node" parent="."]
 script = ExtResource("3_driver")
 
@@ -97,7 +101,7 @@ environment = SubResource("env")
 transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Ground" type="StaticBody3D" parent="."]
+[node name="Ground" type="StaticBody3D" parent="." groups=["navigation_source"]]
 
 [node name="Mesh" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("ground_mesh")
@@ -106,7 +110,7 @@ mesh = SubResource("ground_mesh")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("ground_shape")
 
-[node name="CastraFerrea" parent="." instance=ExtResource("12_town")]
+[node name="CastraFerrea" parent="." groups=["navigation_source"] instance=ExtResource("12_town")]
 
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_rig", "sim_driver")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
@@ -130,7 +134,7 @@ respawn_ticks = 3
 attackable = false
 is_player = true
 
-[node name="TrainingDummy" type="StaticBody3D" parent="."]
+[node name="TrainingDummy" type="StaticBody3D" parent="." groups=["navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.9, 3)
 collision_layer = 8
 
@@ -155,7 +159,7 @@ auto_retaliate = false
 respawn_ticks = 5
 hp_label = NodePath("../HpLabel")
 
-[node name="BankChest" type="StaticBody3D" parent="." groups=["banks"]]
+[node name="BankChest" type="StaticBody3D" parent="." groups=["banks", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.45, -9.9)
 collision_layer = 8
 
@@ -172,7 +176,7 @@ text = "Bank chest"
 font_size = 40
 outline_size = 8
 
-[node name="Libitinarius" type="StaticBody3D" parent="." groups=["libitinarii"]]
+[node name="Libitinarius" type="StaticBody3D" parent="." groups=["libitinarii", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1, 11)
 collision_layer = 8
 
@@ -190,7 +194,7 @@ text = "Libitinarius
 font_size = 36
 outline_size = 8
 
-[node name="VenatorAulus" type="StaticBody3D" parent="." groups=["venatores"]]
+[node name="VenatorAulus" type="StaticBody3D" parent="." groups=["venatores", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -2)
 collision_layer = 8
 metadata/venator_id = "aulus"

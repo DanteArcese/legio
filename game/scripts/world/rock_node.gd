@@ -14,6 +14,7 @@ var _material := StandardMaterial3D.new()
 func _init() -> void:
 	collision_layer = 8
 	add_to_group("rocks")
+	add_to_group("navigation_source")
 
 
 func _ready() -> void:

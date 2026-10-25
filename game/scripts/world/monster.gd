@@ -3,6 +3,7 @@ extends CharacterBody3D
 ## (combatant.move_target); this node walks there with physics.
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
+const Navigation := preload("res://scripts/world/navigation.gd")
 
 @export var monster_id := "rat"
 @export var move_speed := 2.5
@@ -35,7 +36,8 @@ func _physics_process(delta: float) -> void:
 		var offset: Vector3 = (combatant.move_target - global_position) * Vector3(1, 0, 1)
 		var stop_distance: float = combatant.reach * 0.8 if combatant.target_id != -1 else 0.2
 		if offset.length() > stop_distance:
-			direction = offset.normalized()
+			var waypoint := Navigation.next_waypoint(get_world_3d(), global_position, combatant.move_target)
+			direction = ((waypoint - global_position) * Vector3(1, 0, 1)).normalized()
 	velocity.x = direction.x * move_speed
 	velocity.z = direction.z * move_speed
 	if not is_on_floor():

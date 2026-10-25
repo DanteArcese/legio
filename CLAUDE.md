@@ -4,7 +4,10 @@ This file provides guidance to Claude Code when working in this repository.
 
 ## Project
 
-legio: TODO describe the project.
+legio: a single-player RPG (MMO later) inspired by Old School RuneScape, set in a low-fantasy Roman world, with controller support. The client is Godot 4. Python/uv tooling validates game content data. The design lives in `docs/design.md`.
+
+- Keep game logic tick-based and separate from rendering, so it could later run on a server.
+- Don't use OSRS names, art, music, or exact numbers. See "IP guardrails" in `docs/design.md`.
 
 ## Commands
 

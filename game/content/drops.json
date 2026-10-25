@@ -113,6 +113,14 @@
       {
         "item": null,
         "weight": 4
+      },
+      {
+        "item": "bronze_arrow",
+        "quantity": [
+          5,
+          15
+        ],
+        "weight": 3
       }
     ]
   },
@@ -146,6 +154,11 @@
       {
         "item": null,
         "weight": 6
+      },
+      {
+        "item": "composite_bow",
+        "quantity": 1,
+        "weight": 1
       }
     ]
   },

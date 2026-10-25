@@ -2,6 +2,7 @@ extends CanvasLayer
 ## Player HUD: hitpoints, combat style and levels, XP drops, and level-up banners.
 
 const Slayer := preload("res://scripts/sim/slayer.gd")
+const ContentDB := preload("res://scripts/content/content_db.gd")
 
 const DROP_DURATION := 1.6
 const BANNER_DURATION := 3.0
@@ -65,9 +66,13 @@ func _refresh() -> void:
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
 	if c.account_mode == "solitarius":
 		task_text = "[Solitarius]  " + task_text
-	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)\nCombat %d   Atk %d   Str %d   Def %d   Vit %d   Slay %d" % [
-		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), s.combat_level(),
-		s.level("attack"), s.level("strength"), s.level("defence"), s.level("vitality"), s.level("slayer")]
+	var ammo_text := ""
+	if c.is_ranged():
+		var ammo: String = c.equipment.worn["ammo"]
+		ammo_text = "     Ammo: %s" % ("none" if ammo.is_empty() else "%s x%d" % [ContentDB.item(ammo)["name"], c.equipment.ammo_count])
+	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s\nCombat %d   Atk %d   Str %d   Def %d   Rng %d   Vit %d   Slay %d" % [
+		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), ammo_text, s.combat_level(),
+		s.level("attack"), s.level("strength"), s.level("defence"), s.level("ranged"), s.level("vitality"), s.level("slayer")]
 
 
 ## Top-centre panel naming the current target with an HP bar.

@@ -27,6 +27,7 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 		"skills": player.skills.xp.duplicate(),
 		"inventory": player.inventory.to_array(),
 		"equipment": player.equipment.worn.duplicate(),
+		"ammo_count": player.equipment.ammo_count,
 		"bank": player.bank.to_array(),
 		"slayer": {
 			"task": player.slayer_task.duplicate(),
@@ -60,6 +61,7 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
 	for slot in data["equipment"]:
 		if player.equipment.worn.has(slot):
 			player.equipment.worn[slot] = data["equipment"][slot]
+	player.equipment.ammo_count = int(data.get("ammo_count", 0))
 	player.apply_equipment()
 	var slayer: Dictionary = data["slayer"]
 	player.slayer_task = slayer["task"].duplicate()

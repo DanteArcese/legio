@@ -6,7 +6,7 @@ extends RefCounted
 ## about 1.2k, and level 99 about 9.9M.
 ## The constants are first guesses, to be tuned by playtesting.
 
-const NAMES := ["attack", "strength", "defence", "vitality", "slayer", "mining", "smithing", "cooking"]
+const NAMES := ["attack", "strength", "defence", "vitality", "ranged", "slayer", "mining", "smithing", "cooking"]
 const MAX_LEVEL := 99
 const MAX_XP := 200_000_000.0
 const CURVE_SCALE := 900.0
@@ -17,9 +17,19 @@ const VITALITY_START_LEVEL := 10
 const STYLE_XP_PER_DAMAGE := 4.0
 const VITALITY_XP_PER_DAMAGE := 4.0 / 3.0
 
-## Combat style -> the skill that gets its XP.
-const STYLE_SKILLS := {"accurate": "attack", "aggressive": "strength", "defensive": "defence"}
-const STYLES := ["accurate", "aggressive", "defensive"]
+## Combat style -> the skills that share its XP.
+const STYLE_SKILLS := {
+	"accurate": ["attack"], "aggressive": ["strength"], "defensive": ["defence"],
+	"aimed": ["ranged"], "rapid": ["ranged"], "longrange": ["ranged", "defence"],
+}
+## Combat style -> the skill its +3 effective-level bonus applies to.
+const STYLE_BONUS_SKILL := {
+	"accurate": "attack", "aggressive": "strength", "defensive": "defence",
+	"aimed": "ranged", "rapid": "", "longrange": "defence",
+}
+const MELEE_STYLES := ["accurate", "aggressive", "defensive"]
+const RANGED_STYLES := ["aimed", "rapid", "longrange"]
+const STYLES := MELEE_STYLES + RANGED_STYLES
 
 static var _thresholds: PackedFloat64Array = _build_thresholds()
 
@@ -67,8 +77,9 @@ func add_xp(skill: String, amount: float) -> int:
 	return after if after > before else 0
 
 
-## Our own combat level formula: the average of the melee skills, with
-## Vitality counting half. It runs from 2 for a new character to 99 when maxed.
+## Our own combat level formula: offence (Attack + Strength, or twice
+## Ranged if that's higher) plus Defence and half of Vitality, over 3.5.
+## It runs from 2 for a new character to 99 when maxed.
 func combat_level() -> int:
-	var melee := level("attack") + level("strength") + level("defence")
-	return floori((melee + level("vitality") * 0.5) / 3.5)
+	var offence := maxi(level("attack") + level("strength"), level("ranged") * 2)
+	return floori((offence + level("defence") + level("vitality") * 0.5) / 3.5)

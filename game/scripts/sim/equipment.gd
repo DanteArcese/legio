@@ -3,11 +3,14 @@ extends RefCounted
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
-const SLOTS := ["head", "body", "weapon", "shield", "neck"]
+const SLOTS := ["head", "body", "weapon", "shield", "neck", "ammo"]
 const UNARMED_SPEED := 4
+const BONUS_KEYS := ["attack", "strength", "defence", "ranged_attack", "ranged_strength"]
 
 ## slot -> item id, or "" for empty.
 var worn := {}
+## How many of the worn ammo item there are (the ammo slot holds a stack).
+var ammo_count := 0
 
 
 func _init() -> void:
@@ -40,7 +43,25 @@ func take_off(slot: String) -> String:
 	var item_id: String = worn.get(slot, "")
 	if not item_id.is_empty():
 		worn[slot] = ""
+	if slot == "ammo":
+		ammo_count = 0
 	return item_id
+
+
+## The worn weapon's equip data, or {} when unarmed.
+func weapon() -> Dictionary:
+	return ContentDB.item(worn["weapon"])["equip"] if not worn["weapon"].is_empty() else {}
+
+
+func is_ranged() -> bool:
+	return weapon().get("style", "melee") == "ranged"
+
+
+## Whether the worn ammo suits the worn ranged weapon, and there is some.
+func has_ammo() -> bool:
+	if worn["ammo"].is_empty() or ammo_count <= 0:
+		return false
+	return ContentDB.item(worn["ammo"])["equip"].get("ammo_type", "") == weapon().get("ammo", "")
 
 
 func is_wearing(item_id: String) -> bool:
@@ -48,12 +69,14 @@ func is_wearing(item_id: String) -> bool:
 
 
 func bonuses() -> Dictionary:
-	var total := {"attack": 0, "strength": 0, "defence": 0}
+	var total := {}
+	for key in BONUS_KEYS:
+		total[key] = 0
 	for item_id in worn.values():
 		if item_id.is_empty():
 			continue
 		var item_bonuses: Dictionary = ContentDB.item(item_id)["equip"]["bonuses"]
-		for key in total:
+		for key in item_bonuses:
 			total[key] += item_bonuses[key]
 	return total
 

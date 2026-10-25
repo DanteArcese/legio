@@ -268,5 +268,95 @@
     "requirements": {
       "defence": 10
     }
+  },
+  "hunting_bow": {
+    "name": "Hunting bow",
+    "value": 60,
+    "examine": "An arcus of ash wood. Good for hares, better for wolves.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 8
+      },
+      "attack_speed": 4,
+      "style": "ranged",
+      "range": 7.0,
+      "ammo": "arrow"
+    }
+  },
+  "composite_bow": {
+    "name": "Composite bow",
+    "value": 400,
+    "examine": "Horn, sinew and wood. An auxiliary archer's weapon.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 18
+      },
+      "attack_speed": 4,
+      "style": "ranged",
+      "range": 8.0,
+      "ammo": "arrow"
+    },
+    "requirements": {
+      "ranged": 20
+    }
+  },
+  "sling": {
+    "name": "Sling",
+    "value": 20,
+    "examine": "A funda of braided wool. The Balearic islanders swear by them.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 4
+      },
+      "attack_speed": 3,
+      "style": "ranged",
+      "range": 5.0,
+      "ammo": "sling_bullet"
+    }
+  },
+  "bronze_arrow": {
+    "name": "Bronze arrow",
+    "value": 2,
+    "examine": "Bronze-tipped, goose-fletched.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 6
+      },
+      "ammo_type": "arrow"
+    }
+  },
+  "iron_arrow": {
+    "name": "Iron arrow",
+    "value": 5,
+    "examine": "An iron point. It bites deep.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 10
+      },
+      "ammo_type": "arrow"
+    },
+    "requirements": {
+      "ranged": 10
+    }
+  },
+  "lead_glans": {
+    "name": "Lead glans",
+    "value": 1,
+    "examine": "An acorn-shaped lead bullet. Someone scratched 'TAKE THAT' on it.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 5
+      },
+      "ammo_type": "sling_bullet"
+    }
   }
 }

@@ -40,7 +40,7 @@ A first pass at Roman-themed skills. Names are working names.
 |---|---|
 | Attack, Strength, Defence | Kept as-is. Gladius, spatha, pilum, scutum. |
 | Vitality | Hitpoints. |
-| Ranged | Bows, slings (*funditores*), throwing javelins, later the hand-held *manuballista*. |
+| Ranged | Bows (*arcus*) and slings (*funda*, with lead *glandes*), with javelins and the hand-held *manuballista* later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods: Mars (strength), Minerva (defence), Diana (ranged), Mercury (movement and run energy). XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. |
 | Ritus | The third combat style. See [Replacing magic](#replacing-magic). |
 

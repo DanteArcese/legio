@@ -211,9 +211,13 @@ func _refresh() -> void:
 		_inventory_buttons[i].tooltip_text = ContentDB.item(slot["item"])["examine"] if slot else ""
 	for slot in Equipment.SLOTS:
 		var item_id: String = c.equipment.worn[slot]
-		_equipment_buttons[slot].text = "%s: %s" % [slot.capitalize(), ContentDB.item(item_id)["name"] if not item_id.is_empty() else "-"]
-	_bonus_label.text = "Attack +%d   Strength +%d   Defence +%d   Speed %d" % [
-		c.bonuses["attack"], c.bonuses["strength"], c.bonuses["defence"], c.attack_speed]
+		var label: String = ContentDB.item(item_id)["name"] if not item_id.is_empty() else "-"
+		if slot == "ammo" and not item_id.is_empty():
+			label += " x%d" % c.equipment.ammo_count
+		_equipment_buttons[slot].text = "%s: %s" % [slot.capitalize(), label]
+	_bonus_label.text = "Melee: Att +%d  Str +%d     Ranged: Acc +%d  Str +%d\nDefence +%d     Speed %d" % [
+		c.bonuses["attack"], c.bonuses["strength"], c.bonuses["ranged_attack"], c.bonuses["ranged_strength"],
+		c.bonuses["defence"], c.current_attack_speed()]
 	if _bank_panel.visible:
 		_refresh_bank(c)
 

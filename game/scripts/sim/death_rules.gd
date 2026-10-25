@@ -19,7 +19,8 @@ static func split(inventory: RefCounted, equipment: RefCounted) -> Dictionary:
 	for slot in equipment.worn:
 		var item_id: String = equipment.worn[slot]
 		if not item_id.is_empty():
-			entries.append({"item": item_id, "quantity": 1, "worn_slot": slot})
+			var quantity: int = equipment.ammo_count if slot == "ammo" else 1
+			entries.append({"item": item_id, "quantity": quantity, "worn_slot": slot})
 	for slot in inventory.slots:
 		if slot == null:
 			continue

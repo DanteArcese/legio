@@ -11,7 +11,7 @@ func run() -> void:
 	driver().sim.queue_item_action(PLAYER, "equip", {"slot": _slot_of("bronze_pugio")})
 	await seconds(1.0)
 	expect(driver().sim.get_combatant(PLAYER).equipment.worn["weapon"] == "bronze_pugio", "pugio equipped")
-	var stages := [["rat", Vector3(7, 0, 7), 12], ["wild_boar", Vector3(15, 0, -12), 8], ["wolf", Vector3(-15, 0, -10), 6]]
+	var stages := [["rat", Vector3(13, 0, 9), 12], ["wild_boar", Vector3(0, 0, 33), 8], ["wolf", Vector3(0, 0, -36), 6]]
 	var results := {}
 	for stage in stages:
 		results[stage[0]] = await _hunt(stage[1], stage[0], stage[2])
@@ -33,7 +33,7 @@ func run() -> void:
 ## Walks to an area and kills monsters of one kind until count kills or a
 ## time limit. Returns kills, average seconds per kill, damage taken, deaths.
 func _hunt(area: Vector3, monster_id: String, count: int) -> Dictionary:
-	await walk_to(area, 1.0)
+	await route_to(area, 1.0)
 	var start_tick: int = driver().sim.tick
 	var deaths_before := count_events("death", {"id": PLAYER})
 	var taken_before := _damage_taken()
@@ -46,6 +46,9 @@ func _hunt(area: Vector3, monster_id: String, count: int) -> Dictionary:
 			if target == -1:
 				await seconds(1.0)
 				continue
+			var where: Vector3 = driver().entity(target).body().global_position
+			if player().global_position.distance_to(where) > 6.0:
+				await route_to(where, 4.0)
 			var styles := ["accurate", "aggressive", "defensive"]
 			driver().sim.queue_style(PLAYER, styles[kills % 3])
 			driver().sim.queue_attack(PLAYER, target)

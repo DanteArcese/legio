@@ -12,7 +12,7 @@ func run() -> void:
 	var latro := _entity("latro")
 	# Stand next to the latro and let it win.
 	me.hp = 2
-	await walk_to(latro.body().global_position + Vector3(1.2, 0, 0), 0.5)
+	await route_to(latro.body().global_position + Vector3(1.2, 0, 0), 0.5)
 	await _wait_until(func(): return count_events("death", {"id": PLAYER}) > 0, 60.0)
 	expect(count_events("death", {"id": PLAYER}) == 1, "player died")
 	var grave: Dictionary = driver().sim.grave_of(PLAYER)
@@ -20,12 +20,12 @@ func run() -> void:
 	await shot("dead")
 	await _wait_until(func(): return me.is_alive(), 10.0)
 	await seconds(0.5)
-	expect(player().global_position.distance_to(Vector3(0, 1, 0)) < 1.5, "respawned at spawn")
+	expect(player().global_position.distance_to(Vector3(0, 1, 2)) < 1.5, "respawned at spawn")
 	metric("kept", me.inventory.slots.filter(func(s): return s != null).size())
 	metric("grave_items", grave.get("items", []).size())
 
 	# Walk back (the latro may chase; that's part of the test) and loot.
-	await walk_to(grave["position"], 0.8)
+	await route_to(grave["position"], 0.8)
 	await shot("at_grave")
 	await press("interact")
 	await seconds(1.0)

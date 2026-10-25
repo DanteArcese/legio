@@ -9,12 +9,12 @@ extends Node3D
 @export var min_pitch := deg_to_rad(-80.0)
 @export var max_pitch := deg_to_rad(-10.0)
 @export var min_distance := 3.0
-@export var max_distance := 18.0
+@export var max_distance := 24.0
 @export var zoom_step := 1.5
 
 @onready var _arm: SpringArm3D = $SpringArm3D
 
-var _pitch := deg_to_rad(-35.0)
+var _pitch := deg_to_rad(-42.0)
 var _yaw := 0.0
 
 

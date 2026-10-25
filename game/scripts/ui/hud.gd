@@ -12,6 +12,9 @@ const BANNER_DURATION := 3.0
 var _status: Label
 var _drops: VBoxContainer
 var _banner: Label
+var _target_panel: PanelContainer
+var _target_name: Label
+var _target_bar: ProgressBar
 
 
 func _ready() -> void:
@@ -33,6 +36,7 @@ func _ready() -> void:
 	_banner.modulate.a = 0.0
 	add_child(_banner)
 
+	_build_target_panel()
 	driver.sim_event.connect(_on_sim_event)
 	driver.ticked.connect(func(_tick): _refresh())
 	_refresh.call_deferred()
@@ -55,6 +59,7 @@ func _refresh() -> void:
 	if c == null:
 		return
 	var s: RefCounted = c.skills
+	_refresh_target(c)
 	var task_text := "No Slayer contract"
 	if not c.slayer_task.is_empty():
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
@@ -63,6 +68,42 @@ func _refresh() -> void:
 	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)\nCombat %d   Atk %d   Str %d   Def %d   Vit %d   Slay %d" % [
 		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), s.combat_level(),
 		s.level("attack"), s.level("strength"), s.level("defence"), s.level("vitality"), s.level("slayer")]
+
+
+## Top-centre panel naming the current target with an HP bar.
+func _build_target_panel() -> void:
+	_target_panel = PanelContainer.new()
+	_target_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	_target_panel.custom_minimum_size = Vector2(300, 0)
+	_target_panel.position = Vector2(-150, 14)
+	var column := VBoxContainer.new()
+	_target_panel.add_child(column)
+	_target_name = _label(20, HORIZONTAL_ALIGNMENT_CENTER)
+	column.add_child(_target_name)
+	_target_bar = ProgressBar.new()
+	_target_bar.custom_minimum_size = Vector2(280, 18)
+	_target_bar.show_percentage = false
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.2, 0.7, 0.25)
+	_target_bar.add_theme_stylebox_override("fill", fill)
+	var background := StyleBoxFlat.new()
+	background.bg_color = Color(0.6, 0.12, 0.1)
+	_target_bar.add_theme_stylebox_override("background", background)
+	column.add_child(_target_bar)
+	_target_panel.visible = false
+	add_child(_target_panel)
+
+
+func _refresh_target(c: RefCounted) -> void:
+	var target: RefCounted = driver.sim.get_combatant(c.target_id)
+	_target_panel.visible = target != null and target.is_alive()
+	if not _target_panel.visible:
+		return
+	var entity: Node = driver.entity(target.id)
+	var name: String = entity.display_name() if entity else "?"
+	_target_name.text = "%s (level %d)" % [name, target.combat_level()] if not target.monster_id.is_empty() else name
+	_target_bar.max_value = target.max_hp
+	_target_bar.value = target.hp
 
 
 func _xp_drop(skill: String, amount: float) -> void:

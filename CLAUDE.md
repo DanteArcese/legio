@@ -47,6 +47,7 @@ uv run --env-file .env <command>   # Run with local secrets
 
 ## World
 
+- `game/scripts/world/terrain.gd` generates the overworld ground at startup: flat-shaded 1 m tiles coloured per tile, flattened inside the fort, along `PATHS`, and around anything in the interactable groups. It also adds the grass and the pond. Paint new ground features there. Scenery under `snap_roots` is lifted onto the terrain.
 - `game/scenes/castra_ferrea.tscn` holds the town's static greybox geometry (walls, buildings, woods, hills, bounds). Interactive things (NPCs, stations, rocks, monsters) live in `main.tscn`.
 - Navigation: `scripts/world/navigation.gd` bakes a navmesh at startup from static bodies in the `navigation_source` group (layers 1 and 4). Add new static obstacles to that group. Player auto-approach, click-to-move, and monster movement path with `Navigation.next_waypoint`.
 - Collision layers: 1 = terrain and world bounds (the camera collides only with these), 2 = player, 3 = monsters, 4 = props and NPCs, 5 = structures (walls, buildings, trees; value 16). The player and monsters collide with 1, 4, and 5. Structures between the camera and the player fade (`scripts/world/occlusion_fader.gd`); a building's roof is a sibling mesh named `<Building>Roof`.

@@ -276,6 +276,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	move_and_slide()
+	_entity.rescue_if_fallen()
 	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 
 	var facing := direction

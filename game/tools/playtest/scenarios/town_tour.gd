@@ -26,6 +26,12 @@ func run() -> void:
 			rig.get_node("SpringArm3D").spring_length = 24.0
 		await seconds(0.5)
 		await shot(stop[0])
+	# Nothing should have sunk into the terrain.
+	for entity in get_tree().get_nodes_in_group("sim_entities"):
+		var y: float = entity.body().global_position.y
+		expect(y > -1.0, "%s is above ground (y=%.1f)" % [entity.body().name, y])
+	var terrain: Node = main.get_node("Terrain")
+	expect(terrain.grass_count() > 1000, "grass on Medium (%d tufts)" % terrain.grass_count())
 	# Reachability: walk from spawn through the east gate to the quarry.
 	player().global_position = Vector3(0, 1, 2)
 	await seconds(0.2)

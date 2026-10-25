@@ -1,7 +1,8 @@
 extends CharacterBody3D
 ## Directly controlled player: left stick / WASD moves relative to the camera.
 ## Interact picks up nearby loot, loots your grave, opens a nearby bank,
-## talks to the libitinarius, or targets the nearest enemy, in that order. With no stick input, the player walks into reach of
+## talks to the libitinarius or a venator, or targets the nearest enemy,
+## in that order. With no stick input, the player walks into reach of
 ## its target automatically.
 
 signal bank_opened
@@ -50,6 +51,10 @@ func interact() -> void:
 	if _near_any("libitinarii", bank_radius):
 		sim_driver.sim.queue_item_action(id, "reclaim")
 		return
+	for venator in get_tree().get_nodes_in_group("venatores"):
+		if global_position.distance_to(venator.global_position) <= bank_radius:
+			sim_driver.sim.queue_item_action(id, "slayer_task", {"venator": venator.get_meta("venator_id")})
+			return
 	var target_id: int = sim_driver.nearest_target(id, target_radius)
 	if target_id == -1:
 		sim_driver.sim.queue_stop(id)

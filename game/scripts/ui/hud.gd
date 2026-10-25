@@ -1,6 +1,8 @@
 extends CanvasLayer
 ## Player HUD: hitpoints, combat style and levels, XP drops, and level-up banners.
 
+const Slayer := preload("res://scripts/sim/slayer.gd")
+
 const DROP_DURATION := 1.6
 const BANNER_DURATION := 3.0
 
@@ -15,7 +17,7 @@ var _banner: Label
 func _ready() -> void:
 	_status = _label(24, HORIZONTAL_ALIGNMENT_LEFT)
 	_status.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
-	_status.position = Vector2(24, -64)
+	_status.position = Vector2(24, -100)
 	_status.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	add_child(_status)
 
@@ -53,9 +55,12 @@ func _refresh() -> void:
 	if c == null:
 		return
 	var s: RefCounted = c.skills
-	_status.text = "HP %d / %d     Style: %s (C / X)\nCombat %d   Atk %d   Str %d   Def %d   Vit %d" % [
-		c.hp, c.max_hp, c.style.capitalize(), s.combat_level(),
-		s.level("attack"), s.level("strength"), s.level("defence"), s.level("vitality")]
+	var task_text := "No Slayer contract"
+	if not c.slayer_task.is_empty():
+		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
+	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)\nCombat %d   Atk %d   Str %d   Def %d   Vit %d   Slay %d" % [
+		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), s.combat_level(),
+		s.level("attack"), s.level("strength"), s.level("defence"), s.level("vitality"), s.level("slayer")]
 
 
 func _xp_drop(skill: String, amount: float) -> void:

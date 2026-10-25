@@ -81,7 +81,16 @@ Kept as a core skill and the center of progression.
 |---|---|
 | Athletics | Replaces Agility. Obstacle courses, plus chariot-racing laps in the circus. |
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
-| Mercatura (idea) | Trading caravans and ships between provinces. An original skill that fits a later MMO economy well. |
+| Mercatura | Trade contracts between provinces. See [Mercatura](#mercatura). A later addition, not part of the first vertical slice. |
+
+### Mercatura
+
+Mercatura works like a skill rather than a menu over the market:
+
+- **Training:** take contracts from a trade board, buy goods in one region, and deliver them to another. Examples are garum from the coast to the frontier, Hispanic silver to the capital, and Egyptian grain to anywhere. XP depends on distance, cargo value, and risk.
+- **Risk:** bandits on the road and pirates at sea. You defend the cargo, hire guards, or take a safer, slower route.
+- **Unlocks by level:** carts, then wagons, then merchant ships. Also larger cargo, warehouses in each province, more lucrative trade routes, lower fees at the forum market, and membership in a merchants' guild.
+- **Links to other skills:** artisan products sell for more in the right region, so Mercatura rewards specialists.
 
 ## Replacing magic
 
@@ -112,6 +121,38 @@ Without teleports, travel becomes a progression system:
 
 - Selling items: sell to merchants, or use the forum market.
 - Enchanting: you consecrate jewelry at temples, using Pietas.
+
+## Combat
+
+Decided: **OSRS-style tick combat**, adapted for free movement and controllers. Combat is decided by stats, gear, and decisions, not by reflexes such as dodge rolls with invincibility frames.
+
+- **Auto-attack:** lock onto a target and your character attacks on its weapon's tick timing until you stop or the target dies.
+- **Auto-retaliate:** a toggle, on by default. When it's on, you fight back automatically if attacked.
+- **Skill through decisions:**
+  - **Gear swaps.** Swap loadouts to exploit the Melee, Ranged, and Ritus triangle. You can save loadouts and switch them with the D-pad.
+  - **Pietas buffs and protections**, switched in response to what a boss is doing.
+  - **Movement** out of telegraphed attacks, such as ground areas that are about to be hit or charges.
+  - **Special attacks** (working name *Impetus*). Weapons spend a regenerating bar on a strong special attack.
+  - **Eating and potion timing.**
+- **Why this model:** it keeps the AFK-friendly grind, it is easy to play on a controller, and it tolerates network latency well, which matters for the MMO later.
+
+## Death
+
+Decided: **follows OSRS's structure.**
+
+**Outside the danger zone (PvM deaths):**
+- You keep your 3 most valuable items.
+- Everything else stays in a grave at the spot where you died for a limited time, and you can collect it for free.
+- After that, the items pass to the *libitinarii* (Rome's undertakers' guild), who return them for a fee based on their value.
+
+**Beyond the Limes (the danger zone), PvM:**
+- You keep your 3 most valuable items.
+- Everything else drops where you died. You can only get it back by fighting your way back to it in time. There is no fee-based recovery.
+- In the MMO, other players can loot the dropped items after a short delay.
+
+**Beyond the Limes, PvP (MMO only):**
+- Attacking another player marks you as *sacer*, a Roman legal status meaning someone could be killed with no penalty to the killer.
+- While marked you keep no items, and your killer gets everything.
 
 ## Controller-first input
 
@@ -182,7 +223,8 @@ The smallest build that proves the core loop:
 
 ## Open questions
 
-1. Death and risk: what do you lose when you die, and how much worse is it Beyond the Limes?
-2. Combat feel: OSRS-style tick timing with an auto-attack, or more active combat with dodges and blocks?
-3. Mercatura: is it a full skill or folded into the forum market?
-4. The game's real title (`legio` is a working name).
+1. Game ticks: use OSRS's 0.6 s, or a slightly faster tick to suit free movement? To be prototyped in #4.
+2. Is the villa purely cosmetic and convenient, as in OSRS, or does it produce things like crops, wine, and income?
+3. Should there be an Ironman-style self-sufficient mode, and from day one?
+
+Title: **Legio** (decided unless something better comes along).

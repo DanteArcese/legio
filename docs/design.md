@@ -159,7 +159,7 @@ Decided: **follows OSRS's structure.**
 OSRS is built on point-and-click. A controller needs a different interaction model:
 
 - **Direct movement** with the left stick, and an **orbit camera** on the right stick.
-- **Context interaction:** face a target and press A for the default action, or hold for a **radial menu** with the other options (this replaces right-click menus).
+- **Context interaction:** face a target and press A for the default action, or press Y for a **radial menu** with the other options (this replaces right-click menus).
 - **Soft target lock** in combat, with the bumpers cycling targets.
 - **Radial or grid inventory** that you navigate with the D-pad.
 - Mouse and keyboard keep click-to-move and right-click menus.

@@ -10,8 +10,8 @@ func run() -> void:
 	var me: RefCounted = driver().sim.get_combatant(PLAYER)
 	me.skills.xp["ranged"] = me.skills.xp_for_level(20)
 	var rig: Node3D = main.get_node("CameraRig")
-	# Face the player from the front-left (it faces +Z by default).
-	rig._yaw = 0.7
+	# Face the player from the front-left (it faces -Z by default).
+	rig._yaw = PI - 0.7
 	rig._pitch = deg_to_rad(-18.0)
 	rig._apply_rotation()
 	rig.get_node("SpringArm3D").spring_length = 4.5

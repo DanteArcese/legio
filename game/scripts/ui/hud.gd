@@ -44,6 +44,8 @@ func _on_sim_event(event: Dictionary) -> void:
 			_xp_drop(event["skill"], event["amount"])
 		"level_up":
 			_show_banner("%s level %d!" % [event["skill"].capitalize(), event["level"]])
+		"death":
+			_show_banner("You have fallen.")
 
 
 func _refresh() -> void:

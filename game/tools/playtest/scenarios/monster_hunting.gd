@@ -1,0 +1,84 @@
+extends "res://tools/playtest/scenario.gd"
+## A fresh character with no gear or food works up from rats to boars to
+## wolves, cycling combat styles. Reports kill times, damage taken, deaths,
+## and drops for each stage, to sanity-check early balance.
+
+const PLAYER := 1
+
+
+func run() -> void:
+	var stages := [["rat", Vector3(7, 0, 7), 12], ["wild_boar", Vector3(15, 0, -12), 8], ["wolf", Vector3(-15, 0, -10), 6]]
+	var results := {}
+	for stage in stages:
+		results[stage[0]] = await _hunt(stage[1], stage[0], stage[2])
+		await shot(stage[0])
+		for key in results[stage[0]]:
+			metric("%s_%s" % [stage[0], key], results[stage[0]][key])
+	var rats: Dictionary = results["rat"]
+	var skills: RefCounted = driver().sim.get_combatant(PLAYER).skills
+	metric("combat_level", skills.combat_level())
+	metric("levels", "%d/%d/%d/%d" % [skills.level("attack"), skills.level("strength"), skills.level("defence"), skills.level("vitality")])
+	metric("player_deaths", count_events("death", {"id": PLAYER}))
+	metric("drops", count_events("drop"))
+	expect(rats["kills"] >= 12, "should kill 12 rats")
+	# Without food, even rats eventually wear a fresh character down (HP
+	# regenerates 1 per minute). Tighten this once the bot can eat (#14).
+	expect(rats["deaths"] <= 3, "rats should rarely kill a fresh player (%d deaths)" % rats["deaths"])
+	expect(count_events("drop") >= rats["kills"], "every kill with a guaranteed drop should drop")
+
+
+## Walks to an area and kills monsters of one kind until count kills or a
+## time limit. Returns kills, average seconds per kill, damage taken, deaths.
+func _hunt(area: Vector3, monster_id: String, count: int) -> Dictionary:
+	await walk_to(area, 1.0)
+	var start_tick: int = driver().sim.tick
+	var deaths_before := count_events("death", {"id": PLAYER})
+	var taken_before := _damage_taken()
+	var kills := 0
+	var deadline := start_tick + 2500
+	while kills < count and driver().sim.tick < deadline:
+		var me: RefCounted = driver().sim.get_combatant(PLAYER)
+		if me.target_id == -1:
+			var target := _nearest(monster_id)
+			if target == -1:
+				await seconds(1.0)
+				continue
+			var styles := ["accurate", "aggressive", "defensive"]
+			driver().sim.queue_style(PLAYER, styles[kills % 3])
+			driver().sim.queue_attack(PLAYER, target)
+			var kills_before := count_events("death", {"id": target})
+			while count_events("death", {"id": target}) == kills_before and driver().sim.tick < deadline:
+				if not me.is_alive():
+					break
+				await seconds(0.3)
+			if count_events("death", {"id": target}) > kills_before:
+				kills += 1
+		await seconds(0.3)
+	var ticks: int = driver().sim.tick - start_tick
+	return {
+		"kills": kills,
+		"seconds_per_kill": snappedf(ticks * 0.6 / maxi(kills, 1), 0.1),
+		"damage_taken": _damage_taken() - taken_before,
+		"deaths": count_events("death", {"id": PLAYER}) - deaths_before,
+	}
+
+
+func _nearest(monster_id: String) -> int:
+	var best := -1
+	var best_distance := INF
+	for entity in get_tree().get_nodes_in_group("sim_entities"):
+		if entity.monster_id != monster_id or not entity.combatant.is_alive():
+			continue
+		var distance := player().global_position.distance_to(entity.body().global_position)
+		if distance < best_distance:
+			best = entity.entity_id
+			best_distance = distance
+	return best
+
+
+func _damage_taken() -> int:
+	var total := 0
+	for event in events:
+		if event["type"] == "hit" and event["target"] == PLAYER:
+			total += event["damage"]
+	return total

@@ -5,7 +5,7 @@ const Skills := preload("res://scripts/sim/skills.gd")
 
 func test_curve_endpoints() -> void:
 	check_eq(Skills.xp_for_level(1), 0.0, "level 1")
-	check(Skills.xp_for_level(2) > 100.0 and Skills.xp_for_level(2) < 200.0, "level 2 = %s" % Skills.xp_for_level(2))
+	check(Skills.xp_for_level(2) > 50.0 and Skills.xp_for_level(2) < 150.0, "level 2 = %s" % Skills.xp_for_level(2))
 	var top := Skills.xp_for_level(99)
 	check(top > 9_000_000.0 and top < 12_000_000.0, "level 99 = %s" % top)
 

@@ -12,14 +12,18 @@
     "aggressive": false,
     "respawn_ticks": 15,
     "drops": "rat",
-    "examine": "Fat from the town's grain stores."
+    "examine": "Fat from the town's grain stores.",
+    "appearance": {
+      "color": "#7a6a58",
+      "size": 0.45
+    }
   },
   "wolf": {
     "name": "Wolf",
     "level": 5,
     "stats": {
-      "attack": 5,
-      "strength": 4,
+      "attack": 4,
+      "strength": 3,
       "defence": 4,
       "vitality": 8
     },
@@ -27,7 +31,11 @@
     "aggressive": true,
     "respawn_ticks": 25,
     "drops": "wolf",
-    "examine": "A lean grey wolf of the frontier woods."
+    "examine": "A lean grey wolf of the frontier woods.",
+    "appearance": {
+      "color": "#8c8c8c",
+      "size": 0.75
+    }
   },
   "wild_boar": {
     "name": "Wild boar",
@@ -42,7 +50,11 @@
     "aggressive": false,
     "respawn_ticks": 25,
     "drops": "wild_boar",
-    "examine": "Bristling and bad-tempered."
+    "examine": "Bristling and bad-tempered.",
+    "appearance": {
+      "color": "#5a3d2b",
+      "size": 0.8
+    }
   },
   "latro": {
     "name": "Latro",
@@ -57,7 +69,11 @@
     "aggressive": true,
     "respawn_ticks": 30,
     "drops": "latro",
-    "examine": "A road bandit. He wants your purse."
+    "examine": "A road bandit. He wants your purse.",
+    "appearance": {
+      "color": "#4b5a3a",
+      "size": 1.0
+    }
   },
   "lemur": {
     "name": "Lemur",
@@ -72,7 +88,11 @@
     "aggressive": true,
     "respawn_ticks": 30,
     "drops": "lemur",
-    "examine": "A restless shade of the unburied dead."
+    "examine": "A restless shade of the unburied dead.",
+    "appearance": {
+      "color": "#b8c4d6",
+      "size": 1.0
+    }
   },
   "strix": {
     "name": "Strix",
@@ -92,6 +112,10 @@
       "ward_item": "whitethorn_charm",
       "unwarded_effect": "drain_vitality"
     },
-    "examine": "A screech-owl that feeds on the living. Whitethorn keeps it at bay."
+    "examine": "A screech-owl that feeds on the living. Whitethorn keeps it at bay.",
+    "appearance": {
+      "color": "#3a2f45",
+      "size": 0.7
+    }
   }
 }

@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/world/sim_entity.gd" id="4_entity"]
 [ext_resource type="Script" path="res://scripts/world/debug_hud.gd" id="5_hud"]
 [ext_resource type="Script" path="res://scripts/ui/hud.gd" id="6_player_hud"]
+[ext_resource type="PackedScene" path="res://scenes/monster.tscn" id="7_monster"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -112,11 +113,8 @@ shape = SubResource("player_shape")
 [node name="SimEntity" type="Node" parent="Player" groups=["sim_entities"]]
 script = ExtResource("4_entity")
 entity_id = 1
-max_hp = 10
-attack_speed = 4
-max_hit = 3
-accuracy = 0.8
 reach = 1.8
+respawn_ticks = 3
 attackable = false
 is_player = true
 
@@ -138,11 +136,45 @@ outline_size = 8
 [node name="SimEntity" type="Node" parent="TrainingDummy" node_paths=PackedStringArray("hp_label") groups=["sim_entities"]]
 script = ExtResource("4_entity")
 entity_id = 100
-max_hp = 20
-max_hit = 0
+max_hp = 10
+can_fight = false
 auto_retaliate = false
 respawn_ticks = 5
 hp_label = NodePath("../HpLabel")
+
+[node name="Monsters" type="Node3D" parent="."]
+
+[node name="Rat1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+monster_id = "rat"
+
+[node name="Rat2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 4)
+monster_id = "rat"
+
+[node name="Rat3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 10)
+monster_id = "rat"
+
+[node name="Wolf1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -12)
+monster_id = "wolf"
+
+[node name="Wolf2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -8)
+monster_id = "wolf"
+
+[node name="Boar1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, -12)
+monster_id = "wild_boar"
+
+[node name="Boar2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -15)
+monster_id = "wild_boar"
+
+[node name="Latro1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 18)
+monster_id = "latro"
 
 [node name="CameraRig" type="Node3D" parent="." node_paths=PackedStringArray("target")]
 script = ExtResource("2_camera")

@@ -90,14 +90,12 @@
     "drops": "latro",
     "examine": "A road bandit. He wants your purse.",
     "appearance": {
-      "model": "humanoid",
-      "color": "#5a4a32",
-      "accent": "#3b3a2c",
+      "model": "kaykit",
+      "scene": "adventurers/Rogue_Hooded",
       "size": 1.0,
-      "features": [
-        "hood",
-        "bare_legs"
-      ]
+      "weapon": "weapons/dagger",
+      "attack": "stab",
+      "color": "#4b5a3a"
     }
   },
   "lemur": {
@@ -115,14 +113,12 @@
     "drops": "lemur",
     "examine": "A restless shade of the unburied dead.",
     "appearance": {
-      "model": "humanoid",
-      "color": "#b8c4d6",
-      "accent": "#8e9bb0",
+      "model": "kaykit",
+      "scene": "skeletons/Skeleton_Minion",
       "size": 1.0,
-      "features": [
-        "ghostly",
-        "glowing_eyes"
-      ]
+      "weapon": "",
+      "attack": "slash",
+      "color": "#b8c4d6"
     }
   },
   "strix": {

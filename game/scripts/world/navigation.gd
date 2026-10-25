@@ -22,7 +22,7 @@ func _ready() -> void:
 	mesh.cell_size = 0.25
 	mesh.cell_height = 0.25
 	mesh.agent_radius = AGENT_RADIUS
-	mesh.agent_height = 1.8
+	mesh.agent_height = 1.75
 	mesh.agent_max_climb = 0.25
 	region = NavigationRegion3D.new()
 	region.navigation_mesh = mesh

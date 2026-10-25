@@ -160,6 +160,7 @@ respawn_ticks = 5
 hp_label = NodePath("../HpLabel")
 
 [node name="BankChest" type="StaticBody3D" parent="." groups=["banks", "navigation_source"]]
+metadata/examine = "Iron-bound oak. Everything you own in one safe place."
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.45, -9.9)
 collision_layer = 8
 
@@ -177,6 +178,7 @@ font_size = 40
 outline_size = 8
 
 [node name="Libitinarius" type="StaticBody3D" parent="." groups=["libitinarii", "navigation_source"]]
+metadata/examine = "An undertaker. For a fee, the dead's belongings find their way home."
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 1, 11)
 collision_layer = 8
 
@@ -198,6 +200,8 @@ outline_size = 8
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -2)
 collision_layer = 8
 metadata/venator_id = "aulus"
+metadata/display_name = "Aulus the Venator"
+metadata/examine = "A grizzled beast-hunter with a scarred forearm."
 
 [node name="Mesh" type="MeshInstance3D" parent="VenatorAulus"]
 mesh = SubResource("venator_mesh")

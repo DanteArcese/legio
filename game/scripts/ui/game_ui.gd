@@ -43,6 +43,8 @@ func _ready() -> void:
 	driver.sim_event.connect(_on_sim_event)
 	player.bank_opened.connect(open_bank)
 	player.station_opened.connect(open_station)
+	player.world_menu_requested.connect(_show_menu)
+	player.message_requested.connect(show_message)
 	_refresh.call_deferred()
 
 

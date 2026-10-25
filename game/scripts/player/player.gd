@@ -9,20 +9,26 @@ extends CharacterBody3D
 ## Mouse: left-click the ground to walk there, a monster to attack it, or
 ## anything interactable to walk up and use it. Paths follow the navigation
 ## mesh, and so does the automatic walk into reach of a combat target.
+##
+## Right-click (or Y on a controller) opens a menu of everything you can do
+## with what's under the cursor (or, on a controller, what's nearby).
 
 signal bank_opened
 signal station_opened(station: Node)
+## Options are [label, Callable] pairs; at is a screen position.
+signal world_menu_requested(options: Array, at: Vector2)
+signal message_requested(text: String)
 
 const MoveMath := preload("res://scripts/player/move_math.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
 const CreatureModel := preload("res://scripts/world/creature_model.gd")
+const WorldMenu := preload("res://scripts/player/world_menu.gd")
 const LOOK := {"model": "humanoid", "color": "#a3241c", "accent": "#6b4a2a", "size": 1.0, "features": ["helmet", "bare_legs"]}
 
 const CLICK_RAY_LENGTH := 300.0
 ## Terrain (1), monsters (4), and props (8) can be clicked.
 const CLICK_MASK := 1 | 4 | 8
-const INTERACTABLE_GROUPS := ["rocks", "stations", "banks", "libitinarii", "venatores"]
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
 
@@ -39,8 +45,8 @@ const CLICK_USE_DISTANCE := 1.6
 var running := true
 ## Click-to-move destination, or null.
 var destination: Variant = null
-## Node to interact with on arrival (or a position for loot and graves).
-var _pending_use: Variant = null
+## What to do on arrival: {"at": Vector3, "distance": float, "action": Callable}.
+var _on_arrival := {}
 
 @onready var _entity: Node = $SimEntity
 
@@ -66,47 +72,128 @@ func _unhandled_input(event: InputEvent) -> void:
 		interact()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and sim_driver:
 		click(event.position)
+	elif event.is_action_pressed("context_menu") and sim_driver:
+		if event is InputEventMouseButton:
+			open_menu_at(event.position)
+		else:
+			open_menu_nearby()
 
 
-## Handles a left-click at a screen position.
-func click(screen_position: Vector2) -> void:
-	var camera := get_viewport().get_camera_3d()
-	if camera == null:
-		return
-	var from := camera.project_ray_origin(screen_position)
-	var query := PhysicsRayQueryParameters3D.create(from, from + camera.project_ray_normal(screen_position) * CLICK_RAY_LENGTH, CLICK_MASK, [get_rid()])
-	var hit := get_world_3d().direct_space_state.intersect_ray(query)
+## Right-click: options for whatever is under the cursor, plus Walk here.
+func open_menu_at(screen_position: Vector2) -> void:
+	var hit := _raycast(screen_position)
 	if hit.is_empty():
 		return
-	var collider: Node = hit["collider"]
-	var id: int = _entity.entity_id
-	var entity: Node = collider.get_node_or_null("SimEntity")
-	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
-		destination = null
-		_pending_use = null
-		sim_driver.sim.queue_attack(id, entity.entity_id)
+	var options := WorldMenu.options_for_hit(self, hit)
+	options.append(["Walk here", walk_to.bind(hit["position"])])
+	options.append(["Cancel", func(): pass])
+	world_menu_requested.emit(options, screen_position)
+
+
+## Controller Y: options for everything within reach, nearest first.
+func open_menu_nearby() -> void:
+	var options := WorldMenu.options_nearby(self)
+	if options.is_empty():
+		message_requested.emit("There's nothing nearby.")
 		return
-	for group in INTERACTABLE_GROUPS:
-		if collider.is_in_group(group):
-			walk_to(collider.global_position, collider)
-			return
+	options.append(["Cancel", func(): pass])
+	world_menu_requested.emit(options, get_viewport().get_visible_rect().size / 2.0)
+
+
+func _raycast(screen_position: Vector2) -> Dictionary:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return {}
+	var from := camera.project_ray_origin(screen_position)
+	var to := from + camera.project_ray_normal(screen_position) * CLICK_RAY_LENGTH
+	return get_world_3d().direct_space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from, to, CLICK_MASK, [get_rid()]))
+
+
+## Handles a left-click at a screen position: the first menu option for
+## what was clicked, or walking there for plain ground.
+func click(screen_position: Vector2) -> void:
+	var hit := _raycast(screen_position)
+	if hit.is_empty():
+		return
+	var options := WorldMenu.options_for_hit(self, hit)
+	if not options.is_empty() and not WorldMenu.is_ground(hit["collider"]):
+		options[0][1].call()
+		return
 	# Ground: walk there, cancelling combat and skilling. Clicking right next
-	# to loot or your grave picks it up on arrival.
+	# to loot or your grave uses it on arrival.
+	var id: int = _entity.entity_id
 	sim_driver.sim.queue_stop(id)
 	sim_driver.sim.queue_item_action(id, "stop_action")
-	var point: Vector3 = hit["position"]
-	var use: Variant = null
-	for node in get_tree().get_nodes_in_group("loot_piles") + get_tree().get_nodes_in_group("graves"):
-		if (node.global_position - point).length() < 1.2:
-			use = node.global_position
-	walk_to(point, use)
+	if not options.is_empty():
+		options[0][1].call()
+	else:
+		walk_to(hit["position"])
 
 
-## Walks along the navigation mesh to a point; on arrival, interacts if
-## use is a node or a position.
-func walk_to(point: Vector3, use: Variant = null) -> void:
-	destination = Navigation.closest_walkable(get_world_3d(), point) if use is Node else point
-	_pending_use = use
+## Walks along the navigation mesh to a point.
+func walk_to(point: Vector3) -> void:
+	destination = point
+	_on_arrival = {}
+
+
+## Walks up to something and then does action once within distance of it.
+func walk_and_do(at: Vector3, distance: float, action: Callable) -> void:
+	if _flat(at - global_position).length() <= distance:
+		destination = null
+		_on_arrival = {}
+		action.call()
+		return
+	destination = Navigation.closest_walkable(get_world_3d(), at)
+	_on_arrival = {"at": at, "distance": distance, "action": action}
+
+
+# --- Precise actions (used by menus, clicks, and Interact) ---------------
+
+func attack(entity_id: int) -> void:
+	destination = null
+	_on_arrival = {}
+	sim_driver.sim.queue_attack(_entity.entity_id, entity_id)
+
+
+func mine(rock: Node3D) -> void:
+	walk_and_do(rock.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "mine", {"rock": rock.rock_id}))
+
+
+func use_station(station: Node3D) -> void:
+	walk_and_do(station.global_position, CLICK_USE_DISTANCE, station_opened.emit.bind(station))
+
+
+func open_bank(chest: Node3D) -> void:
+	walk_and_do(chest.global_position, CLICK_USE_DISTANCE, bank_opened.emit)
+
+
+func reclaim(undertaker: Node3D) -> void:
+	walk_and_do(undertaker.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "reclaim"))
+
+
+func ask_for_contract(venator: Node3D) -> void:
+	walk_and_do(venator.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "slayer_task", {"venator": venator.get_meta("venator_id")}))
+
+
+## Takes one item kind from a pile, or everything if item_id is "".
+func take(pile: Node3D, item_id := "") -> void:
+	var args := {"pile": pile.pile_id}
+	if not item_id.is_empty():
+		args["item"] = item_id
+	walk_and_do(pile.global_position, 0.8, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "pickup", args))
+
+
+func loot_grave(grave: Node3D) -> void:
+	walk_and_do(grave.global_position, 0.8, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "loot_grave"))
+
+
+func examine(text: String) -> void:
+	message_requested.emit(text)
 
 
 func interact() -> void:
@@ -150,7 +237,7 @@ func _physics_process(delta: float) -> void:
 	var face_target := false
 	if direction != Vector3.ZERO:
 		destination = null
-		_pending_use = null
+		_on_arrival = {}
 	elif destination != null:
 		direction = _destination_direction()
 	else:
@@ -189,24 +276,18 @@ func _nearest_in_group(group: String, radius: float) -> Node3D:
 	return best
 
 
-## Direction along the path to the click destination; arriving stops and
-## uses whatever was clicked.
+## Direction along the path to the click destination. Arriving stops and
+## runs the pending action, if any.
 func _destination_direction() -> Vector3:
-	var arrive_distance := 0.3
-	var use_position: Variant = null
-	if _pending_use is Node:
-		use_position = _pending_use.global_position
-		arrive_distance = CLICK_USE_DISTANCE
-	elif _pending_use is Vector3:
-		use_position = _pending_use
-		arrive_distance = 0.8
-	var goal: Vector3 = use_position if use_position != null else destination
-	if _flat(goal - global_position).length() <= arrive_distance or _flat(destination - global_position).length() <= 0.3:
-		var use: Variant = _pending_use
+	var arrived := _flat(destination - global_position).length() <= 0.3
+	if not _on_arrival.is_empty():
+		arrived = arrived or _flat(_on_arrival["at"] - global_position).length() <= _on_arrival["distance"]
+	if arrived:
+		var action: Variant = _on_arrival.get("action")
 		destination = null
-		_pending_use = null
-		if use != null:
-			interact()
+		_on_arrival = {}
+		if action:
+			action.call()
 		return Vector3.ZERO
 	return _flat(Navigation.next_waypoint(get_world_3d(), global_position, destination) - global_position).normalized()
 

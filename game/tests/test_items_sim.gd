@@ -182,3 +182,19 @@ func test_solitarius_refuses_market_items() -> void:
 	check_eq(sim.give_item(PLAYER, "coins", 10, "market", events), 0, "refused")
 	check(events.any(func(e): return e["type"] == "message"), "told why")
 	check_eq(sim.give_item(PLAYER, "coins", 10, "drop", events), 10, "drops are fine")
+
+
+func test_pickup_one_item_from_a_pile() -> void:
+	var sim := _make_sim()
+	sim.give_item(PLAYER, "bread", 1, "test", [])
+	sim.give_item(PLAYER, "coins", 5, "test", [])
+	_act(sim, "drop", {"slot": 0})
+	var events := _act(sim, "drop", {"slot": 1})
+	# Two drops make two piles; merge them into one test pile.
+	var piles := sim.ground_piles()
+	piles[0]["items"].append_array(piles[1]["items"])
+	var pile_id: int = piles[0]["id"]
+	_act(sim, "pickup", {"pile": pile_id, "item": "coins"})
+	check_eq(_player(sim).inventory.count("coins"), 5, "took the coins")
+	check_eq(_player(sim).inventory.count("bread"), 0, "left the bread")
+	check_eq(sim.ground_piles().filter(func(p): return p["id"] == pile_id)[0]["items"], [{"item": "bread", "quantity": 1}], "bread still there")

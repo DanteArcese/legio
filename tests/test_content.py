@@ -78,4 +78,19 @@ def test_monster_appearance_is_checked(content):
 
 def test_starting_kit_items_must_exist(content):
     errors = errors_after(content, lambda c: c["player"]["starting_kit"].append({"item": "toga", "quantity": 1}))
-    assert any("player.starting_kit[3].item: unknown item 'toga'" in e for e in errors)
+    assert any("player.starting_kit" in e and "unknown item 'toga'" in e for e in errors)
+
+
+def test_rock_ore_must_exist(content):
+    errors = errors_after(content, lambda c: c["skilling"]["rocks"]["tin_rock"].update(ore="tin_nugget"))
+    assert any("skilling.rocks.tin_rock.ore" in e for e in errors)
+
+
+def test_recipe_tool_must_be_provided_by_an_item(content):
+    errors = errors_after(content, lambda c: c["skilling"]["recipes"]["smith"][0].update(tool="tongs"))
+    assert any("no item provides tool 'tongs'" in e for e in errors)
+
+
+def test_cooking_recipe_needs_stop_burning_with_burnt(content):
+    errors = errors_after(content, lambda c: c["skilling"]["recipes"]["cook"][0].pop("stop_burning"))
+    assert any("burnt and stop_burning go together" in e for e in errors)

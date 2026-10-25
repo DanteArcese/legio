@@ -11,6 +11,14 @@
     {
       "item": "coins",
       "quantity": 25
+    },
+    {
+      "item": "bronze_pickaxe",
+      "quantity": 1
+    },
+    {
+      "item": "hammer",
+      "quantity": 1
     }
   ]
 }

@@ -33,6 +33,8 @@ var bank: RefCounted = null
 var slayer_task := {}
 var slayer_points := 0
 var slayer_tasks_done := 0
+## Current skilling action ({} for none); see skilling.gd.
+var skill_action := {}
 ## Who last hit this combatant, for kill credit.
 var last_attacker_id := -1
 ## "standard" or "solitarius" (self-sufficient: no market or trading).

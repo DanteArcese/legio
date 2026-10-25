@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" path="res://scenes/monster.tscn" id="7_monster"]
 [ext_resource type="Script" path="res://scripts/ui/game_ui.gd" id="8_game_ui"]
 [ext_resource type="Script" path="res://scripts/world/save_system.gd" id="9_save"]
+[ext_resource type="Script" path="res://scripts/world/rock_node.gd" id="10_rock"]
+[ext_resource type="Script" path="res://scripts/world/station.gd" id="11_station"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -218,6 +220,65 @@ text = "Aulus the Venator
 (Slayer contracts)"
 font_size = 36
 outline_size = 8
+
+[node name="Smithy" type="Node3D" parent="."]
+
+[node name="Furnace" type="StaticBody3D" parent="Smithy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+script = ExtResource("11_station")
+kind = "furnace"
+
+[node name="Anvil" type="StaticBody3D" parent="Smithy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0)
+script = ExtResource("11_station")
+kind = "anvil"
+
+[node name="Range" type="StaticBody3D" parent="Smithy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0, 0)
+script = ExtResource("11_station")
+kind = "range"
+
+[node name="Quarry" type="Node3D" parent="."]
+
+[node name="Copper1" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 8)
+script = ExtResource("10_rock")
+rock_type = "copper_rock"
+
+[node name="Copper2" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0, 9.5)
+script = ExtResource("10_rock")
+rock_type = "copper_rock"
+
+[node name="Copper3" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 11)
+script = ExtResource("10_rock")
+rock_type = "copper_rock"
+
+[node name="Tin1" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 0, 8)
+script = ExtResource("10_rock")
+rock_type = "tin_rock"
+
+[node name="Tin2" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 0, 9.5)
+script = ExtResource("10_rock")
+rock_type = "tin_rock"
+
+[node name="Tin3" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 0, 11)
+script = ExtResource("10_rock")
+rock_type = "tin_rock"
+
+[node name="Iron1" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 12)
+script = ExtResource("10_rock")
+rock_type = "iron_rock"
+
+[node name="Iron2" type="StaticBody3D" parent="Quarry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, 0, 13.5)
+script = ExtResource("10_rock")
+rock_type = "iron_rock"
 
 [node name="Monsters" type="Node3D" parent="."]
 

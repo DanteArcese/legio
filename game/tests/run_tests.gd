@@ -13,6 +13,10 @@ func _initialize() -> void:
 		if not (file.begins_with("test_") and file.ends_with(".gd")) or file == "test_case.gd":
 			continue
 		var script: GDScript = load(TESTS_DIR.path_join(file))
+		if script == null or not script.can_instantiate():
+			failed += 1
+			printerr("FAIL %s: could not load (see errors above)" % file)
+			continue
 		for method in script.get_script_method_list():
 			var name: String = method["name"]
 			if not name.begins_with("test_"):

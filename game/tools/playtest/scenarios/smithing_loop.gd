@@ -19,7 +19,7 @@ func run() -> void:
 		if rock == null:
 			await seconds(1.0)
 			continue
-		await walk_to(rock.global_position + (player().global_position - rock.global_position).normalized() * 1.4, 0.3)
+		await route_to(rock.global_position + (player().global_position - rock.global_position).normalized() * 1.4, 0.3)
 		await press("interact")
 		await seconds(0.3)
 		while not me.skill_action.is_empty():
@@ -31,7 +31,7 @@ func run() -> void:
 
 	# Smelt via the real station menu: interact, then A on the first entry.
 	var ui: Node = main.get_node("GameUi")
-	await walk_to(main.get_node("Smithy/Furnace").global_position + Vector3(0, 0, 1.5), 0.3)
+	expect(await route_to(main.get_node("Smithy/Furnace").global_position + Vector3(0, 0, 1.5), 0.3), "reached the furnace")
 	await press("interact")
 	await seconds(0.2)
 	expect(ui.is_menu_open(), "furnace opens the recipe menu")

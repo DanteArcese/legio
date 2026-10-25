@@ -57,7 +57,7 @@ func register(sim: RefCounted) -> void:
 
 
 func display_name() -> String:
-	return ContentDB.monster(monster_id)["name"] if not monster_id.is_empty() else body().name
+	return ContentDB.monster(monster_id)["name"] if not monster_id.is_empty() else String(body().name).capitalize()
 
 
 func on_sim_event(event: Dictionary) -> void:

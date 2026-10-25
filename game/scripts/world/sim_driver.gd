@@ -53,6 +53,10 @@ func register(entity: Node) -> void:
 	_entities[entity.entity_id] = entity
 
 
+func entity(id: int) -> Node:
+	return _entities.get(id)
+
+
 ## Nearest living, attackable entity to from_id within max_distance, or -1.
 func nearest_target(from_id: int, max_distance: float) -> int:
 	var origin: Vector3 = _entities[from_id].body().global_position

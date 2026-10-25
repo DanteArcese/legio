@@ -18,6 +18,7 @@ func recipe_kind() -> String:
 
 ## Joins the group before any _ready runs, so the driver can find it.
 func _init() -> void:
+	collision_layer = 8
 	add_to_group("stations")
 
 

@@ -13,6 +13,7 @@ height = 2.0
 
 [node name="Monster" type="CharacterBody3D"]
 collision_layer = 4
+collision_mask = 9
 script = ExtResource("1_monster")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
@@ -24,8 +25,9 @@ shape = SubResource("shape")
 [node name="HpLabel" type="Label3D" parent="."]
 billboard = 1
 no_depth_test = true
-font_size = 48
+font_size = 40
 outline_size = 10
+visibility_range_end = 30.0
 
 [node name="SimEntity" type="Node" parent="." node_paths=PackedStringArray("hp_label") groups=["sim_entities"]]
 script = ExtResource("2_entity")

@@ -37,10 +37,15 @@ uv run --env-file .env <command>   # Run with local secrets
 - Tests are `game/tests/test_*.gd` and extend `res://tests/test_case.gd`. Methods named `test_*` run in the headless runner (`game/tests/run_tests.gd`).
 - Input bindings are defined in code in `game/scripts/input/bindings.gd`, not in project.godot. Every action needs a keyboard/mouse binding and a gamepad binding.
 - Use `preload` instead of `class_name`, so scripts resolve in a fresh checkout without an editor import.
-- Playtest scenarios live in `game/tools/playtest/scenarios/`, extend `scenario.gd`, and drive the real scene (walk_to, press, seconds, shot, metric, expect). CI runs them all headlessly. Use `--render --out <dir>` to get screenshots for visual review.
+- Playtest scenarios live in `game/tools/playtest/scenarios/`, extend `scenario.gd`, and drive the real scene (walk_to, route_to, press, seconds, shot, metric, expect). Use `route_to` for trips that cross the Castra Ferrea walls; it goes through the nearest gate. CI runs them all headlessly. Use `--render --out <dir>` to get screenshots for visual review.
 
 ## Content
 
 - Items, monsters, drop tables, and Slayer tasks live in `game/content/*.json`, keyed by snake_case id. Add content there, not in code.
 - `tools/content_validator.py` checks structure and cross-references. Extend it when adding new fields. Unknown fields are errors.
 - GDScript reads content through `scripts/content/content_db.gd`, which converts JSON floats to ints. When exporting builds, include `content/*.json` in the export filter.
+
+## World
+
+- `game/scenes/castra_ferrea.tscn` holds the town's static greybox geometry (walls, buildings, woods, hills, bounds). Interactive things (NPCs, stations, rocks, monsters) live in `main.tscn`.
+- Collision layers: 1 = terrain and buildings (the camera collides with these), 2 = player, 3 = monsters, 4 = props and NPCs. The player and monsters collide with layers 1 and 4.

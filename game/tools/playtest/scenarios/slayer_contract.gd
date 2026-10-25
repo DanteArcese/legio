@@ -26,6 +26,9 @@ func run() -> void:
 		if me.is_alive() and me.target_id == -1:
 			var target := _nearest(task["monster"])
 			if target != -1:
+				var where: Vector3 = driver().entity(target).body().global_position
+				if player().global_position.distance_to(where) > 6.0:
+					await route_to(where, 4.0)
 				driver().sim.queue_attack(PLAYER, target)
 		if me.is_alive() and me.hp <= me.max_hp / 3 and _slot_of("bread") != -1:
 			driver().sim.queue_item_action(PLAYER, "eat", {"slot": _slot_of("bread")})

@@ -1,0 +1,97 @@
+{
+  "rat": {
+    "name": "Rat",
+    "level": 1,
+    "stats": {
+      "attack": 1,
+      "strength": 1,
+      "defence": 1,
+      "vitality": 2
+    },
+    "attack_speed": 4,
+    "aggressive": false,
+    "respawn_ticks": 15,
+    "drops": "rat",
+    "examine": "Fat from the town's grain stores."
+  },
+  "wolf": {
+    "name": "Wolf",
+    "level": 5,
+    "stats": {
+      "attack": 5,
+      "strength": 4,
+      "defence": 4,
+      "vitality": 8
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 25,
+    "drops": "wolf",
+    "examine": "A lean grey wolf of the frontier woods."
+  },
+  "wild_boar": {
+    "name": "Wild boar",
+    "level": 8,
+    "stats": {
+      "attack": 7,
+      "strength": 9,
+      "defence": 6,
+      "vitality": 12
+    },
+    "attack_speed": 5,
+    "aggressive": false,
+    "respawn_ticks": 25,
+    "drops": "wild_boar",
+    "examine": "Bristling and bad-tempered."
+  },
+  "latro": {
+    "name": "Latro",
+    "level": 12,
+    "stats": {
+      "attack": 12,
+      "strength": 11,
+      "defence": 10,
+      "vitality": 16
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 30,
+    "drops": "latro",
+    "examine": "A road bandit. He wants your purse."
+  },
+  "lemur": {
+    "name": "Lemur",
+    "level": 18,
+    "stats": {
+      "attack": 18,
+      "strength": 16,
+      "defence": 17,
+      "vitality": 22
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 30,
+    "drops": "lemur",
+    "examine": "A restless shade of the unburied dead."
+  },
+  "strix": {
+    "name": "Strix",
+    "level": 22,
+    "stats": {
+      "attack": 22,
+      "strength": 20,
+      "defence": 18,
+      "vitality": 26
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 35,
+    "drops": "strix",
+    "slayer": {
+      "level": 10,
+      "ward_item": "whitethorn_charm",
+      "unwarded_effect": "drain_vitality"
+    },
+    "examine": "A screech-owl that feeds on the living. Whitethorn keeps it at bay."
+  }
+}

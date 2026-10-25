@@ -1,0 +1,64 @@
+{
+  "venatores": {
+    "aulus": {
+      "name": "Aulus the Venator",
+      "location": "castra_ferrea",
+      "combat_level": 1,
+      "points_per_task": 2,
+      "tasks": [
+        {
+          "monster": "rat",
+          "weight": 6,
+          "amount": [
+            10,
+            20
+          ]
+        },
+        {
+          "monster": "wolf",
+          "weight": 8,
+          "amount": [
+            15,
+            30
+          ]
+        },
+        {
+          "monster": "wild_boar",
+          "weight": 7,
+          "amount": [
+            15,
+            30
+          ]
+        },
+        {
+          "monster": "latro",
+          "weight": 6,
+          "amount": [
+            15,
+            25
+          ],
+          "combat_level": 8
+        },
+        {
+          "monster": "lemur",
+          "weight": 5,
+          "amount": [
+            20,
+            35
+          ],
+          "combat_level": 15
+        },
+        {
+          "monster": "strix",
+          "weight": 4,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 10,
+          "combat_level": 18
+        }
+      ]
+    }
+  }
+}

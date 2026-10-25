@@ -1,0 +1,185 @@
+{
+  "rat": {
+    "always": [
+      {
+        "item": "raw_meat",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 6
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          1,
+          5
+        ],
+        "weight": 4
+      }
+    ]
+  },
+  "wolf": {
+    "always": [
+      {
+        "item": "wolf_pelt",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 5
+      },
+      {
+        "item": "raw_meat",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          3,
+          12
+        ],
+        "weight": 2
+      }
+    ]
+  },
+  "wild_boar": {
+    "always": [
+      {
+        "item": "raw_meat",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 4
+      },
+      {
+        "item": "boar_tusk",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          5,
+          15
+        ],
+        "weight": 3
+      }
+    ]
+  },
+  "latro": {
+    "always": [],
+    "rolls": 2,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          10,
+          40
+        ],
+        "weight": 10
+      },
+      {
+        "item": "bread",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "bronze_pugio",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "bronze_galea",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "iron_ore",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": null,
+        "weight": 4
+      }
+    ]
+  },
+  "lemur": {
+    "always": [
+      {
+        "item": "lemur_ash",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          15,
+          50
+        ],
+        "weight": 8
+      },
+      {
+        "item": "iron_bar",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "iron_pugio",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 6
+      }
+    ]
+  },
+  "strix": {
+    "always": [
+      {
+        "item": "strix_feather",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          25,
+          80
+        ],
+        "weight": 8
+      },
+      {
+        "item": "iron_gladius",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": "iron_scutum",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 5
+      }
+    ]
+  }
+}

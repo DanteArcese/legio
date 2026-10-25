@@ -14,8 +14,14 @@
     "drops": "rat",
     "examine": "Fat from the town's grain stores.",
     "appearance": {
-      "color": "#7a6a58",
-      "size": 0.45
+      "model": "quadruped",
+      "color": "#6f6152",
+      "accent": "#b89a8a",
+      "size": 0.45,
+      "features": [
+        "round_ears",
+        "tail"
+      ]
     }
   },
   "wolf": {
@@ -33,8 +39,15 @@
     "drops": "wolf",
     "examine": "A lean grey wolf of the frontier woods.",
     "appearance": {
-      "color": "#8c8c8c",
-      "size": 0.75
+      "model": "quadruped",
+      "color": "#7d7d80",
+      "accent": "#5a5a5e",
+      "size": 0.95,
+      "features": [
+        "ears",
+        "long_snout",
+        "tail"
+      ]
     }
   },
   "wild_boar": {
@@ -52,8 +65,14 @@
     "drops": "wild_boar",
     "examine": "Bristling and bad-tempered.",
     "appearance": {
-      "color": "#5a3d2b",
-      "size": 0.8
+      "model": "quadruped",
+      "color": "#4a3426",
+      "accent": "#2f2219",
+      "size": 1.0,
+      "features": [
+        "tusks",
+        "bristles"
+      ]
     }
   },
   "latro": {
@@ -71,8 +90,14 @@
     "drops": "latro",
     "examine": "A road bandit. He wants your purse.",
     "appearance": {
-      "color": "#4b5a3a",
-      "size": 1.0
+      "model": "humanoid",
+      "color": "#5a4a32",
+      "accent": "#3b3a2c",
+      "size": 1.0,
+      "features": [
+        "hood",
+        "bare_legs"
+      ]
     }
   },
   "lemur": {
@@ -90,8 +115,14 @@
     "drops": "lemur",
     "examine": "A restless shade of the unburied dead.",
     "appearance": {
+      "model": "humanoid",
       "color": "#b8c4d6",
-      "size": 1.0
+      "accent": "#8e9bb0",
+      "size": 1.0,
+      "features": [
+        "ghostly",
+        "glowing_eyes"
+      ]
     }
   },
   "strix": {
@@ -114,8 +145,13 @@
     },
     "examine": "A screech-owl that feeds on the living. Whitethorn keeps it at bay.",
     "appearance": {
+      "model": "bird",
       "color": "#3a2f45",
-      "size": 0.7
+      "accent": "#5c4b6b",
+      "size": 1.1,
+      "features": [
+        "ear_tufts"
+      ]
     }
   }
 }

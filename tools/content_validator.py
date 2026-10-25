@@ -27,6 +27,12 @@ ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier"}
 MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "appearance"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
+# Must match what game/scripts/world/creature_model.gd knows how to build.
+MODEL_FEATURES = {
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail"},
+    "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs"},
+    "bird": {"ear_tufts"},
+}
 
 
 def load_content(content_dir: Path = CONTENT_DIR) -> dict:
@@ -104,12 +110,19 @@ def _check_monster(where, monster_id, monster, items, drops, errors):
         errors.append(f"{where}.stats: expected keys {sorted(COMBAT_STATS)}")
     _check_levels(f"{where}.stats", stats, COMBAT_STATS, errors)
     appearance = monster.get("appearance", {})
-    _check_keys(f"{where}.appearance", appearance, {"color", "size"}, {"color", "size"}, errors)
-    if not COLOR_PATTERN.match(str(appearance.get("color", ""))):
-        errors.append(f"{where}.appearance.color: expected #rrggbb")
+    _check_keys(f"{where}.appearance", appearance, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)
+    if appearance.get("model") not in MODEL_FEATURES:
+        errors.append(f"{where}.appearance.model: must be one of {sorted(MODEL_FEATURES)}")
+    for key in ("color", "accent"):
+        if key in appearance and not COLOR_PATTERN.match(str(appearance[key])):
+            errors.append(f"{where}.appearance.{key}: expected #rrggbb")
     size = appearance.get("size")
     if not isinstance(size, (int, float)) or isinstance(size, bool) or not 0.1 <= size <= 5:
         errors.append(f"{where}.appearance.size: expected a number in 0.1..5")
+    allowed = MODEL_FEATURES.get(appearance.get("model"), set())
+    for feature in appearance.get("features", []):
+        if feature not in allowed:
+            errors.append(f"{where}.appearance.features: {feature!r} isn't a {appearance.get('model')} feature")
     if monster.get("drops") not in drops:
         errors.append(f"{where}.drops: unknown drop table {monster.get('drops')!r}")
     if "slayer" in monster:

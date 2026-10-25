@@ -4,12 +4,19 @@ extends CharacterBody3D
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
+const CreatureModel := preload("res://scripts/world/creature_model.gd")
+
+## Collision height and label height per model kind, as multiples of size.
+const BODY_HEIGHT := {"quadruped": 0.9, "humanoid": 1.9, "bird": 1.2}
+const LABEL_HEIGHT := {"quadruped": 1.3, "humanoid": 2.4, "bird": 1.7}
 
 @export var monster_id := "rat"
 @export var move_speed := 2.5
 @export var turn_speed := 10.0
 
 @onready var _entity: Node = $SimEntity
+
+var _model: Node3D
 
 
 func _enter_tree() -> void:
@@ -18,15 +25,15 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	var look: Dictionary = ContentDB.monster(monster_id)["appearance"]
-	var material := StandardMaterial3D.new()
-	material.albedo_color = Color.html(look["color"])
-	$Mesh.material_override = material
+	_model = CreatureModel.create(look)
+	add_child(_model)
 	var size := float(look["size"])
-	$Mesh.scale = Vector3.ONE * size
-	$Collision.scale = Vector3.ONE * size
-	$Mesh.position.y = size
-	$Collision.position.y = size
-	$HpLabel.position.y = size * 2.0 + 0.4
+	var shape := CapsuleShape3D.new()
+	shape.radius = 0.35 * size
+	shape.height = maxf(BODY_HEIGHT[look["model"]] * size, shape.radius * 2.0)
+	$Collision.shape = shape
+	$Collision.position.y = shape.height / 2.0
+	$HpLabel.position.y = LABEL_HEIGHT[look["model"]] * size
 
 
 func _physics_process(delta: float) -> void:
@@ -43,5 +50,6 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	move_and_slide()
+	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 	if direction != Vector3.ZERO:
 		rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), minf(turn_speed * delta, 1.0))

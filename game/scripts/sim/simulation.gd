@@ -51,6 +51,11 @@ const BINDING_TICKS := 10
 ## Withering: damage every few ticks, a set number of times.
 const WITHERING_INTERVAL := 3
 const WITHERING_PULSES := 5
+## Calling the Manes: a shade fights for its caster for a while.
+const SHADE_ID_BASE := 100000
+const SHADE_LIFETIME := 30
+const SHADE_STEP := 1.6
+const SHADE_LEVEL_SCALE := 0.8
 ## Monsters give up on targets farther away than this (e.g. who left the area).
 const CHASE_RANGE := 30.0
 
@@ -222,8 +227,10 @@ func step() -> Array[Dictionary]:
 		var combatant: Combatant = _combatants[id]
 		if combatant.has_brain:
 			_think(combatant)
+	_process_summons(events)
 	for id in ids:
-		_process_attack(_combatants[id], events)
+		if _combatants.has(id):
+			_process_attack(_combatants[id], events)
 	_process_curses(events)
 	var players := ids.map(func(i): return _combatants[i]).filter(func(c): return c.inventory != null)
 	skilling.process(players, events)
@@ -546,10 +553,16 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	var lands := rng.randf() < chance
 	if effect == "drain_vitality" and target.is_player():
 		lands = true
+	# Silenced: this attack falls on nothing, and the curse is spent.
+	if attacker.curses.has("silenced"):
+		lands = false
+		attacker.curses.erase("silenced")
+		events.append({"type": "silenced_miss", "id": attacker.id, "tick": tick})
 	if lands and not (effect == "no_damage" and attacker.is_player()):
 		damage = mini(rng.randi_range(1, attacker.max_hit()), target.hp)
 	target.hp -= damage
-	target.last_attacker_id = attacker.id
+	# Kills by a summoned shade count as its caster's.
+	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
 	attacker.next_attack_tick = tick + attacker.current_attack_speed(tick)
@@ -562,7 +575,9 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		pietas.on_curse(attacker, events)
 	if lands and target.is_alive() and not curse.is_empty():
 		_apply_curse(attacker, target, curse, events)
-	_award_combat_xp(attacker, damage, events)
+	var credited: Combatant = _combatants.get(attacker.summoned_by) if attacker.summoned_by != -1 else attacker
+	if credited:
+		_award_combat_xp(credited, damage, events)
 
 	if target.target_id == -1 and target.auto_retaliate and target.can_fight and not target.returning \
 			and _meets_slayer_requirement(target, attacker):
@@ -590,11 +605,68 @@ func _apply_curse(caster: Combatant, target: Combatant, curse: String, events: A
 				return
 			until = tick + BINDING_TICKS
 			target.curses["bound"] = until
+		"silencing":
+			target.curses["silenced"] = true
+		"manes":
+			_call_the_manes(caster, events)
+			until = tick + SHADE_LIFETIME
 		"withering":
 			until = tick + WITHERING_INTERVAL * WITHERING_PULSES
 			var damage := 1 + floori(caster.level("ritus") / 25.0) + roundi(caster.blessing_boosts.get("withering_damage", 0.0))
 			target.curses["withering"] = {"until": until, "next": tick + WITHERING_INTERVAL, "damage": damage, "source": caster.id}
 	events.append({"type": "curse", "id": target.id, "curse": curse, "until": until, "source": caster.id, "tick": tick})
+
+
+## Summons (or refreshes) the caster's shade, which fights their target.
+func _call_the_manes(caster: Combatant, events: Array[Dictionary]) -> void:
+	var id := SHADE_ID_BASE + caster.id
+	var shade: Combatant = _combatants.get(id)
+	if shade == null:
+		shade = add_combatant(id)
+		var level := maxi(1, floori(caster.level("ritus") * SHADE_LEVEL_SCALE))
+		shade.levels = {"attack": level, "strength": level, "defence": 1}
+		shade.max_hp = 20
+		shade.hp = 20
+		shade.attack_speed = 4
+		shade.reach = 1.6
+		shade.auto_retaliate = false
+		shade.summoned_by = caster.id
+		shade.position = caster.position + Vector3(0.8, 0, 0.8)
+		events.append({"type": "summon", "id": id, "owner": caster.id, "position": shade.position, "tick": tick})
+	shade.expires_at = tick + SHADE_LIFETIME
+	shade.target_id = caster.target_id
+
+
+## Shades hunt their caster's target, drifting straight through walls, and
+## fade when their time is up or their caster falls.
+func _process_summons(events: Array[Dictionary]) -> void:
+	var ids := _combatants.keys()
+	ids.sort()
+	for id in ids:
+		var shade: Combatant = _combatants.get(id)
+		if shade == null or shade.summoned_by == -1:
+			continue
+		var owner: Combatant = _combatants.get(shade.summoned_by)
+		if owner == null or not owner.is_alive() or not shade.is_alive() or tick >= shade.expires_at:
+			remove_combatant(id)
+			events.append({"type": "summon_end", "id": id, "tick": tick})
+			continue
+		var target: Combatant = _combatants.get(owner.target_id)
+		shade.target_id = target.id if target and target.is_alive() else -1
+		var goal: Vector3 = target.position if shade.target_id != -1 else owner.position
+		var stop := shade.reach * 0.9 if shade.target_id != -1 else 2.0
+		var offset := goal - shade.position
+		offset.y = 0.0
+		if offset.length() > stop:
+			shade.position += offset.normalized() * minf(SHADE_STEP, offset.length() - stop)
+
+
+## Takes a combatant out of the simulation, clearing anyone's aim at it.
+func remove_combatant(id: int) -> void:
+	_combatants.erase(id)
+	for combatant in _combatants.values():
+		if combatant.target_id == id:
+			combatant.target_id = -1
 
 
 ## Withering pulses, and expired curses falling away.

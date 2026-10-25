@@ -8,7 +8,9 @@ const LootPile := preload("res://scripts/world/loot_pile.gd")
 const GraveMarker := preload("res://scripts/world/grave_marker.gd")
 const Projectile := preload("res://scripts/world/projectile.gd")
 const CurseVisuals := preload("res://scripts/world/curse_visuals.gd")
-const CURSE_TINTS := {"binding": Color(0.1, 0.06, 0.16), "withering": Color(0.12, 0.14, 0.06)}
+const CURSE_TINTS := {"binding": Color(0.1, 0.06, 0.16), "withering": Color(0.12, 0.14, 0.06),
+	"silencing": Color(0.1, 0.16, 0.3), "manes": Color(0.2, 0.3, 0.45)}
+const ShadeBody := preload("res://scripts/world/shade_body.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
 ## Entities with entity_id 0 get ids from here up.
@@ -28,6 +30,7 @@ var _next_auto_id := AUTO_ID_START
 var _piles := {}
 var _graves := {}
 var _rocks := {}
+var _shades := {}
 
 
 func _ready() -> void:
@@ -126,7 +129,16 @@ func nearest_pile(origin: Vector3, max_distance: float, inventory: RefCounted = 
 
 func _mirror_ground(event: Dictionary) -> void:
 	match event["type"]:
+		"summon":
+			_shades[event["id"]] = ShadeBody.spawn(get_parent(), self, event["id"], event["position"])
+		"summon_end":
+			var shade: Node = _shades.get(event["id"])
+			if shade:
+				shade.fade_out()
+				_shades.erase(event["id"])
 		"hit":
+			if _shades.has(event["attacker"]):
+				_shades[event["attacker"]].attack()
 			if event.get("ranged", false):
 				_shoot(event)
 			elif event.get("kind", "") == "ritus":

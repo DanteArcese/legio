@@ -121,8 +121,8 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 |---|---|---|
 | Binding | 1 | A light hit, and often a slowed target: it attacks 1 tick slower for a while |
 | Withering | 15 | Damage over time: "may his limbs waste away" |
-| Silencing | 30 | The target's next attack automatically misses (#47) |
-| Calling the Manes | 50+ | A brief spirit ally (#47) |
+| Silencing | 30 | The target's next attack automatically misses |
+| Calling the Manes | 50 | A shade of the dead fights your target for 30 ticks; its kills and XP are yours. Ghosts drift through walls. |
 
 **The triangle comes from gear defence bonuses, as in OSRS:**
 - Metal armour such as the lorica has a *negative* curse defence ("iron doesn't stop a curse"), so Ritus beats Melee.

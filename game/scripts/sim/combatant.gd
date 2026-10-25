@@ -44,6 +44,9 @@ var blessings: Array = []
 var blessing_boosts := {}
 ## Ritual pollution from casting curses (0-100); see pietas.gd.
 var pollution := 0.0
+## Summoned allies (shades of the Manes): who called them, and when they fade.
+var summoned_by := -1
+var expires_at := -1
 ## Tick of the last warning from the town watch (-1 for never).
 var watch_warned_at := -1
 var watch_fined_at := -1

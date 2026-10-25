@@ -14,7 +14,10 @@ legio: a single-player RPG (MMO later) inspired by Old School RuneScape, set in 
 ```bash
 uv sync              # Install dependencies
 uv add <package>     # Add a dependency
-uv run pytest        # Run tests
+uv run pytest        # Run Python (content tooling) tests
+scripts/godot-tests.sh   # Run Godot tests headlessly (needs godot 4.7 on PATH, or set GODOT)
+godot --path game    # Play the game
+godot -e --path game # Open the editor
 uv run --env-file .env <command>   # Run with local secrets
 ```
 
@@ -24,3 +27,10 @@ uv run --env-file .env <command>   # Run with local secrets
 - Track work in GitHub issues. Reference the issue in commits and PRs.
 - Add or update tests with every feature. Keep the suite passing.
 - Secrets live in `.env` (gitignored). Document variable names in `.env.example`. Do not read `.env`.
+
+## Godot layout
+
+- `game/` is the Godot project. `game/.godot/` is generated and gitignored. Commit `*.uid` files.
+- Tests are `game/tests/test_*.gd` and extend `res://tests/test_case.gd`. Methods named `test_*` run in the headless runner (`game/tests/run_tests.gd`).
+- Input bindings are defined in code in `game/scripts/input/bindings.gd`, not in project.godot. Every action needs a keyboard/mouse binding and a gamepad binding.
+- Use `preload` instead of `class_name`, so scripts resolve in a fresh checkout without an editor import.

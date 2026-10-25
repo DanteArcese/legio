@@ -12,3 +12,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: godot-tests
+        name: godot tests
+        entry: scripts/godot-tests.sh
+        language: system
+        pass_filenames: false
+        always_run: true

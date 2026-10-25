@@ -23,6 +23,12 @@ func _ready() -> void:
 	_status.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
 	_status.position = Vector2(24, -100)
 	_status.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	# A translucent backing keeps the text readable over world signs and labels.
+	var backing := StyleBoxFlat.new()
+	backing.bg_color = Color(0, 0, 0, 0.55)
+	backing.set_corner_radius_all(6)
+	backing.set_content_margin_all(8)
+	_status.add_theme_stylebox_override("normal", backing)
 	add_child(_status)
 
 	_drops = VBoxContainer.new()

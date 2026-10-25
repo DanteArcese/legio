@@ -2,15 +2,15 @@ extends RefCounted
 ## A player's skill levels and experience.
 ##
 ## Our own XP curve: each level costs a little more than the last, with the
-## cost roughly doubling every 7.5 levels. Level 99 needs about 10.3M XP.
+## cost roughly doubling every 7.3 levels. Level 2 needs 89 XP, level 10
+## about 1.2k, and level 99 about 9.9M.
 ## The constants are first guesses, to be tuned by playtesting.
 
 const NAMES := ["attack", "strength", "defence", "vitality", "slayer", "mining", "smithing", "cooking"]
 const MAX_LEVEL := 99
 const MAX_XP := 200_000_000.0
-const CURVE_SCALE := 1200.0
-const CURVE_DOUBLING := 7.5
-const CURVE_LINEAR := 30.0
+const CURVE_SCALE := 900.0
+const CURVE_DOUBLING := 7.3
 const VITALITY_START_LEVEL := 10
 
 ## Combat XP per point of damage.
@@ -37,7 +37,7 @@ static func xp_for_level(level: int) -> float:
 	if level <= 1:
 		return 0.0
 	var steps := float(level - 1)
-	return floorf(CURVE_SCALE * (pow(2.0, steps / CURVE_DOUBLING) - 1.0) + CURVE_LINEAR * steps)
+	return floorf(CURVE_SCALE * (pow(2.0, steps / CURVE_DOUBLING) - 1.0))
 
 
 static func level_for_xp(amount: float) -> int:

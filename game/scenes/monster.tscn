@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/world/monster.gd" id="1_monster"]
+[ext_resource type="Script" path="res://scripts/world/sim_entity.gd" id="2_entity"]
+
+[sub_resource type="CapsuleMesh" id="mesh"]
+radius = 0.4
+height = 2.0
+
+[sub_resource type="CapsuleShape3D" id="shape"]
+radius = 0.4
+height = 2.0
+
+[node name="Monster" type="CharacterBody3D"]
+collision_layer = 4
+script = ExtResource("1_monster")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("shape")
+
+[node name="HpLabel" type="Label3D" parent="."]
+billboard = 1
+no_depth_test = true
+font_size = 48
+outline_size = 10
+
+[node name="SimEntity" type="Node" parent="." node_paths=PackedStringArray("hp_label") groups=["sim_entities"]]
+script = ExtResource("2_entity")
+hp_label = NodePath("../HpLabel")

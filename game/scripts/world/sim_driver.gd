@@ -4,6 +4,10 @@ extends Node
 
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
+const LootPile := preload("res://scripts/world/loot_pile.gd")
+
+## Entities with entity_id 0 get ids from here up.
+const AUTO_ID_START := 1000
 
 signal ticked(tick: int)
 signal sim_event(event: Dictionary)
@@ -15,6 +19,7 @@ var sim: Simulation
 var clock := TickClock.new()
 
 var _entities := {}
+var _next_auto_id := AUTO_ID_START
 
 
 func _ready() -> void:
@@ -25,7 +30,10 @@ func _ready() -> void:
 
 
 func register(entity: Node) -> void:
-	entity.configure(sim.add_combatant(entity.entity_id))
+	if entity.entity_id == 0:
+		entity.entity_id = _next_auto_id
+		_next_auto_id += 1
+	entity.register(sim)
 	_entities[entity.entity_id] = entity
 
 
@@ -52,6 +60,8 @@ func _physics_process(delta: float) -> void:
 		for event in sim.step():
 			for entity in _entities.values():
 				entity.on_sim_event(event)
+			if event["type"] == "drop":
+				LootPile.spawn(get_parent(), event["position"], event["items"])
 			sim_event.emit(event)
 		ticked.emit(sim.tick)
 

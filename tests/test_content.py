@@ -69,3 +69,8 @@ def test_requirement_levels_must_be_in_range(content):
 def test_non_weapons_cannot_have_attack_speed(content):
     errors = errors_after(content, lambda c: c["items"]["bronze_scutum"]["equip"].update(attack_speed=4))
     assert any("only weapons" in e for e in errors)
+
+
+def test_monster_appearance_is_checked(content):
+    errors = errors_after(content, lambda c: c["monsters"]["wolf"]["appearance"].update(color="grey"))
+    assert any("appearance.color" in e for e in errors)

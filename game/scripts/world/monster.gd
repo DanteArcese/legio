@@ -6,6 +6,7 @@ const ContentDB := preload("res://scripts/content/content_db.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
 const CreatureModel := preload("res://scripts/world/creature_model.gd")
 const KaykitCharacter := preload("res://scripts/world/kaykit_character.gd")
+const CritterModel := preload("res://scripts/world/critter_model.gd")
 
 ## Collision height and label height per model kind, as multiples of size.
 const BODY_HEIGHT := {"quadruped": 0.9, "humanoid": 1.9, "bird": 1.2, "kaykit": 1.9}
@@ -26,7 +27,13 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	var look: Dictionary = ContentDB.monster(monster_id)["appearance"]
-	_model = KaykitCharacter.create(look) if look["model"] == "kaykit" else CreatureModel.create(look)
+	match look["model"]:
+		"kaykit":
+			_model = KaykitCharacter.create(look)
+		"quadruped", "bird":
+			_model = CritterModel.create(look)
+		_:
+			_model = CreatureModel.create(look)
 	add_child(_model)
 	_entity.combat_moment.connect(_on_combat_moment)
 	var size := float(look["size"])
@@ -39,11 +46,11 @@ func _ready() -> void:
 
 
 func has_animated_model() -> bool:
-	return _model is KaykitCharacter
+	return _model is KaykitCharacter or _model is CritterModel
 
 
 func _on_combat_moment(moment: String, info: Dictionary) -> void:
-	if not _model is KaykitCharacter:
+	if not has_animated_model():
 		return
 	match moment:
 		"attack":

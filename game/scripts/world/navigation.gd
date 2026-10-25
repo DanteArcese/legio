@@ -4,8 +4,8 @@ extends Node
 ## and click-to-move. Nodes opt in by joining the "navigation_source" group.
 
 const SOURCE_GROUP := "navigation_source"
-## Terrain and buildings (1) plus props and NPCs (8).
-const SOURCE_COLLISION_MASK := 1 | 8
+## Terrain (1), props and NPCs (8), and structures (16).
+const SOURCE_COLLISION_MASK := 1 | 8 | 16
 const AGENT_RADIUS := 0.5
 ## Waypoints closer than this are treated as reached.
 const WAYPOINT_REACHED := 0.4

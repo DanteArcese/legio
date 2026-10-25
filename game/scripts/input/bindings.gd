@@ -27,6 +27,7 @@ const DEFAULTS := {
 	"target_next": [["key", KEY_TAB], ["joy_button", JOY_BUTTON_RIGHT_SHOULDER]],
 	"target_prev": [["key", KEY_Q], ["joy_button", JOY_BUTTON_LEFT_SHOULDER]],
 	"combat_style": [["key", KEY_C], ["joy_button", JOY_BUTTON_X]],
+	"toggle_roofs": [["key", KEY_H], ["joy_button", JOY_BUTTON_RIGHT_STICK]],
 	"run_toggle": [["key", KEY_R], ["joy_button", JOY_BUTTON_LEFT_STICK]],
 	"inventory": [["key", KEY_I], ["joy_button", JOY_BUTTON_BACK]],
 	"pause_menu": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_START]],

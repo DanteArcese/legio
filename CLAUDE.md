@@ -49,4 +49,4 @@ uv run --env-file .env <command>   # Run with local secrets
 
 - `game/scenes/castra_ferrea.tscn` holds the town's static greybox geometry (walls, buildings, woods, hills, bounds). Interactive things (NPCs, stations, rocks, monsters) live in `main.tscn`.
 - Navigation: `scripts/world/navigation.gd` bakes a navmesh at startup from static bodies in the `navigation_source` group (layers 1 and 4). Add new static obstacles to that group. Player auto-approach, click-to-move, and monster movement path with `Navigation.next_waypoint`.
-- Collision layers: 1 = terrain and buildings (the camera collides with these), 2 = player, 3 = monsters, 4 = props and NPCs. The player and monsters collide with layers 1 and 4.
+- Collision layers: 1 = terrain and world bounds (the camera collides only with these), 2 = player, 3 = monsters, 4 = props and NPCs, 5 = structures (walls, buildings, trees; value 16). The player and monsters collide with 1, 4, and 5. Structures between the camera and the player fade (`scripts/world/occlusion_fader.gd`); a building's roof is a sibling mesh named `<Building>Roof`.

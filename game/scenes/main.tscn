@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" path="res://scenes/barrow.tscn" id="14_barrow"]
 [ext_resource type="Script" path="res://scripts/world/transition.gd" id="15_transition"]
 [ext_resource type="Script" path="res://scripts/world/area_lighting.gd" id="16_lighting"]
+[ext_resource type="Script" path="res://scripts/world/occlusion_fader.gd" id="17_fader"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -118,7 +119,7 @@ shape = SubResource("ground_shape")
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_rig", "sim_driver")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)
 collision_layer = 2
-collision_mask = 9
+collision_mask = 25
 script = ExtResource("1_player")
 camera_rig = NodePath("../CameraRig")
 sim_driver = NodePath("../SimDriver")
@@ -426,4 +427,9 @@ player_entity = NodePath("../Player/SimEntity")
 script = ExtResource("16_lighting")
 environment = NodePath("../WorldEnvironment")
 sun = NodePath("../Sun")
+player = NodePath("../Player")
+
+[node name="OcclusionFader" type="Node" parent="." node_paths=PackedStringArray("camera_rig", "player")]
+script = ExtResource("17_fader")
+camera_rig = NodePath("../CameraRig")
 player = NodePath("../Player")

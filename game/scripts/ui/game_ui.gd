@@ -68,8 +68,8 @@ func open_bank() -> void:
 	_bank_panel.visible = true
 	_inventory_panel.visible = true
 	_refresh()
-	var first := _bank_grid.get_child(0) as Control
-	(first if first else _inventory_buttons[0]).grab_focus()
+	var first: Control = _bank_grid.get_child(0) if _bank_grid.get_child_count() > 0 else _inventory_buttons[0]
+	first.grab_focus()
 
 
 ## Shows what can be made at a station; picking one makes as many as possible.

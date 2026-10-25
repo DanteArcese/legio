@@ -20,6 +20,7 @@ func recipe_kind() -> String:
 func _init() -> void:
 	collision_layer = 8
 	add_to_group("stations")
+	add_to_group("navigation_source")
 
 
 func _ready() -> void:

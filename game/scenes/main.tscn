@@ -17,6 +17,8 @@
 [ext_resource type="Script" path="res://scripts/world/transition.gd" id="15_transition"]
 [ext_resource type="Script" path="res://scripts/world/area_lighting.gd" id="16_lighting"]
 [ext_resource type="Script" path="res://scripts/world/occlusion_fader.gd" id="17_fader"]
+[ext_resource type="Script" path="res://scripts/settings/graphics_settings.gd" id="18_graphics"]
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="19_pause"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -433,3 +435,15 @@ player = NodePath("../Player")
 script = ExtResource("17_fader")
 camera_rig = NodePath("../CameraRig")
 player = NodePath("../Player")
+
+[node name="GraphicsSettings" type="Node" parent="." node_paths=PackedStringArray("environment", "sun", "occlusion_fader")]
+script = ExtResource("18_graphics")
+environment = NodePath("../WorldEnvironment")
+sun = NodePath("../Sun")
+occlusion_fader = NodePath("../OcclusionFader")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui")]
+layer = 10
+script = ExtResource("19_pause")
+settings = NodePath("../GraphicsSettings")
+game_ui = NodePath("../GameUi")

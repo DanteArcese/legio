@@ -158,7 +158,7 @@ Decided: **follows OSRS's structure.**
 
 OSRS is built on point-and-click. A controller needs a different interaction model:
 
-- **Direct movement** with the left stick, and an **orbit camera** on the right stick.
+- **Direct movement** with the left stick, and an **orbit camera** on the right stick. The camera only rotates when you move it; it never auto-follows (decided).
 - **Context interaction:** face a target and press A for the default action, or press Y for a **radial menu** with the other options (this replaces right-click menus).
 - **Soft target lock** in combat, with the bumpers cycling targets.
 - **Radial or grid inventory** that you navigate with the D-pad.
@@ -242,10 +242,13 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - **Architecture impact:** every item-acquisition path (shops, market, drops, rewards) goes through one place that checks the account mode. Content data marks shop stock that a Solitarius character can't buy.
 - Possible later: a "hardcore" variant with one life, and group modes in the MMO.
 
+## Other decisions
+
+- **Banking:** one shared bank, accessible from every bank in the world, as in OSRS. Mercatura gets its value from trade contracts and regional prices, not from moving your own items around.
+- **Start:** an open frontier town with an **optional** tutorial. New players get a guided starter questline that they can skip at any time.
+
 ## Open questions
 
-1. Game ticks: use OSRS's 0.6 s, or a slightly faster tick to suit free movement? To be prototyped in #4.
-2. Banking: one global bank as in OSRS, or a bank per province that Mercatura can move items between? A global bank is simpler and kinder; per-province banks would make Mercatura matter more.
-3. Is the starting area an inescapable tutorial island like OSRS, or an open frontier town with an optional tutorial?
+1. Game ticks: use OSRS's 0.6 s, or a slightly faster tick to suit free movement? Being prototyped in #4.
 
 Title: **Legio** (decided unless something better comes along).

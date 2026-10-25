@@ -2212,7 +2212,7 @@ shape = SubResource("boxshape3d_221")
 [node name="BarrowSign" type="Label3D" parent="Outside"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 4.5, -39)
 billboard = 1
-text = "Barrow of the Lemures (sealed)"
+text = "Barrow of the Lemures"
 font_size = 48
 outline_size = 10
 visibility_range_end = 60.0

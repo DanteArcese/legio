@@ -58,6 +58,12 @@
           "slayer_level": 10,
           "combat_level": 18
         }
+      ],
+      "shop": [
+        {
+          "item": "whitethorn_charm",
+          "price": 150
+        }
       ]
     }
   }

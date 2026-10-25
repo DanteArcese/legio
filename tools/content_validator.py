@@ -52,7 +52,7 @@ def validate(content: dict) -> list[str]:
     for table_id, table in drops.items():
         _check_drop_table(f"drops.{table_id}", table, items, errors)
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
-        _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, errors)
+        _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, items, errors)
     _check_skilling(content.get("skilling", {}), items, errors)
     player = content.get("player", {})
     _check_keys("player", player, {"starting_kit"}, {"starting_kit"}, errors)
@@ -171,10 +171,16 @@ def _check_drop(where, entry, items, errors, nothing_allowed, multiples_allowed=
             errors.append(f"{where}.quantity: {item_id} isn't stackable, so drop at most 1")
 
 
-def _check_venator(where, venator, monsters, errors):
+def _check_venator(where, venator, monsters, items, errors):
     _check_type(where, "name", venator.get("name"), str, errors)
     _check_int(where, "combat_level", venator.get("combat_level"), 1, errors)
     _check_int(where, "points_per_task", venator.get("points_per_task"), 0, errors)
+    _check_keys(where, venator, {"name", "location", "combat_level", "points_per_task", "tasks", "shop"}, {"name", "combat_level", "points_per_task", "tasks"}, errors)
+    for i, offer in enumerate(venator.get("shop", [])):
+        _check_keys(f"{where}.shop[{i}]", offer, {"item", "price"}, {"item", "price"}, errors)
+        if offer.get("item") not in items:
+            errors.append(f"{where}.shop[{i}].item: unknown item {offer.get('item')!r}")
+        _check_int(f"{where}.shop[{i}]", "price", offer.get("price"), 1, errors)
     if not venator.get("tasks"):
         errors.append(f"{where}.tasks: at least one task required")
     for i, task in enumerate(venator.get("tasks", [])):

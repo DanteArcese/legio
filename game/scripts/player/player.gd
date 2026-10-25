@@ -192,6 +192,26 @@ func loot_grave(grave: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "loot_grave"))
 
 
+func travel(doorway: Node3D) -> void:
+	walk_and_do(doorway.global_position, 1.9, _arrive_through.bind(doorway))
+
+
+func buy(venator: Node3D, item_id: String) -> void:
+	walk_and_do(venator.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"venator": venator.get_meta("venator_id"), "item": item_id}))
+
+
+func _arrive_through(doorway: Node3D) -> void:
+	var id: int = _entity.entity_id
+	sim_driver.sim.queue_stop(id)
+	sim_driver.sim.queue_item_action(id, "stop_action")
+	destination = null
+	_on_arrival = {}
+	velocity = Vector3.ZERO
+	global_position = doorway.destination + Vector3(0, 1, 0)
+	sim_driver.sim.set_position(id, doorway.destination)
+
+
 func examine(text: String) -> void:
 	message_requested.emit(text)
 
@@ -204,6 +224,10 @@ func interact() -> void:
 		return
 	if _near_any("graves", grave_radius):
 		sim_driver.sim.queue_item_action(id, "loot_grave")
+		return
+	var doorway := _nearest_in_group("transitions", 2.0)
+	if doorway:
+		_arrive_through(doorway)
 		return
 	var rock := _nearest_in_group("rocks", grave_radius + 0.4)
 	if rock:
@@ -289,7 +313,12 @@ func _destination_direction() -> Vector3:
 		if action:
 			action.call()
 		return Vector3.ZERO
-	return _flat(Navigation.next_waypoint(get_world_3d(), global_position, destination) - global_position).normalized()
+	var step := _flat(Navigation.next_waypoint(get_world_3d(), global_position, destination) - global_position)
+	if step.length() < 0.01:
+		destination = null
+		_on_arrival = {}
+		return Vector3.ZERO
+	return step.normalized()
 
 
 ## Direction along the path toward the current target while out of reach,
@@ -300,7 +329,8 @@ func _approach_direction() -> Vector3:
 		return Vector3.ZERO
 	if _flat(target_position - global_position).length() <= _entity.combatant.reach * 0.9:
 		return Vector3.ZERO
-	return _flat(Navigation.next_waypoint(get_world_3d(), global_position, target_position) - global_position).normalized()
+	var step := _flat(Navigation.next_waypoint(get_world_3d(), global_position, target_position) - global_position)
+	return step.normalized() if step.length() > 0.01 else Vector3.ZERO
 
 
 static func _flat(v: Vector3) -> Vector3:

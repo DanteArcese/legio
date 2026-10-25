@@ -40,6 +40,8 @@ const REGEN_INTERVAL := 100
 const WANDER_CHANCE := 0.1
 ## Aggressive monsters ignore players above this multiple of their level.
 const AGGRO_LEVEL_MULTIPLIER := 2
+## Monsters give up on targets farther away than this (e.g. who left the area).
+const CHASE_RANGE := 30.0
 
 var tick := 0
 var rng := RandomNumberGenerator.new()
@@ -284,6 +286,8 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			_reclaim(player, events)
 		"slayer_task":
 			_slayer_task(player, command.get("venator", ""), events)
+		"buy":
+			_buy(player, command.get("venator", ""), command.get("item", ""), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"craft":
@@ -421,6 +425,11 @@ func _think(monster: Combatant) -> void:
 		return
 
 	var target: Combatant = _combatants.get(monster.target_id)
+	if target and _flat_distance(monster.position, target.position) > CHASE_RANGE:
+		monster.target_id = -1
+		monster.returning = true
+		monster.move_target = monster.spawn_position
+		return
 	if target == null and monster.aggressive:
 		target = _find_aggro_target(monster)
 		if target:
@@ -624,6 +633,25 @@ func _reclaim(player: Combatant, events: Array[Dictionary]) -> void:
 	_message(player, "You pay %d denarii. Your belongings are waiting in your bank." % fee, events)
 	events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
 	events.append({"type": "bank_changed", "id": player.id, "tick": tick})
+
+
+## Buys from a venator's shop with coins from the inventory.
+func _buy(player: Combatant, venator_id: String, item_id: String, events: Array[Dictionary]) -> void:
+	if not _venators.has(venator_id) or _flat_distance(_venators[venator_id], player.position) > VENATOR_RANGE:
+		return
+	var offers: Array = ContentDB.venator(venator_id).get("shop", []).filter(func(o): return o["item"] == item_id)
+	if offers.is_empty():
+		return
+	var price: int = offers[0]["price"]
+	if player.inventory.count("coins") < price:
+		_message(player, "You need %d denarii for that." % price, events)
+		return
+	if player.inventory.space_for(item_id, 1) == 0 and player.inventory.count("coins") > price:
+		_message(player, "You don't have enough inventory space.", events)
+		return
+	player.inventory.remove("coins", price)
+	give_item(player.id, item_id, 1, "shop", events)
+	_message(player, "You buy a %s." % ContentDB.item(item_id)["name"].to_lower(), events)
 
 
 func _meets_slayer_requirement(fighter: Combatant, opponent: Combatant) -> bool:

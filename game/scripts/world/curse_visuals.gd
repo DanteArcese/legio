@@ -38,9 +38,8 @@ static func aura(body: Node3D, seconds: float, tint: Color) -> void:
 		ring.add_child(mote)
 	var spin := ring.create_tween().set_loops()
 	spin.tween_property(ring, "rotation:y", TAU, 2.5).from(0.0)
-	body.get_tree().create_timer(seconds).timeout.connect(func():
-		if is_instance_valid(ring):
-			ring.queue_free())
+	# Bound to the ring itself, so a refreshed aura's old timer just goes away.
+	body.get_tree().create_timer(seconds).timeout.connect(ring.queue_free)
 
 
 static func _mote(radius: float, tint := Color(0.08, 0.05, 0.1)) -> MeshInstance3D:

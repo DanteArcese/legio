@@ -37,7 +37,7 @@ uv run --env-file .env <command>   # Run with local secrets
 - Tests are `game/tests/test_*.gd` and extend `res://tests/test_case.gd`. Methods named `test_*` run in the headless runner (`game/tests/run_tests.gd`).
 - Input bindings are defined in code in `game/scripts/input/bindings.gd`, not in project.godot. Every action needs a keyboard/mouse binding and a gamepad binding.
 - Use `preload` instead of `class_name`, so scripts resolve in a fresh checkout without an editor import.
-- Playtest scenarios live in `game/tools/playtest/scenarios/`, extend `scenario.gd`, and drive the real scene (walk_to, route_to, press, seconds, shot, metric, expect). Use `route_to` for trips that cross the Castra Ferrea walls; it goes through the nearest gate. CI runs them all headlessly. Use `--render --out <dir>` to get screenshots for visual review.
+- Playtest scenarios live in `game/tools/playtest/scenarios/`, extend `scenario.gd`, and drive the real scene (walk_to, route_to, press, seconds, shot, metric, expect). Use `route_to` for trips that cross the Castra Ferrea walls; it goes through the nearest gate. CI runs them all headlessly. Use `--render --out <dir>` to get screenshots for visual review. The runner fails a scenario on any engine or script error during the run, and gives up after 15 minutes. Playtests run at a fixed noon unless a scenario changes `DayNight`.
 
 ## Content
 

@@ -14,6 +14,7 @@ const ContentDB := preload("res://scripts/content/content_db.gd")
 const ItemContainer := preload("res://scripts/sim/item_container.gd")
 const Equipment := preload("res://scripts/sim/equipment.gd")
 const DeathRules := preload("res://scripts/sim/death_rules.gd")
+const Slayer := preload("res://scripts/sim/slayer.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -23,6 +24,7 @@ const PICKUP_RANGE := 2.0
 const BANK_RANGE := 3.0
 const GRAVE_RANGE := 2.0
 const LIBITINARIUS_RANGE := 3.0
+const VENATOR_RANGE := 3.0
 ## Graves last 15 minutes before the libitinarii collect the items.
 const GRAVE_LIFETIME := 1500
 const PLAYER_RESPAWN_TICKS := 3
@@ -48,6 +50,8 @@ var _ground := {}
 var _next_pile_id := 1
 var _banks: Array[Vector3] = []
 var _libitinarii: Array[Vector3] = []
+## venator id -> position
+var _venators := {}
 ## player id -> {"id", "position", "items", "expires_at"}. One grave per player.
 var _graves := {}
 var _next_grave_id := 1
@@ -112,6 +116,10 @@ func add_bank(position: Vector3) -> void:
 
 func add_libitinarius(position: Vector3) -> void:
 	_libitinarii.append(position)
+
+
+func add_venator(venator_id: String, position: Vector3) -> void:
+	_venators[venator_id] = position
 
 
 func grave_of(player_id: int) -> Dictionary:
@@ -263,6 +271,8 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			_loot_grave(player, events)
 		"reclaim":
 			_reclaim(player, events)
+		"slayer_task":
+			_slayer_task(player, command.get("venator", ""), events)
 		"deposit", "deposit_all", "withdraw":
 			if not _near_bank(player):
 				_message(player, "You need to be at a bank.", events)
@@ -427,21 +437,39 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		return
 	if _flat_distance(attacker.position, target.position) > attacker.reach:
 		return
+	if not _meets_slayer_requirement(attacker, target):
+		attacker.target_id = -1
+		_message(attacker, "You need Slayer %d to fight this." % Slayer.required_level(target.monster_id), events)
+		return
+
+	# Monsters with a ward item are much worse to fight without it.
+	var effect := ""
+	if attacker.is_player() and not target.monster_id.is_empty():
+		effect = Slayer.unwarded_effect(target.monster_id, attacker.equipment)
+	elif target.is_player() and not attacker.monster_id.is_empty():
+		effect = Slayer.unwarded_effect(attacker.monster_id, target.equipment)
 
 	var chance := CombatMath.hit_chance(
 		attacker.effective_level("attack"), attacker.bonuses["attack"],
 		target.effective_level("defence"), target.bonuses["defence"])
 	var damage := 0
-	if rng.randf() < chance:
+	var lands := rng.randf() < chance
+	if effect == "drain_vitality" and target.is_player():
+		lands = true
+	if lands and not (effect == "no_damage" and attacker.is_player()):
 		damage = mini(rng.randi_range(1, attacker.max_hit()), target.hp)
 	target.hp -= damage
+	target.last_attacker_id = attacker.id
+	if effect == "drain_vitality" and target.is_player():
+		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
 	attacker.next_attack_tick = tick + attacker.attack_speed
 	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage, "tick": tick})
 	if attacker.skills and damage > 0:
 		_award_xp(attacker, Skills.STYLE_SKILLS[attacker.style], damage * Skills.STYLE_XP_PER_DAMAGE, events)
 		_award_xp(attacker, "vitality", damage * Skills.VITALITY_XP_PER_DAMAGE, events)
 
-	if target.target_id == -1 and target.auto_retaliate and target.can_fight and not target.returning:
+	if target.target_id == -1 and target.auto_retaliate and target.can_fight and not target.returning \
+			and _meets_slayer_requirement(target, attacker):
 		target.target_id = attacker.id
 		# Retaliation lands after half the target's attack speed, not instantly.
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
@@ -470,6 +498,10 @@ func _kill(victim: Combatant, events: Array[Dictionary]) -> void:
 	events.append({"type": "death", "id": victim.id, "tick": tick})
 	if victim.inventory:
 		_player_death(victim, events)
+	var killer: Combatant = _combatants.get(victim.last_attacker_id)
+	if killer and killer.is_player() and not victim.monster_id.is_empty():
+		_slayer_kill(killer, victim, events)
+	victim.last_attacker_id = -1
 	if not victim.drop_table.is_empty():
 		var items := Drops.roll(ContentDB.drop_table(victim.drop_table), rng)
 		if not items.is_empty():
@@ -560,6 +592,46 @@ func _reclaim(player: Combatant, events: Array[Dictionary]) -> void:
 	_message(player, "You pay %d denarii. Your belongings are waiting in your bank." % fee, events)
 	events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
 	events.append({"type": "bank_changed", "id": player.id, "tick": tick})
+
+
+func _meets_slayer_requirement(fighter: Combatant, opponent: Combatant) -> bool:
+	if not fighter.is_player() or opponent.monster_id.is_empty():
+		return true
+	return fighter.skills.level("slayer") >= Slayer.required_level(opponent.monster_id)
+
+
+func _slayer_task(player: Combatant, venator_id: String, events: Array[Dictionary]) -> void:
+	if not _venators.has(venator_id) or _flat_distance(_venators[venator_id], player.position) > VENATOR_RANGE:
+		return
+	var task := player.slayer_task
+	if not task.is_empty():
+		_message(player, "You still need to hunt %d %s." % [task["remaining"], Slayer.plural_name(task["monster"])], events)
+		return
+	task = Slayer.assign(venator_id, player.combat_level(), player.skills.level("slayer"), rng)
+	if task.is_empty():
+		_message(player, "Come back when you can handle yourself.", events)
+		return
+	player.slayer_task = task
+	_message(player, "Hunt %d %s." % [task["total"], Slayer.plural_name(task["monster"])], events)
+	events.append({"type": "slayer_assigned", "id": player.id, "task": task.duplicate(), "tick": tick})
+
+
+## Kill credit: Slayer XP equals the monster's hitpoints, on task only.
+func _slayer_kill(player: Combatant, victim: Combatant, events: Array[Dictionary]) -> void:
+	var task := player.slayer_task
+	if task.is_empty() or task["monster"] != victim.monster_id:
+		return
+	task["remaining"] -= 1
+	_award_xp(player, "slayer", victim.max_hp, events)
+	events.append({"type": "slayer_progress", "id": player.id, "remaining": task["remaining"], "tick": tick})
+	if task["remaining"] > 0:
+		return
+	var points: int = ContentDB.venator(task["venator"])["points_per_task"]
+	player.slayer_points += points
+	player.slayer_tasks_done += 1
+	player.slayer_task = {}
+	_message(player, "Contract complete! You earn %d Slayer points (%d total)." % [points, player.slayer_points], events)
+	events.append({"type": "slayer_complete", "id": player.id, "points": points, "tick": tick})
 
 
 func _regenerate() -> void:

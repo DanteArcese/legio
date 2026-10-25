@@ -34,6 +34,8 @@ func _ready() -> void:
 		sim.add_bank(bank.global_position)
 	for undertaker in get_tree().get_nodes_in_group("libitinarii"):
 		sim.add_libitinarius(undertaker.global_position)
+	for venator in get_tree().get_nodes_in_group("venatores"):
+		sim.add_venator(venator.get_meta("venator_id"), venator.global_position)
 
 
 func register(entity: Node) -> void:

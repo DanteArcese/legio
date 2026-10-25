@@ -29,6 +29,12 @@ var style := "accurate"
 var inventory: RefCounted = null
 var equipment: RefCounted = null
 var bank: RefCounted = null
+## Slayer: current task ({} for none), points, and completed task count.
+var slayer_task := {}
+var slayer_points := 0
+var slayer_tasks_done := 0
+## Who last hit this combatant, for kill credit.
+var last_attacker_id := -1
 ## "standard" or "solitarius" (self-sufficient: no market or trading).
 var account_mode := "standard"
 

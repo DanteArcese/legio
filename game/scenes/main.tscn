@@ -77,6 +77,12 @@ material = SubResource("black_robe")
 
 [sub_resource type="CapsuleShape3D" id="undertaker_shape"]
 
+[sub_resource type="StandardMaterial3D" id="hunter_leather"]
+albedo_color = Color(0.42, 0.33, 0.18, 1)
+
+[sub_resource type="CapsuleMesh" id="venator_mesh"]
+material = SubResource("hunter_leather")
+
 [node name="Main" type="Node3D"]
 
 [node name="SimDriver" type="Node" parent="."]
@@ -191,6 +197,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 text = "Libitinarius
 (reclaims lost items)"
+font_size = 36
+outline_size = 8
+
+[node name="VenatorAulus" type="StaticBody3D" parent="." groups=["venatores"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 4.5)
+metadata/venator_id = "aulus"
+
+[node name="Mesh" type="MeshInstance3D" parent="VenatorAulus"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="VenatorAulus"]
+shape = SubResource("undertaker_shape")
+
+[node name="Label" type="Label3D" parent="VenatorAulus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Aulus the Venator
+(Slayer contracts)"
 font_size = 36
 outline_size = 8
 

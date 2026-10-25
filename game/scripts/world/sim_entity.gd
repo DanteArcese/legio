@@ -4,7 +4,6 @@ extends Node
 ## (the player, the training dummy) are configured with the exports below.
 
 const HitSplat := preload("res://scripts/world/hit_splat.gd")
-const Skills := preload("res://scripts/sim/skills.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
 ## 0 means the driver assigns an id.
@@ -23,7 +22,7 @@ const ContentDB := preload("res://scripts/content/content_db.gd")
 ## Whether the player can target this entity.
 @export var attackable := true
 @export var hp_label: Label3D
-## Players get skills and earn XP; their max HP follows Vitality.
+## Players get skills, an inventory, equipment, a bank, and the starting kit.
 @export var is_player := false
 
 var combatant: RefCounted
@@ -39,6 +38,11 @@ func register(sim: RefCounted) -> void:
 	spawn_position = body().global_position
 	if not monster_id.is_empty():
 		combatant = sim.add_monster(entity_id, monster_id, spawn_position)
+	elif is_player:
+		combatant = sim.add_player(entity_id, spawn_position)
+		combatant.reach = reach
+		combatant.respawn_ticks = respawn_ticks
+		sim.give_starting_kit(entity_id)
 	else:
 		combatant = sim.add_combatant(entity_id)
 		combatant.max_hp = max_hp
@@ -49,10 +53,6 @@ func register(sim: RefCounted) -> void:
 		combatant.can_fight = can_fight
 		combatant.auto_retaliate = auto_retaliate
 		combatant.respawn_ticks = respawn_ticks
-		if is_player:
-			combatant.skills = Skills.new()
-			combatant.max_hp = combatant.skills.level("vitality")
-			combatant.hp = combatant.max_hp
 	_update_label()
 
 

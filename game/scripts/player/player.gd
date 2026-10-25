@@ -1,7 +1,10 @@
 extends CharacterBody3D
 ## Directly controlled player: left stick / WASD moves relative to the camera.
-## Interact targets the nearest enemy; with no stick input, the player walks
-## into reach of its target automatically.
+## Interact picks up nearby loot, opens a nearby bank, or targets the nearest
+## enemy, in that order. With no stick input, the player walks into reach of
+## its target automatically.
+
+signal bank_opened
 
 const MoveMath := preload("res://scripts/player/move_math.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -10,6 +13,8 @@ const Skills := preload("res://scripts/sim/skills.gd")
 @export var run_speed := 6.0
 @export var turn_speed := 12.0
 @export var target_radius := 8.0
+@export var pickup_radius := 2.0
+@export var bank_radius := 2.5
 @export var camera_rig: Node3D
 @export var sim_driver: Node
 
@@ -26,11 +31,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		var next: String = styles[(styles.find(_entity.combatant.style) + 1) % styles.size()]
 		sim_driver.sim.queue_style(_entity.entity_id, next)
 	elif event.is_action_pressed("interact") and sim_driver:
-		var target_id: int = sim_driver.nearest_target(_entity.entity_id, target_radius)
-		if target_id == -1:
-			sim_driver.sim.queue_stop(_entity.entity_id)
-		else:
-			sim_driver.sim.queue_attack(_entity.entity_id, target_id)
+		interact()
+
+
+func interact() -> void:
+	var id: int = _entity.entity_id
+	var pile: Node3D = sim_driver.nearest_pile(global_position, pickup_radius, _entity.combatant.inventory)
+	if pile:
+		sim_driver.sim.queue_item_action(id, "pickup", {"pile": pile.pile_id})
+		return
+	for bank in get_tree().get_nodes_in_group("banks"):
+		if global_position.distance_to(bank.global_position) <= bank_radius:
+			bank_opened.emit()
+			return
+	var target_id: int = sim_driver.nearest_target(id, target_radius)
+	if target_id == -1:
+		sim_driver.sim.queue_stop(id)
+	else:
+		sim_driver.sim.queue_attack(id, target_id)
 
 
 func _physics_process(delta: float) -> void:

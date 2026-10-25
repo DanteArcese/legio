@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer")
+FILES = ("items", "monsters", "drops", "slayer", "player")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "slayer", "mining", "smithing", "cooking"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -44,6 +44,14 @@ def validate(content: dict) -> list[str]:
         _check_drop_table(f"drops.{table_id}", table, items, errors)
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, errors)
+    player = content.get("player", {})
+    _check_keys("player", player, {"starting_kit"}, {"starting_kit"}, errors)
+    kit = player.get("starting_kit", [])
+    for i, entry in enumerate(kit):
+        _check_drop(f"player.starting_kit[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+    slots = sum(1 if items.get(e.get("item"), {}).get("stackable") else e.get("quantity", 1) for e in kit if _is_int(e.get("quantity", 1)))
+    if slots > 28:
+        errors.append(f"player.starting_kit: needs {slots} inventory slots, more than 28")
     return errors
 
 
@@ -125,7 +133,7 @@ def _check_drop_table(where, table, items, errors):
         _check_int(f"{where}.table[{i}]", "weight", entry.get("weight"), 1, errors)
 
 
-def _check_drop(where, entry, items, errors, nothing_allowed):
+def _check_drop(where, entry, items, errors, nothing_allowed, multiples_allowed=False):
     item_id = entry.get("item")
     if item_id is None:
         if not nothing_allowed:
@@ -138,11 +146,11 @@ def _check_drop(where, entry, items, errors, nothing_allowed):
     if isinstance(quantity, list):
         if len(quantity) != 2 or not all(_is_int(q) and q >= 1 for q in quantity) or quantity[0] > quantity[1]:
             errors.append(f"{where}.quantity: expected [min, max] with 1 <= min <= max")
-        elif quantity[1] > 1 and not items[item_id].get("stackable"):
+        elif quantity[1] > 1 and not items[item_id].get("stackable") and not multiples_allowed:
             errors.append(f"{where}.quantity: {item_id} isn't stackable, so drop at most 1")
     else:
         _check_int(where, "quantity", quantity, 1, errors)
-        if _is_int(quantity) and quantity > 1 and not items[item_id].get("stackable"):
+        if _is_int(quantity) and quantity > 1 and not items[item_id].get("stackable") and not multiples_allowed:
             errors.append(f"{where}.quantity: {item_id} isn't stackable, so drop at most 1")
 
 

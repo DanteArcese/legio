@@ -1,18 +1,27 @@
 extends Node3D
-## Items dropped on the ground. Picking up arrives with the inventory (#14).
+## Shows a ground item pile from the simulation. The simulation owns the
+## items and their expiry; this node only mirrors them.
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
-const LIFETIME := 120.0
-
+var pile_id := 0
 var items: Array = []
 
+var _label: Label3D
 
-static func spawn(parent: Node, at: Vector3, p_items: Array) -> Node3D:
+
+static func spawn(parent: Node, id: int, at: Vector3, p_items: Array) -> Node3D:
 	var pile := new()
+	pile.pile_id = id
 	pile.items = p_items
+	pile.add_to_group("loot_piles")
 	parent.add_child(pile)
 	pile.global_position = Vector3(at.x, 0.0, at.z)
 	return pile
+
+
+func set_items(p_items: Array) -> void:
+	items = p_items
+	_refresh_label()
 
 
 func _ready() -> void:
@@ -26,15 +35,20 @@ func _ready() -> void:
 	mesh.position.y = 0.1
 	add_child(mesh)
 
-	var label := Label3D.new()
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.font_size = 32
-	label.outline_size = 8
-	label.position.y = 0.6
+	_label = Label3D.new()
+	_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_label.font_size = 32
+	_label.outline_size = 8
+	_label.position.y = 0.6
+	add_child(_label)
+	_refresh_label()
+
+
+func _refresh_label() -> void:
+	if _label == null:
+		return
 	var lines := PackedStringArray()
 	for drop in items:
 		var name: String = ContentDB.item(drop["item"])["name"]
 		lines.append(name if drop["quantity"] == 1 else "%s x%d" % [name, drop["quantity"]])
-	label.text = "\n".join(lines)
-	add_child(label)
-	get_tree().create_timer(LIFETIME, false).timeout.connect(queue_free)
+	_label.text = "\n".join(lines)

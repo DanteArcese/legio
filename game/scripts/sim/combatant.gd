@@ -37,6 +37,11 @@ var bank: RefCounted = null
 var slayer_task := {}
 var slayer_points := 0
 var slayer_tasks_done := 0
+## Pietas: favour points, active blessing ids, and their summed boosts
+## (e.g. {"strength": 0.05}); see pietas.gd.
+var favour := 1.0
+var blessings: Array = []
+var blessing_boosts := {}
 ## Current skilling action ({} for none); see skilling.gd.
 var skill_action := {}
 ## Who last hit this combatant, for kill credit.
@@ -87,7 +92,9 @@ func effective_level(skill: String) -> int:
 	var style_bonus := 0
 	if skills and Skills.STYLE_BONUS_SKILL[style] == skill:
 		style_bonus = CombatMath.STYLE_BONUS
-	return CombatMath.effective_level(level(skill), style_bonus)
+	# Blessings raise the level itself, e.g. +5% Strength.
+	var boosted := floori(level(skill) * (1.0 + blessing_boosts.get(skill, 0.0)))
+	return CombatMath.effective_level(boosted, style_bonus)
 
 
 ## "melee", "ranged", or "ritus". Monsters fight in melee.

@@ -56,5 +56,19 @@
         "quantity": 10
       }
     ]
+  },
+  "sacerdos": {
+    "name": "Sacerdos",
+    "offers": [
+      {
+        "item": "incense",
+        "price": 60,
+        "quantity": 5
+      },
+      {
+        "item": "wine",
+        "price": 18
+      }
+    ]
   }
 }

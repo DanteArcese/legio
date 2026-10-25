@@ -249,6 +249,16 @@ func _arrive_through(doorway: Node3D) -> void:
 	sim_driver.sim.set_position(id, doorway.destination)
 
 
+func pray(altar: Node3D) -> void:
+	walk_and_do(altar.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "pray"))
+
+
+func offer(altar: Node3D, item_id: String) -> void:
+	walk_and_do(altar.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "offer", {"item": item_id}))
+
+
 func examine(text: String) -> void:
 	message_requested.emit(text)
 
@@ -261,6 +271,9 @@ func interact() -> void:
 		return
 	if _near_any("graves", grave_radius):
 		sim_driver.sim.queue_item_action(id, "loot_grave")
+		return
+	if _near_any("altars", bank_radius):
+		sim_driver.sim.queue_item_action(id, "pray")
 		return
 	var doorway := _nearest_in_group("transitions", 2.0)
 	if doorway:
@@ -306,6 +319,8 @@ func _physics_process(delta: float) -> void:
 		direction = approach
 		face_target = approach == Vector3.ZERO and _target_position() != null
 	var speed := run_speed if running else walk_speed
+	if running and _entity.combatant:
+		speed *= 1.0 + _entity.combatant.blessing_boosts.get("run_speed", 0.0)
 
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed

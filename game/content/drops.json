@@ -4,6 +4,10 @@
       {
         "item": "raw_meat",
         "quantity": 1
+      },
+      {
+        "item": "bones",
+        "quantity": 1
       }
     ],
     "rolls": 1,
@@ -26,6 +30,10 @@
     "always": [
       {
         "item": "wolf_pelt",
+        "quantity": 1
+      },
+      {
+        "item": "bones",
         "quantity": 1
       }
     ],
@@ -54,6 +62,10 @@
     "always": [
       {
         "item": "raw_meat",
+        "quantity": 1
+      },
+      {
+        "item": "bones",
         "quantity": 1
       }
     ],

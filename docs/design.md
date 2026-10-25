@@ -286,7 +286,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Systems.** Inventory, equipment, the shared bank, death and graves, Slayer contracts, save and load, and controller plus mouse/keyboard input.
 
-**Out of scope for the slice:** Pietas, quests, the villa, Mercatura, the danger zone, and the market.
+**Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market.
 
 ## Villa
 

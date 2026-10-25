@@ -24,11 +24,15 @@ var _bank_grid: GridContainer
 var _menu: PopupMenu
 var _message: Label
 var _menu_actions: Array[Callable] = []
+var _blessings_panel: PanelContainer
+var _favour_label: Label
+var _blessing_buttons := {}
 
 
 func _ready() -> void:
 	_build_inventory()
 	_build_bank()
+	_build_blessings()
 	_menu = PopupMenu.new()
 	_menu.id_pressed.connect(func(index): _menu_actions[index].call())
 	add_child(_menu)
@@ -53,9 +57,61 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventory"):
 		toggle_inventory()
 		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("pietas_menu"):
+		toggle_blessings()
+		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_cancel") and _bank_panel.visible:
 		close_bank()
 		get_viewport().set_input_as_handled()
+
+
+## Blessings panel (P / D-pad left): one button per blessing, A toggles.
+func toggle_blessings() -> void:
+	_blessings_panel.visible = not _blessings_panel.visible
+	if _blessings_panel.visible:
+		_refresh_blessings()
+		_blessing_buttons.values()[0].grab_focus()
+	else:
+		_release_focus()
+
+
+func is_blessings_open() -> bool:
+	return _blessings_panel.visible
+
+
+func _build_blessings() -> void:
+	_blessings_panel = _panel(Control.PRESET_CENTER_LEFT, Vector2(30, -260))
+	var column := VBoxContainer.new()
+	_blessings_panel.add_child(column)
+	column.add_child(_heading("Blessings  (P / D-pad left)"))
+	_favour_label = Label.new()
+	column.add_child(_favour_label)
+	var blessings: Dictionary = ContentDB.data()["pietas"]["blessings"]
+	var ids := blessings.keys()
+	ids.sort_custom(func(a, b): return blessings[a]["level"] < blessings[b]["level"])
+	for id in ids:
+		var button := Button.new()
+		button.toggle_mode = true
+		button.custom_minimum_size = Vector2(330, 34)
+		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		button.pressed.connect(_act.bind("bless", {"blessing": id}))
+		column.add_child(button)
+		_blessing_buttons[id] = button
+	_blessings_panel.visible = false
+
+
+func _refresh_blessings() -> void:
+	var c := _combatant()
+	if c == null or _blessings_panel == null:
+		return
+	_favour_label.text = "Favour %d / %d" % [ceili(c.favour), c.skills.level("pietas")]
+	for id in _blessing_buttons:
+		var blessing := ContentDB.blessing(id)
+		var button: Button = _blessing_buttons[id]
+		var family := "" if blessing["family"] == "heavenly" else "  (underworld)"
+		button.text = "%s  - Pietas %d%s" % [blessing["name"], blessing["level"], family]
+		button.set_pressed_no_signal(c.blessings.has(id))
+		button.disabled = c.skills.level("pietas") < blessing["level"]
 
 
 func toggle_inventory() -> void:
@@ -119,6 +175,8 @@ func _on_sim_event(event: Dictionary) -> void:
 	if event.get("id") != _player_id():
 		return
 	match event["type"]:
+		"blessings_changed", "favour_changed":
+			_refresh_blessings.call_deferred()
 		"inventory_changed", "equipment_changed", "bank_changed":
 			_refresh.call_deferred()
 		"message":

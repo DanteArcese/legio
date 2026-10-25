@@ -129,7 +129,7 @@ func process(players: Array, events: Array) -> void:
 			stop(player, events)
 		elif action["type"] == "mine":
 			_process_mining(player, action, events)
-		else:
+		elif action["type"] == "craft":
 			_process_craft(player, action, events)
 
 

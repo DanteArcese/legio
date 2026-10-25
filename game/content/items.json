@@ -468,5 +468,21 @@
         "ranged_defence": -2
       }
     }
+  },
+  "bones": {
+    "name": "Bones",
+    "value": 2,
+    "examine": "Fit for a burnt offering."
+  },
+  "incense": {
+    "name": "Incense",
+    "value": 12,
+    "examine": "Frankincense from the East. The gods like the smell.",
+    "stackable": true
+  },
+  "wine": {
+    "name": "Wine",
+    "value": 18,
+    "examine": "A jug of rough red. Some for the gods, some for you."
   }
 }

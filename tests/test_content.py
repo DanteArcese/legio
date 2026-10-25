@@ -139,3 +139,13 @@ def test_tablets_need_a_known_curse(content):
     errors = errors_after(content, mutate)
     assert any("binding_tablet.equip.curse: must be one of" in e for e in errors)
     assert any("withering_tablet.equip.curse: tablets, and only tablets" in e for e in errors)
+
+
+def test_blessings_and_offerings_are_checked(content):
+    def mutate(c):
+        c["pietas"]["blessings"]["mars_vigour"]["boost"] = {"flying": 1}
+        c["pietas"]["offerings"]["unicorn_horn"] = {"xp": 5, "altar": "heavenly"}
+
+    errors = errors_after(content, mutate)
+    assert any("boost.flying: unknown boost" in e for e in errors)
+    assert any("unicorn_horn: unknown item" in e for e in errors)

@@ -16,6 +16,7 @@ const Equipment := preload("res://scripts/sim/equipment.gd")
 const DeathRules := preload("res://scripts/sim/death_rules.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 const Skilling := preload("res://scripts/sim/skilling.gd")
+const Pietas := preload("res://scripts/sim/pietas.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -56,6 +57,7 @@ const CHASE_RANGE := 30.0
 var tick := 0
 var rng := RandomNumberGenerator.new()
 var skilling := Skilling.new(self)
+var pietas := Pietas.new(self)
 
 var _combatants := {}
 var _pending_commands: Array[Dictionary] = []
@@ -223,7 +225,9 @@ func step() -> Array[Dictionary]:
 	for id in ids:
 		_process_attack(_combatants[id], events)
 	_process_curses(events)
-	skilling.process(ids.map(func(i): return _combatants[i]).filter(func(c): return c.inventory != null), events)
+	var players := ids.map(func(i): return _combatants[i]).filter(func(c): return c.inventory != null)
+	skilling.process(players, events)
+	pietas.process(players, events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -317,6 +321,12 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			skilling.start_craft(player, command.get("kind", ""), command.get("recipe", ""), command.get("count", 1), events)
 		"stop_action":
 			skilling.stop(player, events)
+		"bless":
+			pietas.toggle(player, command.get("blessing", ""), events)
+		"pray":
+			pietas.pray(player, events)
+		"offer":
+			pietas.start_offering(player, command.get("item", ""), events)
 		"deposit", "deposit_all", "withdraw":
 			if not _near_bank(player):
 				_message(player, "You need to be at a bank.", events)
@@ -570,13 +580,13 @@ func _apply_curse(caster: Combatant, target: Combatant, curse: String, events: A
 	var until := tick
 	match curse:
 		"binding":
-			if rng.randf() >= BINDING_CHANCE:
+			if rng.randf() >= BINDING_CHANCE + caster.blessing_boosts.get("binding_chance", 0.0):
 				return
 			until = tick + BINDING_TICKS
 			target.curses["bound"] = until
 		"withering":
 			until = tick + WITHERING_INTERVAL * WITHERING_PULSES
-			var damage := 1 + floori(caster.level("ritus") / 25.0)
+			var damage := 1 + floori(caster.level("ritus") / 25.0) + int(caster.blessing_boosts.get("withering_damage", 0))
 			target.curses["withering"] = {"until": until, "next": tick + WITHERING_INTERVAL, "damage": damage, "source": caster.id}
 	events.append({"type": "curse", "id": target.id, "curse": curse, "until": until, "source": caster.id, "tick": tick})
 
@@ -663,6 +673,8 @@ func _award_xp(combatant: Combatant, skill: String, amount: float, events: Array
 		if skill == "vitality":
 			combatant.hp += new_level - combatant.max_hp
 			combatant.max_hp = new_level
+		elif skill == "pietas":
+			combatant.favour += 1.0
 		events.append({"type": "level_up", "id": combatant.id, "skill": skill, "level": new_level, "tick": tick})
 
 

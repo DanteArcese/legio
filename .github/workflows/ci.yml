@@ -25,3 +25,8 @@ jobs:
           unzip -q godot.zip
           echo "GODOT=$PWD/Godot_v${GODOT_VERSION}_linux.x86_64" >> "$GITHUB_ENV"
       - run: scripts/godot-tests.sh
+      - name: Playtest scenarios (headless)
+        run: |
+          for f in game/tools/playtest/scenarios/*.gd; do
+            scripts/playtest.sh "$(basename "$f" .gd)"
+          done

@@ -16,6 +16,7 @@ uv sync              # Install dependencies
 uv add <package>     # Add a dependency
 uv run pytest        # Run Python (content tooling) tests
 scripts/godot-tests.sh   # Run Godot tests headlessly (needs godot 4.7 on PATH, or set GODOT)
+scripts/playtest.sh <scenario> [--render] [--out <dir>]   # Scripted playtest; --render saves screenshots
 godot --path game    # Play the game
 godot -e --path game # Open the editor
 uv run --env-file .env <command>   # Run with local secrets
@@ -34,3 +35,4 @@ uv run --env-file .env <command>   # Run with local secrets
 - Tests are `game/tests/test_*.gd` and extend `res://tests/test_case.gd`. Methods named `test_*` run in the headless runner (`game/tests/run_tests.gd`).
 - Input bindings are defined in code in `game/scripts/input/bindings.gd`, not in project.godot. Every action needs a keyboard/mouse binding and a gamepad binding.
 - Use `preload` instead of `class_name`, so scripts resolve in a fresh checkout without an editor import.
+- Playtest scenarios live in `game/tools/playtest/scenarios/`, extend `scenario.gd`, and drive the real scene (walk_to, press, seconds, shot, metric, expect). CI runs them all headlessly. Use `--render --out <dir>` to get screenshots for visual review.

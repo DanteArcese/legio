@@ -6,6 +6,7 @@ const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
 
 signal ticked(tick: int)
+signal sim_event(event: Dictionary)
 
 @export var seed_value := 0
 @export var tick_lengths: Array[float] = [0.6, 0.5, 0.4]
@@ -51,6 +52,7 @@ func _physics_process(delta: float) -> void:
 		for event in sim.step():
 			for entity in _entities.values():
 				entity.on_sim_event(event)
+			sim_event.emit(event)
 		ticked.emit(sim.tick)
 
 

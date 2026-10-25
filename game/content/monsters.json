@@ -15,8 +15,8 @@
     "examine": "Fat from the town's grain stores.",
     "appearance": {
       "model": "quadruped",
-      "color": "#6f6152",
-      "accent": "#b89a8a",
+      "color": "#8a7766",
+      "accent": "#c9a99a",
       "size": 0.45,
       "features": [
         "round_ears",
@@ -40,9 +40,9 @@
     "examine": "A lean grey wolf of the frontier woods.",
     "appearance": {
       "model": "quadruped",
-      "color": "#7d7d80",
-      "accent": "#5a5a5e",
-      "size": 0.95,
+      "color": "#8f97a3",
+      "accent": "#5f6773",
+      "size": 1.0,
       "features": [
         "ears",
         "long_snout",
@@ -66,8 +66,8 @@
     "examine": "Bristling and bad-tempered.",
     "appearance": {
       "model": "quadruped",
-      "color": "#4a3426",
-      "accent": "#2f2219",
+      "color": "#6e4a35",
+      "accent": "#3f2a1e",
       "size": 1.0,
       "features": [
         "tusks",
@@ -142,8 +142,8 @@
     "examine": "A screech-owl that feeds on the living. Whitethorn keeps it at bay.",
     "appearance": {
       "model": "bird",
-      "color": "#3a2f45",
-      "accent": "#5c4b6b",
+      "color": "#4a3c5a",
+      "accent": "#6d5a80",
       "size": 1.1,
       "features": [
         "ear_tufts"

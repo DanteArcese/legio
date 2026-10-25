@@ -17,7 +17,8 @@ func run() -> void:
 		monster.get_node("SimEntity").remove_from_group("sim_entities")
 		showcase.add_child(monster)
 		monster.global_position = ROW_START + Vector3(i * 2.6, 0, 0)
-		monster.rotation.y = -0.6
+		# Heads point -Z; turn them three-quarters toward the camera (+Z).
+		monster.rotation.y = PI - 0.5
 		expect(monster.get_child_count() > 3, "%s has a model" % ids[i])
 	player().global_position = ROW_START + Vector3(ids.size() * 1.3 - 1.3, 1, 5)
 	var rig: Node3D = main.get_node("CameraRig")

@@ -76,6 +76,16 @@ def test_monster_appearance_is_checked(content):
     assert any("appearance.color" in e for e in errors)
 
 
+def test_features_must_suit_the_model(content):
+    def mutate(c):
+        c["monsters"]["wolf"]["appearance"]["features"].append("ear_tufts")
+        c["monsters"]["rat"]["appearance"]["model"] = "dragon"
+
+    errors = errors_after(content, mutate)
+    assert any("'ear_tufts' isn't a quadruped feature" in e for e in errors)
+    assert any("monsters.rat.appearance.model" in e for e in errors)
+
+
 def test_starting_kit_items_must_exist(content):
     errors = errors_after(content, lambda c: c["player"]["starting_kit"].append({"item": "toga", "quantity": 1}))
     assert any("player.starting_kit" in e and "unknown item 'toga'" in e for e in errors)

@@ -16,6 +16,8 @@ signal station_opened(station: Node)
 const MoveMath := preload("res://scripts/player/move_math.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
+const CreatureModel := preload("res://scripts/world/creature_model.gd")
+const LOOK := {"model": "humanoid", "color": "#a3241c", "accent": "#6b4a2a", "size": 1.0, "features": ["helmet", "bare_legs"]}
 
 const CLICK_RAY_LENGTH := 300.0
 ## Terrain (1), monsters (4), and props (8) can be clicked.
@@ -41,6 +43,16 @@ var destination: Variant = null
 var _pending_use: Variant = null
 
 @onready var _entity: Node = $SimEntity
+
+var _model: Node3D
+
+
+func _ready() -> void:
+	$Mesh.visible = false
+	_model = CreatureModel.create(LOOK)
+	# The body's origin is at its centre (capsule), the model's at its feet.
+	_model.position.y = -1.0
+	add_child(_model)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -152,6 +164,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	move_and_slide()
+	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 
 	var facing := direction
 	if face_target:

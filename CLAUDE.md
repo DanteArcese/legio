@@ -47,6 +47,8 @@ uv run --env-file .env <command>   # Run with local secrets
 
 ## World
 
+- Third-party art lives in `game/assets/<pack>/` with the pack's licence, and is listed in `CREDITS.md`. Use CC0 assets only. `scripts/world/kit_dresser.gd` dresses the greybox town with Kenney models at startup and recolours them to the game palette; collision and the navmesh stay on the original bodies.
+
 - `game/scripts/world/terrain.gd` generates the overworld ground at startup: flat-shaded 1 m tiles coloured per tile, flattened inside the fort, along `PATHS`, and around anything in the interactable groups. It also adds the grass and the pond. Paint new ground features there. Scenery under `snap_roots` is lifted onto the terrain.
 - `game/scenes/castra_ferrea.tscn` holds the town's static greybox geometry (walls, buildings, woods, hills, bounds). Interactive things (NPCs, stations, rocks, monsters) live in `main.tscn`.
 - Navigation: `scripts/world/navigation.gd` bakes a navmesh at startup from static bodies in the `navigation_source` group (layers 1 and 4). Add new static obstacles to that group. Player auto-approach, click-to-move, and monster movement path with `Navigation.next_waypoint`.

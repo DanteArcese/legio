@@ -3,6 +3,7 @@ extends Node
 ## Stats are configured here for now; they move to content data files later.
 
 const HitSplat := preload("res://scripts/world/hit_splat.gd")
+const Skills := preload("res://scripts/sim/skills.gd")
 
 @export var entity_id := 0
 @export var max_hp := 10
@@ -15,6 +16,8 @@ const HitSplat := preload("res://scripts/world/hit_splat.gd")
 ## Whether the player can target this entity.
 @export var attackable := true
 @export var hp_label: Label3D
+## Players get skills and earn XP; their max HP follows Vitality.
+@export var is_player := false
 
 var combatant: RefCounted
 
@@ -33,11 +36,19 @@ func configure(p_combatant: RefCounted) -> void:
 	combatant.reach = reach
 	combatant.auto_retaliate = auto_retaliate
 	combatant.respawn_ticks = respawn_ticks
+	if is_player:
+		combatant.skills = Skills.new()
+		combatant.max_hp = combatant.skills.level("vitality")
+		combatant.hp = combatant.max_hp
 	_update_label()
 
 
 func on_sim_event(event: Dictionary) -> void:
 	match event["type"]:
+		"level_up":
+			if event["id"] == entity_id and event["skill"] == "vitality":
+				combatant.max_hp = event["level"]
+				combatant.hp += 1
 		"hit":
 			if event["target"] == entity_id:
 				HitSplat.spawn(body(), event["damage"])

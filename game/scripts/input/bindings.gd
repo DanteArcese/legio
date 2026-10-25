@@ -25,6 +25,7 @@ const DEFAULTS := {
 	"context_menu": [["mouse", MOUSE_BUTTON_RIGHT], ["joy_button", JOY_BUTTON_Y]],
 	"target_next": [["key", KEY_TAB], ["joy_button", JOY_BUTTON_RIGHT_SHOULDER]],
 	"target_prev": [["key", KEY_Q], ["joy_button", JOY_BUTTON_LEFT_SHOULDER]],
+	"combat_style": [["key", KEY_C], ["joy_button", JOY_BUTTON_X]],
 	"run_toggle": [["key", KEY_R], ["joy_button", JOY_BUTTON_LEFT_STICK]],
 	"inventory": [["key", KEY_I], ["joy_button", JOY_BUTTON_BACK]],
 	"pause_menu": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_START]],

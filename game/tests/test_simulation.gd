@@ -1,6 +1,7 @@
 extends "res://tests/test_case.gd"
 
 const Simulation := preload("res://scripts/sim/simulation.gd")
+const Skills := preload("res://scripts/sim/skills.gd")
 
 const PLAYER := 1
 const DUMMY := 2
@@ -127,3 +128,41 @@ func test_cannot_target_self_or_dead() -> void:
 	sim.queue_attack(PLAYER, DUMMY)
 	sim.step()
 	check_eq(sim.get_combatant(PLAYER).target_id, -1, "dead target")
+
+
+func test_damage_awards_style_and_vitality_xp() -> void:
+	var sim := _make_sim()
+	var player := sim.get_combatant(PLAYER)
+	player.skills = Skills.new()
+	sim.queue_style(PLAYER, "aggressive")
+	sim.queue_attack(PLAYER, DUMMY)
+	var events := sim.step()
+	var damage: int = _hits(events)[0]["damage"]
+	check_eq(player.skills.xp["strength"], damage * Skills.STYLE_XP_PER_DAMAGE, "strength xp")
+	check_eq(player.skills.xp["attack"], 0.0, "no attack xp")
+	var xp_events := events.filter(func(e): return e["type"] == "xp")
+	check_eq(xp_events.size(), 2, "xp events")
+
+
+func test_level_up_event_is_emitted() -> void:
+	var sim := _make_sim()
+	var player := sim.get_combatant(PLAYER)
+	player.skills = Skills.new()
+	player.skills.xp["attack"] = Skills.xp_for_level(2) - 1.0
+	sim.queue_attack(PLAYER, DUMMY)
+	var events := sim.step()
+	check(events.any(func(e): return e["type"] == "level_up" and e["skill"] == "attack" and e["level"] == 2), "level up to 2")
+
+
+func test_monsters_get_no_xp() -> void:
+	var sim := _make_sim()
+	sim.queue_attack(PLAYER, DUMMY)
+	var events := sim.step()
+	check(not events.any(func(e): return e["type"] == "xp"), "no xp without skills")
+
+
+func test_unknown_style_is_ignored() -> void:
+	var sim := _make_sim()
+	sim.queue_style(PLAYER, "flailing")
+	sim.step()
+	check_eq(sim.get_combatant(PLAYER).style, "accurate", "style")

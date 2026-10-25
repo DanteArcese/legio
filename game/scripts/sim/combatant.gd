@@ -15,6 +15,10 @@ var auto_retaliate := true
 ## Ticks until respawn after death; -1 means it stays dead.
 var respawn_ticks := -1
 
+## Players have skills and a combat style; monsters leave skills null.
+var skills: RefCounted = null
+var style := "accurate"
+
 var position := Vector3.ZERO
 var target_id := -1
 var next_attack_tick := 0

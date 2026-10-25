@@ -4,6 +4,7 @@ extends CharacterBody3D
 ## into reach of its target automatically.
 
 const MoveMath := preload("res://scripts/player/move_math.gd")
+const Skills := preload("res://scripts/sim/skills.gd")
 
 @export var walk_speed := 3.0
 @export var run_speed := 6.0
@@ -20,6 +21,10 @@ var running := true
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("run_toggle"):
 		running = not running
+	elif event.is_action_pressed("combat_style") and sim_driver:
+		var styles: Array = Skills.STYLES
+		var next: String = styles[(styles.find(_entity.combatant.style) + 1) % styles.size()]
+		sim_driver.sim.queue_style(_entity.entity_id, next)
 	elif event.is_action_pressed("interact") and sim_driver:
 		var target_id: int = sim_driver.nearest_target(_entity.entity_id, target_radius)
 		if target_id == -1:

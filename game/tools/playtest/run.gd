@@ -16,7 +16,12 @@ func _initialize() -> void:
 	var main: Node = load(args.get("scene", "res://scenes/main.tscn")).instantiate()
 	root.add_child(main)
 
-	var scenario: Node = load("res://tools/playtest/scenarios/%s.gd" % scenario_name).new()
+	var script: GDScript = load("res://tools/playtest/scenarios/%s.gd" % scenario_name)
+	if script == null or not script.can_instantiate():
+		printerr("Could not load scenario '%s'" % scenario_name)
+		quit(2)
+		return
+	var scenario: Node = script.new()
 	scenario.main = main
 	scenario.out_dir = args.get("out", "")
 	if not scenario.out_dir.is_empty():

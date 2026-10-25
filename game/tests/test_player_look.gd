@@ -39,3 +39,12 @@ func test_legion_textures_exist() -> void:
 		check(ResourceLoader.exists(PlayerLook.LEGION_TEXTURES[body]), "%s texture" % body)
 	check(PlayerLook.appearance({}).has("texture"), "the starting tunic is recoloured")
 	check(not PlayerLook.appearance({"body": "ritual_robe"}).has("texture"), "robes stay dark")
+
+
+func test_kaykit_characters_face_the_games_forward() -> void:
+	var KaykitCharacter := preload("res://scripts/world/kaykit_character.gd")
+	var character: Node3D = KaykitCharacter.create({"scene": "adventurers/Rogue"})
+	var model: Node3D = character.get_child(0)
+	# The model's +Z (its face) must point along the game's forward, -Z.
+	check((model.basis * Vector3.BACK).is_equal_approx(Vector3.FORWARD), "face points -Z")
+	character.free()

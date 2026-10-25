@@ -42,6 +42,8 @@ static var _textures := {}
 static func create(appearance: Dictionary) -> Node3D:
 	var character := new()
 	var model: Node3D = load(ROOT + appearance["scene"] + ".glb").instantiate()
+	# KayKit models face +Z (glTF's convention); the game's forward is -Z.
+	model.rotation.y = PI
 	character.add_child(model)
 	character.scale = Vector3.ONE * BASE_SCALE * float(appearance.get("size", 1.0))
 	character._player = model.find_children("*", "AnimationPlayer", true, false)[0]

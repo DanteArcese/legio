@@ -31,8 +31,8 @@ var _dead := false
 var _work := ""
 var _attachments := {}
 
-## Recoloured textures, shared between characters: key -> ImageTexture.
-static var _recolored := {}
+## Loaded palette textures, shared between characters.
+static var _textures := {}
 
 
 ## appearance: {"scene": "adventurers/Knight", "size": 1.0, "show": [...],
@@ -58,40 +58,25 @@ static func create(appearance: Dictionary) -> Node3D:
 	character.attach("handslot_r", appearance.get("weapon", ""))
 	character.attach("handslot_l", appearance.get("shield", ""))
 	character.attack_style = appearance.get("attack", "unarmed")
-	if appearance.has("recolor"):
-		character.recolor(appearance["recolor"])
+	if appearance.has("texture"):
+		character.use_texture(appearance["texture"])
 	character._loop("Idle")
 	return character
 
 
-## Shifts strongly coloured texels within a hue range to a new hue, e.g.
-## {"from": [0.25, 0.7], "to": 0.0} turns green and blue cloth red.
-func recolor(rule: Dictionary) -> void:
+## Swaps the outfit's palette texture for a baked recolour (see
+## tools/bake_palette.gd), e.g. the legion-red tunic.
+func use_texture(path: String) -> void:
+	if not _textures.has(path):
+		_textures[path] = load(path)
 	for mesh in _skeleton.find_children("*", "MeshInstance3D", true, false):
 		for i in mesh.mesh.get_surface_count():
 			var material := mesh.mesh.surface_get_material(i) as StandardMaterial3D
 			if material == null or material.albedo_texture == null:
 				continue
-			var key := "%s|%s" % [material.albedo_texture.resource_path, rule]
-			if not _recolored.has(key):
-				_recolored[key] = ImageTexture.create_from_image(_shift_hue(material.albedo_texture.get_image(), rule))
 			var copy := material.duplicate() as StandardMaterial3D
-			copy.albedo_texture = _recolored[key]
+			copy.albedo_texture = _textures[path]
 			mesh.set_surface_override_material(i, copy)
-
-
-static func _shift_hue(source: Image, rule: Dictionary) -> Image:
-	var image := source.duplicate() as Image
-	if image.is_compressed():
-		image.decompress()
-	var low: float = rule["from"][0]
-	var high: float = rule["from"][1]
-	for y in image.get_height():
-		for x in image.get_width():
-			var c := image.get_pixel(x, y)
-			if c.s > 0.12 and c.h >= low and c.h <= high:
-				image.set_pixel(x, y, Color.from_hsv(rule["to"], minf(c.s * 1.1, 1.0), c.v * 0.9, c.a))
-	return image
 
 
 func set_mesh_visible(mesh_name: String, shown: bool) -> void:

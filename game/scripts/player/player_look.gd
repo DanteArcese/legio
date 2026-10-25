@@ -3,8 +3,7 @@ extends RefCounted
 ## body armour picks the outfit, headgear shows a helmet or hood, and the
 ## weapon and shield go in the hands.
 ##
-## The pack has no bow or sling, so bows show the hand crossbow and slings
-## leave the hand empty (thrown animation).
+## The pack has no bow or sling, so those are built in code (prop_models.gd).
 
 const BODIES := {
 	"": "adventurers/Rogue", "bronze_lorica": "adventurers/Knight", "iron_lorica": "adventurers/Knight",
@@ -14,8 +13,8 @@ const BODIES := {
 const WEAPONS := {
 	"bronze_pugio": ["weapons/dagger", "stab"], "iron_pugio": ["weapons/dagger", "stab"],
 	"bronze_gladius": ["weapons/sword_1handed", "slash"], "iron_gladius": ["weapons/sword_1handed", "slash"],
-	"hunting_bow": ["weapons/crossbow_1handed", "ranged"], "composite_bow": ["weapons/crossbow_1handed", "ranged"],
-	"sling": ["", "throw"], "lituus": ["weapons/staff", "ritus"],
+	"hunting_bow": ["proc:bow", "bow"], "composite_bow": ["proc:bow_composite", "bow"],
+	"sling": ["proc:sling", "throw"], "lituus": ["weapons/staff", "ritus"],
 }
 ## Palette textures baked with tools/bake_palette.gd (green and blue to red).
 const LEGION_TEXTURES := {

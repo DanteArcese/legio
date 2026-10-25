@@ -5,6 +5,7 @@ extends Node3D
 ## (create, animate) so monsters and the player can use either.
 
 const ROOT := "res://assets/kaykit/"
+const PropModels := preload("res://scripts/world/prop_models.gd")
 ## KayKit characters stand about 2.5 units tall; this makes them about 1.9 m.
 const BASE_SCALE := 0.75
 const BLEND := 0.15
@@ -15,7 +16,7 @@ const HAND_SLOTS := ["handslot_l", "handslot_r"]
 ## Attack animation by combat kind or weapon style.
 const ATTACKS := {
 	"stab": "1H_Melee_Attack_Stab", "slash": "1H_Melee_Attack_Slice_Diagonal",
-	"unarmed": "Unarmed_Melee_Attack_Punch_A", "ranged": "1H_Ranged_Shoot", "throw": "Throw",
+	"unarmed": "Unarmed_Melee_Attack_Punch_A", "ranged": "1H_Ranged_Shoot", "bow": "2H_Ranged_Shoot", "throw": "Throw",
 	"ritus": "Spellcast_Shoot",
 }
 ## Looping work animations by skilling action.
@@ -97,7 +98,9 @@ func attach(slot: String, model_path: String) -> void:
 	var holder := _skeleton.get_node_or_null(slot)
 	if holder == null:
 		return
-	var prop: Node3D = load(ROOT + model_path + ".gltf").instantiate()
+	# "proc:<name>" props are built in code (bow, sling); the rest are files.
+	var prop: Node3D = PropModels.build(model_path.trim_prefix("proc:")) if model_path.begins_with("proc:") \
+		else load(ROOT + model_path + ".gltf").instantiate()
 	holder.add_child(prop)
 	_attachments[slot] = prop
 
@@ -119,6 +122,11 @@ func animate(_delta: float, speed: float) -> void:
 func attack(kind_or_style := "") -> void:
 	var style := kind_or_style if ATTACKS.has(kind_or_style) else attack_style
 	_play_once(ATTACKS.get(style, ATTACKS["unarmed"]))
+	if style == "throw" and _attachments.has("handslot_r"):
+		# Whirl the sling twice before the release.
+		var sling: Node3D = _attachments["handslot_r"]
+		var spin := sling.create_tween()
+		spin.tween_property(sling, "rotation:x", TAU * 2.0, 0.5).from(0.0)
 
 
 func hurt() -> void:

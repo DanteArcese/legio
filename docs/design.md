@@ -41,7 +41,7 @@ A first pass at Roman-themed skills. Names are working names.
 | Attack, Strength, Defence | Kept as-is. Gladius, spatha, pilum, scutum. |
 | Vitality | Hitpoints. |
 | Ranged | Bows (*arcus*) and slings (*funda*, with lead *glandes*), with javelins and the hand-held *manuballista* later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
-| Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods: Mars (strength), Minerva (defence), Diana (ranged), Mercury (movement and run energy). XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. |
+| Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods. The heavenly gods are Mars (strength), Minerva (defence), Diana (ranged), and Mercury (movement and run energy). The underworld gods (Dis Pater, Proserpina, Hecate) favour Ritus. XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. See [Curses and Pietas](#curses-and-pietas). |
 | Ritus | The third combat style: curse tablets. See [Ritus](#ritus). |
 
 ### Slayer
@@ -139,7 +139,18 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 **Tone: eerie folk ritual, not dark fantasy.**
 - Effects are subtle: the target shudders, stumbles, or falters under faint dark motes. There are no beams and no fireballs.
 - Curses invoke the powers the real tablets name: Dis Pater, Proserpina, Hecate, and the Manes. Item descriptions quote real tablet wording, such as "I bind his tongue, his hands, his feet."
-- Later (#48): Roman law outlawed harmful magic, so casting inside town walls could draw the guards, and Ritus could weigh against your standing with the gods for Pietas.
+
+### Curses and Pietas
+
+Decided (#48), to be built with Pietas in #69. Cursing wasn't impious to Romans: curse tablets were addressed *to* gods. What Romans feared was **ritual pollution** from dealings with death, and the law punished harmful magic. So the tension is about pollution and the law, not divine anger.
+
+- **Two families of gods.** The heavenly gods (Mars, Minerva, Diana, Mercury) give the core combat prayers. The underworld gods (Dis Pater, Proserpina, Hecate) give prayers that favour Ritus.
+- **Pollution.** Casting curses builds pollution, which wears off over time.
+  - High pollution weakens heavenly prayers, and their temple priests refuse you service.
+  - Underworld prayers grow *stronger* while you're polluted, so dedicated cursers lean in.
+- **Purification.** Washing at a sacred spring or paying for a temple cleansing (*lustratio*) clears pollution. It's cheap and quick, so pollution is something to manage, not a punishment.
+- **The law.** Casting curses inside town walls draws the town watch (the *vigiles*): first a warning, then a small fine. In single-player this is mostly flavour. In the MMO it keeps curses out of town fights.
+- Nothing is permanent, and mixed builds stay viable with a little planning.
 
 ### Travel
 

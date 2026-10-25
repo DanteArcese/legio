@@ -27,8 +27,8 @@ const WorldMenu := preload("res://scripts/player/world_menu.gd")
 const LOOK := {"model": "humanoid", "color": "#a3241c", "accent": "#6b4a2a", "size": 1.0, "features": ["helmet", "bare_legs"]}
 
 const CLICK_RAY_LENGTH := 300.0
-## Terrain (1), monsters (4), and props (8) can be clicked.
-const CLICK_MASK := 1 | 4 | 8
+## Terrain (1), monsters (4), props (8), and structures (16) can be clicked.
+const CLICK_MASK := 1 | 4 | 8 | 16
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
 

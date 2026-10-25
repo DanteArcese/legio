@@ -27,7 +27,8 @@ func _ready() -> void:
 	region = NavigationRegion3D.new()
 	region.navigation_mesh = mesh
 	add_child(region)
-	region.bake_navigation_mesh(false)
+	# Bake once everything has been built, including the generated terrain.
+	region.bake_navigation_mesh.call_deferred(false)
 
 
 ## The next point to walk toward on the way from one position to another.

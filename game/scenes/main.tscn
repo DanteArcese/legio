@@ -19,6 +19,7 @@
 [ext_resource type="Script" path="res://scripts/world/occlusion_fader.gd" id="17_fader"]
 [ext_resource type="Script" path="res://scripts/settings/graphics_settings.gd" id="18_graphics"]
 [ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="19_pause"]
+[ext_resource type="Script" path="res://scripts/world/terrain.gd" id="20_terrain"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -36,16 +37,6 @@ fog_density = 1.0
 fog_sky_affect = 0.2
 fog_depth_begin = 45.0
 fog_depth_end = 150.0
-
-[sub_resource type="StandardMaterial3D" id="grass"]
-albedo_color = Color(0.36, 0.52, 0.24, 1)
-
-[sub_resource type="PlaneMesh" id="ground_mesh"]
-material = SubResource("grass")
-size = Vector2(160, 160)
-
-[sub_resource type="BoxShape3D" id="ground_shape"]
-size = Vector3(160, 1, 160)
 
 [sub_resource type="StandardMaterial3D" id="tunic"]
 albedo_color = Color(0.62, 0.12, 0.1, 1)
@@ -107,16 +98,12 @@ environment = SubResource("env")
 transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 0, 10, 0)
 shadow_enabled = true
 
-[node name="Ground" type="StaticBody3D" parent="." groups=["navigation_source"]]
-
-[node name="Mesh" type="MeshInstance3D" parent="Ground"]
-mesh = SubResource("ground_mesh")
-
-[node name="Collision" type="CollisionShape3D" parent="Ground"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-shape = SubResource("ground_shape")
-
 [node name="CastraFerrea" parent="." groups=["navigation_source"] instance=ExtResource("12_town")]
+
+[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("graphics_settings") groups=["navigation_source"]]
+script = ExtResource("20_terrain")
+snap_roots = Array[NodePath]([NodePath("../CastraFerrea/Outside/Woods"), NodePath("../CastraFerrea/Outside/Hills"), NodePath("../Monsters")])
+graphics_settings = NodePath("../GraphicsSettings")
 
 [node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera_rig", "sim_driver")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 2)

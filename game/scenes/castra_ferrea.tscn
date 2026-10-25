@@ -1485,49 +1485,7 @@ font_size = 40
 outline_size = 10
 visibility_range_end = 60.0
 
-[node name="Paths" type="Node3D" parent="."]
-
-[node name="ToNorth" type="MeshInstance3D" parent="Paths"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, -11)
-mesh = SubResource("boxmesh_71")
-
-[node name="ToSouth" type="MeshInstance3D" parent="Paths"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 11)
-mesh = SubResource("boxmesh_72")
-
-[node name="ToEast" type="MeshInstance3D" parent="Paths"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0.02, 0)
-mesh = SubResource("boxmesh_73")
-
-[node name="Road" type="MeshInstance3D" parent="Paths"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.02, 34)
-mesh = SubResource("boxmesh_74")
-
-[node name="RoadBend" type="MeshInstance3D" parent="Paths"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.02, 22.5)
-mesh = SubResource("boxmesh_75")
-
 [node name="Outside" type="Node3D" parent="."]
-
-[node name="QuarryFloor" type="MeshInstance3D" parent="Outside"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0.02, -2.5)
-mesh = SubResource("boxmesh_76")
-
-[node name="Field1" type="MeshInstance3D" parent="Outside"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.025, 33)
-mesh = SubResource("boxmesh_77")
-
-[node name="Field2" type="MeshInstance3D" parent="Outside"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.025, 37)
-mesh = SubResource("boxmesh_78")
-
-[node name="Field3" type="MeshInstance3D" parent="Outside"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.025, 41)
-mesh = SubResource("boxmesh_79")
-
-[node name="Field4" type="MeshInstance3D" parent="Outside"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.025, 30)
-mesh = SubResource("boxmesh_80")
 
 [node name="Woods" type="Node3D" parent="Outside"]
 

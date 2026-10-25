@@ -70,9 +70,28 @@ func on_sim_event(event: Dictionary) -> void:
 				body().visible = false
 		"respawn":
 			if event["id"] == entity_id:
-				body().global_position = spawn_position
+				place_on_ground(spawn_position)
 				body().visible = true
 	_update_label()
+
+
+## Puts the body on the ground above or below a position (terrain may sit
+## higher than the spawn point that was saved).
+func place_on_ground(at: Vector3) -> void:
+	var space := body().get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(at + Vector3(0, 40, 0), at - Vector3(0, 40, 0), 1)
+	var hit := space.intersect_ray(query)
+	var ground: Vector3 = hit["position"] if not hit.is_empty() else at
+	var feet_offset := 1.0 if is_player else 0.05
+	body().global_position = ground + Vector3(0, feet_offset, 0)
+	if body() is CharacterBody3D:
+		body().velocity = Vector3.ZERO
+
+
+## Safety net: anything that falls out of the world goes back to its spawn.
+func rescue_if_fallen() -> void:
+	if body().global_position.y < -30.0 and body().global_position.x < 100.0:
+		place_on_ground(spawn_position)
 
 
 func _update_label() -> void:

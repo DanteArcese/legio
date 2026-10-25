@@ -1,0 +1,226 @@
+{
+  "rocks": {
+    "copper_rock": {
+      "name": "Copper rock",
+      "ore": "copper_ore",
+      "level": 1,
+      "xp": 15,
+      "difficulty": 0.0,
+      "respawn_ticks": 4,
+      "color": "#b8733a"
+    },
+    "tin_rock": {
+      "name": "Tin rock",
+      "ore": "tin_ore",
+      "level": 1,
+      "xp": 15,
+      "difficulty": 0.0,
+      "respawn_ticks": 4,
+      "color": "#a7a9ac"
+    },
+    "iron_rock": {
+      "name": "Iron rock",
+      "ore": "iron_ore",
+      "level": 15,
+      "xp": 30,
+      "difficulty": 0.25,
+      "respawn_ticks": 9,
+      "color": "#6e4a3a"
+    }
+  },
+  "recipes": {
+    "smelt": [
+      {
+        "id": "bronze_bar",
+        "inputs": [
+          {
+            "item": "copper_ore",
+            "quantity": 1
+          },
+          {
+            "item": "tin_ore",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_bar",
+        "level": 1,
+        "xp": 6
+      },
+      {
+        "id": "iron_bar",
+        "inputs": [
+          {
+            "item": "iron_ore",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_bar",
+        "level": 15,
+        "xp": 12,
+        "success": 0.5
+      }
+    ],
+    "smith": [
+      {
+        "id": "bronze_pugio",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_pugio",
+        "level": 1,
+        "xp": 12,
+        "tool": "hammer"
+      },
+      {
+        "id": "bronze_galea",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_galea",
+        "level": 3,
+        "xp": 12,
+        "tool": "hammer"
+      },
+      {
+        "id": "bronze_gladius",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "bronze_gladius",
+        "level": 5,
+        "xp": 24,
+        "tool": "hammer"
+      },
+      {
+        "id": "bronze_scutum",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "bronze_scutum",
+        "level": 7,
+        "xp": 24,
+        "tool": "hammer"
+      },
+      {
+        "id": "bronze_lorica",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "bronze_lorica",
+        "level": 9,
+        "xp": 36,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_pugio",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_pugio",
+        "level": 15,
+        "xp": 25,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_galea",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_galea",
+        "level": 17,
+        "xp": 25,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_gladius",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "iron_gladius",
+        "level": 19,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_scutum",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "iron_scutum",
+        "level": 21,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_lorica",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "iron_lorica",
+        "level": 23,
+        "xp": 75,
+        "tool": "hammer"
+      }
+    ],
+    "cook": [
+      {
+        "id": "cooked_meat",
+        "inputs": [
+          {
+            "item": "raw_meat",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_meat",
+        "level": 1,
+        "xp": 30,
+        "burnt": "burnt_food",
+        "stop_burning": 30
+      },
+      {
+        "id": "cooked_sardine",
+        "inputs": [
+          {
+            "item": "raw_sardine",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_sardine",
+        "level": 1,
+        "xp": 40,
+        "burnt": "burnt_food",
+        "stop_burning": 34
+      }
+    ]
+  }
+}

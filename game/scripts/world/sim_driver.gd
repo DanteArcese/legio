@@ -23,6 +23,7 @@ var _entities := {}
 var _next_auto_id := AUTO_ID_START
 var _piles := {}
 var _graves := {}
+var _rocks := {}
 
 
 func _ready() -> void:
@@ -36,6 +37,12 @@ func _ready() -> void:
 		sim.add_libitinarius(undertaker.global_position)
 	for venator in get_tree().get_nodes_in_group("venatores"):
 		sim.add_venator(venator.get_meta("venator_id"), venator.global_position)
+	for rock in get_tree().get_nodes_in_group("rocks"):
+		rock.rock_id = _rocks.size() + 1
+		_rocks[rock.rock_id] = rock
+		sim.skilling.add_rock(rock.rock_id, rock.rock_type, rock.global_position)
+	for station in get_tree().get_nodes_in_group("stations"):
+		sim.skilling.add_station(station.kind, station.global_position)
 
 
 func register(entity: Node) -> void:
@@ -102,6 +109,8 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
 		"ground_update":
 			_piles[event["pile"]].set_items(event["items"])
+		"rock_depleted", "rock_respawned":
+			_rocks[event["rock"]].set_depleted(event["type"] == "rock_depleted")
 		"grave_add":
 			_graves[event["grave"]] = GraveMarker.spawn(get_parent(), self, event["position"], event["expires_at"])
 		"grave_remove":

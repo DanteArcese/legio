@@ -99,7 +99,9 @@
   "hammer": {
     "name": "Hammer",
     "value": 5,
-    "examine": "For smithing."
+    "examine": "For smithing.",
+    "tool": "hammer",
+    "tool_tier": 1
   },
   "bronze_pickaxe": {
     "name": "Bronze pickaxe",

@@ -42,6 +42,7 @@ func _ready() -> void:
 
 	driver.sim_event.connect(_on_sim_event)
 	player.bank_opened.connect(open_bank)
+	player.station_opened.connect(open_station)
 	_refresh.call_deferred()
 
 
@@ -69,6 +70,17 @@ func open_bank() -> void:
 	_refresh()
 	var first := _bank_grid.get_child(0) as Control
 	(first if first else _inventory_buttons[0]).grab_focus()
+
+
+## Shows what can be made at a station; picking one makes as many as possible.
+func open_station(station: Node) -> void:
+	var kind: String = station.recipe_kind()
+	var skill: String = "cooking" if kind == "cook" else "smithing"
+	var options := []
+	for recipe in ContentDB.recipes(kind):
+		var label := "%s  (%s %d)" % [ContentDB.item(recipe["output"])["name"], skill.capitalize(), recipe["level"]]
+		options.append([label, _act.bind("craft", {"kind": kind, "recipe": recipe["id"], "count": 28})])
+	_show_menu(options, get_viewport().get_visible_rect().size / 2.0)
 
 
 func close_bank() -> void:
@@ -282,7 +294,10 @@ func _on_slot_input(event: InputEvent, button: Button, options_for: Callable) ->
 	if not wants_menu:
 		return
 	button.accept_event()
-	var options: Array = options_for.call()
+	_show_menu(options_for.call(), button.get_screen_position() + Vector2(button.size.x, 0))
+
+
+func _show_menu(options: Array, at: Vector2) -> void:
 	if options.is_empty():
 		return
 	_menu.clear()
@@ -290,8 +305,14 @@ func _on_slot_input(event: InputEvent, button: Button, options_for: Callable) ->
 	for i in options.size():
 		_menu.add_item(options[i][0], i)
 		_menu_actions.append(options[i][1])
-	_menu.position = Vector2i(button.get_screen_position() + Vector2(button.size.x, 0))
+	_menu.position = Vector2i(at)
 	_menu.popup()
+	# Highlight the first entry so a controller can press A straight away.
+	_menu.set_focused_item(0)
+
+
+func is_menu_open() -> bool:
+	return _menu.visible
 
 
 func _release_focus() -> void:

@@ -15,6 +15,7 @@ const ItemContainer := preload("res://scripts/sim/item_container.gd")
 const Equipment := preload("res://scripts/sim/equipment.gd")
 const DeathRules := preload("res://scripts/sim/death_rules.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
+const Skilling := preload("res://scripts/sim/skilling.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -42,6 +43,7 @@ const AGGRO_LEVEL_MULTIPLIER := 2
 
 var tick := 0
 var rng := RandomNumberGenerator.new()
+var skilling := Skilling.new(self)
 
 var _combatants := {}
 var _pending_commands: Array[Dictionary] = []
@@ -202,6 +204,7 @@ func step() -> Array[Dictionary]:
 			_think(combatant)
 	for id in ids:
 		_process_attack(_combatants[id], events)
+	skilling.process(ids.map(func(i): return _combatants[i]).filter(func(c): return c.inventory != null), events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -219,6 +222,8 @@ func _apply_commands(events: Array[Dictionary]) -> void:
 				var target: Combatant = _combatants.get(command["target"])
 				if target != null and target.is_alive() and target != actor:
 					actor.target_id = target.id
+					if actor.inventory:
+						skilling.stop(actor, events)
 			"stop":
 				actor.target_id = -1
 			"style":
@@ -279,6 +284,12 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			_reclaim(player, events)
 		"slayer_task":
 			_slayer_task(player, command.get("venator", ""), events)
+		"mine":
+			skilling.start_mining(player, command.get("rock", -1), events)
+		"craft":
+			skilling.start_craft(player, command.get("kind", ""), command.get("recipe", ""), command.get("count", 1), events)
+		"stop_action":
+			skilling.stop(player, events)
 		"deposit", "deposit_all", "withdraw":
 			if not _near_bank(player):
 				_message(player, "You need to be at a bank.", events)
@@ -330,7 +341,7 @@ func _equipment_changed(player: Combatant, events: Array[Dictionary]) -> void:
 	events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
 
 
-func _message(player: Combatant, text: String, events: Array[Dictionary]) -> void:
+func _message(player: Combatant, text: String, events: Array) -> void:
 	events.append({"type": "message", "id": player.id, "text": text, "tick": tick})
 
 
@@ -483,7 +494,16 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		_kill(target, events)
 
 
-func _award_xp(combatant: Combatant, skill: String, amount: float, events: Array[Dictionary]) -> void:
+## Public helpers for sim modules (skilling).
+func award_xp(combatant: Combatant, skill: String, amount: float, events: Array) -> void:
+	_award_xp(combatant, skill, amount, events)
+
+
+func message(player: Combatant, text: String, events: Array) -> void:
+	_message(player, text, events)
+
+
+func _award_xp(combatant: Combatant, skill: String, amount: float, events: Array) -> void:
 	var new_level: int = combatant.skills.add_xp(skill, amount)
 	events.append({"type": "xp", "id": combatant.id, "skill": skill, "amount": amount, "tick": tick})
 	if new_level > 0:

@@ -12,13 +12,16 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "slayer", "mining", "smithing", "cooking"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck"}
 BONUSES = {"attack", "strength", "defence"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
+RECIPE_KINDS = {"smelt", "smith", "cook"}
+ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color"}
+RECIPE_KEYS = {"id", "inputs", "output", "level", "xp", "success", "tool", "burnt", "stop_burning"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier"}
@@ -44,6 +47,7 @@ def validate(content: dict) -> list[str]:
         _check_drop_table(f"drops.{table_id}", table, items, errors)
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, errors)
+    _check_skilling(content.get("skilling", {}), items, errors)
     player = content.get("player", {})
     _check_keys("player", player, {"starting_kit"}, {"starting_kit"}, errors)
     kit = player.get("starting_kit", [])
@@ -176,6 +180,56 @@ def _check_venator(where, venator, monsters, errors):
         needed = monster.get("slayer", {}).get("level", 1)
         if task.get("slayer_level", 1) < needed:
             errors.append(f"{task_where}.slayer_level: {task.get('monster')} needs Slayer {needed}")
+
+
+def _check_skilling(skilling, items, errors):
+    _check_keys("skilling", skilling, {"rocks", "recipes"}, {"rocks", "recipes"}, errors)
+    for rock_id, rock in skilling.get("rocks", {}).items():
+        where = f"skilling.rocks.{rock_id}"
+        _check_id(where, rock_id, errors)
+        _check_keys(where, rock, ROCK_KEYS, ROCK_KEYS, errors)
+        if rock.get("ore") not in items:
+            errors.append(f"{where}.ore: unknown item {rock.get('ore')!r}")
+        _check_int(where, "level", rock.get("level"), 1, errors, 99)
+        _check_number(where, "xp", rock.get("xp"), 0.1, 10000, errors)
+        _check_number(where, "difficulty", rock.get("difficulty"), 0, 1, errors)
+        _check_int(where, "respawn_ticks", rock.get("respawn_ticks"), 1, errors)
+        if not COLOR_PATTERN.match(str(rock.get("color", ""))):
+            errors.append(f"{where}.color: expected #rrggbb")
+    tools = {item.get("tool") for item in items.values() if "tool" in item}
+    recipes = skilling.get("recipes", {})
+    for kind in sorted(set(recipes) - RECIPE_KINDS):
+        errors.append(f"skilling.recipes.{kind}: unknown recipe kind")
+    for kind, entries in recipes.items():
+        seen = set()
+        for i, recipe in enumerate(entries):
+            where = f"skilling.recipes.{kind}[{i}]"
+            _check_keys(where, recipe, RECIPE_KEYS, {"id", "inputs", "output", "level", "xp"}, errors)
+            if recipe.get("id") in seen:
+                errors.append(f"{where}.id: duplicate {recipe.get('id')!r}")
+            seen.add(recipe.get("id"))
+            if not recipe.get("inputs"):
+                errors.append(f"{where}.inputs: at least one input required")
+            for j, entry in enumerate(recipe.get("inputs", [])):
+                _check_drop(f"{where}.inputs[{j}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+            for key in ("output", "burnt"):
+                if key in recipe and recipe[key] not in items:
+                    errors.append(f"{where}.{key}: unknown item {recipe[key]!r}")
+            _check_int(where, "level", recipe.get("level"), 1, errors, 99)
+            _check_number(where, "xp", recipe.get("xp"), 0.1, 10000, errors)
+            if "success" in recipe:
+                _check_number(where, "success", recipe["success"], 0.01, 1, errors)
+            if "tool" in recipe and recipe["tool"] not in tools:
+                errors.append(f"{where}.tool: no item provides tool {recipe['tool']!r}")
+            if ("burnt" in recipe) != ("stop_burning" in recipe):
+                errors.append(f"{where}: burnt and stop_burning go together")
+            if "stop_burning" in recipe:
+                _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
+
+
+def _check_number(where, key, value, minimum, maximum, errors):
+    if not isinstance(value, (int, float)) or isinstance(value, bool) or not minimum <= value <= maximum:
+        errors.append(f"{where}.{key}: expected a number in {minimum}..{maximum}, got {value!r}")
 
 
 def _check_id(where, value, errors):

@@ -1,11 +1,12 @@
 extends CharacterBody3D
 ## Directly controlled player: left stick / WASD moves relative to the camera.
-## Interact picks up nearby loot, loots your grave, opens a nearby bank,
-## talks to the libitinarius or a venator, or targets the nearest enemy,
-## in that order. With no stick input, the player walks into reach of
+## Interact picks up nearby loot, loots your grave, mines a rock, uses a
+## crafting station, opens a bank, talks to the libitinarius or a venator,
+## or targets the nearest enemy, in that order. With no stick input, the player walks into reach of
 ## its target automatically.
 
 signal bank_opened
+signal station_opened(station: Node)
 
 const MoveMath := preload("res://scripts/player/move_math.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -44,6 +45,14 @@ func interact() -> void:
 		return
 	if _near_any("graves", grave_radius):
 		sim_driver.sim.queue_item_action(id, "loot_grave")
+		return
+	var rock := _nearest_in_group("rocks", grave_radius + 0.4)
+	if rock:
+		sim_driver.sim.queue_item_action(id, "mine", {"rock": rock.rock_id})
+		return
+	var station := _nearest_in_group("stations", grave_radius + 0.4)
+	if station:
+		station_opened.emit(station)
 		return
 	if _near_any("banks", bank_radius):
 		bank_opened.emit()
@@ -88,10 +97,18 @@ func _physics_process(delta: float) -> void:
 
 
 func _near_any(group: String, radius: float) -> bool:
+	return _nearest_in_group(group, radius) != null
+
+
+func _nearest_in_group(group: String, radius: float) -> Node3D:
+	var best: Node3D = null
+	var best_distance := radius
 	for node in get_tree().get_nodes_in_group(group):
-		if global_position.distance_to(node.global_position) <= radius:
-			return true
-	return false
+		var offset: Vector3 = (node.global_position - global_position) * Vector3(1, 0, 1)
+		if offset.length() <= best_distance:
+			best = node
+			best_distance = offset.length()
+	return best
 
 
 ## Direction toward the current target while out of reach, otherwise zero.

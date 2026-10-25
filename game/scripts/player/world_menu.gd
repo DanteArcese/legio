@@ -3,6 +3,7 @@ extends RefCounted
 ## is [label, Callable], and the first option is what a left-click does.
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
+const Pietas := preload("res://scripts/sim/pietas.gd")
 
 ## How far the controller menu looks for things.
 const NEARBY_MONSTER_RANGE := 8.0
@@ -35,7 +36,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "shopkeepers"]:
+	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "shopkeepers"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -81,7 +82,14 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			return [["Ask for a contract", player.ask_for_contract.bind(node)],
 				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
 		"shopkeepers":
-			return [["Examine " + node.get_meta("display_name", "shopkeeper"), player.examine.bind(node.get_meta("examine", ""))]]
+			var options := []
+			if node.get_meta("shop_id") == "sacerdos":
+				options.append(["Ask for a cleansing (%d denarii)" % Pietas.CLEANSING_FEE, player.cleanse.bind(node)])
+			options.append(["Examine " + node.get_meta("display_name", "shopkeeper"), player.examine.bind(node.get_meta("examine", ""))])
+			return options
+		"springs":
+			return [["Wash in the sacred spring", player.wash.bind(node)],
+				["Examine the spring", player.examine.bind("Cold, clear water. It washes away the taint of the underworld.")]]
 		"altars":
 			var options := [["Pray at the " + node.title, player.pray.bind(node)]]
 			var inventory: RefCounted = player.get_node("SimEntity").combatant.inventory

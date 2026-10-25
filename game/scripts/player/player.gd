@@ -259,6 +259,18 @@ func offer(altar: Node3D, item_id: String) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "offer", {"item": item_id}))
 
 
+func wash(spring: Node3D) -> void:
+	# The spring's centre is in the water; walk to its edge nearest us.
+	var edge: Vector3 = spring.global_position + _flat(global_position - spring.global_position).normalized() * 4.6
+	walk_and_do(edge, 0.8, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "wash"))
+
+
+func cleanse(priest: Node3D) -> void:
+	walk_and_do(priest.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "cleanse"))
+
+
 func examine(text: String) -> void:
 	message_requested.emit(text)
 
@@ -271,6 +283,9 @@ func interact() -> void:
 		return
 	if _near_any("graves", grave_radius):
 		sim_driver.sim.queue_item_action(id, "loot_grave")
+		return
+	if _near_any("springs", 6.0):
+		sim_driver.sim.queue_item_action(id, "wash")
 		return
 	if _near_any("altars", bank_radius):
 		sim_driver.sim.queue_item_action(id, "pray")

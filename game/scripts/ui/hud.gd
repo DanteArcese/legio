@@ -64,6 +64,8 @@ func _refresh() -> void:
 	var task_text := "No Slayer contract"
 	if not c.slayer_task.is_empty():
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
+	if c.pollution > 0.0:
+		task_text += "   Pollution %d%s" % [ceili(c.pollution), " (polluted)" if c.pollution >= 30.0 else ""]
 	if c.account_mode == "solitarius":
 		task_text = "[Solitarius]  " + task_text
 	var ammo_text := ""

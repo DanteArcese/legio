@@ -327,6 +327,10 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			pietas.pray(player, events)
 		"offer":
 			pietas.start_offering(player, command.get("item", ""), events)
+		"wash":
+			pietas.start_washing(player, events)
+		"cleanse":
+			pietas.cleanse(player, events)
 		"deposit", "deposit_all", "withdraw":
 			if not _near_bank(player):
 				_message(player, "You need to be at a bank.", events)
@@ -554,6 +558,8 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	var curse: String = attacker.equipment.curse() if kind == "ritus" else ""
 	if attacker.uses_ammo():
 		_use_ammo(attacker, target.position, events)
+	if kind == "ritus" and attacker.is_player():
+		pietas.on_curse(attacker, events)
 	if lands and target.is_alive() and not curse.is_empty():
 		_apply_curse(attacker, target, curse, events)
 	_award_combat_xp(attacker, damage, events)
@@ -586,7 +592,7 @@ func _apply_curse(caster: Combatant, target: Combatant, curse: String, events: A
 			target.curses["bound"] = until
 		"withering":
 			until = tick + WITHERING_INTERVAL * WITHERING_PULSES
-			var damage := 1 + floori(caster.level("ritus") / 25.0) + int(caster.blessing_boosts.get("withering_damage", 0))
+			var damage := 1 + floori(caster.level("ritus") / 25.0) + roundi(caster.blessing_boosts.get("withering_damage", 0.0))
 			target.curses["withering"] = {"until": until, "next": tick + WITHERING_INTERVAL, "damage": damage, "source": caster.id}
 	events.append({"type": "curse", "id": target.id, "curse": curse, "until": until, "source": caster.id, "tick": tick})
 

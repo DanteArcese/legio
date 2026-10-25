@@ -17,6 +17,11 @@ const WEAPONS := {
 	"hunting_bow": ["weapons/crossbow_1handed", "ranged"], "composite_bow": ["weapons/crossbow_1handed", "ranged"],
 	"sling": ["", "throw"], "lituus": ["weapons/staff", "ritus"],
 }
+## Palette textures baked with tools/bake_palette.gd (green and blue to red).
+const LEGION_TEXTURES := {
+	"adventurers/Rogue": "res://assets/kaykit/adventurers/rogue_texture_legion.png",
+	"adventurers/Knight": "res://assets/kaykit/adventurers/knight_texture_legion.png",
+}
 const SHIELDS := {"bronze_scutum": "weapons/shield_square", "iron_scutum": "weapons/shield_square"}
 ## Meshes each outfit hides unless the matching headgear is worn.
 const HEADGEAR := {
@@ -33,8 +38,8 @@ static func appearance(worn: Dictionary) -> Dictionary:
 		"shield": SHIELDS.get(worn.get("shield", ""), ""), "hide": [], "show": [],
 	}
 	# Legionary red instead of the pack's green and blue cloth (robes stay dark).
-	if body != BODIES["ritual_robe"]:
-		look["recolor"] = {"from": [0.15, 0.75], "to": 0.0}
+	if LEGION_TEXTURES.has(body):
+		look["texture"] = LEGION_TEXTURES[body]
 	if HEADGEAR.has(body):
 		var mesh: String = HEADGEAR[body][0]
 		look["show" if worn.get("head", "") in HEADGEAR[body][1] else "hide"].append(mesh)

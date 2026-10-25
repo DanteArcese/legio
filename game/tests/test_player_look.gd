@@ -32,3 +32,10 @@ func test_every_equippable_weapon_and_shield_has_a_look() -> void:
 			check(PlayerLook.WEAPONS.has(id), "%s has a weapon look" % id)
 		elif slot == "shield":
 			check(PlayerLook.SHIELDS.has(id), "%s has a shield look" % id)
+
+
+func test_legion_textures_exist() -> void:
+	for body in PlayerLook.LEGION_TEXTURES:
+		check(ResourceLoader.exists(PlayerLook.LEGION_TEXTURES[body]), "%s texture" % body)
+	check(PlayerLook.appearance({}).has("texture"), "the starting tunic is recoloured")
+	check(not PlayerLook.appearance({"body": "ritual_robe"}).has("texture"), "robes stay dark")

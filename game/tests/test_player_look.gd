@@ -48,3 +48,13 @@ func test_kaykit_characters_face_the_games_forward() -> void:
 	# The model's +Z (its face) must point along the game's forward, -Z.
 	check((model.basis * Vector3.BACK).is_equal_approx(Vector3.FORWARD), "face points -Z")
 	character.free()
+
+
+func test_bows_and_slings_are_built_in_code() -> void:
+	var PropModels := preload("res://scripts/world/prop_models.gd")
+	for name in ["bow", "bow_composite", "sling"]:
+		var prop: Node3D = PropModels.build(name)
+		check(prop.get_child_count() >= 3, "%s has parts" % name)
+		prop.free()
+	check_eq(PlayerLook.appearance({"weapon": "hunting_bow"})["weapon"], "proc:bow", "hunting bow")
+	check_eq(PlayerLook.appearance({"weapon": "sling"})["attack"], "throw", "sling throws")

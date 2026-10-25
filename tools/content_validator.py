@@ -143,7 +143,7 @@ def _check_monster(where, monster_id, monster, items, drops, errors):
             ext = ".glb" if key == "scene" else ".gltf"
             if key == "scene" and not path:
                 errors.append(f"{where}.appearance.scene: kaykit models need a scene")
-            elif path and not (CONTENT_DIR.parent / "assets" / "kaykit" / (path + ext)).exists():
+            elif path and not path.startswith("proc:") and not (CONTENT_DIR.parent / "assets" / "kaykit" / (path + ext)).exists():
                 errors.append(f"{where}.appearance.{key}: no asset at assets/kaykit/{path}{ext}")
     if appearance.get("model") not in MODEL_FEATURES:
         errors.append(f"{where}.appearance.model: must be one of {sorted(MODEL_FEATURES)}")

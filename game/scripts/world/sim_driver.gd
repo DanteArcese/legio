@@ -1,6 +1,6 @@
 extends Node
 ## Runs the simulation on game ticks and relays its events to the scene.
-## Press F3 to cycle tick lengths while prototyping (#4).
+## Press F3 to cycle tick lengths (debug only; the game uses 0.6 s).
 
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")

@@ -24,6 +24,7 @@
 [ext_resource type="Script" path="res://scripts/world/lamp_post.gd" id="22_lamp"]
 [ext_resource type="Script" path="res://scripts/world/kit_dresser.gd" id="23_dresser"]
 [ext_resource type="Script" path="res://scripts/world/npc_model.gd" id="24_npc"]
+[ext_resource type="Script" path="res://scripts/world/barrow_dresser.gd" id="25_barrow_dresser"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -522,3 +523,7 @@ area_lighting = NodePath("../AreaLighting")
 script = ExtResource("23_dresser")
 town = NodePath("../CastraFerrea")
 terrain = NodePath("../Terrain")
+
+[node name="BarrowDresser" type="Node" parent="." node_paths=PackedStringArray("barrow")]
+script = ExtResource("25_barrow_dresser")
+barrow = NodePath("../Barrow")

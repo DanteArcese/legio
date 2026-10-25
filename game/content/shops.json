@@ -1,0 +1,43 @@
+{
+  "aulus": {
+    "name": "Aulus the Venator",
+    "offers": [
+      {
+        "item": "whitethorn_charm",
+        "price": 150
+      },
+      {
+        "item": "hunting_bow",
+        "price": 60
+      },
+      {
+        "item": "bronze_arrow",
+        "price": 75,
+        "quantity": 50
+      },
+      {
+        "item": "sling",
+        "price": 20
+      },
+      {
+        "item": "lead_glans",
+        "price": 40,
+        "quantity": 50
+      }
+    ]
+  },
+  "libitinarius": {
+    "name": "Libitinarius",
+    "offers": [
+      {
+        "item": "stylus",
+        "price": 15
+      },
+      {
+        "item": "lead_sheet",
+        "price": 60,
+        "quantity": 5
+      }
+    ]
+  }
+}

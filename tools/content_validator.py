@@ -12,17 +12,17 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "slayer", "mining", "smithing", "cooking"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "slayer", "mining", "smithing", "cooking"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength"}
 AMMO_TYPES = {"arrow", "sling_bullet"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
-RECIPE_KINDS = {"smelt", "smith", "cook"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
-RECIPE_KEYS = {"id", "inputs", "output", "level", "xp", "success", "tool", "burnt", "stop_burning"}
+RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier"}
@@ -55,6 +55,8 @@ def validate(content: dict) -> list[str]:
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, items, errors)
     _check_skilling(content.get("skilling", {}), items, errors)
+    for shop_id, shop in content.get("shops", {}).items():
+        _check_shop(f"shops.{shop_id}", shop, items, errors)
     player = content.get("player", {})
     _check_keys("player", player, {"starting_kit"}, {"starting_kit"}, errors)
     kit = player.get("starting_kit", [])
@@ -191,16 +193,7 @@ def _check_venator(where, venator, monsters, items, errors):
     _check_type(where, "name", venator.get("name"), str, errors)
     _check_int(where, "combat_level", venator.get("combat_level"), 1, errors)
     _check_int(where, "points_per_task", venator.get("points_per_task"), 0, errors)
-    _check_keys(where, venator, {"name", "location", "combat_level", "points_per_task", "tasks", "shop"}, {"name", "combat_level", "points_per_task", "tasks"}, errors)
-    for i, offer in enumerate(venator.get("shop", [])):
-        _check_keys(f"{where}.shop[{i}]", offer, {"item", "price", "quantity"}, {"item", "price"}, errors)
-        if "quantity" in offer:
-            _check_int(f"{where}.shop[{i}]", "quantity", offer["quantity"], 1, errors)
-            if offer["quantity"] > 1 and not items.get(offer.get("item"), {}).get("stackable"):
-                errors.append(f"{where}.shop[{i}].quantity: only stackable items come in bundles")
-        if offer.get("item") not in items:
-            errors.append(f"{where}.shop[{i}].item: unknown item {offer.get('item')!r}")
-        _check_int(f"{where}.shop[{i}]", "price", offer.get("price"), 1, errors)
+    _check_keys(where, venator, {"name", "location", "combat_level", "points_per_task", "tasks"}, {"name", "combat_level", "points_per_task", "tasks"}, errors)
     if not venator.get("tasks"):
         errors.append(f"{where}.tasks: at least one task required")
     for i, task in enumerate(venator.get("tasks", [])):
@@ -256,6 +249,10 @@ def _check_skilling(skilling, items, errors):
                     errors.append(f"{where}.{key}: unknown item {recipe[key]!r}")
             _check_int(where, "level", recipe.get("level"), 1, errors, 99)
             _check_number(where, "xp", recipe.get("xp"), 0.1, 10000, errors)
+            if "quantity" in recipe:
+                _check_int(where, "quantity", recipe["quantity"], 1, errors)
+                if recipe["quantity"] > 1 and not items.get(recipe.get("output"), {}).get("stackable"):
+                    errors.append(f"{where}.quantity: only stackable outputs can be made in batches")
             if "success" in recipe:
                 _check_number(where, "success", recipe["success"], 0.01, 1, errors)
             if "tool" in recipe and recipe["tool"] not in tools:
@@ -264,6 +261,19 @@ def _check_skilling(skilling, items, errors):
                 errors.append(f"{where}: burnt and stop_burning go together")
             if "stop_burning" in recipe:
                 _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
+
+
+def _check_shop(where, shop, items, errors):
+    _check_keys(where, shop, {"name", "offers"}, {"name", "offers"}, errors)
+    for i, offer in enumerate(shop.get("offers", [])):
+        _check_keys(f"{where}.offers[{i}]", offer, {"item", "price", "quantity"}, {"item", "price"}, errors)
+        if offer.get("item") not in items:
+            errors.append(f"{where}.offers[{i}].item: unknown item {offer.get('item')!r}")
+        _check_int(f"{where}.offers[{i}]", "price", offer.get("price"), 1, errors)
+        if "quantity" in offer:
+            _check_int(f"{where}.offers[{i}]", "quantity", offer["quantity"], 1, errors)
+            if offer["quantity"] > 1 and not items.get(offer.get("item"), {}).get("stackable"):
+                errors.append(f"{where}.offers[{i}].quantity: only stackable items come in bundles")
 
 
 def _check_number(where, key, value, minimum, maximum, errors):

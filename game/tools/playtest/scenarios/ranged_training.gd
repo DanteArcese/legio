@@ -13,7 +13,7 @@ func run() -> void:
 	var aulus: Node3D = main.get_node("VenatorAulus")
 	player().buy(aulus, "hunting_bow")
 	await _wait_until(func(): return me.inventory.count("hunting_bow") == 1, 20.0)
-	driver().sim.queue_item_action(PLAYER, "buy", {"venator": "aulus", "item": "bronze_arrow"})
+	driver().sim.queue_item_action(PLAYER, "buy", {"shop": "aulus", "item": "bronze_arrow"})
 	await seconds(1.0)
 	expect(me.inventory.count("bronze_arrow") == 50, "bought 50 arrows")
 	driver().sim.queue_item_action(PLAYER, "equip", {"slot": _slot_of("hunting_bow")})

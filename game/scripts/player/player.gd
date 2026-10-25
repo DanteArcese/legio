@@ -196,9 +196,9 @@ func travel(doorway: Node3D) -> void:
 	walk_and_do(doorway.global_position, 1.9, _arrive_through.bind(doorway))
 
 
-func buy(venator: Node3D, item_id: String) -> void:
-	walk_and_do(venator.global_position, CLICK_USE_DISTANCE, func():
-		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"venator": venator.get_meta("venator_id"), "item": item_id}))
+func buy(shopkeeper: Node3D, item_id: String) -> void:
+	walk_and_do(shopkeeper.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
 
 
 func _arrive_through(doorway: Node3D) -> void:

@@ -107,7 +107,7 @@ def test_cooking_recipe_needs_stop_burning_with_burnt(content):
 
 
 def test_shop_items_must_exist(content):
-    errors = errors_after(content, lambda c: c["slayer"]["venatores"]["aulus"]["shop"].append({"item": "net", "price": 5}))
+    errors = errors_after(content, lambda c: c["shops"]["aulus"]["offers"].append({"item": "net", "price": 5}))
     assert any("unknown item 'net'" in e for e in errors)
 
 
@@ -124,3 +124,8 @@ def test_ranged_weapons_need_range_and_ammo_type(content):
 def test_melee_weapons_cannot_have_range(content):
     errors = errors_after(content, lambda c: c["items"]["bronze_gladius"]["equip"].update(range=3.0))
     assert any("only ranged weapons have range" in e for e in errors)
+
+
+def test_batch_recipes_need_stackable_output(content):
+    errors = errors_after(content, lambda c: c["skilling"]["recipes"]["smith"][2].update(quantity=3))
+    assert any("only stackable outputs" in e for e in errors)

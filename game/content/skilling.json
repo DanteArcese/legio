@@ -29,6 +29,16 @@
       "respawn_ticks": 9,
       "color": "#6e4a3a",
       "examine": "A dark rock, heavy with iron."
+    },
+    "galena_rock": {
+      "name": "Galena rock",
+      "ore": "galena",
+      "level": 10,
+      "xp": 26,
+      "difficulty": 0.15,
+      "respawn_ticks": 8,
+      "color": "#5b6470",
+      "examine": "Grey, glittering, and very heavy."
     }
   },
   "recipes": {
@@ -61,9 +71,49 @@
         "level": 15,
         "xp": 12,
         "success": 0.5
+      },
+      {
+        "id": "lead_sheet",
+        "inputs": [
+          {
+            "item": "galena",
+            "quantity": 1
+          }
+        ],
+        "output": "lead_sheet",
+        "level": 5,
+        "xp": 8
       }
     ],
     "smith": [
+      {
+        "id": "bronze_nails",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_nails",
+        "quantity": 15,
+        "level": 3,
+        "xp": 12,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_nails",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_nails",
+        "quantity": 15,
+        "level": 17,
+        "xp": 25,
+        "tool": "hammer"
+      },
       {
         "id": "bronze_pugio",
         "inputs": [
@@ -223,6 +273,48 @@
         "xp": 40,
         "burnt": "burnt_food",
         "stop_burning": 34
+      }
+    ],
+    "inscribe": [
+      {
+        "id": "binding_tablet",
+        "inputs": [
+          {
+            "item": "lead_sheet",
+            "quantity": 1
+          },
+          {
+            "item": "bronze_nails",
+            "quantity": 1
+          }
+        ],
+        "output": "binding_tablet",
+        "quantity": 5,
+        "level": 1,
+        "xp": 10,
+        "tool": "stylus"
+      },
+      {
+        "id": "withering_tablet",
+        "inputs": [
+          {
+            "item": "lead_sheet",
+            "quantity": 1
+          },
+          {
+            "item": "bronze_nails",
+            "quantity": 1
+          },
+          {
+            "item": "lemur_ash",
+            "quantity": 1
+          }
+        ],
+        "output": "withering_tablet",
+        "quantity": 5,
+        "level": 15,
+        "xp": 22,
+        "tool": "stylus"
       }
     ]
   }

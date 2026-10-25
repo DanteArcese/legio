@@ -58,6 +58,8 @@ var _banks: Array[Vector3] = []
 var _libitinarii: Array[Vector3] = []
 ## venator id -> position
 var _venators := {}
+## shop id -> shopkeeper position
+var _shopkeepers := {}
 ## player id -> {"id", "position", "items", "expires_at"}. One grave per player.
 var _graves := {}
 var _next_grave_id := 1
@@ -126,6 +128,10 @@ func add_libitinarius(position: Vector3) -> void:
 
 func add_venator(venator_id: String, position: Vector3) -> void:
 	_venators[venator_id] = position
+
+
+func add_shopkeeper(shop_id: String, position: Vector3) -> void:
+	_shopkeepers[shop_id] = position
 
 
 ## Recreates a grave from a save, with the time it had left.
@@ -295,7 +301,7 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 		"slayer_task":
 			_slayer_task(player, command.get("venator", ""), events)
 		"buy":
-			_buy(player, command.get("venator", ""), command.get("item", ""), events)
+			_buy(player, command.get("shop", ""), command.get("item", ""), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"craft":
@@ -699,11 +705,11 @@ func _reclaim(player: Combatant, events: Array[Dictionary]) -> void:
 	events.append({"type": "bank_changed", "id": player.id, "tick": tick})
 
 
-## Buys from a venator's shop with coins from the inventory.
-func _buy(player: Combatant, venator_id: String, item_id: String, events: Array[Dictionary]) -> void:
-	if not _venators.has(venator_id) or _flat_distance(_venators[venator_id], player.position) > VENATOR_RANGE:
+## Buys from a shopkeeper with coins from the inventory.
+func _buy(player: Combatant, shop_id: String, item_id: String, events: Array[Dictionary]) -> void:
+	if not _shopkeepers.has(shop_id) or _flat_distance(_shopkeepers[shop_id], player.position) > VENATOR_RANGE:
 		return
-	var offers: Array = ContentDB.venator(venator_id).get("shop", []).filter(func(o): return o["item"] == item_id)
+	var offers: Array = ContentDB.shop(shop_id).get("offers", []).filter(func(o): return o["item"] == item_id)
 	if offers.is_empty():
 		return
 	var price: int = offers[0]["price"]

@@ -1,7 +1,7 @@
 extends RefCounted
 ## Gathering and artisan actions: mining rocks, and making things at
 ## stations (smelting at a furnace, smithing at an anvil, cooking at a
-## range). Actions repeat on ticks, OSRS-style, until done or interrupted.
+## range, inscribing curse tablets at a tomb). Actions repeat on ticks, OSRS-style, until done or interrupted.
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
@@ -16,8 +16,8 @@ const MINE_CHANCE_PER_LEVEL := 0.015
 const MINE_CHANCE_PER_TIER := 0.1
 ## Burn chance at the recipe's level, falling to 0 at its stop_burning level.
 const MAX_BURN_CHANCE := 0.5
-const STATION_FOR_KIND := {"smelt": "furnace", "smith": "anvil", "cook": "range"}
-const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking"}
+const STATION_FOR_KIND := {"smelt": "furnace", "smith": "anvil", "cook": "range", "inscribe": "tomb"}
+const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus"}
 
 var sim: RefCounted
 ## rock id -> {"id", "type", "position", "depleted_until"}
@@ -181,7 +181,7 @@ func _process_craft(player: RefCounted, action: Dictionary, events: Array) -> vo
 		sim.give_item(player.id, recipe["burnt"], 1, "skilling", events)
 		events.append({"type": "burnt", "id": player.id, "item": recipe["output"], "tick": sim.tick})
 	else:
-		sim.give_item(player.id, recipe["output"], 1, "skilling", events)
+		sim.give_item(player.id, recipe["output"], recipe.get("quantity", 1), "skilling", events)
 		sim.award_xp(player, skill, recipe["xp"], events)
 	action["remaining"] -= 1
 	if action["remaining"] <= 0:

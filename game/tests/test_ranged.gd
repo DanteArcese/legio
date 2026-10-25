@@ -167,9 +167,9 @@ func test_ammo_survives_save_and_death_rules() -> void:
 func test_shop_sells_arrow_bundles() -> void:
 	var sim := Simulation.new()
 	sim.add_player(PLAYER)
-	sim.add_venator("aulus", Vector3(1, 0, 0))
+	sim.add_shopkeeper("aulus", Vector3(1, 0, 0))
 	sim.give_item(PLAYER, "coins", 100, "test", [])
-	sim.queue_item_action(PLAYER, "buy", {"venator": "aulus", "item": "bronze_arrow"})
+	sim.queue_item_action(PLAYER, "buy", {"shop": "aulus", "item": "bronze_arrow"})
 	sim.step()
 	check_eq(sim.get_combatant(PLAYER).inventory.count("bronze_arrow"), 50, "50 arrows")
 	check_eq(sim.get_combatant(PLAYER).inventory.count("coins"), 25, "for 75 denarii")

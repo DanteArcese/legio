@@ -42,6 +42,11 @@ var slayer_tasks_done := 0
 var favour := 1.0
 var blessings: Array = []
 var blessing_boosts := {}
+## Ritual pollution from casting curses (0-100); see pietas.gd.
+var pollution := 0.0
+## Tick of the last warning from the town watch (-1 for never).
+var watch_warned_at := -1
+var watch_fined_at := -1
 ## Current skilling action ({} for none); see skilling.gd.
 var skill_action := {}
 ## Who last hit this combatant, for kill credit.

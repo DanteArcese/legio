@@ -7,6 +7,13 @@ extends RefCounted
 ## ritus, movement, withering, binding); turning one on replaces another of
 ## the same aspect. Offerings at an altar train Pietas, one every few ticks;
 ## the wrong kind of altar gives half the XP.
+##
+## Pollution: casting curses builds ritual pollution, which wears off over
+## time. While polluted, heavenly blessings work at half strength and the
+## heavenly altar turns you away, but underworld blessings grow stronger.
+## Washing in a sacred spring or a cleansing from the sacerdos clears it.
+## Casting curses inside the town walls draws the vigiles: first a warning,
+## then a fine.
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
@@ -14,9 +21,30 @@ const ALTAR_RANGE := 2.5
 const OFFER_TICKS := 3
 const WRONG_ALTAR_XP := 0.5
 
+const POLLUTION_PER_CURSE := 4.0
+const MAX_POLLUTION := 100.0
+const POLLUTION_DECAY_TICKS := 25
+const POLLUTED_AT := 30.0
+const POLLUTED_HEAVENLY := 0.5
+const POLLUTED_UNDERWORLD := 1.5
+const WASH_TICKS := 5
+## Measured from the spring's centre; the pond is about 4.5 m across.
+const SPRING_RANGE := 6.0
+const CLEANSING_FEE := 20
+const PRIEST_RANGE := 3.0
+## The town walls (x, z). Underground areas lie far outside them.
+const TOWN := Rect2(-20, -20, 40, 40)
+## A second offence within this many ticks of a warning is fined.
+const WATCH_MEMORY_TICKS := 500
+const WATCH_FINE := 25
+## The watch fines at most once per this many ticks (a minute).
+const WATCH_FINE_COOLDOWN := 100
+
 var sim: RefCounted
 ## [{"kind": "heavenly" | "underworld", "position": Vector3}]
 var altars: Array[Dictionary] = []
+var springs: Array[Vector3] = []
+var priest_position: Variant = null
 
 
 func _init(p_sim: RefCounted) -> void:
@@ -25,6 +53,85 @@ func _init(p_sim: RefCounted) -> void:
 
 func add_altar(kind: String, position: Vector3) -> void:
 	altars.append({"kind": kind, "position": position})
+
+
+func add_spring(position: Vector3) -> void:
+	springs.append(position)
+
+
+func set_priest(position: Vector3) -> void:
+	priest_position = position
+
+
+static func is_polluted(player: RefCounted) -> bool:
+	return player.pollution >= POLLUTED_AT
+
+
+## Called whenever a player casts a curse.
+func on_curse(player: RefCounted, events: Array) -> void:
+	var was_polluted := is_polluted(player)
+	player.pollution = minf(player.pollution + POLLUTION_PER_CURSE, MAX_POLLUTION)
+	if is_polluted(player) and not was_polluted:
+		sim.message(player, "The taint of the underworld clings to you.", events)
+		_changed(player, events)
+	events.append({"type": "pollution_changed", "id": player.id, "tick": sim.tick})
+	var p := Vector2(player.position.x, player.position.z)
+	if TOWN.has_point(p):
+		_town_watch(player, events)
+
+
+func _town_watch(player: RefCounted, events: Array) -> void:
+	if player.watch_warned_at == -1 or sim.tick - player.watch_warned_at > WATCH_MEMORY_TICKS:
+		player.watch_warned_at = sim.tick
+		sim.message(player, "A vigil glares at you: \"No curses within the walls, citizen. That's your only warning.\"", events)
+		events.append({"type": "watch_warning", "id": player.id, "tick": sim.tick})
+		return
+	player.watch_warned_at = sim.tick
+	if player.watch_fined_at != -1 and sim.tick - player.watch_fined_at < WATCH_FINE_COOLDOWN:
+		return
+	var fine: int = mini(WATCH_FINE, player.inventory.count("coins"))
+	player.inventory.remove("coins", fine)
+	player.watch_fined_at = sim.tick
+	sim.message(player, "The vigiles fine you %d denarii for cursing inside the walls." % fine, events)
+	events.append({"type": "watch_fine", "id": player.id, "amount": fine, "tick": sim.tick})
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+
+
+## Starts washing in a nearby sacred spring.
+func start_washing(player: RefCounted, events: Array) -> void:
+	if not springs.any(func(at): return _distance(at, player.position) <= SPRING_RANGE):
+		return
+	player.target_id = -1
+	player.skill_action = {"type": "wash", "next_tick": sim.tick + WASH_TICKS}
+	sim.message(player, "You wash in the sacred spring.", events)
+
+
+## Pays the sacerdos to cleanse pollution.
+func cleanse(player: RefCounted, events: Array) -> void:
+	if priest_position == null or _distance(priest_position, player.position) > PRIEST_RANGE:
+		return
+	if player.pollution <= 0.0:
+		sim.message(player, "\"You're already clean,\" the sacerdos says.", events)
+		return
+	if player.inventory.count("coins") < CLEANSING_FEE:
+		sim.message(player, "A cleansing costs %d denarii." % CLEANSING_FEE, events)
+		return
+	player.inventory.remove("coins", CLEANSING_FEE)
+	_purify(player, events)
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+
+
+func _purify(player: RefCounted, events: Array) -> void:
+	var was_polluted := is_polluted(player)
+	player.pollution = 0.0
+	sim.message(player, "You are cleansed of the underworld's taint.", events)
+	events.append({"type": "pollution_changed", "id": player.id, "tick": sim.tick})
+	if was_polluted:
+		_changed(player, events)
+
+
+static func _distance(a: Vector3, b: Vector3) -> float:
+	return Vector2(a.x - b.x, a.z - b.z).length()
 
 
 static func max_favour(player: RefCounted) -> float:
@@ -56,7 +163,7 @@ func toggle(player: RefCounted, blessing_id: String, events: Array) -> void:
 ## Praying at an altar restores favour to full.
 func pray(player: RefCounted, events: Array) -> void:
 	var altar := nearby_altar(player.position)
-	if altar.is_empty():
+	if altar.is_empty() or _refused(player, altar, events):
 		return
 	player.favour = max_favour(player)
 	sim.message(player, "You pray at the %s. Your favour is restored." % ContentDB.data()["pietas"]["altars"][altar["kind"]]["name"], events)
@@ -66,12 +173,20 @@ func pray(player: RefCounted, events: Array) -> void:
 ## Starts offering every item of one kind at the nearby altar.
 func start_offering(player: RefCounted, item_id: String, events: Array) -> void:
 	var altar := nearby_altar(player.position)
-	if altar.is_empty() or ContentDB.offering(item_id).is_empty():
+	if altar.is_empty() or ContentDB.offering(item_id).is_empty() or _refused(player, altar, events):
 		return
 	if player.inventory.count(item_id) == 0:
 		return
 	player.target_id = -1
 	player.skill_action = {"type": "offer", "item": item_id, "altar": altar, "next_tick": sim.tick + OFFER_TICKS}
+
+
+## The heavenly altar turns away the polluted.
+func _refused(player: RefCounted, altar: Dictionary, events: Array) -> bool:
+	if altar["kind"] == "heavenly" and is_polluted(player):
+		sim.message(player, "The gods turn from you until you are cleansed.", events)
+		return true
+	return false
 
 
 func nearby_altar(position: Vector3) -> Dictionary:
@@ -93,9 +208,20 @@ func process(players: Array, events: Array) -> void:
 	for player in players:
 		if not player.blessings.is_empty():
 			_drain(player, events)
+		if player.pollution > 0.0 and sim.tick % POLLUTION_DECAY_TICKS == 0:
+			var was_polluted := is_polluted(player)
+			player.pollution = maxf(player.pollution - 1.0, 0.0)
+			events.append({"type": "pollution_changed", "id": player.id, "tick": sim.tick})
+			if was_polluted and not is_polluted(player):
+				_changed(player, events)
 		var action: Dictionary = player.skill_action
-		if action.get("type", "") == "offer":
-			_process_offering(player, action, events)
+		match action.get("type", ""):
+			"offer":
+				_process_offering(player, action, events)
+			"wash":
+				if sim.tick >= action["next_tick"]:
+					player.skill_action = {}
+					_purify(player, events)
 
 
 func _drain(player: RefCounted, events: Array) -> void:
@@ -134,9 +260,14 @@ func _process_offering(player: RefCounted, action: Dictionary, events: Array) ->
 ## Recomputes the player's blessing boosts after a change.
 func _changed(player: RefCounted, events: Array) -> void:
 	var boosts := {}
+	var polluted := is_polluted(player)
 	for blessing_id in player.blessings:
-		var boost: Dictionary = ContentDB.blessing(blessing_id)["boost"]
+		var blessing := ContentDB.blessing(blessing_id)
+		var strength := 1.0
+		if polluted:
+			strength = POLLUTED_HEAVENLY if blessing["family"] == "heavenly" else POLLUTED_UNDERWORLD
+		var boost: Dictionary = blessing["boost"]
 		for key in boost:
-			boosts[key] = boosts.get(key, 0.0) + boost[key]
+			boosts[key] = boosts.get(key, 0.0) + boost[key] * strength
 	player.blessing_boosts = boosts
 	events.append({"type": "blessings_changed", "id": player.id, "tick": sim.tick})

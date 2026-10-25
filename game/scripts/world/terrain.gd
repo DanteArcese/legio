@@ -203,6 +203,8 @@ func _build_pond() -> void:
 	# Keep walkers out of the water.
 	var blocker := StaticBody3D.new()
 	blocker.name = "PondEdge"
+	# The pond is a sacred spring: wash here to cleanse ritual pollution.
+	blocker.add_to_group("springs")
 	var shape := CollisionShape3D.new()
 	var cylinder := CylinderShape3D.new()
 	cylinder.radius = POND_RADIUS - 0.5

@@ -45,12 +45,21 @@ func _ready() -> void:
 		sim.pietas.add_altar(altar.kind, altar.global_position)
 	for shopkeeper in get_tree().get_nodes_in_group("shopkeepers"):
 		sim.add_shopkeeper(shopkeeper.get_meta("shop_id"), shopkeeper.global_position)
+		if shopkeeper.get_meta("shop_id") == "sacerdos":
+			sim.pietas.set_priest(shopkeeper.global_position)
+	# Springs are built by the terrain after this runs.
+	_register_springs.call_deferred()
 	for rock in get_tree().get_nodes_in_group("rocks"):
 		rock.rock_id = _rocks.size() + 1
 		_rocks[rock.rock_id] = rock
 		sim.skilling.add_rock(rock.rock_id, rock.rock_type, rock.global_position)
 	for station in get_tree().get_nodes_in_group("stations"):
 		sim.skilling.add_station(station.kind, station.global_position)
+
+
+func _register_springs() -> void:
+	for spring in get_tree().get_nodes_in_group("springs"):
+		sim.pietas.add_spring(spring.global_position)
 
 
 func register(entity: Node) -> void:

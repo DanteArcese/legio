@@ -142,14 +142,14 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 
 ### Curses and Pietas
 
-Decided (#48), to be built with Pietas in #69. Cursing wasn't impious to Romans: curse tablets were addressed *to* gods. What Romans feared was **ritual pollution** from dealings with death, and the law punished harmful magic. So the tension is about pollution and the law, not divine anger.
+Decided (#48) and built in #69. Numbers: 4 pollution per curse, polluted at 30, wears off 1 point every 15 seconds; polluted heavenly blessings work at half strength and underworld ones at 1.5×; cleansing costs 20 denarii. Cursing wasn't impious to Romans: curse tablets were addressed *to* gods. What Romans feared was **ritual pollution** from dealings with death, and the law punished harmful magic. So the tension is about pollution and the law, not divine anger.
 
 - **Two families of gods.** The heavenly gods (Mars, Minerva, Diana, Mercury) give the core combat prayers. The underworld gods (Dis Pater, Proserpina, Hecate) give prayers that favour Ritus.
 - **Pollution.** Casting curses builds pollution, which wears off over time.
   - High pollution weakens heavenly prayers, and their temple priests refuse you service.
   - Underworld prayers grow *stronger* while you're polluted, so dedicated cursers lean in.
 - **Purification.** Washing at a sacred spring or paying for a temple cleansing (*lustratio*) clears pollution. It's cheap and quick, so pollution is something to manage, not a punishment.
-- **The law.** Casting curses inside town walls draws the town watch (the *vigiles*): first a warning, then a small fine. In single-player this is mostly flavour. In the MMO it keeps curses out of town fights.
+- **The law.** Casting curses inside town walls draws the town watch (the *vigiles*): first a warning, then a small fine (25 denarii, at most once a minute). In single-player this is mostly flavour. In the MMO it keeps curses out of town fights.
 - Nothing is permanent, and mixed builds stay viable with a little planning.
 
 ### Travel

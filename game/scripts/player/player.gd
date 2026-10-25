@@ -1,7 +1,7 @@
 extends CharacterBody3D
 ## Directly controlled player: left stick / WASD moves relative to the camera.
-## Interact picks up nearby loot, opens a nearby bank, or targets the nearest
-## enemy, in that order. With no stick input, the player walks into reach of
+## Interact picks up nearby loot, loots your grave, opens a nearby bank,
+## talks to the libitinarius, or targets the nearest enemy, in that order. With no stick input, the player walks into reach of
 ## its target automatically.
 
 signal bank_opened
@@ -15,6 +15,7 @@ const Skills := preload("res://scripts/sim/skills.gd")
 @export var target_radius := 8.0
 @export var pickup_radius := 2.0
 @export var bank_radius := 2.5
+@export var grave_radius := 1.8
 @export var camera_rig: Node3D
 @export var sim_driver: Node
 
@@ -40,10 +41,15 @@ func interact() -> void:
 	if pile:
 		sim_driver.sim.queue_item_action(id, "pickup", {"pile": pile.pile_id})
 		return
-	for bank in get_tree().get_nodes_in_group("banks"):
-		if global_position.distance_to(bank.global_position) <= bank_radius:
-			bank_opened.emit()
-			return
+	if _near_any("graves", grave_radius):
+		sim_driver.sim.queue_item_action(id, "loot_grave")
+		return
+	if _near_any("banks", bank_radius):
+		bank_opened.emit()
+		return
+	if _near_any("libitinarii", bank_radius):
+		sim_driver.sim.queue_item_action(id, "reclaim")
+		return
 	var target_id: int = sim_driver.nearest_target(id, target_radius)
 	if target_id == -1:
 		sim_driver.sim.queue_stop(id)
@@ -74,6 +80,13 @@ func _physics_process(delta: float) -> void:
 	if facing.length_squared() > 0.0001:
 		var target_yaw := atan2(-facing.x, -facing.z)
 		rotation.y = lerp_angle(rotation.y, target_yaw, minf(turn_speed * delta, 1.0))
+
+
+func _near_any(group: String, radius: float) -> bool:
+	for node in get_tree().get_nodes_in_group(group):
+		if global_position.distance_to(node.global_position) <= radius:
+			return true
+	return false
 
 
 ## Direction toward the current target while out of reach, otherwise zero.

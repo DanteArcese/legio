@@ -211,15 +211,37 @@ The game should feel like OSRS without copying it. Game mechanics such as skills
 - Our own XP curve. It can have a similar exponential shape, but not the exact table.
 - Use mythology and history, which are public domain, for monsters and lore.
 
-## First vertical slice (proposal)
+## First vertical slice
 
-The smallest build that proves the core loop:
+Decided scope for the first playable build (#6). Numbers are first guesses to be tuned through playtesting.
 
-- One frontier town plus one nearby wilderness area and a small dungeon.
-- Skills: Attack, Strength, Defence, Vitality, **Slayer**, Mining, Smithing, Cooking.
-- One venator with five or six task monsters, including one that needs a gear check.
-- A bank, a shop, and a smithy.
-- Controller and mouse/keyboard input, save and load.
+**Place.** *Castra Ferrea*, a fictional fort town on the frontier, with:
+- a bank, a general store, a smithy (furnace and anvil), a cooking range, and the venator's post
+- the woods and fields outside the walls, with a copper/tin quarry and an iron outcrop
+- the *Barrow of the Lemures*, a small dungeon
+
+**Skills.** Attack, Strength, Defence, Vitality, Slayer, Mining, Smithing, Cooking.
+
+**Monsters:**
+
+| Monster | Level (approx.) | Where | Notes |
+|---|---|---|---|
+| Rat | 1 | Town drains | Tutorial-tier |
+| Wolf | 5 | Woods | Aggressive to low levels |
+| Wild boar | 8 | Fields | Drops raw meat |
+| Latro (bandit) | 12 | Road | Drops coins and bronze gear |
+| Lemur | 18 | Barrow | Restless dead |
+| Strix | 22 | Barrow depths | Needs Slayer 10, plus a **whitethorn charm** (from Ovid, *Fasti* VI); without the charm, its hits drain your Vitality |
+
+**Items.**
+- Copper, tin, and iron ore. Bronze and iron bars.
+- Bronze and iron *pugio* (dagger), *gladius*, *galea* (helmet), *lorica* (body armor), *scutum* (shield).
+- Raw and cooked meat and fish, and bread.
+- Coins (*denarii*). The whitethorn charm.
+
+**Systems.** Inventory, equipment, the shared bank, death and graves, Slayer contracts, save and load, and controller plus mouse/keyboard input.
+
+**Out of scope for the slice:** Ranged, Ritus, Pietas, quests, the villa, Mercatura, the danger zone, and the market.
 
 ## Villa
 

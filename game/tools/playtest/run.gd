@@ -21,6 +21,9 @@ func _initialize() -> void:
 		save_system.enabled = args.get("save", "") != ""
 		if save_system.enabled:
 			save_system.save_path = args["save"]
+	var graphics: Node = main.get_node_or_null("GraphicsSettings")
+	if graphics:
+		graphics.persist = false
 	root.add_child(main)
 
 	var script: GDScript = load("res://tools/playtest/scenarios/%s.gd" % scenario_name)

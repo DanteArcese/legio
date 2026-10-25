@@ -12,7 +12,7 @@ func run() -> void:
 		me.skills.xp[skill] = me.skills.xp_for_level(15)
 	driver().sim.queue_item_action(PLAYER, "equip", {"slot": 0})
 	var aulus: Vector3 = main.get_node("VenatorAulus").global_position
-	expect(await walk_to(aulus + Vector3(0, 0, -1.8), 0.4), "reached Aulus")
+	expect(await walk_to(aulus + Vector3(1.8, 0, 0), 0.4), "reached Aulus")
 	await press("interact")
 	await seconds(1.0)
 	expect(not me.slayer_task.is_empty(), "got a contract")

@@ -74,6 +74,13 @@ func _physics_process(delta: float) -> void:
 		ticked.emit(sim.tick)
 
 
+## Mirrors and broadcasts an event that didn't come from step(), such as
+## state restored from a save.
+func replay_event(event: Dictionary) -> void:
+	_mirror_ground(event)
+	sim_event.emit(event)
+
+
 ## Nearest ground pile within range of a position, or null. With an
 ## inventory, piles with nothing that fits are skipped.
 func nearest_pile(origin: Vector3, max_distance: float, inventory: RefCounted = null) -> Node3D:

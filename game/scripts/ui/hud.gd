@@ -58,6 +58,8 @@ func _refresh() -> void:
 	var task_text := "No Slayer contract"
 	if not c.slayer_task.is_empty():
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
+	if c.account_mode == "solitarius":
+		task_text = "[Solitarius]  " + task_text
 	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)\nCombat %d   Atk %d   Str %d   Def %d   Vit %d   Slay %d" % [
 		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), s.combat_level(),
 		s.level("attack"), s.level("strength"), s.level("defence"), s.level("vitality"), s.level("slayer")]

@@ -1,6 +1,7 @@
 extends SceneTree
 ## Playtest runner. See scripts/playtest.sh for usage.
 ## User args (after --): --scenario=<name> [--out=<dir>] [--scene=<res path>]
+## [--save=<path>]  (enables saving to that path; off by default)
 
 const Bindings := preload("res://scripts/input/bindings.gd")
 
@@ -14,6 +15,12 @@ func _initialize() -> void:
 		return
 	Bindings.apply()
 	var main: Node = load(args.get("scene", "res://scenes/main.tscn")).instantiate()
+	# Never read or write the real save, and skip the new-character dialog.
+	var save_system: Node = main.get_node_or_null("SaveSystem")
+	if save_system:
+		save_system.enabled = args.get("save", "") != ""
+		if save_system.enabled:
+			save_system.save_path = args["save"]
 	root.add_child(main)
 
 	var script: GDScript = load("res://tools/playtest/scenarios/%s.gd" % scenario_name)

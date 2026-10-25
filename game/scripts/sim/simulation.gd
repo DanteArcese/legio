@@ -122,6 +122,12 @@ func add_venator(venator_id: String, position: Vector3) -> void:
 	_venators[venator_id] = position
 
 
+## Recreates a grave from a save, with the time it had left.
+func restore_grave(player_id: int, position: Vector3, items: Array, ticks_left: int) -> void:
+	_graves[player_id] = {"id": _next_grave_id, "position": position, "items": items, "expires_at": tick + maxi(ticks_left, 1)}
+	_next_grave_id += 1
+
+
 func grave_of(player_id: int) -> Dictionary:
 	return _graves.get(player_id, {})
 

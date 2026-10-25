@@ -65,8 +65,10 @@ static func options_for(player: Node3D, node: Node) -> Array:
 		"venatores":
 			var options := [["Ask for a contract", player.ask_for_contract.bind(node)]]
 			for offer in ContentDB.venator(node.get_meta("venator_id")).get("shop", []):
-				var item_name: String = ContentDB.item(offer["item"])["name"]
-				options.append(["Buy %s (%d denarii)" % [item_name.to_lower(), offer["price"]], player.buy.bind(node, offer["item"])])
+				var item_name: String = ContentDB.item(offer["item"])["name"].to_lower()
+				if offer.get("quantity", 1) > 1:
+					item_name += " x%d" % offer["quantity"]
+				options.append(["Buy %s (%d denarii)" % [item_name, offer["price"]], player.buy.bind(node, offer["item"])])
 			options.append(["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))])
 			return options
 		"transitions":

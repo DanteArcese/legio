@@ -6,6 +6,8 @@ const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
 const LootPile := preload("res://scripts/world/loot_pile.gd")
 const GraveMarker := preload("res://scripts/world/grave_marker.gd")
+const Projectile := preload("res://scripts/world/projectile.gd")
+const ContentDB := preload("res://scripts/content/content_db.gd")
 
 ## Entities with entity_id 0 get ids from here up.
 const AUTO_ID_START := 1000
@@ -109,6 +111,9 @@ func nearest_pile(origin: Vector3, max_distance: float, inventory: RefCounted = 
 
 func _mirror_ground(event: Dictionary) -> void:
 	match event["type"]:
+		"hit":
+			if event.get("ranged", false):
+				_shoot(event)
 		"ground_add":
 			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
 		"ground_update":
@@ -127,6 +132,16 @@ func _mirror_ground(event: Dictionary) -> void:
 			if pile:
 				pile.queue_free()
 				_piles.erase(event["pile"])
+
+
+func _shoot(event: Dictionary) -> void:
+	var attacker: Node = _entities.get(event["attacker"])
+	var target: Node = _entities.get(event["target"])
+	if attacker == null or target == null:
+		return
+	var weapon: Dictionary = attacker.combatant.equipment.weapon() if attacker.combatant.equipment else {}
+	var up := Vector3(0, 0.4, 0)
+	Projectile.spawn(get_parent(), attacker.body().global_position + up, target.body().global_position + up, weapon.get("ammo", "arrow"))
 
 
 func _unhandled_input(event: InputEvent) -> void:

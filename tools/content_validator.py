@@ -14,10 +14,11 @@ from pathlib import Path
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
 FILES = ("items", "monsters", "drops", "slayer", "player", "skilling")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "slayer", "mining", "smithing", "cooking"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "slayer", "mining", "smithing", "cooking"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
-EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck"}
-BONUSES = {"attack", "strength", "defence"}
+EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
+BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength"}
+AMMO_TYPES = {"arrow", "sling_bullet"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
 RECIPE_KINDS = {"smelt", "smith", "cook"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
@@ -82,18 +83,33 @@ def _check_item(where, item_id, item, items, errors):
         _check_levels(f"{where}.requirements", item["requirements"], SKILLS, errors)
     if "equip" in item:
         equip = item["equip"]
-        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed"}, {"slot", "bonuses"}, errors)
+        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type"}, {"slot", "bonuses"}, errors)
         if equip.get("slot") not in EQUIP_SLOTS:
             errors.append(f"{where}.equip.slot: unknown slot {equip.get('slot')!r}")
         bonuses = equip.get("bonuses", {})
-        if set(bonuses) != BONUSES:
-            errors.append(f"{where}.equip.bonuses: expected keys {sorted(BONUSES)}")
+        for key in sorted(set(bonuses) - BONUSES):
+            errors.append(f"{where}.equip.bonuses.{key}: unknown bonus (expected some of {sorted(BONUSES)})")
         for key, value in bonuses.items():
             _check_int(f"{where}.equip.bonuses", key, value, -100, errors)
         if equip.get("slot") == "weapon":
             _check_int(f"{where}.equip", "attack_speed", equip.get("attack_speed"), 1, errors)
         elif "attack_speed" in equip:
             errors.append(f"{where}.equip.attack_speed: only weapons have an attack speed")
+        if equip.get("style", "melee") not in ("melee", "ranged"):
+            errors.append(f"{where}.equip.style: must be melee or ranged")
+        if equip.get("style") == "ranged":
+            _check_number(f"{where}.equip", "range", equip.get("range"), 1, 20, errors)
+            if equip.get("ammo") not in AMMO_TYPES:
+                errors.append(f"{where}.equip.ammo: must be one of {sorted(AMMO_TYPES)}")
+        elif "range" in equip or "ammo" in equip:
+            errors.append(f"{where}.equip: only ranged weapons have range and ammo")
+        if equip.get("slot") == "ammo":
+            if equip.get("ammo_type") not in AMMO_TYPES:
+                errors.append(f"{where}.equip.ammo_type: must be one of {sorted(AMMO_TYPES)}")
+            if not item.get("stackable"):
+                errors.append(f"{where}: ammunition must be stackable")
+        elif "ammo_type" in equip:
+            errors.append(f"{where}.equip.ammo_type: only ammo-slot items have an ammo type")
 
 
 def _check_monster(where, monster_id, monster, items, drops, errors):
@@ -177,7 +193,11 @@ def _check_venator(where, venator, monsters, items, errors):
     _check_int(where, "points_per_task", venator.get("points_per_task"), 0, errors)
     _check_keys(where, venator, {"name", "location", "combat_level", "points_per_task", "tasks", "shop"}, {"name", "combat_level", "points_per_task", "tasks"}, errors)
     for i, offer in enumerate(venator.get("shop", [])):
-        _check_keys(f"{where}.shop[{i}]", offer, {"item", "price"}, {"item", "price"}, errors)
+        _check_keys(f"{where}.shop[{i}]", offer, {"item", "price", "quantity"}, {"item", "price"}, errors)
+        if "quantity" in offer:
+            _check_int(f"{where}.shop[{i}]", "quantity", offer["quantity"], 1, errors)
+            if offer["quantity"] > 1 and not items.get(offer.get("item"), {}).get("stackable"):
+                errors.append(f"{where}.shop[{i}].quantity: only stackable items come in bundles")
         if offer.get("item") not in items:
             errors.append(f"{where}.shop[{i}].item: unknown item {offer.get('item')!r}")
         _check_int(f"{where}.shop[{i}]", "price", offer.get("price"), 1, errors)

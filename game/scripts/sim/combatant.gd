@@ -21,7 +21,7 @@ var respawn_ticks := -1
 ## Combat levels for monsters. Players use their skills instead.
 var levels := {"attack": 1, "strength": 1, "defence": 1}
 ## Equipment bonuses.
-var bonuses := {"attack": 0, "strength": 0, "defence": 0}
+var bonuses := {"attack": 0, "strength": 0, "defence": 0, "ranged_attack": 0, "ranged_strength": 0}
 ## Players have skills and a combat style; monsters leave skills null.
 var skills: Skills = null
 var style := "accurate"
@@ -76,24 +76,52 @@ func is_player() -> bool:
 
 
 func level(skill: String) -> int:
-	return skills.level(skill) if skills else levels[skill]
+	return skills.level(skill) if skills else levels.get(skill, 1)
 
 
 func effective_level(skill: String) -> int:
 	var style_bonus := 0
-	if skills and Skills.STYLE_SKILLS[style] == skill:
+	if skills and Skills.STYLE_BONUS_SKILL[style] == skill:
 		style_bonus = CombatMath.STYLE_BONUS
 	return CombatMath.effective_level(level(skill), style_bonus)
 
 
+func is_ranged() -> bool:
+	return equipment != null and equipment.is_ranged()
+
+
 func max_hit() -> int:
+	if is_ranged():
+		return CombatMath.max_hit(effective_level("ranged"), bonuses["ranged_strength"])
 	return CombatMath.max_hit(effective_level("strength"), bonuses["strength"])
+
+
+## Accuracy level and gear bonus used for attacks with the current weapon.
+func attack_roll_parts() -> Array:
+	if is_ranged():
+		return [effective_level("ranged"), bonuses["ranged_attack"]]
+	return [effective_level("attack"), bonuses["attack"]]
+
+
+## How far away this combatant can attack from.
+func attack_range() -> float:
+	if not is_ranged():
+		return reach
+	return equipment.weapon()["range"] + (2.0 if style == "longrange" else 0.0)
+
+
+func current_attack_speed() -> int:
+	return attack_speed - 1 if style == "rapid" else attack_speed
 
 
 ## Recomputes bonuses and attack speed from worn equipment.
 func apply_equipment() -> void:
 	bonuses = equipment.bonuses()
 	attack_speed = equipment.attack_speed()
+	# Keep the combat style valid for the weapon type.
+	var styles: Array = Skills.RANGED_STYLES if is_ranged() else Skills.MELEE_STYLES
+	if not styles.has(style):
+		style = styles[0]
 
 
 func combat_level() -> int:

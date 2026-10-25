@@ -65,7 +65,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("run_toggle"):
 		running = not running
 	elif event.is_action_pressed("combat_style") and sim_driver:
-		var styles: Array = Skills.STYLES
+		var styles: Array = Skills.RANGED_STYLES if _entity.combatant.is_ranged() else Skills.MELEE_STYLES
 		var next: String = styles[(styles.find(_entity.combatant.style) + 1) % styles.size()]
 		sim_driver.sim.queue_style(_entity.entity_id, next)
 	elif event.is_action_pressed("interact") and sim_driver:
@@ -327,7 +327,7 @@ func _approach_direction() -> Vector3:
 	var target_position: Variant = _target_position()
 	if target_position == null:
 		return Vector3.ZERO
-	if _flat(target_position - global_position).length() <= _entity.combatant.reach * 0.9:
+	if _flat(target_position - global_position).length() <= _entity.combatant.attack_range() * 0.9:
 		return Vector3.ZERO
 	var step := _flat(Navigation.next_waypoint(get_world_3d(), global_position, target_position) - global_position)
 	return step.normalized() if step.length() > 0.01 else Vector3.ZERO

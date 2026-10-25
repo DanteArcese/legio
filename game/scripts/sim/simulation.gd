@@ -40,6 +40,8 @@ const REGEN_INTERVAL := 100
 const WANDER_CHANCE := 0.1
 ## Aggressive monsters ignore players above this multiple of their level.
 const AGGRO_LEVEL_MULTIPLIER := 2
+## Chance that a fired arrow or sling bullet can be picked up again.
+const AMMO_RECOVERY_CHANCE := 0.75
 ## Monsters give up on targets farther away than this (e.g. who left the area).
 const CHASE_RANGE := 30.0
 
@@ -229,8 +231,10 @@ func _apply_commands(events: Array[Dictionary]) -> void:
 			"stop":
 				actor.target_id = -1
 			"style":
-				if command["style"] in Skills.STYLES:
-					actor.style = command["style"]
+				var allowed: Array = Skills.RANGED_STYLES if actor.is_ranged() else Skills.MELEE_STYLES
+				if not actor.skills or command["style"] in allowed:
+					if command["style"] in Skills.STYLES:
+						actor.style = command["style"]
 			_:
 				if actor.inventory:
 					_apply_item_command(actor, command, events)
@@ -247,6 +251,9 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			if not unmet.is_empty():
 				_message(player, "You need %s to wear that." % unmet.capitalize(), events)
 				return
+			if Equipment.slot_of(slot["item"]) == "ammo":
+				_equip_ammo(player, slot_index, events)
+				return
 			player.inventory.take_slot(slot_index)
 			var previous: String = player.equipment.wear(slot["item"])
 			if not previous.is_empty():
@@ -256,11 +263,12 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 			var item_id: String = player.equipment.worn.get(command.get("equip_slot", ""), "")
 			if item_id.is_empty():
 				return
-			if player.inventory.space_for(item_id, 1) == 0:
+			var quantity: int = player.equipment.ammo_count if command["equip_slot"] == "ammo" else 1
+			if player.inventory.space_for(item_id, quantity) < quantity:
 				_message(player, "You don't have enough inventory space.", events)
 				return
 			player.equipment.take_off(command["equip_slot"])
-			player.inventory.add(item_id, 1)
+			player.inventory.add(item_id, quantity)
 			_equipment_changed(player, events)
 		"eat":
 			if slot == null or not ContentDB.item(slot["item"]).has("heals"):
@@ -299,6 +307,23 @@ func _apply_item_command(player: Combatant, command: Dictionary, events: Array[D
 				_message(player, "You need to be at a bank.", events)
 				return
 			_bank_command(player, command, slot, events)
+
+
+## Ammo is worn as a whole stack. Wearing more of the same kind adds to it;
+## a different kind swaps places with the worn stack.
+func _equip_ammo(player: Combatant, slot_index: int, events: Array[Dictionary]) -> void:
+	var slot: Dictionary = player.inventory.take_slot(slot_index)
+	var equipment: RefCounted = player.equipment
+	if equipment.worn["ammo"] == slot["item"]:
+		equipment.ammo_count += slot["quantity"]
+	else:
+		var previous: String = equipment.worn["ammo"]
+		var previous_count: int = equipment.ammo_count
+		equipment.worn["ammo"] = slot["item"]
+		equipment.ammo_count = slot["quantity"]
+		if not previous.is_empty():
+			player.inventory.slots[slot_index] = {"item": previous, "quantity": previous_count}
+	_equipment_changed(player, events)
 
 
 func _remove_from_slot(player: Combatant, index: int, quantity: int) -> void:
@@ -467,7 +492,12 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		return
 	if tick < attacker.next_attack_tick:
 		return
-	if _flat_distance(attacker.position, target.position) > attacker.reach:
+	if _flat_distance(attacker.position, target.position) > attacker.attack_range():
+		return
+	var ranged := attacker.is_ranged()
+	if ranged and not attacker.equipment.has_ammo():
+		attacker.target_id = -1
+		_message(attacker, "You have no suitable ammunition equipped.", events)
 		return
 	if not _meets_slayer_requirement(attacker, target):
 		attacker.target_id = -1
@@ -481,9 +511,8 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	elif target.is_player() and not attacker.monster_id.is_empty():
 		effect = Slayer.unwarded_effect(attacker.monster_id, target.equipment)
 
-	var chance := CombatMath.hit_chance(
-		attacker.effective_level("attack"), attacker.bonuses["attack"],
-		target.effective_level("defence"), target.bonuses["defence"])
+	var roll: Array = attacker.attack_roll_parts()
+	var chance := CombatMath.hit_chance(roll[0], roll[1], target.effective_level("defence"), target.bonuses["defence"])
 	var damage := 0
 	var lands := rng.randf() < chance
 	if effect == "drain_vitality" and target.is_player():
@@ -494,10 +523,14 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	target.last_attacker_id = attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
-	attacker.next_attack_tick = tick + attacker.attack_speed
-	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage, "tick": tick})
+	attacker.next_attack_tick = tick + attacker.current_attack_speed()
+	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage, "ranged": ranged, "tick": tick})
+	if ranged:
+		_use_ammo(attacker, target.position, events)
 	if attacker.skills and damage > 0:
-		_award_xp(attacker, Skills.STYLE_SKILLS[attacker.style], damage * Skills.STYLE_XP_PER_DAMAGE, events)
+		var style_skills: Array = Skills.STYLE_SKILLS[attacker.style]
+		for skill in style_skills:
+			_award_xp(attacker, skill, damage * Skills.STYLE_XP_PER_DAMAGE / style_skills.size(), events)
 		_award_xp(attacker, "vitality", damage * Skills.VITALITY_XP_PER_DAMAGE, events)
 
 	if target.target_id == -1 and target.auto_retaliate and target.can_fight and not target.returning \
@@ -507,6 +540,37 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
 	if not target.is_alive():
 		_kill(target, events)
+
+
+## Each shot uses one ammo; most of it lands near the target to pick up.
+func _use_ammo(attacker: Combatant, at: Vector3, events: Array[Dictionary]) -> void:
+	var equipment: RefCounted = attacker.equipment
+	var ammo: String = equipment.worn["ammo"]
+	equipment.ammo_count -= 1
+	if equipment.ammo_count <= 0:
+		equipment.take_off("ammo")
+		attacker.apply_equipment()
+		_message(attacker, "That was your last %s." % ContentDB.item(ammo)["name"].to_lower(), events)
+	events.append({"type": "equipment_changed", "id": attacker.id, "tick": tick})
+	if rng.randf() < AMMO_RECOVERY_CHANCE:
+		_drop_near(at, ammo, 1, events)
+
+
+## Adds items to a pile within a metre of position, or starts a new one.
+func _drop_near(position: Vector3, item_id: String, quantity: int, events: Array) -> void:
+	for pile in _ground.values():
+		if _flat_distance(pile["position"], position) <= 1.0:
+			var merged := false
+			for entry in pile["items"]:
+				if entry["item"] == item_id:
+					entry["quantity"] += quantity
+					merged = true
+			if not merged:
+				pile["items"].append({"item": item_id, "quantity": quantity})
+			pile["expires_at"] = tick + GROUND_LIFETIME
+			events.append({"type": "ground_update", "pile": pile["id"], "items": pile["items"], "tick": tick})
+			return
+	_add_ground_pile(position, [{"item": item_id, "quantity": quantity}], events)
 
 
 ## Public helpers for sim modules (skilling).
@@ -643,15 +707,17 @@ func _buy(player: Combatant, venator_id: String, item_id: String, events: Array[
 	if offers.is_empty():
 		return
 	var price: int = offers[0]["price"]
+	var quantity: int = offers[0].get("quantity", 1)
 	if player.inventory.count("coins") < price:
 		_message(player, "You need %d denarii for that." % price, events)
 		return
-	if player.inventory.space_for(item_id, 1) == 0 and player.inventory.count("coins") > price:
+	if player.inventory.space_for(item_id, quantity) < quantity and player.inventory.count("coins") > price:
 		_message(player, "You don't have enough inventory space.", events)
 		return
 	player.inventory.remove("coins", price)
-	give_item(player.id, item_id, 1, "shop", events)
-	_message(player, "You buy a %s." % ContentDB.item(item_id)["name"].to_lower(), events)
+	give_item(player.id, item_id, quantity, "shop", events)
+	var name: String = ContentDB.item(item_id)["name"].to_lower()
+	_message(player, "You buy %s." % (("a " + name) if quantity == 1 else "%d %s" % [quantity, name]), events)
 
 
 func _meets_slayer_requirement(fighter: Combatant, opponent: Combatant) -> bool:

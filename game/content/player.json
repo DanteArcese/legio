@@ -1,0 +1,16 @@
+{
+  "starting_kit": [
+    {
+      "item": "bronze_pugio",
+      "quantity": 1
+    },
+    {
+      "item": "bread",
+      "quantity": 4
+    },
+    {
+      "item": "coins",
+      "quantity": 25
+    }
+  ]
+}

@@ -12,7 +12,7 @@ func run() -> void:
 		var deadline: int = start + 1000 # 10 minutes at 0.6 s ticks
 		while driver().sim.tick < deadline:
 			if driver().sim.get_combatant(player_id).target_id == -1:
-				await press("interact")
+				driver().sim.queue_attack(player_id, 100)
 			await seconds(0.5)
 		await shot("after_%s" % style)
 	for skill in ["attack", "strength", "defence", "vitality"]:

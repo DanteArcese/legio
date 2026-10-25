@@ -11,6 +11,19 @@ const Skills := preload("res://scripts/sim/skills.gd")
 const CombatMath := preload("res://scripts/sim/combat_math.gd")
 const Drops := preload("res://scripts/sim/drops.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
+const ItemContainer := preload("res://scripts/sim/item_container.gd")
+const Equipment := preload("res://scripts/sim/equipment.gd")
+
+const INVENTORY_SIZE := 28
+const BANK_SIZE := 400
+## Ground items disappear after this many ticks (2 minutes).
+const GROUND_LIFETIME := 200
+const PICKUP_RANGE := 2.0
+const BANK_RANGE := 3.0
+## Eating delays your next attack by this many ticks.
+const EAT_DELAY := 3
+## Where items can come from. Solitarius accounts refuse the restricted ones.
+const SOLITARIUS_BLOCKED_SOURCES := ["market", "trade"]
 
 ## Every combatant regains 1 HP this often.
 const REGEN_INTERVAL := 100
@@ -24,6 +37,10 @@ var rng := RandomNumberGenerator.new()
 
 var _combatants := {}
 var _pending_commands: Array[Dictionary] = []
+## pile id -> {"id", "position", "items", "expires_at"}
+var _ground := {}
+var _next_pile_id := 1
+var _banks: Array[Vector3] = []
 
 
 func _init(seed_value := 0) -> void:
@@ -56,6 +73,49 @@ func add_monster(id: int, monster_id: String, spawn: Vector3) -> Combatant:
 	return combatant
 
 
+## Creates a player with skills, an empty inventory, equipment, and a bank.
+func add_player(id: int, position := Vector3.ZERO) -> Combatant:
+	var player := add_combatant(id)
+	player.skills = Skills.new()
+	player.max_hp = player.skills.level("vitality")
+	player.hp = player.max_hp
+	player.inventory = ItemContainer.new(INVENTORY_SIZE)
+	player.equipment = Equipment.new()
+	player.bank = ItemContainer.new(BANK_SIZE, true)
+	player.position = position
+	player.apply_equipment()
+	return player
+
+
+func give_starting_kit(id: int) -> void:
+	for entry in ContentDB.starting_kit():
+		give_item(id, entry["item"], entry["quantity"], "starting_kit", [])
+
+
+func add_bank(position: Vector3) -> void:
+	_banks.append(position)
+
+
+func ground_piles() -> Array:
+	return _ground.values()
+
+
+## The single path for items entering a player's inventory. Applies account
+## mode rules, and drops whatever doesn't fit on the ground at the player's
+## feet. Returns how many reached the inventory.
+func give_item(id: int, item_id: String, quantity: int, source: String, events: Array) -> int:
+	var player: Combatant = _combatants[id]
+	if player.account_mode == "solitarius" and source in SOLITARIUS_BLOCKED_SOURCES:
+		events.append({"type": "message", "id": id, "text": "As a Solitarius, you stand alone.", "tick": tick})
+		return 0
+	var added: int = player.inventory.add(item_id, quantity)
+	if added < quantity:
+		_add_ground_pile(player.position, [{"item": item_id, "quantity": quantity - added}], events)
+	if added > 0:
+		events.append({"type": "inventory_changed", "id": id, "tick": tick})
+	return added
+
+
 func get_combatant(id: int) -> Combatant:
 	return _combatants.get(id)
 
@@ -82,11 +142,19 @@ func queue_style(actor_id: int, style: String) -> void:
 	queue_command({"type": "style", "actor": actor_id, "style": style})
 
 
+## Inventory and bank commands. slot is an inventory slot index.
+func queue_item_action(actor_id: int, action: String, args := {}) -> void:
+	var command := {"type": action, "actor": actor_id}
+	command.merge(args)
+	queue_command(command)
+
+
 ## Advances one tick and returns the events that happened during it.
 func step() -> Array[Dictionary]:
 	tick += 1
 	var events: Array[Dictionary] = []
-	_apply_commands()
+	_apply_commands(events)
+	_expire_ground(events)
 	_process_respawns(events)
 	# Sorted ids keep processing order, and therefore RNG use, deterministic.
 	var ids := _combatants.keys()
@@ -102,7 +170,7 @@ func step() -> Array[Dictionary]:
 	return events
 
 
-func _apply_commands() -> void:
+func _apply_commands(events: Array[Dictionary]) -> void:
 	var commands := _pending_commands
 	_pending_commands = []
 	for command in commands:
@@ -119,6 +187,148 @@ func _apply_commands() -> void:
 			"style":
 				if command["style"] in Skills.STYLES:
 					actor.style = command["style"]
+			_:
+				if actor.inventory:
+					_apply_item_command(actor, command, events)
+
+
+func _apply_item_command(player: Combatant, command: Dictionary, events: Array[Dictionary]) -> void:
+	var slot_index: int = command.get("slot", -1)
+	var slot: Variant = player.inventory.slots[slot_index] if slot_index >= 0 and slot_index < player.inventory.size else null
+	match command["type"]:
+		"equip":
+			if slot == null or Equipment.slot_of(slot["item"]).is_empty():
+				return
+			var unmet := Equipment.unmet_requirement(slot["item"], player.skills)
+			if not unmet.is_empty():
+				_message(player, "You need %s to wear that." % unmet.capitalize(), events)
+				return
+			player.inventory.take_slot(slot_index)
+			var previous: String = player.equipment.wear(slot["item"])
+			if not previous.is_empty():
+				player.inventory.slots[slot_index] = {"item": previous, "quantity": 1}
+			_equipment_changed(player, events)
+		"unequip":
+			var item_id: String = player.equipment.worn.get(command.get("equip_slot", ""), "")
+			if item_id.is_empty():
+				return
+			if player.inventory.space_for(item_id, 1) == 0:
+				_message(player, "You don't have enough inventory space.", events)
+				return
+			player.equipment.take_off(command["equip_slot"])
+			player.inventory.add(item_id, 1)
+			_equipment_changed(player, events)
+		"eat":
+			if slot == null or not ContentDB.item(slot["item"]).has("heals"):
+				return
+			_remove_from_slot(player, slot_index, 1)
+			var heal: int = ContentDB.item(slot["item"])["heals"]
+			var healed := mini(heal, player.max_hp - player.hp)
+			player.hp += healed
+			player.next_attack_tick = maxi(player.next_attack_tick, tick + EAT_DELAY)
+			events.append({"type": "ate", "id": player.id, "item": slot["item"], "healed": healed, "tick": tick})
+			events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
+		"drop":
+			if slot == null:
+				return
+			player.inventory.take_slot(slot_index)
+			_add_ground_pile(player.position, [slot], events)
+			events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
+		"pickup":
+			_pickup(player, command.get("pile", -1), events)
+		"deposit", "deposit_all", "withdraw":
+			if not _near_bank(player):
+				_message(player, "You need to be at a bank.", events)
+				return
+			_bank_command(player, command, slot, events)
+
+
+func _remove_from_slot(player: Combatant, index: int, quantity: int) -> void:
+	var slot: Dictionary = player.inventory.slots[index]
+	slot["quantity"] -= quantity
+	if slot["quantity"] <= 0:
+		player.inventory.slots[index] = null
+
+
+func _bank_command(player: Combatant, command: Dictionary, slot: Variant, events: Array[Dictionary]) -> void:
+	match command["type"]:
+		"deposit":
+			if slot == null:
+				return
+			var item_id: String = slot["item"]
+			var quantity := mini(command.get("quantity", player.inventory.count(item_id)), player.inventory.count(item_id))
+			var moved: int = player.bank.add(item_id, quantity)
+			player.inventory.remove(item_id, moved)
+		"deposit_all":
+			for item_id in _distinct_items(player.inventory):
+				player.inventory.remove(item_id, player.bank.add(item_id, player.inventory.count(item_id)))
+		"withdraw":
+			var item_id: String = command.get("item", "")
+			var quantity := mini(command.get("quantity", 1), player.bank.count(item_id))
+			var moved: int = player.inventory.add(item_id, quantity)
+			player.bank.remove(item_id, moved)
+			if moved < quantity:
+				_message(player, "You don't have enough inventory space.", events)
+	events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
+	events.append({"type": "bank_changed", "id": player.id, "tick": tick})
+
+
+func _distinct_items(container: RefCounted) -> Array:
+	var ids := []
+	for slot in container.slots:
+		if slot and not ids.has(slot["item"]):
+			ids.append(slot["item"])
+	return ids
+
+
+func _equipment_changed(player: Combatant, events: Array[Dictionary]) -> void:
+	player.apply_equipment()
+	events.append({"type": "equipment_changed", "id": player.id, "tick": tick})
+	events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
+
+
+func _message(player: Combatant, text: String, events: Array[Dictionary]) -> void:
+	events.append({"type": "message", "id": player.id, "text": text, "tick": tick})
+
+
+func _near_bank(player: Combatant) -> bool:
+	return _banks.any(func(bank): return _flat_distance(bank, player.position) <= BANK_RANGE)
+
+
+func _pickup(player: Combatant, pile_id: int, events: Array[Dictionary]) -> void:
+	var pile: Dictionary = _ground.get(pile_id, {})
+	if pile.is_empty() or _flat_distance(pile["position"], player.position) > PICKUP_RANGE:
+		return
+	var remaining := []
+	var took_any := false
+	for entry in pile["items"]:
+		var added: int = player.inventory.add(entry["item"], entry["quantity"])
+		took_any = took_any or added > 0
+		if added < entry["quantity"]:
+			remaining.append({"item": entry["item"], "quantity": entry["quantity"] - added})
+	if took_any:
+		events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
+	if remaining.is_empty():
+		_ground.erase(pile_id)
+		events.append({"type": "ground_remove", "pile": pile_id, "tick": tick})
+	else:
+		pile["items"] = remaining
+		events.append({"type": "ground_update", "pile": pile_id, "items": remaining, "tick": tick})
+		_message(player, "You don't have enough inventory space.", events)
+
+
+func _add_ground_pile(position: Vector3, items: Array, events: Array) -> void:
+	var pile := {"id": _next_pile_id, "position": position, "items": items.duplicate(true), "expires_at": tick + GROUND_LIFETIME}
+	_ground[_next_pile_id] = pile
+	_next_pile_id += 1
+	events.append({"type": "ground_add", "pile": pile["id"], "position": position, "items": pile["items"], "tick": tick})
+
+
+func _expire_ground(events: Array[Dictionary]) -> void:
+	for pile_id in _ground.keys():
+		if _ground[pile_id]["expires_at"] <= tick:
+			_ground.erase(pile_id)
+			events.append({"type": "ground_remove", "pile": pile_id, "tick": tick})
 
 
 func _process_respawns(events: Array[Dictionary]) -> void:
@@ -235,6 +445,7 @@ func _kill(victim: Combatant, events: Array[Dictionary]) -> void:
 		var items := Drops.roll(ContentDB.drop_table(victim.drop_table), rng)
 		if not items.is_empty():
 			events.append({"type": "drop", "id": victim.id, "items": items, "position": victim.position, "tick": tick})
+			_add_ground_pile(victim.position, items, events)
 
 
 func _regenerate() -> void:

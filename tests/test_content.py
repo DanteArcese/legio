@@ -74,3 +74,8 @@ def test_non_weapons_cannot_have_attack_speed(content):
 def test_monster_appearance_is_checked(content):
     errors = errors_after(content, lambda c: c["monsters"]["wolf"]["appearance"].update(color="grey"))
     assert any("appearance.color" in e for e in errors)
+
+
+def test_starting_kit_items_must_exist(content):
+    errors = errors_after(content, lambda c: c["player"]["starting_kit"].append({"item": "toga", "quantity": 1}))
+    assert any("player.starting_kit[3].item: unknown item 'toga'" in e for e in errors)

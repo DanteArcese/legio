@@ -1,12 +1,16 @@
 extends "res://tools/playtest/scenario.gd"
-## A fresh character with no gear or food works up from rats to boars to
-## wolves, cycling combat styles. Reports kill times, damage taken, deaths,
-## and drops for each stage, to sanity-check early balance.
+## A fresh character equips the starting pugio and works up from rats to
+## boars to wolves, cycling combat styles and eating bread when low. Reports
+## kill times, damage taken, deaths, food eaten, and drops for each stage,
+## to sanity-check early balance.
 
 const PLAYER := 1
 
 
 func run() -> void:
+	driver().sim.queue_item_action(PLAYER, "equip", {"slot": _slot_of("bronze_pugio")})
+	await seconds(1.0)
+	expect(driver().sim.get_combatant(PLAYER).equipment.worn["weapon"] == "bronze_pugio", "pugio equipped")
 	var stages := [["rat", Vector3(7, 0, 7), 12], ["wild_boar", Vector3(15, 0, -12), 8], ["wolf", Vector3(-15, 0, -10), 6]]
 	var results := {}
 	for stage in stages:
@@ -21,9 +25,8 @@ func run() -> void:
 	metric("player_deaths", count_events("death", {"id": PLAYER}))
 	metric("drops", count_events("drop"))
 	expect(rats["kills"] >= 12, "should kill 12 rats")
-	# Without food, even rats eventually wear a fresh character down (HP
-	# regenerates 1 per minute). Tighten this once the bot can eat (#14).
-	expect(rats["deaths"] <= 3, "rats should rarely kill a fresh player (%d deaths)" % rats["deaths"])
+	metric("food_eaten", count_events("ate", {"id": PLAYER}))
+	expect(rats["deaths"] == 0, "rats should never kill a player with the starting kit")
 	expect(count_events("drop") >= rats["kills"], "every kill with a guaranteed drop should drop")
 
 
@@ -50,6 +53,8 @@ func _hunt(area: Vector3, monster_id: String, count: int) -> Dictionary:
 			while count_events("death", {"id": target}) == kills_before and driver().sim.tick < deadline:
 				if not me.is_alive():
 					break
+				if me.hp <= 4 and _slot_of("bread") != -1:
+					driver().sim.queue_item_action(PLAYER, "eat", {"slot": _slot_of("bread")})
 				await seconds(0.3)
 			if count_events("death", {"id": target}) > kills_before:
 				kills += 1
@@ -82,3 +87,11 @@ func _damage_taken() -> int:
 		if event["type"] == "hit" and event["target"] == PLAYER:
 			total += event["damage"]
 	return total
+
+
+func _slot_of(item_id: String) -> int:
+	var slots: Array = driver().sim.get_combatant(PLAYER).inventory.slots
+	for i in slots.size():
+		if slots[i] and slots[i]["item"] == item_id:
+			return i
+	return -1

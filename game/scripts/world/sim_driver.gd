@@ -20,6 +20,7 @@ var clock := TickClock.new()
 
 var _entities := {}
 var _next_auto_id := AUTO_ID_START
+var _piles := {}
 
 
 func _ready() -> void:
@@ -27,6 +28,8 @@ func _ready() -> void:
 	clock.tick_length = tick_lengths[0]
 	for entity in get_tree().get_nodes_in_group("sim_entities"):
 		register(entity)
+	for bank in get_tree().get_nodes_in_group("banks"):
+		sim.add_bank(bank.global_position)
 
 
 func register(entity: Node) -> void:
@@ -60,10 +63,37 @@ func _physics_process(delta: float) -> void:
 		for event in sim.step():
 			for entity in _entities.values():
 				entity.on_sim_event(event)
-			if event["type"] == "drop":
-				LootPile.spawn(get_parent(), event["position"], event["items"])
+			_mirror_ground(event)
 			sim_event.emit(event)
 		ticked.emit(sim.tick)
+
+
+## Nearest ground pile within range of a position, or null. With an
+## inventory, piles with nothing that fits are skipped.
+func nearest_pile(origin: Vector3, max_distance: float, inventory: RefCounted = null) -> Node3D:
+	var best: Node3D = null
+	var best_distance := max_distance
+	for pile in _piles.values():
+		if inventory and not pile.items.any(func(e): return inventory.space_for(e["item"], e["quantity"]) > 0):
+			continue
+		var distance := origin.distance_to(pile.global_position)
+		if distance <= best_distance:
+			best = pile
+			best_distance = distance
+	return best
+
+
+func _mirror_ground(event: Dictionary) -> void:
+	match event["type"]:
+		"ground_add":
+			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
+		"ground_update":
+			_piles[event["pile"]].set_items(event["items"])
+		"ground_remove":
+			var pile: Node = _piles.get(event["pile"])
+			if pile:
+				pile.queue_free()
+				_piles.erase(event["pile"])
 
 
 func _unhandled_input(event: InputEvent) -> void:

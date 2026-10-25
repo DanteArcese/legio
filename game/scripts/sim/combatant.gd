@@ -25,6 +25,13 @@ var bonuses := {"attack": 0, "strength": 0, "defence": 0}
 ## Players have skills and a combat style; monsters leave skills null.
 var skills: Skills = null
 var style := "accurate"
+## Player-only containers; null for monsters.
+var inventory: RefCounted = null
+var equipment: RefCounted = null
+var bank: RefCounted = null
+## "standard" or "solitarius" (self-sufficient: no market or trading).
+var account_mode := "standard"
+
 ## Content id for monsters ("" for players and props). Used for drops.
 var monster_id := ""
 var drop_table := ""
@@ -73,6 +80,12 @@ func effective_level(skill: String) -> int:
 
 func max_hit() -> int:
 	return CombatMath.max_hit(effective_level("strength"), bonuses["strength"])
+
+
+## Recomputes bonuses and attack speed from worn equipment.
+func apply_equipment() -> void:
+	bonuses = equipment.bonuses()
+	attack_speed = equipment.attack_speed()
 
 
 func combat_level() -> int:

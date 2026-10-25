@@ -221,10 +221,31 @@ The smallest build that proves the core loop:
 - A bank, a shop, and a smithy.
 - Controller and mouse/keyboard input, save and load.
 
+## Villa
+
+Decided: **the villa is productive, not just a convenience hub.** You get the right to own one when you become a citizen, and you build and upgrade it with Engineering.
+
+- **Convenience rooms**, as in OSRS: a bank chest, an altar for Pietas, travel links to unlocked waystations, a workshop, and a trophy hall for Slayer heads and boss trophies.
+- **Production estate:**
+  - The land adds farming patches, a vineyard, an olive grove, and fishponds.
+  - Presses and workshops turn your harvest into wine, olive oil, and garum. These are worth more when sold through Mercatura.
+  - Production runs on real time while you're away, at a modest rate, so it supports your active play rather than replacing it.
+- **Staff:** you hire workers (freedmen and tenant farmers) who manage the estate. Higher Engineering and Farming levels mean more and better staff. *Content note:* Roman villas really ran on enslaved labor. The game won't turn slavery into a mechanic. Your staff are paid workers, and slavery can be acknowledged respectfully in lore.
+- **Prestige:** frescoes, mosaics made with Crafting, and gardens. These are cosmetic, plus small comfort buffs, similar to OSRS rested bonuses.
+
+## Account modes
+
+Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
+
+- You choose the mode when you create a character. It is stored in the save, and you can leave the mode later but never re-enter it.
+- Restrictions: you can't use the forum market, and you can't pick up items you didn't earn. In single-player, the restriction that matters is the market. You also can't buy materials from the trade contracts that Mercatura delivers.
+- **Architecture impact:** every item-acquisition path (shops, market, drops, rewards) goes through one place that checks the account mode. Content data marks shop stock that a Solitarius character can't buy.
+- Possible later: a "hardcore" variant with one life, and group modes in the MMO.
+
 ## Open questions
 
 1. Game ticks: use OSRS's 0.6 s, or a slightly faster tick to suit free movement? To be prototyped in #4.
-2. Is the villa purely cosmetic and convenient, as in OSRS, or does it produce things like crops, wine, and income?
-3. Should there be an Ironman-style self-sufficient mode, and from day one?
+2. Banking: one global bank as in OSRS, or a bank per province that Mercatura can move items between? A global bank is simpler and kinder; per-province banks would make Mercatura matter more.
+3. Is the starting area an inescapable tutorial island like OSRS, or an open frontier town with an optional tutorial?
 
 Title: **Legio** (decided unless something better comes along).

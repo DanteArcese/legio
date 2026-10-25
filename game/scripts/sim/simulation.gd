@@ -7,6 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
+const Skills := preload("res://scripts/sim/skills.gd")
 
 var tick := 0
 var rng := RandomNumberGenerator.new()
@@ -47,6 +48,10 @@ func queue_stop(actor_id: int) -> void:
 	queue_command({"type": "stop", "actor": actor_id})
 
 
+func queue_style(actor_id: int, style: String) -> void:
+	queue_command({"type": "style", "actor": actor_id, "style": style})
+
+
 ## Advances one tick and returns the events that happened during it.
 func step() -> Array[Dictionary]:
 	tick += 1
@@ -75,6 +80,9 @@ func _apply_commands() -> void:
 					actor.target_id = target.id
 			"stop":
 				actor.target_id = -1
+			"style":
+				if command["style"] in Skills.STYLES:
+					actor.style = command["style"]
 
 
 func _process_respawns(events: Array[Dictionary]) -> void:
@@ -103,6 +111,9 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	target.hp -= damage
 	attacker.next_attack_tick = tick + attacker.attack_speed
 	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage, "tick": tick})
+	if attacker.skills and damage > 0:
+		_award_xp(attacker, Skills.STYLE_SKILLS[attacker.style], damage * Skills.STYLE_XP_PER_DAMAGE, events)
+		_award_xp(attacker, "vitality", damage * Skills.VITALITY_XP_PER_DAMAGE, events)
 
 	if target.target_id == -1 and target.auto_retaliate and target.can_attack():
 		target.target_id = attacker.id
@@ -110,6 +121,13 @@ func _process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
 	if not target.is_alive():
 		_kill(target, events)
+
+
+func _award_xp(combatant: Combatant, skill: String, amount: float, events: Array[Dictionary]) -> void:
+	var new_level: int = combatant.skills.add_xp(skill, amount)
+	events.append({"type": "xp", "id": combatant.id, "skill": skill, "amount": amount, "tick": tick})
+	if new_level > 0:
+		events.append({"type": "level_up", "id": combatant.id, "skill": skill, "level": new_level, "tick": tick})
 
 
 func _kill(victim: Combatant, events: Array[Dictionary]) -> void:

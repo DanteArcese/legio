@@ -484,5 +484,39 @@
     "name": "Wine",
     "value": 18,
     "examine": "A jug of rough red. Some for the gods, some for you."
+  },
+  "silencing_tablet": {
+    "name": "Silencing tablet",
+    "value": 30,
+    "stackable": true,
+    "examine": "Strix feather pinned in the lead. 'Let his blows fall on nothing.'",
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ritus_strength": 4
+      },
+      "ammo_type": "tablet",
+      "curse": "silencing"
+    },
+    "requirements": {
+      "ritus": 30
+    }
+  },
+  "manes_tablet": {
+    "name": "Tablet of the Manes",
+    "value": 70,
+    "stackable": true,
+    "examine": "Ash and feather sealed in lead. 'Spirits of the dead, rise and take him.'",
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ritus_strength": 6
+      },
+      "ammo_type": "tablet",
+      "curse": "manes"
+    },
+    "requirements": {
+      "ritus": 50
+    }
   }
 }

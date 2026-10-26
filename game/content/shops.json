@@ -124,6 +124,27 @@
         "item": "iron_arrow",
         "price": 150,
         "quantity": 50
+      },
+      {
+        "item": "lorica_hamata",
+        "price": 450,
+        "requires_quest": "miles"
+      },
+      {
+        "item": "parma",
+        "price": 80,
+        "requires_quest": "miles"
+      },
+      {
+        "item": "iron_axe",
+        "price": 120,
+        "requires_quest": "miles"
+      },
+      {
+        "item": "iron_arrowheads",
+        "price": 60,
+        "quantity": 30,
+        "requires_quest": "miles"
       }
     ]
   }

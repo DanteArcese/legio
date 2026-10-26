@@ -111,6 +111,99 @@
         "rank": "Tiro",
         "unlocks": "The quartermaster's stores (Optio Gaius)"
       }
+    },
+    "miles": {
+      "name": "Miles",
+      "summary": "Earn your place in the line: deal with the wolves on the woods road, mend the palisade, and scout the old barrow.",
+      "giver": "optio_gaius",
+      "requirements": {
+        "quests": [
+          "tiro"
+        ],
+        "skills": {
+          "defence": 5
+        }
+      },
+      "start": [
+        "Back again, tiro? Good. Recruits who come back are recruits worth feeding.",
+        "Wolves have been taking the cohort's mules on the woods road. Thin the pack. Five should teach the rest some manners.",
+        "The north palisade is rotting, too. Bring me ten logs and fifteen bronze nails, and the carpenters will do the rest.",
+        "And there's talk of lights at the old barrow, north-west past the woods. Go and look. Only look."
+      ],
+      "steps": [
+        {
+          "kind": "kill",
+          "monster": "wolf",
+          "count": 5,
+          "log": "Kill five wolves in the frontier woods.",
+          "remind": [
+            "Five wolves. They're north of the gate, past the sign. Bring food."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "optio_gaius",
+          "items": [
+            {
+              "item": "logs",
+              "quantity": 10
+            },
+            {
+              "item": "bronze_nails",
+              "quantity": 15
+            }
+          ],
+          "log": "Bring Optio Gaius 10 logs and 15 bronze nails for the palisade.",
+          "remind": [
+            "Ten logs and fifteen bronze nails. Chop the trees west of the fort, and the smithy can make the nails."
+          ]
+        },
+        {
+          "kind": "reach",
+          "at": [
+            -45,
+            -36
+          ],
+          "radius": 6,
+          "log": "Scout the old barrow north-west of the woods.",
+          "remind": [
+            "The barrow is north-west, past the woods. Just look at it and come back."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "optio_gaius",
+          "log": "Report what you saw at the barrow to Optio Gaius.",
+          "remind": []
+        }
+      ],
+      "complete": [
+        "Lemures, at the barrow door? Then the stories are true, and I'll need to write to the prefect.",
+        "You did well. From today you're a miles of the cohort: a soldier, not a recruit.",
+        "Take this mail. A lorica hamata has turned more blades than prayers have. The armoury is open to you now."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 500,
+          "strength": 500,
+          "defence": 500,
+          "vitality": 300,
+          "woodcutting": 150,
+          "smithing": 150
+        },
+        "items": [
+          {
+            "item": "lorica_hamata",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 250
+          }
+        ],
+        "rank": "Miles",
+        "unlocks": "Mail and heavier arms from the quartermaster (Optio Gaius)"
+      }
     }
   }
 }

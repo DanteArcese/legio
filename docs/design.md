@@ -249,7 +249,9 @@ Decided: **both.**
 
 **Built (#83).** Quests live in `game/content/quests.json`: quest NPCs, and per quest a giver, requirements (skills, other quests), start and completion dialogue, items handed out at the start, ordered steps (`attack` a tagged target with a given combat style, `kill` monsters, `talk` to an NPC; the last step is always handing in), and rewards (XP, items, a rank, and a description of what it unlocks). Progress is per player and saved. Shops can require a finished quest (`requires_quest`). The quest log is on J / D-pad right.
 
-The first rank is **Tiro**, given by Optio Gaius by the forum. He hands out a sling, lead, a lituus, and binding tablets; the recruit strikes the training dummy with a blade, a sling, and a curse, clears three granary rats, and reports back for combat XP, a *parma* (round auxiliary shield), the rank, and the quartermaster's iron stores. *Miles* comes next.
+The first rank is **Tiro**, given by Optio Gaius by the forum. He hands out a sling, lead, a lituus, and binding tablets; the recruit strikes the training dummy with a blade, a sling, and a curse, clears three granary rats, and reports back for combat XP, a *parma* (round auxiliary shield), the rank, and the quartermaster's iron stores.
+
+The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). *Duplicarius* comes next.
 
 ## IP guardrails
 

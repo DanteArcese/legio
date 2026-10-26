@@ -637,5 +637,23 @@
         "ritus_defence": -2
       }
     }
+  },
+  "lorica_hamata": {
+    "name": "Lorica hamata",
+    "value": 300,
+    "examine": "A shirt of riveted iron rings. Heavy, but it turns a blade.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 18,
+        "ranged_defence": 10,
+        "ritus_defence": -8
+      }
+    },
+    "requirements": {
+      "defence": 15
+    }
   }
 }

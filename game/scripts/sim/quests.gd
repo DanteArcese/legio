@@ -1,6 +1,6 @@
 extends RefCounted
-## Quests: talking to quest NPCs, step progress from attacks and kills,
-## and rewards. Each player's state lives in combatant.quests:
+## Quests: talking to quest NPCs, step progress from attacks, kills,
+## deliveries, and reaching places, and rewards. Each player's state lives in combatant.quests:
 ## quest id -> {"step": index of the current step, "progress": count toward it,
 ## "done": finished}. Quests not yet started have no entry.
 
@@ -74,11 +74,14 @@ static func rank(player: Combatant) -> String:
 func talk(player: Combatant, npc_id: String, events: Array) -> void:
 	if not npcs.has(npc_id) or sim.flat_distance(npcs[npc_id], player.position) > TALK_RANGE:
 		return
-	# A quest waiting to be handed in to this NPC comes first.
+	# A quest waiting to be handed in to this NPC comes first, then deliveries.
 	for quest_id in ContentDB.quest_ids():
 		var step := current_step(player, quest_id)
 		if step.get("kind") == "talk" and step.get("npc") == npc_id:
 			_advance(player, quest_id, events)
+			return
+		if step.get("kind") == "deliver" and step.get("npc") == npc_id and _carries(player, step["items"]):
+			_deliver(player, quest_id, step, events)
 			return
 	for quest_id in ContentDB.quest_ids():
 		var quest := ContentDB.quest(quest_id)
@@ -99,6 +102,18 @@ func talk(player: Combatant, npc_id: String, events: Array) -> void:
 	_dialogue(player, npc_id, ContentDB.npc(npc_id).get("idle", ["..."]), events)
 
 
+## Each tick: reach steps finish when the player gets there.
+func process(players: Array, events: Array) -> void:
+	for player: Combatant in players:
+		for quest_id in player.quests:
+			var step := current_step(player, quest_id)
+			if step.get("kind") != "reach" or not player.is_alive():
+				continue
+			var at := Vector2(step["at"][0], step["at"][1])
+			if Vector2(player.position.x, player.position.z).distance_to(at) <= step["radius"]:
+				_advance(player, quest_id, events)
+
+
 ## Called by combat for every attack a player makes.
 func on_attack(player: Combatant, target: Combatant, kind: String, events: Array) -> void:
 	for quest_id in player.quests:
@@ -113,6 +128,23 @@ func on_kill(player: Combatant, victim: Combatant, events: Array) -> void:
 		var step := current_step(player, quest_id)
 		if step.get("kind") == "kill" and step.get("monster") == victim.monster_id:
 			_progress(player, quest_id, step, events)
+
+
+static func _carries(player: Combatant, entries: Array) -> bool:
+	return entries.all(func(entry): return player.inventory.count(entry["item"]) >= entry["quantity"])
+
+
+func _deliver(player: Combatant, quest_id: String, step: Dictionary, events: Array) -> void:
+	var handed := []
+	for entry in step["items"]:
+		player.inventory.remove(entry["item"], entry["quantity"])
+		handed.append("%d %s" % [entry["quantity"], ContentDB.item(entry["item"])["name"].to_lower()])
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+	var giver: String = ContentDB.quest(quest_id)["giver"]
+	_advance(player, quest_id, events)
+	var lines: Array = ["You hand over %s." % " and ".join(handed)]
+	lines.append_array(current_step(player, quest_id).get("remind", []))
+	_dialogue(player, giver, lines, events)
 
 
 func _start(player: Combatant, quest_id: String, events: Array) -> void:

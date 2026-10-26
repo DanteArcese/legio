@@ -222,6 +222,7 @@ func step() -> Array[Dictionary]:
 		.filter(func(c): return c.inventory != null)
 	skilling.process(players, events)
 	pietas.process(players, events)
+	quests.process(players, events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events

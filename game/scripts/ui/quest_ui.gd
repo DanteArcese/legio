@@ -120,6 +120,12 @@ func _refresh_log() -> void:
 				var progress := ""
 				if step.has("count"):
 					progress = "  (%d / %d)" % [state["progress"], step["count"]]
+				elif step.get("kind") == "deliver":
+					var parts := []
+					for entry in step["items"]:
+						var have: int = mini(combatant.inventory.count(entry["item"]), entry["quantity"])
+						parts.append("%s %d/%d" % [ContentDB.item(entry["item"])["name"].to_lower(), have, entry["quantity"]])
+					progress = "  (%s)" % ", ".join(parts)
 				text += "[color=#f0d070][b]%s[/b][/color]\n    %s%s\n" % [quest["name"], step["log"], progress]
 			_:
 				var giver: String = ContentDB.npc(quest["giver"]).get("name", "someone")

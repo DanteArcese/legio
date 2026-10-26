@@ -48,6 +48,8 @@ static func options_for(player: Node3D, node: Node) -> Array:
 		# Shop entries go just before Examine (always last for shopkeepers).
 		var examine: Array = options.pop_back() if not options.is_empty() else []
 		for offer in ContentDB.shop(node.get_meta("shop_id")).get("offers", []):
+			if offer.has("requires_quest") and not _quest_done(player, offer["requires_quest"]):
+				continue
 			var item_name: String = ContentDB.item(offer["item"])["name"].to_lower()
 			if offer.get("quantity", 1) > 1:
 				item_name += " x%d" % offer["quantity"]
@@ -160,6 +162,8 @@ static func _flat(v: Vector3) -> Vector3:
 ## Shops behind a quest stay hidden until the player has finished it.
 static func _shop_open_to(player: Node3D, shop_id: String) -> bool:
 	var quest_id: String = ContentDB.shop(shop_id).get("requires_quest", "")
-	if quest_id.is_empty():
-		return true
+	return quest_id.is_empty() or _quest_done(player, quest_id)
+
+
+static func _quest_done(player: Node3D, quest_id: String) -> bool:
 	return player.get_node("SimEntity").combatant.quests.get(quest_id, {}).get("done", false)

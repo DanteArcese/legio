@@ -228,6 +228,9 @@ func _buy(player: Combatant, shop_id: String, item_id: String, events: Array[Dic
 	var offers: Array = shop.get("offers", []).filter(func(o): return o["item"] == item_id)
 	if offers.is_empty():
 		return
+	if offers[0].has("requires_quest") and not player.quests.get(offers[0]["requires_quest"], {}).get("done", false):
+		sim.message(player, "The quartermaster keeps that for proven soldiers.", events)
+		return
 	var price: int = offers[0]["price"]
 	var quantity: int = offers[0].get("quantity", 1)
 	if player.inventory.count("coins") < price:

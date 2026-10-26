@@ -683,6 +683,93 @@
         "level": 15,
         "xp": 60
       }
+    ],
+    "medicina": [
+      {
+        "id": "mint_tonic",
+        "inputs": [
+          {
+            "item": "mint",
+            "quantity": 1
+          },
+          {
+            "item": "wine",
+            "quantity": 1
+          }
+        ],
+        "output": "mint_tonic",
+        "level": 1,
+        "xp": 20,
+        "tool": "pestle"
+      },
+      {
+        "id": "fennel_draught",
+        "inputs": [
+          {
+            "item": "fennel",
+            "quantity": 1
+          },
+          {
+            "item": "wine",
+            "quantity": 1
+          }
+        ],
+        "output": "fennel_draught",
+        "level": 8,
+        "xp": 32,
+        "tool": "pestle"
+      },
+      {
+        "id": "sage_salve",
+        "inputs": [
+          {
+            "item": "sage",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "sage_salve",
+        "level": 16,
+        "xp": 45,
+        "tool": "pestle"
+      },
+      {
+        "id": "wormwood_bitters",
+        "inputs": [
+          {
+            "item": "wormwood",
+            "quantity": 1
+          },
+          {
+            "item": "wine",
+            "quantity": 1
+          }
+        ],
+        "output": "wormwood_bitters",
+        "level": 25,
+        "xp": 62,
+        "tool": "pestle"
+      },
+      {
+        "id": "poppy_draught",
+        "inputs": [
+          {
+            "item": "poppy",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "poppy_draught",
+        "level": 34,
+        "xp": 80,
+        "tool": "pestle"
+      }
     ]
   },
   "trees": {

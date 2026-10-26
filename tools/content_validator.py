@@ -14,14 +14,14 @@ from pathlib import Path
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
 FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
 AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -29,7 +29,7 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy"}
 MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "appearance"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
@@ -95,6 +95,17 @@ def _check_item(where, item_id, item, items, errors):
         _check_type(where, "stackable", item["stackable"], bool, errors)
     if "heals" in item:
         _check_int(where, "heals", item["heals"], 1, errors)
+    if "remedy" in item:
+        remedy = item["remedy"]
+        if "heals" in remedy:
+            _check_keys(f"{where}.remedy", remedy, {"heals"}, {"heals"}, errors)
+            _check_int(f"{where}.remedy", "heals", remedy["heals"], 1, errors)
+        else:
+            _check_keys(f"{where}.remedy", remedy, {"skill", "flat", "percent"}, {"skill", "flat", "percent"}, errors)
+            if remedy.get("skill") not in SKILLS:
+                errors.append(f"{where}.remedy.skill: unknown skill {remedy.get('skill')!r}")
+            _check_int(f"{where}.remedy", "flat", remedy.get("flat"), 0, errors, 20)
+            _check_number(f"{where}.remedy", "percent", remedy.get("percent"), 0, 0.5, errors)
     if "tool" in item:
         _check_type(where, "tool", item["tool"], str, errors)
         _check_int(where, "tool_tier", item.get("tool_tier"), 1, errors)

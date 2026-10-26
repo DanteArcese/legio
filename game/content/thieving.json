@@ -34,7 +34,7 @@
         "item": "silver_fibula",
         "quantity": 1
       },
-      "restock_ticks": 35,
+      "restock_ticks": 18,
       "caught_chance": 0.35,
       "model": "stall-red",
       "examine": "Brooches and rings, under the silversmith's eye."

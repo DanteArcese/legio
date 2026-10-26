@@ -256,6 +256,7 @@ Decided: **grindy, on the OSRS scale.** Skills go up to level 99, and maxing a s
 - Every few levels unlock something real: a new resource, item, area, or training method. That keeps the long climb from feeling empty.
 - Each skill has at least one fast, attention-heavy training method and one slow, low-effort method, as in OSRS.
 - Skilling outfits, pets, and log-style collections (like OSRS's collection log) give long-term goals.
+  - **Built (#133): the Tabularium**, a collection log (L / right trigger). Pages by source (beasts, latrones, the barrow, Slayer creatures, seeds, fishing, the harvest, Hunter, thieving, and quest rewards) list notable items with how many you have obtained; missing ones are greyed out. Items count when they drop from your kills or come from skilling, thieving, or quests, not from shops or trades. The first of each is announced.
 
 ### Quests and career
 

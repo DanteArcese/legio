@@ -1298,6 +1298,32 @@ monster_id = "dire_wolf"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.2, -441)
 monster_id = "hrodgar"
 
+[node name="VenatrixUrsa" type="StaticBody3D" parent="Frontier" groups=["venatores", "navigation_source"]]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 9, 1, -345)
+collision_layer = 8
+metadata/venator_id = "ursa"
+metadata/display_name = "Ursa the Venatrix"
+metadata/examine = "A Germanic huntress in Roman pay, with a bearskin cloak and a long bow. She sends hunters over the wall."
+
+[node name="Mesh" type="MeshInstance3D" parent="Frontier/VenatrixUrsa"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Frontier/VenatrixUrsa"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Frontier/VenatrixUrsa"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue_Hooded"
+weapon = "proc:bow"
+
+[node name="Label" type="Label3D" parent="Frontier/VenatrixUrsa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Ursa the Venatrix
+(Slayer contracts)"
+font_size = 36
+outline_size = 8
+
 [node name="CenturionVarro" type="StaticBody3D" parent="Frontier" groups=["quest_npcs", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -344)
 collision_layer = 8

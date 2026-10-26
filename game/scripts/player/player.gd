@@ -32,6 +32,8 @@ const CLICK_MASK := 1 | 4 | 8 | 16
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
 const Athletics := preload("res://scripts/sim/athletics.gd")
+## Where the villa's waystone leads: the road into Portus Salis.
+const WAYSTONE_DESTINATION := Vector3(-300, 0, -44)
 ## Fishing spots sit out in the pond; the shore is as close as you get.
 const FISHING_USE_DISTANCE := 2.6
 
@@ -268,6 +270,31 @@ func talk(npc: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
 
 
+func buy_villa(surveyor: Node3D) -> void:
+	walk_and_do(surveyor.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "buy_villa"))
+
+
+func build_furniture(hotspot: Node3D, furniture_id: String) -> void:
+	walk_and_do(hotspot.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "build", {"hotspot": hotspot.hotspot_id, "furniture": furniture_id}))
+
+
+func remove_furniture(hotspot: Node3D) -> void:
+	walk_and_do(hotspot.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "remove_furniture", {"hotspot": hotspot.hotspot_id}))
+
+
+## The villa's waystone: straight down the road to Portus Salis.
+func use_waystone(stone: Node3D) -> void:
+	walk_and_do(stone.global_position, CLICK_USE_DISTANCE, func():
+		var id: int = _entity.entity_id
+		sim_driver.sim.queue_stop(id)
+		sim_driver.sim.queue_item_action(id, "stop_action")
+		global_position = WAYSTONE_DESTINATION + Vector3(0, 1, 0)
+		sim_driver.sim.set_position(id, WAYSTONE_DESTINATION))
+
+
 func take_contract(board: Node3D, contract_id: String) -> void:
 	walk_and_do(board.global_position, CLICK_USE_DISTANCE + 0.4, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "take_contract", {"board": board.board_id, "contract": contract_id}))
@@ -354,6 +381,9 @@ func _arrive_through(doorway: Node3D) -> void:
 		message_requested.emit(doorway.warning)
 		return
 	var id: int = _entity.entity_id
+	if doorway.requires_villa and not _entity.combatant.villa_owned:
+		message_requested.emit("That's private land. The land surveyor in the forum sells villas to citizens.")
+		return
 	sim_driver.sim.queue_stop(id)
 	sim_driver.sim.queue_item_action(id, "stop_action")
 	destination = null

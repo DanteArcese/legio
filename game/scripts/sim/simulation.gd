@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, hunter, farming, and mercatura.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, hunter, farming, mercatura, and the villa.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -28,6 +28,7 @@ const Athletics := preload("res://scripts/sim/athletics.gd")
 const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
+const Villa := preload("res://scripts/sim/villa.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -35,6 +36,9 @@ const VENATOR_RANGE := 3.0
 const PLAYER_RESPAWN_TICKS := 3
 ## Where items can come from. Solitarius accounts refuse the restricted ones.
 const SOLITARIUS_BLOCKED_SOURCES := ["market", "trade"]
+## Items from these sources count toward the collection log (the Tabularium);
+## shops, trades, and the starting kit don't.
+const COLLECTION_SOURCES := ["skilling", "thieving", "quest", "drop"]
 ## Every combatant regains 1 HP this often.
 const REGEN_INTERVAL := 100
 
@@ -52,6 +56,7 @@ var athletics := Athletics.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
+var villa := Villa.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 ## Beyond the Limes: XZ rectangles where deaths drop items on the ground.
@@ -159,12 +164,26 @@ func give_item(id: int, item_id: String, quantity: int, source: String, events: 
 	if player.account_mode == "solitarius" and source in SOLITARIUS_BLOCKED_SOURCES:
 		message(player, "As a Solitarius, you stand alone.", events)
 		return 0
+	if source in COLLECTION_SOURCES:
+		record_collection(player, item_id, quantity, events)
 	var added: int = player.inventory.add(item_id, quantity)
 	if added < quantity:
 		items.add_ground_pile(player.position, [{"item": item_id, "quantity": quantity - added}], events)
 	if added > 0:
 		events.append({"type": "inventory_changed", "id": id, "tick": tick})
 	return added
+
+
+## Counts an obtained item in the player's collection log; the first of
+## each is announced.
+func record_collection(player: Combatant, item_id: String, quantity: int, events: Array) -> void:
+	if not player.is_player() or not ContentDB.is_collectable(item_id):
+		return
+	var first: bool = not player.collection.has(item_id)
+	player.collection[item_id] = player.collection.get(item_id, 0) + quantity
+	if first:
+		message(player, "New item in the Tabularium: %s." % ContentDB.item(item_id)["name"], events)
+		events.append({"type": "collection_new", "id": player.id, "item": item_id, "tick": tick})
 
 
 func get_combatant(id: int) -> Combatant:
@@ -294,6 +313,8 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 			# Join a pile already lying here, so repeat kills don't litter the ground.
 			for entry in dropped:
 				items.drop_near(victim.position, entry["item"], entry["quantity"], events)
+				if killer and killer.is_player():
+					record_collection(killer, entry["item"], entry["quantity"], events)
 
 
 static func flat_distance(a: Vector3, b: Vector3) -> float:
@@ -349,6 +370,12 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			hunter.use_spot(player, command.get("spot", -1), events)
 		"farm":
 			farming.use_patch(player, command.get("patch", -1), command.get("seed", ""), events)
+		"buy_villa":
+			villa.buy(player, events)
+		"build":
+			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events)
+		"remove_furniture":
+			villa.remove(player, command.get("hotspot", ""), events)
 		"take_contract":
 			mercatura.take(player, command.get("board", ""), command.get("contract", ""), events)
 		"abandon_contract":

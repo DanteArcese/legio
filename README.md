@@ -28,6 +28,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | Run on / off | R | Left stick click |
 | Inventory and equipment | I | Back |
 | Quest log | J | D-pad right |
+| Tabularium (collection log) | L | Right trigger |
 | Skills | K | Left trigger |
 | Blessings (Pietas) | P | D-pad left |
 | Hide roofs | H | Right stick click |
@@ -39,7 +40,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 - **The auxilia career**: four ranked quests from Optio Gaius, from tiro to decurio and Roman citizenship.
 - **Skills**: Attack, Strength, Defence, Vitality, Ranged, Ritus, Pietas, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching, Crafting, Thieving, Athletics, and Hunter.
 - **The town**: a bank, shops, a smithy, an altar and sacred spring, market stalls (mind the vigiles), a garum vat, and a training course.
-- A minimap, a quest log, a skills panel, sound, a day and night cycle, and saving.
+- A minimap, a quest log, a skills panel, a collection log, sound, a day and night cycle, and saving.
 
 ## Development
 

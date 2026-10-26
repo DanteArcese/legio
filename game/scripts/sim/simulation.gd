@@ -35,6 +35,9 @@ const VENATOR_RANGE := 3.0
 const PLAYER_RESPAWN_TICKS := 3
 ## Where items can come from. Solitarius accounts refuse the restricted ones.
 const SOLITARIUS_BLOCKED_SOURCES := ["market", "trade"]
+## Items from these sources count toward the collection log (the Tabularium);
+## shops, trades, and the starting kit don't.
+const COLLECTION_SOURCES := ["skilling", "thieving", "quest", "drop"]
 ## Every combatant regains 1 HP this often.
 const REGEN_INTERVAL := 100
 
@@ -149,12 +152,26 @@ func give_item(id: int, item_id: String, quantity: int, source: String, events: 
 	if player.account_mode == "solitarius" and source in SOLITARIUS_BLOCKED_SOURCES:
 		message(player, "As a Solitarius, you stand alone.", events)
 		return 0
+	if source in COLLECTION_SOURCES:
+		record_collection(player, item_id, quantity, events)
 	var added: int = player.inventory.add(item_id, quantity)
 	if added < quantity:
 		items.add_ground_pile(player.position, [{"item": item_id, "quantity": quantity - added}], events)
 	if added > 0:
 		events.append({"type": "inventory_changed", "id": id, "tick": tick})
 	return added
+
+
+## Counts an obtained item in the player's collection log; the first of
+## each is announced.
+func record_collection(player: Combatant, item_id: String, quantity: int, events: Array) -> void:
+	if not player.is_player() or not ContentDB.is_collectable(item_id):
+		return
+	var first: bool = not player.collection.has(item_id)
+	player.collection[item_id] = player.collection.get(item_id, 0) + quantity
+	if first:
+		message(player, "New item in the Tabularium: %s." % ContentDB.item(item_id)["name"], events)
+		events.append({"type": "collection_new", "id": player.id, "item": item_id, "tick": tick})
 
 
 func get_combatant(id: int) -> Combatant:
@@ -284,6 +301,8 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 			# Join a pile already lying here, so repeat kills don't litter the ground.
 			for entry in dropped:
 				items.drop_near(victim.position, entry["item"], entry["quantity"], events)
+				if killer and killer.is_player():
+					record_collection(killer, entry["item"], entry["quantity"], events)
 
 
 static func flat_distance(a: Vector3, b: Vector3) -> float:

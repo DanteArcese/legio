@@ -237,3 +237,13 @@ def test_remedies_boost_real_skills(content):
 def test_contracts_deliver_to_real_shopkeepers(content):
     errors = errors_after(content, lambda c: c["mercatura"]["contracts"]["salt_for_the_fort"].update(to="nobody"))
     assert any("salt_for_the_fort.to" in e for e in errors)
+
+
+def test_collection_pages_list_real_items(content):
+    errors = errors_after(content, lambda c: c["collection"]["pages"]["beasts"]["items"].append("golden_fleece"))
+    assert any("unknown item 'golden_fleece'" in e for e in errors)
+
+
+def test_collection_pages_have_known_categories(content):
+    errors = errors_after(content, lambda c: c["collection"]["pages"]["beasts"].update(category="Misc"))
+    assert any("unknown category 'Misc'" in e for e in errors)

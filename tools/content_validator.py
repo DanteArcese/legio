@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "collection")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -72,6 +72,7 @@ def validate(content: dict) -> list[str]:
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
+    _check_collection(content.get("collection", {}), items, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -575,6 +576,27 @@ def _check_farming(farming, items, errors):
 
 
 CONTRACT_KEYS = {"name", "board", "level", "item", "quantity", "to", "coins", "xp", "summary"}
+
+
+COLLECTION_CATEGORIES = {"Combat", "Slayer", "Skilling", "Quests", "Frontier"}
+
+
+def _check_collection(collection, items, errors):
+    _check_keys("collection", collection, {"pages"}, {"pages"}, errors)
+    for page_id, page in collection.get("pages", {}).items():
+        where = f"collection.pages.{page_id}"
+        _check_id(where, page_id, errors)
+        _check_keys(where, page, {"name", "category", "items"}, {"name", "category", "items"}, errors)
+        if page.get("category") not in COLLECTION_CATEGORIES:
+            errors.append(f"{where}.category: unknown category {page.get('category')!r}")
+        page_items = page.get("items", [])
+        if not page_items:
+            errors.append(f"{where}.items: a page needs at least one item")
+        for item_id in page_items:
+            if item_id not in items:
+                errors.append(f"{where}.items: unknown item {item_id!r}")
+        if len(set(page_items)) != len(page_items):
+            errors.append(f"{where}.items: an item is listed twice")
 
 
 def _check_mercatura(mercatura, items, shops, errors):

@@ -38,6 +38,7 @@
 [ext_resource type="Script" path="res://scripts/world/patch_node.gd" id="35_patch"]
 [ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
 [ext_resource type="Script" path="res://scripts/world/trade_board.gd" id="37_board"]
+[ext_resource type="Script" path="res://scripts/ui/collection_ui.gd" id="39_collection_ui"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1025,6 +1026,11 @@ player = NodePath("../Player")
 
 [node name="SkillsUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
 script = ExtResource("30_skills_ui")
+driver = NodePath("../SimDriver")
+player = NodePath("../Player")
+
+[node name="CollectionUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
+script = ExtResource("39_collection_ui")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 

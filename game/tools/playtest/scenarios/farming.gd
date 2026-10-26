@@ -22,7 +22,7 @@ func run() -> void:
 
 	var patch: Node3D = main.get_node("Farm/HerbPatch1")
 	await route_to(Vector3(0, 0, 24), 1.0, 90.0)
-	for waypoint in [Vector3(6, 0, 28.5), Vector3(6, 0, 31.5)]:
+	for waypoint in [Vector3(3, 0, 28.5), Vector3(3, 0, 37.5), Vector3(5.8, 0, 39.3)]:
 		await walk_to(waypoint, 0.6, 30.0)
 	var plant: Array = WorldMenu.options_for(player(), patch).filter(func(o): return o[0] == "Plant mint seed")
 	expect(plant.size() == 1, "the empty herb patch offers mint")

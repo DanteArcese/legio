@@ -736,6 +736,32 @@
         "level": 22,
         "xp": 110,
         "tool": "needle"
+      },
+      {
+        "id": "venators_helm",
+        "inputs": [
+          {
+            "item": "wolfskin_hood",
+            "quantity": 1
+          },
+          {
+            "item": "whitethorn_charm",
+            "quantity": 1
+          },
+          {
+            "item": "leather",
+            "quantity": 2
+          },
+          {
+            "item": "thread",
+            "quantity": 2
+          }
+        ],
+        "output": "venators_helm",
+        "level": 30,
+        "xp": 150,
+        "tool": "needle",
+        "requires_unlock": "venators_helm"
       }
     ],
     "garum": [

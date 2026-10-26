@@ -26,11 +26,11 @@ ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
 CATCH_KEYS = {"fish", "level", "xp"}
-RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest"}
+RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest", "requires_unlock"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet"}
-MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance"}
+MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
@@ -60,6 +60,7 @@ def validate(content: dict) -> list[str]:
         _check_drop_table(f"drops.{table_id}", table, items, errors)
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, items, errors)
+    _check_slayer_rewards(content.get("slayer", {}).get("rewards", {}), errors)
     _check_skilling(content.get("skilling", {}), items, errors)
     _check_pietas(content.get("pietas", {}), items, errors)
     quests = content.get("quests", {})
@@ -68,6 +69,9 @@ def validate(content: dict) -> list[str]:
         for i, recipe in enumerate(entries):
             if "requires_quest" in recipe and recipe["requires_quest"] not in quests.get("quests", {}):
                 errors.append(f"skilling.recipes.{kind}[{i}].requires_quest: unknown quest {recipe['requires_quest']!r}")
+            unlocks = content.get("slayer", {}).get("rewards", {}).get("unlocks", {})
+            if "requires_unlock" in recipe and recipe["requires_unlock"] not in unlocks:
+                errors.append(f"skilling.recipes.{kind}[{i}].requires_unlock: unknown Slayer unlock {recipe['requires_unlock']!r}")
     _check_thieving(content.get("thieving", {}), items, errors)
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)
@@ -134,7 +138,12 @@ def _check_item(where, item_id, item, items, errors):
         _check_levels(f"{where}.requirements", item["requirements"], SKILLS, errors)
     if "equip" in item:
         equip = item["equip"]
-        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type", "curse"}, {"slot", "bonuses"}, errors)
+        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type", "curse", "wards", "slayer_boost"}, {"slot", "bonuses"}, errors)
+        for ward in equip.get("wards", []):
+            if ward not in items:
+                errors.append(f"{where}.equip.wards: unknown item {ward!r}")
+        if "slayer_boost" in equip:
+            _check_number(f"{where}.equip", "slayer_boost", equip["slayer_boost"], 0, 0.5, errors)
         if equip.get("slot") not in EQUIP_SLOTS:
             errors.append(f"{where}.equip.slot: unknown slot {equip.get('slot')!r}")
         bonuses = equip.get("bonuses", {})
@@ -190,7 +199,7 @@ def _check_boss(where, boss, attack_speed, errors):
 
 def _check_monster(where, monster_id, monster, items, drops, errors):
     _check_id(where, monster_id, errors)
-    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"slayer", "boss"}, errors)
+    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss"}, errors)
     if "boss" in monster:
         _check_boss(f"{where}.boss", monster["boss"], monster.get("attack_speed"), errors)
     _check_type(where, "name", monster.get("name"), str, errors)
@@ -271,6 +280,24 @@ def _check_drop(where, entry, items, errors, nothing_allowed, multiples_allowed=
         _check_int(where, "quantity", quantity, 1, errors)
         if _is_int(quantity) and quantity > 1 and not items[item_id].get("stackable") and not multiples_allowed:
             errors.append(f"{where}.quantity: {item_id} isn't stackable, so drop at most 1")
+
+
+def _check_slayer_rewards(rewards, errors):
+    where = "slayer.rewards"
+    _check_keys(where, rewards, {"cancel", "block", "max_blocks", "streaks", "unlocks"}, {"cancel", "block", "max_blocks", "streaks", "unlocks"}, errors)
+    for key in ("cancel", "block", "max_blocks"):
+        _check_int(where, key, rewards.get(key), 1, errors)
+    for i, streak in enumerate(rewards.get("streaks", [])):
+        _check_keys(f"{where}.streaks[{i}]", streak, {"every", "multiplier"}, {"every", "multiplier"}, errors)
+        _check_int(f"{where}.streaks[{i}]", "every", streak.get("every"), 2, errors)
+        _check_int(f"{where}.streaks[{i}]", "multiplier", streak.get("multiplier"), 2, errors)
+    everies = [s.get("every", 0) for s in rewards.get("streaks", [])]
+    if everies != sorted(everies, reverse=True):
+        errors.append(f"{where}.streaks: list the longest streak first")
+    for unlock_id, unlock in rewards.get("unlocks", {}).items():
+        _check_id(f"{where}.unlocks.{unlock_id}", unlock_id, errors)
+        _check_keys(f"{where}.unlocks.{unlock_id}", unlock, {"name", "cost", "teaches"}, {"name", "cost", "teaches"}, errors)
+        _check_int(f"{where}.unlocks.{unlock_id}", "cost", unlock.get("cost"), 1, errors)
 
 
 def _check_venator(where, venator, monsters, items, errors):

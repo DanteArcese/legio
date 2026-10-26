@@ -1168,5 +1168,28 @@
         "tail"
       ]
     }
+  },
+  "venators_helm": {
+    "name": "Venator's helm",
+    "value": 400,
+    "examine": "A wolfskin hood with a whitethorn charm sewn into the brow. Venatores swear by it on contract.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 5,
+        "ranged_attack": 4,
+        "ranged_defence": 7
+      },
+      "wards": [
+        "whitethorn_charm"
+      ],
+      "slayer_boost": 0.15
+    },
+    "requirements": {
+      "ranged": 10,
+      "slayer": 20
+    }
   }
 }

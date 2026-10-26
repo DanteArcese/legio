@@ -370,6 +370,14 @@ func ask_for_contract(venator: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "slayer_task", {"venator": venator.get_meta("venator_id")}))
 
 
+func slayer_reward(venator: Node3D, reward: String, args := {}) -> void:
+	var command := args.duplicate()
+	command["venator"] = venator.get_meta("venator_id")
+	command["reward"] = reward
+	walk_and_do(venator.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "slayer_reward", command))
+
+
 ## Takes one item kind from a pile, or everything if item_id is "".
 func take(pile: Node3D, item_id := "") -> void:
 	var args := {"pile": pile.pile_id}

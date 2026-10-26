@@ -6,6 +6,7 @@ const ContentDB := preload("res://scripts/content/content_db.gd")
 const Pietas := preload("res://scripts/sim/pietas.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
+const Slayer := preload("res://scripts/sim/slayer.gd")
 
 ## How far the controller menu looks for things.
 const NEARBY_MONSTER_RANGE := 8.0
@@ -93,8 +94,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			return [["Reclaim items", player.reclaim.bind(node)],
 				["Examine libitinarius", player.examine.bind(node.get_meta("examine", ""))]]
 		"venatores":
-			return [["Ask for a contract", player.ask_for_contract.bind(node)],
-				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
+			return _venator_options(player, node)
 		"surveyors":
 			var combatant: RefCounted = player.get_node("SimEntity").combatant
 			var options := []
@@ -225,6 +225,30 @@ static func options_nearby(player: Node3D) -> Array:
 	var options := []
 	for candidate in candidates:
 		options.append_array(options_for(player, candidate[1]))
+	return options
+
+
+## A contract, plus what Slayer points buy here.
+static func _venator_options(player: Node3D, node: Node) -> Array:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	var rewards := ContentDB.slayer_rewards()
+	var options := [["Ask for a contract", player.ask_for_contract.bind(node)]]
+	var task: Dictionary = combatant.slayer_task
+	if not task.is_empty():
+		var monsters := Slayer.plural_name(task["monster"])
+		options.append(["Cancel the %s contract (%d points)" % [monsters, rewards["cancel"]],
+			player.slayer_reward.bind(node, "cancel")])
+		if combatant.slayer_blocked.size() < rewards["max_blocks"]:
+			options.append(["Never hunt %s again (%d points)" % [monsters, rewards["block"]],
+				player.slayer_reward.bind(node, "block")])
+	for monster_id in combatant.slayer_blocked:
+		options.append(["Hunt %s again" % Slayer.plural_name(monster_id), player.slayer_reward.bind(node, "unblock", {"monster": monster_id})])
+	for unlock_id in rewards["unlocks"]:
+		if not combatant.slayer_unlocks.has(unlock_id):
+			var unlock: Dictionary = rewards["unlocks"][unlock_id]
+			options.append(["Learn %s (%d points)" % [unlock["name"], unlock["cost"]],
+				player.slayer_reward.bind(node, "unlock", {"unlock": unlock_id})])
+	options.append(["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))])
 	return options
 
 

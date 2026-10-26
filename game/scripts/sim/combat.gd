@@ -95,7 +95,8 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		effect = Slayer.unwarded_effect(attacker.monster_id, target.equipment, target.inventory)
 
 	var roll: Array = attacker.attack_roll_parts()
-	var chance := CombatMath.hit_chance(roll[0], roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
+	var boost := Slayer.boost(attacker, target)
+	var chance := CombatMath.hit_chance(floori(roll[0] * boost), roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
 	var damage := 0
 	var lands: bool = sim.rng.randf() < chance
 	if effect == "drain_vitality" and target.is_player():
@@ -106,7 +107,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		attacker.curses.erase("silenced")
 		events.append({"type": "silenced_miss", "id": attacker.id, "tick": tick})
 	if lands and not (effect == "no_damage" and attacker.is_player()):
-		damage = mini(sim.rng.randi_range(1, attacker.max_hit()), target.hp)
+		damage = mini(sim.rng.randi_range(1, floori(attacker.max_hit() * boost)), target.hp)
 	target.hp -= damage
 	# Kills by a summoned shade count as its caster's.
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id

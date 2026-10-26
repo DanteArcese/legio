@@ -277,3 +277,19 @@ def test_pets_need_a_source(content):
 def test_pet_sources_name_real_skills(content):
     errors = errors_after(content, lambda c: c["pets"]["pets"]["mole"].update(skill="digging"))
     assert any("unknown skill 'digging'" in e for e in errors)
+
+
+def test_slayer_unlock_recipes_must_name_a_real_unlock(content):
+    def mutate(c):
+        c["skilling"]["recipes"]["leatherwork"][0]["requires_unlock"] = "flying_boots"
+    assert any("requires_unlock: unknown Slayer unlock" in e for e in errors_after(content, mutate))
+
+
+def test_ward_items_must_exist(content):
+    errors = errors_after(content, lambda c: c["items"]["venators_helm"]["equip"].update(wards=["moon_cheese"]))
+    assert any("venators_helm.equip.wards" in e for e in errors)
+
+
+def test_slayer_streaks_list_longest_first(content):
+    errors = errors_after(content, lambda c: c["slayer"]["rewards"]["streaks"].reverse())
+    assert any("longest streak first" in e for e in errors)

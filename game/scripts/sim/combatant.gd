@@ -37,6 +37,9 @@ var bank: RefCounted = null
 var slayer_task := {}
 var slayer_points := 0
 var slayer_tasks_done := 0
+## Monsters this player has paid never to be assigned, and Slayer unlocks bought.
+var slayer_blocked: Array = []
+var slayer_unlocks: Array = []
 ## Pietas: favour points, active blessing ids, and their summed boosts
 ## (e.g. {"strength": 0.05}); see pietas.gd.
 var favour := 1.0

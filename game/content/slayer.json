@@ -4,7 +4,7 @@
       "name": "Aulus the Venator",
       "location": "castra_ferrea",
       "combat_level": 1,
-      "points_per_task": 2,
+      "points_per_task": 3,
       "tasks": [
         {
           "monster": "rat",
@@ -87,6 +87,28 @@
           "combat_level": 45
         }
       ]
+    }
+  },
+  "rewards": {
+    "cancel": 15,
+    "block": 50,
+    "max_blocks": 4,
+    "streaks": [
+      {
+        "every": 50,
+        "multiplier": 15
+      },
+      {
+        "every": 10,
+        "multiplier": 5
+      }
+    ],
+    "unlocks": {
+      "venators_helm": {
+        "name": "the venator's helm",
+        "cost": 60,
+        "teaches": "How to sew a venator's helm: a wolfskin hood with a whitethorn charm sewn in. Wear it on contract and you'll hit your quarry harder."
+      }
     }
   }
 }

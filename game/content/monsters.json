@@ -26,6 +26,7 @@
   },
   "wolf": {
     "name": "Wolf",
+    "plural": "Wolves",
     "level": 5,
     "stats": {
       "attack": 4,
@@ -77,6 +78,7 @@
   },
   "latro": {
     "name": "Latro",
+    "plural": "Latrones",
     "level": 12,
     "stats": {
       "attack": 12,
@@ -100,6 +102,7 @@
   },
   "lemur": {
     "name": "Lemur",
+    "plural": "Lemures",
     "level": 18,
     "stats": {
       "attack": 18,
@@ -123,6 +126,7 @@
   },
   "strix": {
     "name": "Strix",
+    "plural": "Striges",
     "level": 22,
     "stats": {
       "attack": 22,
@@ -152,6 +156,7 @@
   },
   "larva": {
     "name": "Larva",
+    "plural": "Larvae",
     "level": 40,
     "stats": {
       "attack": 36,
@@ -203,6 +208,7 @@
   },
   "harpy": {
     "name": "Harpy",
+    "plural": "Harpies",
     "level": 28,
     "stats": {
       "attack": 26,
@@ -251,6 +257,7 @@
   },
   "dire_wolf": {
     "name": "Dire wolf",
+    "plural": "Dire wolves",
     "level": 30,
     "stats": {
       "attack": 30,

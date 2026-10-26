@@ -37,6 +37,8 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 			"task": player.slayer_task.duplicate(),
 			"points": player.slayer_points,
 			"tasks_done": player.slayer_tasks_done,
+			"blocked": player.slayer_blocked.duplicate(),
+			"unlocks": player.slayer_unlocks.duplicate(),
 		},
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
@@ -88,6 +90,8 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 		player.slayer_task["total"] = int(player.slayer_task["total"])
 	player.slayer_points = int(slayer["points"])
 	player.slayer_tasks_done = int(slayer["tasks_done"])
+	player.slayer_blocked = slayer.get("blocked", []).duplicate()
+	player.slayer_unlocks = slayer.get("unlocks", []).duplicate()
 	player.laps = int(data.get("laps", 0))
 	player.trade_contract = data.get("trade_contract", {}).duplicate()
 	var villa: Dictionary = data.get("villa", {})

@@ -324,10 +324,18 @@ func _process_craft(player: RefCounted, action: Dictionary, events: Array) -> vo
 		stop(player, events)
 
 
+## Whether the player has learned this recipe: some are taught by a quest,
+## others bought as a Slayer unlock.
+static func knows_recipe(player: RefCounted, recipe: Dictionary) -> bool:
+	if recipe.has("requires_quest") and not player.quests.get(recipe["requires_quest"], {}).get("done", false):
+		return false
+	return not recipe.has("requires_unlock") or player.slayer_unlocks.has(recipe["requires_unlock"])
+
+
 ## Why the player can't make this right now, or "" if they can.
 func _craft_problem(player: RefCounted, kind: String, recipe: Dictionary) -> String:
 	var skill: String = SKILL_FOR_KIND[kind]
-	if recipe.has("requires_quest") and not player.quests.get(recipe["requires_quest"], {}).get("done", false):
+	if not knows_recipe(player, recipe):
 		return "You don't know how to make that yet."
 	if player.skills.level(skill) < recipe["level"]:
 		return "You need %s %d to make that." % [skill.capitalize(), recipe["level"]]

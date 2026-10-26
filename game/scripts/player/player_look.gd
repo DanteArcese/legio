@@ -27,7 +27,7 @@ const SHIELDS := {"bronze_scutum": "weapons/shield_square", "iron_scutum": "weap
 const HEADGEAR := {
 	"adventurers/Knight": ["Knight_Helmet", ["bronze_galea", "iron_galea"]],
 	"adventurers/Mage": ["Mage_Hat", ["ritual_hood"]],
-	"adventurers/Barbarian": ["Barbarian_Hat", ["wolfskin_hood"]],
+	"adventurers/Barbarian": ["Barbarian_Hat", ["wolfskin_hood", "venators_helm"]],
 }
 
 

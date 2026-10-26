@@ -32,6 +32,7 @@ var _graves := {}
 var _rocks := {}
 var _trees := {}
 var _stalls := {}
+var _hunt_spots := {}
 var _shades := {}
 
 
@@ -69,6 +70,10 @@ func _ready() -> void:
 		spot_id += 1
 		spot.spot_id = spot_id
 		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
+	for spot in get_tree().get_nodes_in_group("hunt_spots"):
+		spot.spot_id = _hunt_spots.size() + 1
+		_hunt_spots[spot.spot_id] = spot
+		sim.hunter.add_spot(spot.spot_id, spot.spot_type, spot.global_position)
 	var obstacle_id := 0
 	for obstacle in get_tree().get_nodes_in_group("obstacles"):
 		obstacle_id += 1
@@ -183,6 +188,12 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]].set_items(event["items"])
 		"rock_depleted", "rock_respawned":
 			_rocks[event["rock"]].set_depleted(event["type"] == "rock_depleted")
+		"trap_set":
+			_hunt_spots[event["spot"]].set_trap_state("set")
+		"trap_caught":
+			_hunt_spots[event["spot"]].set_trap_state("caught")
+		"trap_cleared":
+			_hunt_spots[event["spot"]].set_trap_state("")
 		"stall_emptied", "stall_restocked":
 			_stalls[event["stall"]].set_empty(event["type"] == "stall_emptied")
 		"tree_felled", "tree_regrown":

@@ -34,6 +34,7 @@
 [ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="31_minimap"]
 [ext_resource type="Script" path="res://scripts/world/stall_node.gd" id="32_stall"]
 [ext_resource type="Script" path="res://scripts/world/obstacle_node.gd" id="33_obstacle"]
+[ext_resource type="Script" path="res://scripts/world/burrow_node.gd" id="34_burrow"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -418,6 +419,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 0, 22)
 script = ExtResource("33_obstacle")
 index = 3
 end_offset = Vector3(-6, 0, 0)
+
+[node name="HuntingGrounds" type="Node3D" parent="."]
+
+[node name="HareBurrow1" type="StaticBody3D" parent="HuntingGrounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 47)
+script = ExtResource("34_burrow")
+spot_type = "hare_burrow"
+
+[node name="HareBurrow2" type="StaticBody3D" parent="HuntingGrounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 47.5)
+script = ExtResource("34_burrow")
+spot_type = "hare_burrow"
+
+[node name="HareBurrow3" type="StaticBody3D" parent="HuntingGrounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 49)
+script = ExtResource("34_burrow")
+spot_type = "hare_burrow"
+
+[node name="FoxDen1" type="StaticBody3D" parent="HuntingGrounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, -31)
+script = ExtResource("34_burrow")
+spot_type = "fox_den"
+
+[node name="FoxDen2" type="StaticBody3D" parent="HuntingGrounds"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -33)
+script = ExtResource("34_burrow")
+spot_type = "fox_den"
 
 [node name="Smithy" type="Node3D" parent="."]
 

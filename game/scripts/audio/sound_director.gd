@@ -213,6 +213,9 @@ func _on_sim_event(event: Dictionary) -> void:
 		"lap_complete":
 			if event["id"] == me:
 				play("coins", player.global_position)
+		"trap_set", "trap_cleared":
+			if event["id"] == me:
+				play("offer", player.global_position)
 		"stall_emptied":
 			play("pickup", player.global_position)
 		"pickpocketed":

@@ -36,7 +36,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "shopkeepers"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -89,6 +89,11 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 		"venatores":
 			return [["Ask for a contract", player.ask_for_contract.bind(node)],
 				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
+		"hunt_spots":
+			var trap: Dictionary = player.sim_driver.sim.hunter.spots.get(node.spot_id, {}).get("trap", {})
+			var verb := "Set a box trap at" if trap.is_empty() else "Check the trap at"
+			return [["%s the %s" % [verb, node.display_name().to_lower()], player.use_trap_spot.bind(node)],
+				["Examine " + node.display_name().to_lower(), player.examine.bind(node.examine_text())]]
 		"obstacles":
 			return [[node.verb() + " " + node.display_name().to_lower(), player.cross.bind(node)]]
 		"stalls":
@@ -145,7 +150,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue

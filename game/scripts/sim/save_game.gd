@@ -38,6 +38,8 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 		},
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
+		# Traps left out in the world aren't saved; their owner gets them back.
+		"traps_out": sim.hunter.traps_out(player_id),
 		"grave": saved_grave,
 		"reclaimable": sim.reclaimable.get(player_id, []).duplicate(true),
 	}
@@ -77,6 +79,9 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
 	player.slayer_points = int(slayer["points"])
 	player.slayer_tasks_done = int(slayer["tasks_done"])
 	player.laps = int(data.get("laps", 0))
+	var traps := int(data.get("traps_out", 0))
+	if traps > 0:
+		player.inventory.add("box_trap", traps)
 	player.quests = {}
 	var saved_quests: Dictionary = data.get("quests", {})
 	for quest_id in saved_quests:

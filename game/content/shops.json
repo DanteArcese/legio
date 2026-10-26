@@ -57,6 +57,10 @@
         "item": "thread",
         "price": 15,
         "quantity": 20
+      },
+      {
+        "item": "box_trap",
+        "price": 20
       }
     ]
   },

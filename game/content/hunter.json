@@ -1,0 +1,38 @@
+{
+  "spots": {
+    "hare_burrow": {
+      "name": "Hare burrow",
+      "level": 1,
+      "xp": 32,
+      "catch_chance": 0.22,
+      "loot": [
+        {
+          "item": "raw_meat",
+          "quantity": 1
+        },
+        {
+          "item": "hare_pelt",
+          "quantity": 1
+        }
+      ],
+      "examine": "Fresh droppings and a well-worn run. Something lives here."
+    },
+    "fox_den": {
+      "name": "Fox den",
+      "level": 15,
+      "xp": 72,
+      "catch_chance": 0.16,
+      "loot": [
+        {
+          "item": "raw_meat",
+          "quantity": 1
+        },
+        {
+          "item": "fox_pelt",
+          "quantity": 1
+        }
+      ],
+      "examine": "A sandy hole under the roots, ringed with feathers and small bones."
+    }
+  }
+}

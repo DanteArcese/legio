@@ -1,0 +1,199 @@
+{
+  "price": 5000,
+  "requires_quest": "decurio",
+  "hotspots": {
+    "hearth": {
+      "name": "Hearth",
+      "examine": "A swept stone floor, waiting for a fire or an oven."
+    },
+    "workbench": {
+      "name": "Workshop corner",
+      "examine": "Room for a craftsman's tools."
+    },
+    "shrine": {
+      "name": "Shrine niche",
+      "examine": "Every Roman house keeps its household gods somewhere."
+    },
+    "strongbox": {
+      "name": "Strongroom",
+      "examine": "A dry, lockable corner. Your valuables could live here."
+    },
+    "garden": {
+      "name": "Garden bed",
+      "examine": "A patch of the courtyard, dug over and ready."
+    },
+    "waystone": {
+      "name": "Road stone",
+      "examine": "The villa's gate onto the provincial road network."
+    }
+  },
+  "furniture": {
+    "villa_campfire": {
+      "name": "Campfire",
+      "hotspot": "hearth",
+      "level": 1,
+      "xp": 30,
+      "materials": [
+        {
+          "item": "plank",
+          "quantity": 3
+        }
+      ],
+      "provides": {
+        "station": "fire"
+      }
+    },
+    "villa_range": {
+      "name": "Clay oven",
+      "hotspot": "hearth",
+      "level": 20,
+      "xp": 160,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 4
+        },
+        {
+          "item": "iron_bar",
+          "quantity": 1
+        }
+      ],
+      "provides": {
+        "station": "range"
+      }
+    },
+    "villa_tanning_rack": {
+      "name": "Tanning rack",
+      "hotspot": "workbench",
+      "level": 5,
+      "xp": 50,
+      "materials": [
+        {
+          "item": "plank",
+          "quantity": 4
+        },
+        {
+          "item": "bronze_nails",
+          "quantity": 10
+        }
+      ],
+      "provides": {
+        "station": "tanning_rack"
+      }
+    },
+    "villa_anvil": {
+      "name": "Anvil",
+      "hotspot": "workbench",
+      "level": 25,
+      "xp": 220,
+      "materials": [
+        {
+          "item": "iron_bar",
+          "quantity": 3
+        },
+        {
+          "item": "oak_plank",
+          "quantity": 2
+        }
+      ],
+      "provides": {
+        "station": "anvil"
+      }
+    },
+    "lararium": {
+      "name": "Lararium",
+      "hotspot": "shrine",
+      "level": 10,
+      "xp": 120,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 2
+        },
+        {
+          "item": "plank",
+          "quantity": 4
+        },
+        {
+          "item": "bronze_nails",
+          "quantity": 15
+        }
+      ],
+      "provides": {
+        "altar": "heavenly"
+      }
+    },
+    "villa_strongbox": {
+      "name": "Strongbox",
+      "hotspot": "strongbox",
+      "level": 30,
+      "xp": 260,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 6
+        },
+        {
+          "item": "iron_bar",
+          "quantity": 2
+        }
+      ],
+      "provides": {
+        "bank": true
+      }
+    },
+    "herb_bed": {
+      "name": "Herb bed",
+      "hotspot": "garden",
+      "level": 1,
+      "xp": 40,
+      "materials": [
+        {
+          "item": "plank",
+          "quantity": 5
+        }
+      ],
+      "provides": {
+        "patch": "herb_patch"
+      }
+    },
+    "vegetable_bed": {
+      "name": "Vegetable bed",
+      "hotspot": "garden",
+      "level": 8,
+      "xp": 60,
+      "materials": [
+        {
+          "item": "plank",
+          "quantity": 6
+        },
+        {
+          "item": "bronze_nails",
+          "quantity": 10
+        }
+      ],
+      "provides": {
+        "patch": "allotment"
+      }
+    },
+    "waystone": {
+      "name": "Waystone to Portus Salis",
+      "hotspot": "waystone",
+      "level": 40,
+      "xp": 400,
+      "materials": [
+        {
+          "item": "iron_bar",
+          "quantity": 4
+        },
+        {
+          "item": "oak_plank",
+          "quantity": 6
+        }
+      ],
+      "provides": {
+        "travel": "portus_salis"
+      }
+    }
+  }
+}

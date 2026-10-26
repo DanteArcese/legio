@@ -41,6 +41,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
 		"trade_contract": player.trade_contract.duplicate(),
+		"villa": {"owned": player.villa_owned, "furniture": player.villa_furniture.duplicate()},
 		"contracts_done": player.contracts_done,
 		"saved_at": now,
 		"farming": sim.farming.capture(player_id),
@@ -87,6 +88,10 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 	player.slayer_tasks_done = int(slayer["tasks_done"])
 	player.laps = int(data.get("laps", 0))
 	player.trade_contract = data.get("trade_contract", {}).duplicate()
+	var villa: Dictionary = data.get("villa", {})
+	player.villa_owned = bool(villa.get("owned", false))
+	player.villa_furniture = villa.get("furniture", {}).duplicate()
+	sim.villa.restore(player, [])
 	player.contracts_done = int(data.get("contracts_done", 0))
 	sim.farming.restore(player_id, data.get("farming", []), [])
 	var saved_at := int(data.get("saved_at", 0))

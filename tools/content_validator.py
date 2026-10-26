@@ -12,16 +12,16 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
 AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -72,6 +72,7 @@ def validate(content: dict) -> list[str]:
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
+    _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -597,6 +598,42 @@ def _check_mercatura(mercatura, items, shops, errors):
         _check_int(where, "quantity", contract.get("quantity"), 1, errors, 1000)
         _check_int(where, "coins", contract.get("coins"), 1, errors)
         _check_number(where, "xp", contract.get("xp"), 0.1, 100000, errors)
+
+
+FURNITURE_KEYS = {"name", "hotspot", "level", "xp", "materials", "provides"}
+PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace"}, "altar": {"heavenly", "underworld"}, "bank": {True},
+            "patch": None, "travel": {"portus_salis"}}
+
+
+def _check_villa(villa, items, quests, farming, errors):
+    _check_keys("villa", villa, {"price", "requires_quest", "hotspots", "furniture"}, {"price", "hotspots", "furniture"}, errors)
+    _check_int("villa", "price", villa.get("price"), 1, errors)
+    if "requires_quest" in villa and villa["requires_quest"] not in quests.get("quests", {}):
+        errors.append(f"villa.requires_quest: unknown quest {villa['requires_quest']!r}")
+    hotspots = villa.get("hotspots", {})
+    for hotspot_id, hotspot in hotspots.items():
+        _check_id(f"villa.hotspots.{hotspot_id}", hotspot_id, errors)
+        _check_keys(f"villa.hotspots.{hotspot_id}", hotspot, {"name", "examine"}, {"name", "examine"}, errors)
+    for furniture_id, furniture in villa.get("furniture", {}).items():
+        where = f"villa.furniture.{furniture_id}"
+        _check_id(where, furniture_id, errors)
+        _check_keys(where, furniture, FURNITURE_KEYS, FURNITURE_KEYS, errors)
+        if furniture.get("hotspot") not in hotspots:
+            errors.append(f"{where}.hotspot: unknown hotspot {furniture.get('hotspot')!r}")
+        _check_int(where, "level", furniture.get("level"), 1, errors, 99)
+        _check_number(where, "xp", furniture.get("xp"), 0.1, 100000, errors)
+        if not furniture.get("materials"):
+            errors.append(f"{where}.materials: at least one material required")
+        for i, entry in enumerate(furniture.get("materials", [])):
+            _check_drop(f"{where}.materials[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+        provides = furniture.get("provides", {})
+        if len(provides) != 1 or next(iter(provides), None) not in PROVIDES:
+            errors.append(f"{where}.provides: expected one of {sorted(PROVIDES)}")
+            continue
+        kind, value = next(iter(provides.items()))
+        allowed = set(farming.get("patches", {})) if kind == "patch" else PROVIDES[kind]
+        if value not in allowed:
+            errors.append(f"{where}.provides.{kind}: unexpected {value!r}")
 
 
 def _check_lines(where, key, lines, errors):

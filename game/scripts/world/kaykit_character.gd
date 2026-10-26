@@ -19,6 +19,10 @@ const ATTACKS := {
 	"unarmed": "Unarmed_Melee_Attack_Punch_A", "ranged": "1H_Ranged_Shoot", "bow": "2H_Ranged_Shoot", "throw": "Throw",
 	"ritus": "Spellcast_Shoot",
 }
+## Kenney Survival Kit tools are about a quarter of a KayKit weapon's size.
+const KENNEY_TOOL_SCALE := 3.0
+## Tools shown in the hand while skilling.
+const TOOLS := {"mine": "kenney:survival/tool-pickaxe", "chop": "kenney:survival/tool-axe", "smith": "kenney:survival/tool-hammer"}
 ## Looping work animations by skilling action.
 const WORK := {"mine": "1H_Melee_Attack_Chop", "smelt": "Interact", "smith": "1H_Melee_Attack_Chop",
 	"cook": "Interact", "inscribe": "Use_Item", "offer": "Interact", "chop": "1H_Melee_Attack_Slice_Horizontal",
@@ -26,6 +30,9 @@ const WORK := {"mine": "1H_Melee_Attack_Chop", "smelt": "Interact", "smith": "1H
 	"cross_rope": "Jump_Idle", "cross_hurdles": "Jump_Full_Short"}
 
 var kind := "kaykit"
+## The weapon from the appearance, for putting back after a tool.
+var _weapon := ""
+var _tool := ""
 var attack_style := "unarmed"
 var _player: AnimationPlayer
 var _skeleton: Skeleton3D
@@ -60,7 +67,8 @@ static func create(appearance: Dictionary) -> Node3D:
 		character.set_mesh_visible(name, false)
 	for name in appearance.get("show", []):
 		character.set_mesh_visible(name, true)
-	character.attach("handslot_r", appearance.get("weapon", ""))
+	character._weapon = appearance.get("weapon", "")
+	character.attach("handslot_r", character._weapon)
 	character.attach("handslot_l", appearance.get("shield", ""))
 	character.attack_style = appearance.get("attack", "unarmed")
 	if appearance.has("texture"):
@@ -90,6 +98,15 @@ func set_mesh_visible(mesh_name: String, shown: bool) -> void:
 		mesh.visible = shown
 
 
+## Holds a skilling tool ("kenney:survival/tool-axe") in the weapon hand,
+## or the weapon again for "".
+func hold_tool(tool: String) -> void:
+	if tool == _tool:
+		return
+	_tool = tool
+	attach("handslot_r", tool if not tool.is_empty() else _weapon)
+
+
 ## Puts a weapon or shield model ("" for none) in a hand slot.
 func attach(slot: String, model_path: String) -> void:
 	if _attachments.has(slot):
@@ -100,9 +117,16 @@ func attach(slot: String, model_path: String) -> void:
 	var holder := _skeleton.get_node_or_null(slot)
 	if holder == null:
 		return
-	# "proc:<name>" props are built in code (bow, sling); the rest are files.
-	var prop: Node3D = PropModels.build(model_path.trim_prefix("proc:")) if model_path.begins_with("proc:") \
-		else load(ROOT + model_path + ".gltf").instantiate()
+	# "proc:<name>" props are built in code (bow, sling), "kenney:<path>" are
+	# Kenney tools (tiny units, so scaled up); the rest are KayKit files.
+	var prop: Node3D
+	if model_path.begins_with("proc:"):
+		prop = PropModels.build(model_path.trim_prefix("proc:"))
+	elif model_path.begins_with("kenney:"):
+		prop = load("res://assets/kenney/%s.glb" % model_path.trim_prefix("kenney:")).instantiate()
+		prop.scale = Vector3.ONE * KENNEY_TOOL_SCALE
+	else:
+		prop = load(ROOT + model_path + ".gltf").instantiate()
 	holder.add_child(prop)
 	_attachments[slot] = prop
 

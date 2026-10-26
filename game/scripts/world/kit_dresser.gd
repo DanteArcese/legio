@@ -47,6 +47,7 @@ func _ready() -> void:
 	_dress_trees()
 	_dress_choppable_trees()
 	_dress_stalls()
+	_dress_banks()
 	_dress_forum()
 	_scatter_scenery()
 	_fence_fields()
@@ -252,6 +253,19 @@ func _dress_trees() -> void:
 		instance.scale = Vector3.ONE * (height / TREE_MODEL_HEIGHT) * 1.15
 		instance.rotation.y = float(absi(hash(String(tree.name) + "r")) % 360) * PI / 180.0
 		tree.add_child(instance)
+
+
+## Bank chests get Kenney's Survival Kit chest (the box stays for collision).
+func _dress_banks() -> void:
+	for bank in get_tree().get_nodes_in_group("banks"):
+		var box: Node3D = bank.get_node_or_null("Mesh")
+		if box == null:
+			continue
+		box.visible = false
+		var chest: Node3D = load("res://assets/kenney/survival/chest.glb").instantiate()
+		chest.scale = Vector3.ONE * 3.6
+		chest.position.y = -0.45 + 0.045 * 3.6
+		bank.add_child(chest)
 
 
 ## Market stalls (the thieving targets in the forum).

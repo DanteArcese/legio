@@ -461,7 +461,10 @@ func _physics_process(delta: float) -> void:
 	if _model == null:
 		return
 	var action: Dictionary = _entity.combatant.skill_action if _entity.combatant else {}
-	_model.set_work(action.get("kind", action.get("type", "")) if not action.is_empty() else "")
+	var work: String = action.get("kind", action.get("type", "")) if not action.is_empty() else ""
+	_model.set_work(work)
+	if _model is KaykitCharacter:
+		_model.hold_tool(KaykitCharacter.TOOLS.get(work, ""))
 	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 
 	var facing := direction

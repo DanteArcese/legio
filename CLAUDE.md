@@ -19,6 +19,7 @@ uv run python tools/content_validator.py   # Validate game/content/*.json
 scripts/godot-tests.sh   # Run Godot tests headlessly (needs godot 4.7 on PATH, or set GODOT)
 scripts/playtest.sh <scenario> [--render] [--out <dir>]   # Scripted playtest; --render saves screenshots
 scripts/playtest-all.sh [--shard i/n]   # Run every scenario headlessly (run before pushing gameplay changes); CI runs 4 shards
+scripts/export-windows.sh   # Build a standalone build/windows/Legio.exe (downloads export templates once)
 godot --headless --path game --script res://tools/balance/xp_report.gd   # XP/hour per method (see docs/balance.md)
 godot --path game    # Play the game
 godot -e --path game # Open the editor

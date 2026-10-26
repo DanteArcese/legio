@@ -6,7 +6,9 @@ See [docs/design.md](docs/design.md) for the design.
 
 ## Playing
 
-You need Godot 4.7 on your PATH. Then:
+On Windows, download `Legio.exe` from the latest [release](../../releases) and run it. It is a single file with the game inside; saves and settings go to `%APPDATA%\Godot\app_userdata\Legio`.
+
+To build the exe yourself, run `scripts/export-windows.sh` (it writes `build/windows/Legio.exe`). To run from source instead, with Godot 4.7 on your PATH:
 
 ```bash
 godot --path game

@@ -87,9 +87,9 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	# Monsters with a ward item are much worse to fight without it.
 	var effect := ""
 	if attacker.is_player() and not target.monster_id.is_empty():
-		effect = Slayer.unwarded_effect(target.monster_id, attacker.equipment)
+		effect = Slayer.unwarded_effect(target.monster_id, attacker.equipment, attacker.inventory)
 	elif target.is_player() and not attacker.monster_id.is_empty():
-		effect = Slayer.unwarded_effect(attacker.monster_id, target.equipment)
+		effect = Slayer.unwarded_effect(attacker.monster_id, target.equipment, target.inventory)
 
 	var roll: Array = attacker.attack_roll_parts()
 	var chance := CombatMath.hit_chance(roll[0], roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))

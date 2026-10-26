@@ -149,5 +149,34 @@
         "ear_tufts"
       ]
     }
+  },
+  "larva": {
+    "name": "Larva",
+    "level": 40,
+    "stats": {
+      "attack": 36,
+      "strength": 34,
+      "defence": 30,
+      "vitality": 90
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 300,
+    "drops": "larva",
+    "slayer": {
+      "level": 15,
+      "ward_item": "black_beans",
+      "ward_carried": true,
+      "unwarded_effect": "no_damage"
+    },
+    "examine": "An evil shade of the dead, swollen on grave-offerings. Only the Lemuria rite can touch it.",
+    "appearance": {
+      "model": "kaykit",
+      "scene": "skeletons/Skeleton_Warrior",
+      "size": 1.6,
+      "weapon": "",
+      "attack": "slash",
+      "color": "#8fb3c9"
+    }
   }
 }

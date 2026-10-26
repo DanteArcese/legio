@@ -76,6 +76,15 @@ static func marker_for(player: Combatant, npc_id: String) -> String:
 	return ""
 
 
+## The title shown on the HUD: the latest one earned from quests, or "".
+static func title(player: Combatant) -> String:
+	var best := ""
+	for quest_id in ContentDB.quest_ids():
+		if is_done(player, quest_id):
+			best = ContentDB.quest(quest_id)["rewards"].get("title", best)
+	return best
+
+
 ## The highest rank earned from quests, or "".
 static func rank(player: Combatant) -> String:
 	var best := ""

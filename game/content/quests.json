@@ -14,6 +14,13 @@
         "Fine linen, fair prices! Well, prices.",
         "Keep your hands where I can see them, friend."
       ]
+    },
+    "sacerdos": {
+      "name": "Sacerdos",
+      "examine": "The temple priest of Castra Ferrea, smelling of incense and old wine.",
+      "idle": [
+        "The gods notice what you give them, and what you don't."
+      ]
     }
   },
   "quests": {
@@ -117,7 +124,8 @@
           }
         ],
         "rank": "Tiro",
-        "unlocks": "The quartermaster's stores (Optio Gaius)"
+        "unlocks": "The quartermaster's stores (Optio Gaius)",
+        "title": "Tiro of the auxilia"
       }
     },
     "miles": {
@@ -210,7 +218,8 @@
           }
         ],
         "rank": "Miles",
-        "unlocks": "Mail and heavier arms from the quartermaster (Optio Gaius)"
+        "unlocks": "Mail and heavier arms from the quartermaster (Optio Gaius)",
+        "title": "Miles of the auxilia"
       }
     },
     "duplicarius": {
@@ -294,7 +303,86 @@
           }
         ],
         "rank": "Duplicarius",
-        "unlocks": "Spathae from the quartermaster"
+        "unlocks": "Spathae from the quartermaster",
+        "title": "Duplicarius of the auxilia"
+      }
+    },
+    "decurio": {
+      "name": "Decurio",
+      "summary": "Lay the Larva in the barrow to rest, earn your discharge, and become a citizen of Rome.",
+      "giver": "optio_gaius",
+      "requirements": {
+        "quests": [
+          "duplicarius"
+        ],
+        "skills": {
+          "defence": 25,
+          "slayer": 15
+        }
+      },
+      "start": [
+        "The lemures in the barrow are restless again, and the men know why. Something old has woken in the depths: a larva.",
+        "Swords won't touch it. The sacerdos knows the old rite of the Lemuria; go to him first.",
+        "Do this, and I'll put your name forward for the decurionate. And after that, your discharge, and the citizenship that comes with it."
+      ],
+      "steps": [
+        {
+          "kind": "talk",
+          "npc": "sacerdos",
+          "grants": [
+            {
+              "item": "black_beans",
+              "quantity": 9
+            }
+          ],
+          "log": "Ask the sacerdos about the rite of the Lemuria.",
+          "remind": [
+            "The sacerdos keeps the temple by the forum. Ask him about the Lemuria."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "larva",
+          "count": 1,
+          "log": "Keep the black beans with you, go down into the barrow's depths, and lay the Larva to rest.",
+          "remind": [
+            "Nine black beans, carried with you. Without them your blade passes through the thing like smoke."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "optio_gaius",
+          "log": "Report to Optio Gaius.",
+          "remind": []
+        }
+      ],
+      "complete": [
+        "The larva is gone, and the lemures are quiet. The men can sleep, which is more than I've done for a week.",
+        "You came here a peregrinus. You leave the auxilia a decurio, honourably discharged, and a citizen of Rome.",
+        "Here: your diploma. Two bronze tablets, seven witnesses. Keep them safe; your sons will want to see them."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 2500,
+          "strength": 2500,
+          "defence": 2500,
+          "vitality": 1200,
+          "slayer": 800,
+          "pietas": 400
+        },
+        "items": [
+          {
+            "item": "diploma",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 1000
+          }
+        ],
+        "rank": "Civis Romanus",
+        "unlocks": "Roman citizenship (the legions, the capital, and a villa will open to citizens in time)",
+        "title": "Civis Romanus"
       }
     }
   }

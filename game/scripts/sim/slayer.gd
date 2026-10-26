@@ -36,10 +36,13 @@ static func required_level(monster_id: String) -> int:
 
 
 ## The effect that applies when fighting this monster without its ward
-## item, or "" if it has none or the player wears the ward.
-static func unwarded_effect(monster_id: String, equipment: RefCounted) -> String:
+## item, or "" if it has none or the player wears the ward. Some wards only
+## need carrying (ward_carried), like the Lemuria's black beans.
+static func unwarded_effect(monster_id: String, equipment: RefCounted, inventory: RefCounted = null) -> String:
 	var slayer: Dictionary = ContentDB.monster(monster_id).get("slayer", {})
 	if not slayer.has("ward_item") or equipment.is_wearing(slayer["ward_item"]):
+		return ""
+	if slayer.get("ward_carried", false) and inventory and inventory.count(slayer["ward_item"]) > 0:
 		return ""
 	return slayer["unwarded_effect"]
 

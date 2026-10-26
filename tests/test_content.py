@@ -1,4 +1,5 @@
 import copy
+import re
 
 import pytest
 
@@ -169,3 +170,14 @@ def test_fishing_spots_need_a_real_tool_and_fish(content):
 def test_fell_chance_is_a_probability(content):
     errors = errors_after(content, lambda c: c["skilling"]["trees"]["tree"].update(fell_chance=1.5))
     assert any("skilling.trees.tree" in e and "fell_chance" in e for e in errors)
+
+
+def test_examine_text_uses_an_before_vowels():
+    content = load_content()
+    bad = []
+    for section in ("items", "monsters"):
+        for entry_id, entry in content[section].items():
+            text = entry.get("examine", "")
+            if re.search(r"\bA [aeiouAEIOU]", text):
+                bad.append(f"{section}.{entry_id}: {text}")
+    assert not bad, bad

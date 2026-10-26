@@ -367,11 +367,12 @@ text = "Townsman"
 font_size = 32
 outline_size = 8
 
-[node name="Merchant" type="StaticBody3D" parent="Forum" groups=["marks", "quest_npcs", "navigation_source"]]
+[node name="Merchant" type="StaticBody3D" parent="Forum" groups=["marks", "quest_npcs", "shopkeepers", "navigation_source"]]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, 2.5, 1, -9.5)
 collision_layer = 8
 metadata/mark_type = "merchant"
 metadata/npc_id = "gallic_merchant"
+metadata/shop_id = "gallic_merchant"
 metadata/display_name = "Merchant"
 metadata/examine = "A Gaulish merchant with rings on every finger."
 
@@ -518,6 +519,11 @@ spot_type = "net_spot"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8, -0.3, 38.5)
 script = ExtResource("28_spot")
 spot_type = "rod_spot"
+
+[node name="GarumVat" type="StaticBody3D" parent="Fishing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.5, 0, 34)
+script = ExtResource("11_station")
+kind = "garum_vat"
 
 [node name="Campfire" type="StaticBody3D" parent="Fishing"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 31)

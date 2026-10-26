@@ -8,12 +8,13 @@ const LOOKS := {
 	"range": ["Cooking range", Color(0.55, 0.45, 0.35), Vector3(1.3, 0.9, 0.8), "A clay oven with a fire beneath."],
 	"fire": ["Campfire", Color(0.4, 0.28, 0.18), Vector3(1.0, 0.5, 1.0), "A woodsman's fire, kept burning. Good for cooking fish."],
 	"tanning_rack": ["Tanning rack", Color(0.5, 0.36, 0.22), Vector3(1.4, 1.6, 0.4), "Hides stretched to cure. Tan boar hides into leather here."],
+	"garum_vat": ["Garum vat", Color(0.55, 0.5, 0.45), Vector3(1.4, 0.8, 1.4), "A stone vat of fish and salt, fermenting in the sun. The smell is something else."],
 	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
 }
 ## Recipe kinds made at each station.
-const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan"}
+const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum"}
 
-@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat") var kind := "furnace"
 
 var _flame: MeshInstance3D
 var _light: OmniLight3D
@@ -54,6 +55,8 @@ func _ready() -> void:
 			_build_tomb()
 		"tanning_rack":
 			_build_tanning_rack()
+		"garum_vat":
+			_build_garum_vat()
 	var shape := CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	shape.shape.size = look[2]
@@ -123,6 +126,22 @@ func _build_tomb() -> void:
 	_add_box(Vector3(1.0, 0.8, 2.0), Vector3(0, 0.4, 0), stone)
 	_add_box(Vector3(1.1, 0.18, 2.1), Vector3(0, 0.89, 0), stone.lightened(0.08))
 	_add_box(Vector3(0.7, 1.2, 0.18), Vector3(0, 0.6, -1.15), stone.darkened(0.12))
+
+
+## A low stone tank, brimming with dark brine, beside a stack of amphorae.
+func _build_garum_vat() -> void:
+	var stone := Color(0.6, 0.56, 0.5)
+	_add_box(Vector3(1.4, 0.7, 1.4), Vector3(0, 0.35, 0), stone)
+	_add_box(Vector3(1.15, 0.05, 1.15), Vector3(0, 0.68, 0), Color(0.32, 0.26, 0.16))
+	for i in 3:
+		var jar := MeshInstance3D.new()
+		var capsule := CapsuleMesh.new()
+		capsule.radius = 0.16
+		capsule.height = 0.6
+		capsule.material = _material(Color(0.7, 0.42, 0.26))
+		jar.mesh = capsule
+		jar.position = Vector3(1.0, 0.3, -0.45 + i * 0.4)
+		add_child(jar)
 
 
 ## Two posts and a crossbar with a hide stretched between them.

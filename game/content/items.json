@@ -776,5 +776,28 @@
     "requirements": {
       "attack": 20
     }
+  },
+  "salt": {
+    "name": "Salt",
+    "value": 3,
+    "examine": "Coarse sea salt, carted up from the coast.",
+    "stackable": true
+  },
+  "garum": {
+    "name": "Garum",
+    "value": 45,
+    "examine": "Fermented fish sauce in a small amphora. Pungent, precious, and on every Roman table."
+  },
+  "mackerel_in_garum": {
+    "name": "Mackerel in garum",
+    "value": 70,
+    "examine": "Grilled mackerel glazed with garum and pepper.",
+    "heals": 11
+  },
+  "anchovies_in_garum": {
+    "name": "Anchovy relish",
+    "value": 40,
+    "examine": "Anchovies pounded with garum and herbs, spread on bread.",
+    "heals": 7
   }
 }

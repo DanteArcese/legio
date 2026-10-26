@@ -355,6 +355,44 @@
         "xp": 60,
         "burnt": "burnt_food",
         "stop_burning": 50
+      },
+      {
+        "id": "anchovies_in_garum",
+        "inputs": [
+          {
+            "item": "cooked_anchovy",
+            "quantity": 2
+          },
+          {
+            "item": "garum",
+            "quantity": 1
+          },
+          {
+            "item": "bread",
+            "quantity": 1
+          }
+        ],
+        "output": "anchovies_in_garum",
+        "level": 16,
+        "xp": 50
+      },
+      {
+        "id": "mackerel_in_garum",
+        "inputs": [
+          {
+            "item": "raw_mackerel",
+            "quantity": 1
+          },
+          {
+            "item": "garum",
+            "quantity": 1
+          }
+        ],
+        "output": "mackerel_in_garum",
+        "level": 25,
+        "xp": 95,
+        "burnt": "burnt_food",
+        "stop_burning": 55
       }
     ],
     "inscribe": [
@@ -626,6 +664,24 @@
         "level": 22,
         "xp": 110,
         "tool": "needle"
+      }
+    ],
+    "garum": [
+      {
+        "id": "garum",
+        "inputs": [
+          {
+            "item": "raw_anchovy",
+            "quantity": 4
+          },
+          {
+            "item": "salt",
+            "quantity": 2
+          }
+        ],
+        "output": "garum",
+        "level": 15,
+        "xp": 60
       }
     ]
   },

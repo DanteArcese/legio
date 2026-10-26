@@ -13,6 +13,9 @@ func run() -> void:
 	var quest_ui: Node = main.get_node("QuestUi")
 	var optio: Node3D = main.get_node("OptioGaius")
 
+	await seconds(0.7)
+	expect(quest_ui.marker_text(optio) == "!", "a \"!\" over the optio for a new recruit")
+	await shot("marker")
 	await press("quest_log")
 	expect(quest_ui.is_log_open(), "J opens the quest log")
 	expect("Speak to Optio Gaius" in quest_ui.log_text(), "the log says who to talk to")
@@ -29,6 +32,8 @@ func run() -> void:
 		await press("interact")
 	expect(not quest_ui.is_dialogue_open(), "Interact pages through to the end")
 	expect(me.inventory.count("sling") == 1 and me.inventory.count("lituus") == 1, "the optio handed out a sling and a lituus")
+	await seconds(0.7)
+	expect(quest_ui.marker_text(optio) == "", "no marker while the quest is under way")
 
 	for style in [["bronze_pugio", ""], ["sling", "lead_glans"], ["lituus", "binding_tablet"]]:
 		var step: int = me.quests["tiro"]["step"]
@@ -51,6 +56,8 @@ func run() -> void:
 		await _wait_until(func(): return not rat.combatant.is_alive(), 30.0)
 		await seconds(0.7)
 	expect(me.quests["tiro"]["step"] == 4, "three rats killed")
+	await seconds(0.7)
+	expect(quest_ui.marker_text(optio) == "?", "a \"?\" when it's time to report")
 
 	player().talk(optio)
 	await _wait_until(func(): return quest_ui.is_dialogue_open(), 30.0)

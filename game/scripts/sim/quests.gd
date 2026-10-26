@@ -60,6 +60,22 @@ static func unmet_requirement(player: Combatant, quest_id: String) -> String:
 	return ""
 
 
+## What to show over an NPC: "?" when the player has something to report or
+## hand in to them, "!" when they offer a quest the player can start, else "".
+static func marker_for(player: Combatant, npc_id: String) -> String:
+	for quest_id in ContentDB.quest_ids():
+		var step := current_step(player, quest_id)
+		if step.get("npc") != npc_id:
+			continue
+		if step["kind"] == "talk" or (step["kind"] == "deliver" and _carries(player, step["items"])):
+			return "?"
+	for quest_id in ContentDB.quest_ids():
+		if ContentDB.quest(quest_id)["giver"] == npc_id and status(player, quest_id) == "not_started" \
+				and unmet_requirement(player, quest_id).is_empty():
+			return "!"
+	return ""
+
+
 ## The highest rank earned from quests, or "".
 static func rank(player: Combatant) -> String:
 	var best := ""

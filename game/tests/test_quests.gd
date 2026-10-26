@@ -266,3 +266,23 @@ func test_quartermaster_sells_spathae_to_duplicarii() -> void:
 	sim.queue_item_action(PLAYER, "buy", {"shop": "quartermaster", "item": "spatha"})
 	_run(sim, 1)
 	check_eq(_player(sim).inventory.count("spatha"), 1, "for a duplicarius")
+
+
+func test_markers_show_what_an_npc_has_for_you() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	check_eq(Quests.marker_for(player, "optio_gaius"), "!", "a new recruit sees a quest to start")
+	_talk(sim)
+	check_eq(Quests.marker_for(player, "optio_gaius"), "", "nothing while the steps are under way")
+	player.quests["tiro"]["step"] = 4
+	check_eq(Quests.marker_for(player, "optio_gaius"), "?", "ready to report")
+	player.quests["tiro"] = {"step": 5, "progress": 0, "done": true}
+	check_eq(Quests.marker_for(player, "optio_gaius"), "", "Miles needs Defence 5 first")
+	player.skills.xp["defence"] = player.skills.xp_for_level(5)
+	check_eq(Quests.marker_for(player, "optio_gaius"), "!", "Miles on offer")
+	_talk(sim)
+	player.quests["miles"]["step"] = 1
+	check_eq(Quests.marker_for(player, "optio_gaius"), "", "a delivery waits until you carry the goods")
+	sim.give_item(PLAYER, "logs", 10, "test", [])
+	sim.give_item(PLAYER, "bronze_nails", 15, "test", [])
+	check_eq(Quests.marker_for(player, "optio_gaius"), "?", "goods in hand")

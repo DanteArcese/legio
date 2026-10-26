@@ -46,6 +46,7 @@ const NEEDLES := Color(0.36, 0.3, 0.2)
 const DIRT := Color(0.5, 0.4, 0.28)
 const ROCK := Color(0.47, 0.45, 0.42)
 const TIMBER := Color(0.42, 0.3, 0.19)
+const STANDING_STONE := Color(0.56, 0.55, 0.52)
 const PINES := ["tree_pineTallA", "tree_pineTallB", "tree_pineTallC", "tree_pineDefaultA", "tree_pineDefaultB", "tree_pineRoundC"]
 
 ## North of the palisade: the danger zone, as an XZ rectangle.
@@ -254,10 +255,15 @@ func _dress() -> void:
 	for i in 9:
 		var angle := TAU * (i + 0.5) / 10.0 + PI / 2.0
 		var spot := CLEARING + Vector2(cos(angle), sin(angle)) * (CLEARING_RADIUS - 0.5)
-		var stone: Node3D = dresser.model("nature/rock_tallA")
-		stone.position = Vector3(spot.x, -0.1, spot.y)
-		stone.rotation.y = angle
-		stone.scale = Vector3(1.6, 2.6, 1.6)
+		var stone := MeshInstance3D.new()
+		var slab := BoxMesh.new()
+		slab.size = Vector3(1.1, 2.8 + 0.4 * sin(i * 2.3), 0.7)
+		var grey := StandardMaterial3D.new()
+		grey.albedo_color = STANDING_STONE.darkened(0.08 * (i % 3))
+		slab.material = grey
+		stone.mesh = slab
+		stone.position = Vector3(spot.x, slab.size.y / 2.0 - 0.15, spot.y)
+		stone.rotation = Vector3(0.05 * sin(i * 1.7), angle + PI / 2.0, 0.05 * cos(i * 1.3))
 		add_child(stone)
 		_solid(Vector3(1.2, 3.0, 1.2), stone.position + Vector3(0, 1.5, 0))
 	var banner: Node3D = dresser.model("castle/flag")

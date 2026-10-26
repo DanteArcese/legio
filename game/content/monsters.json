@@ -303,8 +303,8 @@
     "appearance": {
       "model": "kaykit",
       "scene": "adventurers/Barbarian",
-      "size": 1.6,
-      "weapon": "weapons/staff",
+      "size": 2.0,
+      "weapon": "proc:spear",
       "attack": "stab",
       "color": "#8a2f22"
     }

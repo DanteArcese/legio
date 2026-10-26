@@ -257,7 +257,7 @@ Decided: **both.**
 
 The first rank is **Tiro**, given by Optio Gaius by the forum. He hands out a sling, lead, a lituus, and binding tablets; the recruit strikes the training dummy with a blade, a sling, and a curse, clears three granary rats, and reports back for combat XP, a *parma* (round auxiliary shield), the rank, and the quartermaster's iron stores.
 
-The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). *Duplicarius* comes next.
+The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). The third is **Duplicarius** (#102; needs Miles, Attack 15, and Thieving 5): silver is going missing from the strongroom. Ask the Gaulish merchant in the forum (also a pickpocket mark), kill the latro on the south-west road (the step grants the stolen pay chest), and hand it to the optio. The reward is XP, a *spatha* (cavalry long sword, Attack 20), the rank, and spathae from the quartermaster. *Decurio* comes next, and with it the end of the auxilia career: discharge and citizenship.
 
 ## IP guardrails
 

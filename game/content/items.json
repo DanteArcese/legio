@@ -754,5 +754,27 @@
     "requirements": {
       "ranged": 15
     }
+  },
+  "stolen_pay_chest": {
+    "name": "Stolen pay chest",
+    "value": 0,
+    "examine": "A small iron-bound chest stamped with the cohort's mark. It's heavy with silver."
+  },
+  "spatha": {
+    "name": "Spatha",
+    "value": 260,
+    "examine": "A long cavalry sword. It reaches where a gladius can't.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 20,
+        "strength": 22,
+        "defence": 0
+      },
+      "attack_speed": 5
+    },
+    "requirements": {
+      "attack": 20
+    }
   }
 }

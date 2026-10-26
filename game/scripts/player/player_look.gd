@@ -13,6 +13,7 @@ const BODIES := {
 const WEAPONS := {
 	"bronze_pugio": ["weapons/dagger", "stab"], "iron_pugio": ["weapons/dagger", "stab"],
 	"bronze_gladius": ["weapons/sword_1handed", "slash"], "iron_gladius": ["weapons/sword_1handed", "slash"],
+	"spatha": ["weapons/sword_1handed", "slash"],
 	"hunting_bow": ["proc:bow", "bow"], "composite_bow": ["proc:bow_composite", "bow"],
 	"sling": ["proc:sling", "throw"], "lituus": ["weapons/staff", "ritus"],
 }

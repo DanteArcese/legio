@@ -141,8 +141,13 @@ func _deliver(player: Combatant, quest_id: String, step: Dictionary, events: Arr
 		handed.append("%d %s" % [entry["quantity"], ContentDB.item(entry["item"])["name"].to_lower()])
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 	var giver: String = ContentDB.quest(quest_id)["giver"]
+	var handed_text := "You hand over %s." % " and ".join(handed)
 	_advance(player, quest_id, events)
-	var lines: Array = ["You hand over %s." % " and ".join(handed)]
+	# A delivery that finishes the quest gets the completion dialogue instead.
+	if is_done(player, quest_id):
+		sim.message(player, handed_text, events)
+		return
+	var lines: Array = [handed_text]
 	lines.append_array(current_step(player, quest_id).get("remind", []))
 	_dialogue(player, giver, lines, events)
 
@@ -169,6 +174,10 @@ func _progress(player: Combatant, quest_id: String, step: Dictionary, events: Ar
 func _advance(player: Combatant, quest_id: String, events: Array) -> void:
 	var quest := ContentDB.quest(quest_id)
 	var state: Dictionary = player.quests[quest_id]
+	# Some steps hand over a quest item as they finish (a recovered chest).
+	for entry in quest["steps"][state["step"]].get("grants", []):
+		sim.give_item(player.id, entry["item"], entry["quantity"], "quest", events)
+		sim.message(player, "You recover the %s." % ContentDB.item(entry["item"])["name"].to_lower(), events)
 	state["step"] += 1
 	state["progress"] = 0
 	if state["step"] >= quest["steps"].size():

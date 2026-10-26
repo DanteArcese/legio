@@ -586,6 +586,28 @@
         "level": 20,
         "xp": 40,
         "tool": "knife"
+      },
+      {
+        "id": "harpy_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "harpy_feather",
+            "quantity": 1
+          },
+          {
+            "item": "iron_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "harpy_arrow",
+        "quantity": 15,
+        "level": 30,
+        "xp": 75,
+        "requires_quest": "harpies_at_the_harbour"
       }
     ],
     "tan": [

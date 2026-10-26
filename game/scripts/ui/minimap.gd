@@ -78,13 +78,19 @@ func _ready() -> void:
 	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_overlay.draw.connect(_draw_overlay)
 	root.add_child(_overlay)
+	# Nothing is drawn without a display (headless playtests): skip the work.
+	if DisplayServer.get_name() == "headless":
+		set_process(false)
 
 
 func _process(_delta: float) -> void:
 	if player == null:
 		return
 	_frame += 1
-	_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE if _frame % RENDER_EVERY == 0 else SubViewport.UPDATE_DISABLED
+	if _frame % RENDER_EVERY != 0:
+		_viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
+		return
+	_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
 	var yaw := yaw()
 	var here := player.global_position
 	# Looking straight down, with the top of the map where the camera faces.

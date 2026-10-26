@@ -21,6 +21,16 @@ const LABEL_HEIGHT := {"quadruped": 1.3, "humanoid": 2.4, "bird": 1.7, "kaykit":
 var _model: Node3D
 
 
+## Frames a cached waypoint lasts before the path is queried again.
+const PATH_REFRESH_FRAMES := 15
+## Monsters farther than this from the player stop animating (checked now and then).
+const ANIMATE_RANGE := 70.0
+const ANIMATE_CHECK_FRAMES := 30
+var _animate_check := 0
+var _waypoint := Vector3.INF
+var _path_target := Vector3.INF
+var _path_frames := 0
+
 func _enter_tree() -> void:
 	$SimEntity.monster_id = monster_id
 
@@ -70,7 +80,7 @@ func _physics_process(delta: float) -> void:
 		var offset: Vector3 = (combatant.move_target - global_position) * Vector3(1, 0, 1)
 		var stop_distance: float = combatant.reach * 0.8 if combatant.target_id != -1 else 0.2
 		if offset.length() > stop_distance:
-			var waypoint := Navigation.next_waypoint(get_world_3d(), global_position, combatant.move_target)
+			var waypoint := _waypoint_toward(combatant.move_target)
 			var step: Vector3 = (waypoint - global_position) * Vector3(1, 0, 1)
 			direction = step.normalized() if step.length() > 0.01 else Vector3.ZERO
 	velocity.x = direction.x * move_speed
@@ -79,6 +89,23 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	move_and_slide()
 	_entity.rescue_if_fallen()
+	_animate_check -= 1
+	if _animate_check <= 0 and _model.has_method("set_animating"):
+		_animate_check = ANIMATE_CHECK_FRAMES
+		var player := get_tree().get_first_node_in_group("player") as Node3D
+		_model.set_animating(player == null or player.global_position.distance_to(global_position) < ANIMATE_RANGE)
 	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 	if direction != Vector3.ZERO:
 		rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), minf(turn_speed * delta, 1.0))
+
+
+## The next navmesh waypoint toward target. Path queries are costly, so the
+## waypoint is reused until the target moves, it's reached, or a few frames pass.
+func _waypoint_toward(target: Vector3) -> Vector3:
+	_path_frames -= 1
+	var reached := (_waypoint - global_position) * Vector3(1, 0, 1)
+	if _path_frames <= 0 or target.distance_to(_path_target) > 0.5 or reached.length() < 0.3:
+		_waypoint = Navigation.next_waypoint(get_world_3d(), global_position, target)
+		_path_target = target
+		_path_frames = PATH_REFRESH_FRAMES
+	return _waypoint

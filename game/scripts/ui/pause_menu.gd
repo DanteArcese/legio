@@ -1,9 +1,11 @@
 extends CanvasLayer
 ## Esc / Start: pauses the game and offers Resume, the graphics preset,
-## Hide roofs, and Quit. Fully controller-navigable.
+## Hide roofs, volume sliders, and Quit. Fully controller-navigable
+## (left and right adjust a focused slider).
 
 @export var settings: Node
 @export var game_ui: Node
+@export var sound: Node
 
 var _panel: PanelContainer
 var _graphics_button: Button
@@ -15,7 +17,7 @@ func _ready() -> void:
 	_panel = PanelContainer.new()
 	_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	_panel.custom_minimum_size = Vector2(360, 0)
-	_panel.position -= Vector2(180, 140)
+	_panel.position -= Vector2(180, 220)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.1, 0.09, 0.08, 0.95)
 	style.set_content_margin_all(18)
@@ -38,6 +40,9 @@ func _ready() -> void:
 		settings.set_hide_roofs(not settings.hide_roofs())
 		_refresh())
 	column.add_child(_roofs_button)
+	if sound:
+		for bus in sound.BUSES:
+			column.add_child(_volume_row(bus))
 	column.add_child(_button("Quit", func(): get_tree().quit()))
 	_panel.visible = false
 
@@ -85,3 +90,22 @@ func _button(text: String, action: Callable) -> Button:
 	button.custom_minimum_size = Vector2(320, 44)
 	button.pressed.connect(action)
 	return button
+
+
+func _volume_row(bus: String) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	var label := Label.new()
+	label.text = "Sound" if bus == "Master" else bus
+	label.custom_minimum_size = Vector2(110, 0)
+	row.add_child(label)
+	var slider := HSlider.new()
+	slider.name = "%sVolume" % bus
+	slider.min_value = 0.0
+	slider.max_value = 1.0
+	slider.step = 0.1
+	slider.value = sound.volume(bus)
+	slider.custom_minimum_size = Vector2(210, 32)
+	slider.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	slider.value_changed.connect(func(value): sound.set_volume(bus, value))
+	row.add_child(slider)
+	return row

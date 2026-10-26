@@ -83,7 +83,9 @@ func apply_preset(name: String) -> void:
 func save() -> void:
 	if not persist:
 		return
+	# Load first: other settings (audio) share the file.
 	var config := ConfigFile.new()
+	config.load(SETTINGS_PATH)
 	config.set_value("graphics", "preset", preset)
 	config.set_value("view", "hide_roofs", hide_roofs())
 	config.save(SETTINGS_PATH)

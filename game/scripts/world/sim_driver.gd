@@ -47,6 +47,8 @@ func _ready() -> void:
 		sim.add_venator(venator.get_meta("venator_id"), venator.global_position)
 	for altar in get_tree().get_nodes_in_group("altars"):
 		sim.pietas.add_altar(altar.kind, altar.global_position)
+	for npc in get_tree().get_nodes_in_group("quest_npcs"):
+		sim.quests.add_npc(npc.get_meta("npc_id"), npc.global_position)
 	for shopkeeper in get_tree().get_nodes_in_group("shopkeepers"):
 		sim.add_shopkeeper(shopkeeper.get_meta("shop_id"), shopkeeper.global_position)
 		if shopkeeper.get_meta("shop_id") == "sacerdos":

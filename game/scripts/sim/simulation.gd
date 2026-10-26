@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, and pietas.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, and quests.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -22,6 +22,7 @@ const Curses := preload("res://scripts/sim/curses.gd")
 const Graves := preload("res://scripts/sim/graves.gd")
 const Skilling := preload("res://scripts/sim/skilling.gd")
 const Pietas := preload("res://scripts/sim/pietas.gd")
+const Quests := preload("res://scripts/sim/quests.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -40,6 +41,7 @@ var curses := Curses.new(self)
 var graves := Graves.new(self)
 var skilling := Skilling.new(self)
 var pietas := Pietas.new(self)
+var quests := Quests.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 
@@ -256,6 +258,7 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 	var killer: Combatant = _combatants.get(victim.last_attacker_id)
 	if killer and killer.is_player() and not victim.monster_id.is_empty():
 		_slayer_kill(killer, victim, events)
+		quests.on_kill(killer, victim, events)
 	victim.last_attacker_id = -1
 	if not victim.drop_table.is_empty():
 		var dropped := Drops.roll(ContentDB.drop_table(victim.drop_table), rng)
@@ -304,6 +307,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			graves.reclaim(player, events)
 		"slayer_task":
 			_slayer_task(player, command.get("venator", ""), events)
+		"talk":
+			quests.talk(player, command.get("npc", ""), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"chop":

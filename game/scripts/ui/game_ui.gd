@@ -38,7 +38,8 @@ func _ready() -> void:
 	add_child(_menu)
 	_message = Label.new()
 	_message.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
-	_message.position.y -= 130
+	# Just above the HUD's status panel.
+	_message.position.y -= 215
 	_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_message.add_theme_font_size_override("font_size", 24)
 	_message.add_theme_constant_override("outline_size", 6)

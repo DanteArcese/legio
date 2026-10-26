@@ -112,6 +112,8 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	attacker.next_attack_tick = tick + attacker.current_attack_speed(tick)
 	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage,
 		"ranged": kind == "ranged", "kind": kind, "tick": tick})
+	if attacker.is_player():
+		sim.quests.on_attack(attacker, target, kind, events)
 	var curse: String = attacker.equipment.curse() if kind == "ritus" else ""
 	if attacker.uses_ammo():
 		_use_ammo(attacker, target.position, events)

@@ -221,7 +221,11 @@ func _pickup(player: Combatant, pile_id: int, item_id: String, events: Array[Dic
 func _buy(player: Combatant, shop_id: String, item_id: String, events: Array[Dictionary]) -> void:
 	if not shopkeepers.has(shop_id) or sim.flat_distance(shopkeepers[shop_id], player.position) > SHOP_RANGE:
 		return
-	var offers: Array = ContentDB.shop(shop_id).get("offers", []).filter(func(o): return o["item"] == item_id)
+	var shop := ContentDB.shop(shop_id)
+	if shop.has("requires_quest") and not player.quests.get(shop["requires_quest"], {}).get("done", false):
+		sim.message(player, "Only soldiers of the cohort may draw from these stores.", events)
+		return
+	var offers: Array = shop.get("offers", []).filter(func(o): return o["item"] == item_id)
 	if offers.is_empty():
 		return
 	var price: int = offers[0]["price"]

@@ -27,6 +27,7 @@ const SOUNDS := {
 	"player_death": ["jingles_STEEL00"],
 	"level_up": ["jingles_PIZZI00"],
 	"contract_done": ["jingles_PIZZI05"],
+	"quest_done": ["jingles_PIZZI10"],
 	"coins": ["handleCoins"],
 	"pickup": ["handleSmallLeather"],
 	"eat": ["chop"],
@@ -203,6 +204,9 @@ func _on_sim_event(event: Dictionary) -> void:
 		"slayer_complete":
 			if event["id"] == me:
 				play("contract_done")
+		"quest_complete":
+			if event["id"] == me:
+				play("quest_done")
 		"ate":
 			if event["id"] == me:
 				play("eat")

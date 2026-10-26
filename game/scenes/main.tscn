@@ -29,6 +29,7 @@
 [ext_resource type="Script" path="res://scripts/world/tree_node.gd" id="27_tree"]
 [ext_resource type="Script" path="res://scripts/world/fishing_spot.gd" id="28_spot"]
 [ext_resource type="Script" path="res://scripts/audio/sound_director.gd" id="27_sound"]
+[ext_resource type="Script" path="res://scripts/ui/quest_ui.gd" id="29_quest_ui"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -220,6 +221,7 @@ can_fight = false
 auto_retaliate = false
 respawn_ticks = 5
 hp_label = NodePath("../HpLabel")
+tag = "training_dummy"
 
 [node name="BankChest" type="StaticBody3D" parent="." groups=["banks", "navigation_source"]]
 metadata/examine = "Iron-bound oak. Everything you own in one safe place."
@@ -290,6 +292,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 text = "Aulus the Venator
 (Slayer contracts)"
+font_size = 36
+outline_size = 8
+
+[node name="OptioGaius" type="StaticBody3D" parent="." groups=["quest_npcs", "shopkeepers", "navigation_source"]]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 3.5, 1, 6)
+collision_layer = 8
+metadata/npc_id = "optio_gaius"
+metadata/shop_id = "quartermaster"
+metadata/display_name = "Optio Gaius"
+metadata/examine = "The cohort's optio. He has the look of a man who has counted a great many recruits."
+
+[node name="Mesh" type="MeshInstance3D" parent="OptioGaius"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="OptioGaius"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="OptioGaius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+weapon = "weapons/sword_1handed"
+
+[node name="Label" type="Label3D" parent="OptioGaius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Optio Gaius
+(Auxilia)"
 font_size = 36
 outline_size = 8
 
@@ -629,6 +658,11 @@ script = ExtResource("27_sound")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 day_night = NodePath("../DayNight")
+
+[node name="QuestUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
+script = ExtResource("29_quest_ui")
+driver = NodePath("../SimDriver")
+player = NodePath("../Player")
 
 [node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound")]
 layer = 10

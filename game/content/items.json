@@ -622,5 +622,20 @@
     "name": "Bowstring",
     "value": 12,
     "examine": "Twisted sinew, waxed against the damp."
+  },
+  "parma": {
+    "name": "Parma",
+    "value": 50,
+    "examine": "A round auxiliary shield, battered and repainted many times.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 8,
+        "ranged_defence": 4,
+        "ritus_defence": -2
+      }
+    }
   }
 }

@@ -36,6 +36,7 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 			"points": player.slayer_points,
 			"tasks_done": player.slayer_tasks_done,
 		},
+		"quests": player.quests.duplicate(true),
 		"grave": saved_grave,
 		"reclaimable": sim.reclaimable.get(player_id, []).duplicate(true),
 	}
@@ -74,6 +75,11 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
 		player.slayer_task["total"] = int(player.slayer_task["total"])
 	player.slayer_points = int(slayer["points"])
 	player.slayer_tasks_done = int(slayer["tasks_done"])
+	player.quests = {}
+	var saved_quests: Dictionary = data.get("quests", {})
+	for quest_id in saved_quests:
+		var state: Dictionary = saved_quests[quest_id]
+		player.quests[quest_id] = {"step": int(state["step"]), "progress": int(state["progress"]), "done": bool(state["done"])}
 	var grave: Dictionary = data["grave"]
 	if not grave.is_empty():
 		sim.restore_grave(player_id, _array_to_vec(grave["position"]), _int_quantities(grave["items"]), int(grave["ticks_left"]))

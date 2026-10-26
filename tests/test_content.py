@@ -172,6 +172,27 @@ def test_fell_chance_is_a_probability(content):
     assert any("skilling.trees.tree" in e and "fell_chance" in e for e in errors)
 
 
+def test_quest_steps_reference_real_monsters_and_npcs(content):
+    def break_quest(c):
+        steps = c["quests"]["quests"]["tiro"]["steps"]
+        steps[3]["monster"] = "dragon"
+        steps[-1]["npc"] = "nobody"
+
+    errors = errors_after(content, break_quest)
+    assert any("steps[3].monster" in e for e in errors)
+    assert any("steps[4].npc" in e for e in errors)
+
+
+def test_quests_end_by_handing_in(content):
+    errors = errors_after(content, lambda c: c["quests"]["quests"]["tiro"]["steps"].pop())
+    assert any("last step must be talking" in e for e in errors)
+
+
+def test_shop_quest_gate_must_name_a_real_quest(content):
+    errors = errors_after(content, lambda c: c["shops"]["quartermaster"].update(requires_quest="centurio"))
+    assert any("shops.quartermaster.requires_quest" in e for e in errors)
+
+
 def test_examine_text_uses_an_before_vowels():
     content = load_content()
     bad = []

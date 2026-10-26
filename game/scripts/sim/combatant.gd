@@ -54,6 +54,10 @@ var watch_fined_at := -1
 var skill_action := {}
 ## Who last hit this combatant, for kill credit.
 var last_attacker_id := -1
+## Quest progress: quest id -> {"step", "progress", "done"}; see quests.gd.
+var quests := {}
+## A label quests can point at, for things that aren't monsters (the training dummy).
+var tag := ""
 ## "standard" or "solitarius" (self-sufficient: no market or trading).
 var account_mode := "standard"
 

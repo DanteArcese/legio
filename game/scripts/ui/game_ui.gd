@@ -157,8 +157,8 @@ func _show_recipes(kind: String, recipes: Array) -> void:
 	var options := []
 	var combatant := _combatant()
 	for recipe in recipes:
-		# Recipes taught by a quest stay hidden until it's done.
-		if recipe.has("requires_quest") and not combatant.quests.get(recipe["requires_quest"], {}).get("done", false):
+		# Recipes taught by a quest or a Slayer unlock stay hidden until learned.
+		if not Skilling.knows_recipe(combatant, recipe):
 			continue
 		var label := "%s  (%s %d)" % [ContentDB.item(recipe["output"])["name"], skill.capitalize(), recipe["level"]]
 		options.append([label, _act.bind("craft", {"kind": kind, "recipe": recipe["id"], "count": 28})])

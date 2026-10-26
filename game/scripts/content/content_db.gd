@@ -104,6 +104,10 @@ static func venator(id: String) -> Dictionary:
 	return data()["slayer"]["venatores"].get(id, {})
 
 
+static func slayer_rewards() -> Dictionary:
+	return data()["slayer"]["rewards"]
+
+
 static func blessing(id: String) -> Dictionary:
 	return data()["pietas"]["blessings"].get(id, {})
 

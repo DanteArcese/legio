@@ -367,6 +367,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			graves.reclaim(player, events)
 		"slayer_task":
 			_slayer_task(player, command.get("venator", ""), events)
+		"slayer_reward":
+			_slayer_reward(player, command, events)
 		"talk":
 			quests.talk(player, command.get("npc", ""), events)
 		"steal":
@@ -434,13 +436,63 @@ func _slayer_task(player: Combatant, venator_id: String, events: Array[Dictionar
 	if not task.is_empty():
 		message(player, "You still need to hunt %d %s." % [task["remaining"], Slayer.plural_name(task["monster"])], events)
 		return
-	task = Slayer.assign(venator_id, player.combat_level(), player.skills.level("slayer"), rng)
+	task = Slayer.assign(venator_id, player.combat_level(), player.skills.level("slayer"), rng, player.slayer_blocked)
 	if task.is_empty():
 		message(player, "Come back when you can handle yourself.", events)
 		return
 	player.slayer_task = task
 	message(player, "Hunt %d %s." % [task["total"], Slayer.plural_name(task["monster"])], events)
 	events.append({"type": "slayer_assigned", "id": player.id, "task": task.duplicate(), "tick": tick})
+
+
+## Spending Slayer points at a venator: cancel the current contract, block
+## or unblock a monster, or buy an unlock.
+func _slayer_reward(player: Combatant, command: Dictionary, events: Array[Dictionary]) -> void:
+	var venator_id: String = command.get("venator", "")
+	if not _venators.has(venator_id) or flat_distance(_venators[venator_id], player.position) > VENATOR_RANGE:
+		return
+	var rewards := ContentDB.slayer_rewards()
+	var task := player.slayer_task
+	var cost := 0
+	match command.get("reward", ""):
+		"cancel":
+			if task.is_empty():
+				return
+			cost = rewards["cancel"]
+		"block":
+			if task.is_empty():
+				return
+			if player.slayer_blocked.size() >= rewards["max_blocks"]:
+				message(player, "You can't block more than %d creatures. Unblock one first." % rewards["max_blocks"], events)
+				return
+			cost = rewards["block"]
+		"unblock":
+			player.slayer_blocked.erase(command.get("monster", ""))
+			message(player, "You'll hunt %s again." % Slayer.plural_name(command.get("monster", "")), events)
+			return
+		"unlock":
+			var unlock: Dictionary = rewards["unlocks"].get(command.get("unlock", ""), {})
+			if unlock.is_empty() or player.slayer_unlocks.has(command["unlock"]):
+				return
+			cost = unlock["cost"]
+		_:
+			return
+	if player.slayer_points < cost:
+		message(player, "That costs %d Slayer points; you have %d." % [cost, player.slayer_points], events)
+		return
+	player.slayer_points -= cost
+	match command["reward"]:
+		"cancel":
+			message(player, "Your contract on %s is cancelled." % Slayer.plural_name(task["monster"]), events)
+			player.slayer_task = {}
+		"block":
+			player.slayer_blocked.append(task["monster"])
+			message(player, "You won't be sent after %s again, and your contract is cancelled." % Slayer.plural_name(task["monster"]), events)
+			player.slayer_task = {}
+		"unlock":
+			player.slayer_unlocks.append(command["unlock"])
+			message(player, rewards["unlocks"][command["unlock"]]["teaches"], events)
+	events.append({"type": "slayer_reward", "id": player.id, "reward": command["reward"], "cost": cost, "tick": tick})
 
 
 ## Kill credit: Slayer XP equals the monster's hitpoints, on task only.
@@ -453,10 +505,12 @@ func _slayer_kill(player: Combatant, victim: Combatant, events: Array[Dictionary
 	events.append({"type": "slayer_progress", "id": player.id, "remaining": task["remaining"], "tick": tick})
 	if task["remaining"] > 0:
 		return
-	var points: int = ContentDB.venator(task["venator"])["points_per_task"]
-	player.slayer_points += points
 	player.slayer_tasks_done += 1
+	var points := Slayer.points_for(task["venator"], player.slayer_tasks_done)
+	player.slayer_points += points
 	player.slayer_task = {}
+	if points > ContentDB.venator(task["venator"])["points_per_task"]:
+		message(player, "That's %d contracts in a row: a bonus!" % player.slayer_tasks_done, events)
 	message(player, "Contract complete! You earn %d Slayer points (%d total)." % [points, player.slayer_points], events)
 	events.append({"type": "slayer_complete", "id": player.id, "points": points, "tick": tick})
 

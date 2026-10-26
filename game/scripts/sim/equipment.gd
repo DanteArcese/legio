@@ -84,6 +84,26 @@ func is_wearing(item_id: String) -> bool:
 	return worn.values().has(item_id)
 
 
+## Whether something worn is, or counts as, this ward item (the venator's
+## helm has a whitethorn charm sewn in).
+func is_warded_by(item_id: String) -> bool:
+	if is_wearing(item_id):
+		return true
+	for worn_id in worn.values():
+		if not worn_id.is_empty() and item_id in ContentDB.item(worn_id)["equip"].get("wards", []):
+			return true
+	return false
+
+
+## The largest on-task Slayer boost among worn items (0.0 if none).
+func slayer_boost() -> float:
+	var best := 0.0
+	for worn_id in worn.values():
+		if not worn_id.is_empty():
+			best = maxf(best, ContentDB.item(worn_id)["equip"].get("slayer_boost", 0.0))
+	return best
+
+
 func bonuses() -> Dictionary:
 	var total := {}
 	for key in BONUS_KEYS:

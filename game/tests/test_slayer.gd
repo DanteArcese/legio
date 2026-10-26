@@ -106,7 +106,7 @@ func test_completing_a_task_awards_points() -> void:
 	player.slayer_task = {"monster": "rat", "remaining": 1, "total": 5, "venator": "aulus"}
 	var events := _kill(sim, "rat", 70)
 	check(player.slayer_task.is_empty(), "task cleared")
-	check_eq(player.slayer_points, 2, "points")
+	check_eq(player.slayer_points, 3, "points")
 	check_eq(player.slayer_tasks_done, 1, "count")
 	check(events.any(func(e): return e["type"] == "slayer_complete"), "event")
 

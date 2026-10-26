@@ -52,6 +52,8 @@ Kept as a core skill and the center of progression.
 - **The bestiary** draws on public-domain myth: harpies, lamiae, strix, centaurs, cyclopes, satyrs, lemures (restless dead), basilisks, the catoblepas, manticores, gorgons, hydras, and the Minotaur as a late boss.
 - **Gear checks** tie each monster to a myth. You need a polished bronze mirror-shield against gorgons and basilisks, wax earplugs against sirens, fire to stop hydra heads growing back, and a thread to escape the Labyrinth.
 - **Points** buy unlocks: extend or block tasks, harder contract types, and access to boss lairs.
+
+**Built (#147): rewards.** Aulus pays 3 points a contract, 5× on every 10th in a row and 15× on every 50th. His menu spends them: cancel the current contract (15), never be sent after that monster again (50; up to four blocks, and unblocking is free), and learn the venator's helm (60). The helm is sewn (Crafting 30) from a wolfskin hood, a whitethorn charm, leather and thread; it wards off the strix like the charm and adds 15% accuracy and max hit against your current task monster. Monsters can now carry a proper plural ("wolves", "lemures") for contract text.
 - **Twist (idea):** "Arena contracts." You capture rather than kill certain beasts and ship them to the capital's arena, which ties Slayer to Hunter.
 
 ### Gathering

@@ -34,7 +34,8 @@ func _ready() -> void:
 
 	_drops = VBoxContainer.new()
 	_drops.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
-	_drops.position = Vector2(-280, 60)
+	# Below the minimap.
+	_drops.position = Vector2(-280, 270)
 	_drops.custom_minimum_size = Vector2(260, 0)
 	add_child(_drops)
 

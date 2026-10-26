@@ -99,8 +99,11 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			return [["Pickpocket " + mark["name"], player.pickpocket.bind(node)],
 				["Examine " + mark["name"], player.examine.bind(mark["examine"])]]
 		"quest_npcs":
-			return [["Talk to " + node.get_meta("display_name", "them"), player.talk.bind(node)],
-				["Examine " + node.get_meta("display_name", "them"), player.examine.bind(node.get_meta("examine", ""))]]
+			var options := [["Talk to " + node.get_meta("display_name", "them"), player.talk.bind(node)]]
+			if node.is_in_group("marks"):
+				options.append(["Pickpocket " + node.get_meta("display_name", "them"), player.pickpocket.bind(node)])
+			options.append(["Examine " + node.get_meta("display_name", "them"), player.examine.bind(node.get_meta("examine", ""))])
+			return options
 		"shopkeepers":
 			var options := []
 			if node.get_meta("shop_id") == "sacerdos":

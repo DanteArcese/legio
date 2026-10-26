@@ -367,10 +367,11 @@ text = "Townsman"
 font_size = 32
 outline_size = 8
 
-[node name="Merchant" type="StaticBody3D" parent="Forum" groups=["marks", "navigation_source"]]
+[node name="Merchant" type="StaticBody3D" parent="Forum" groups=["marks", "quest_npcs", "navigation_source"]]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, 2.5, 1, -9.5)
 collision_layer = 8
 metadata/mark_type = "merchant"
+metadata/npc_id = "gallic_merchant"
 metadata/display_name = "Merchant"
 metadata/examine = "A Gaulish merchant with rings on every finger."
 

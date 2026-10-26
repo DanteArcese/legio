@@ -218,3 +218,51 @@ func test_quartermaster_keeps_mail_for_miles() -> void:
 	sim.queue_item_action(PLAYER, "buy", {"shop": "quartermaster", "item": "lorica_hamata"})
 	_run(sim, 1)
 	check_eq(_player(sim).inventory.count("lorica_hamata"), 1, "a miles may buy it")
+
+
+func test_duplicarius_from_the_forum_to_the_road() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("gallic_merchant", Vector3(-1, 0, 0))
+	player.quests["tiro"] = {"step": 5, "progress": 0, "done": true}
+	player.quests["miles"] = {"step": 4, "progress": 0, "done": true}
+	var lines := _dialogue(_talk(sim))
+	check("Attack 15" in lines[0], "needs Attack 15 (%s)" % [lines])
+	player.skills.xp["attack"] = player.skills.xp_for_level(15)
+	player.skills.xp["thieving"] = player.skills.xp_for_level(5)
+	_talk(sim)
+	check_eq(Quests.status(player, "duplicarius"), "in_progress", "started")
+
+	sim.queue_item_action(PLAYER, "talk", {"npc": "gallic_merchant"})
+	_run(sim, 1)
+	check_eq(player.quests["duplicarius"]["step"], 1, "the merchant points at the latro")
+
+	var latro := sim.add_monster(RAT, "latro", Vector3(0, 0, 1))
+	latro.last_attacker_id = PLAYER
+	latro.hp = 0
+	sim.kill(latro, [])
+	check_eq(player.inventory.count("stolen_pay_chest"), 1, "the kill hands over the chest")
+	check_eq(player.quests["duplicarius"]["step"], 2, "now bring it back")
+
+	var events := _talk(sim)
+	check(Quests.is_done(player, "duplicarius"), "the delivery finishes the quest")
+	check_eq(player.inventory.count("stolen_pay_chest"), 0, "chest handed over")
+	check_eq(player.inventory.count("spatha"), 1, "spatha reward")
+	check_eq(Quests.rank(player), "Duplicarius", "rank")
+	var completion: Array = ContentDB.quest("duplicarius")["complete"]
+	check_eq(_dialogue(events), completion, "shows the completion dialogue, not the hand-over")
+
+
+func test_quartermaster_sells_spathae_to_duplicarii() -> void:
+	var sim := _make_sim()
+	sim.add_shopkeeper("quartermaster", Vector3(1, 0, 0))
+	sim.give_item(PLAYER, "coins", 1000, "test", [])
+	for quest_id in ["tiro", "miles"]:
+		_player(sim).quests[quest_id] = {"step": 9, "progress": 0, "done": true}
+	sim.queue_item_action(PLAYER, "buy", {"shop": "quartermaster", "item": "spatha"})
+	_run(sim, 1)
+	check_eq(_player(sim).inventory.count("spatha"), 0, "not for a miles")
+	_player(sim).quests["duplicarius"] = {"step": 3, "progress": 0, "done": true}
+	sim.queue_item_action(PLAYER, "buy", {"shop": "quartermaster", "item": "spatha"})
+	_run(sim, 1)
+	check_eq(_player(sim).inventory.count("spatha"), 1, "for a duplicarius")

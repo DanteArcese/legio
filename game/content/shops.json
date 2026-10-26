@@ -154,6 +154,11 @@
         "price": 60,
         "quantity": 30,
         "requires_quest": "miles"
+      },
+      {
+        "item": "spatha",
+        "price": 380,
+        "requires_quest": "duplicarius"
       }
     ]
   }

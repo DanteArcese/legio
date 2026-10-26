@@ -6,6 +6,14 @@
       "idle": [
         "Keep your blade clean and your mouth shut, and the auxilia will make something of you."
       ]
+    },
+    "gallic_merchant": {
+      "name": "Gaulish merchant",
+      "examine": "A Gaulish merchant with rings on every finger.",
+      "idle": [
+        "Fine linen, fair prices! Well, prices.",
+        "Keep your hands where I can see them, friend."
+      ]
     }
   },
   "quests": {
@@ -203,6 +211,90 @@
         ],
         "rank": "Miles",
         "unlocks": "Mail and heavier arms from the quartermaster (Optio Gaius)"
+      }
+    },
+    "duplicarius": {
+      "name": "Duplicarius",
+      "summary": "Find out who has been stealing the cohort's pay, and bring it back.",
+      "giver": "optio_gaius",
+      "requirements": {
+        "quests": [
+          "miles"
+        ],
+        "skills": {
+          "attack": 15,
+          "thieving": 5
+        }
+      },
+      "start": [
+        "Silver has been going missing from the strongroom, a little every week. Pay day is in nine days.",
+        "Someone in the forum is fencing it. The Gaulish merchant hears everything that's sold in this town; ask him.",
+        "You've light fingers yourself, I hear. Good. It takes a thief to catch one."
+      ],
+      "steps": [
+        {
+          "kind": "talk",
+          "npc": "gallic_merchant",
+          "log": "Ask the Gaulish merchant in the forum about the stolen silver.",
+          "remind": [
+            "The merchant has a stall-side spot in the forum. Ask him who's been selling cohort silver."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "latro",
+          "count": 1,
+          "grants": [
+            {
+              "item": "stolen_pay_chest",
+              "quantity": 1
+            }
+          ],
+          "log": "Deal with the latro on the road south-west of the fort and recover the pay chest.",
+          "remind": [
+            "The merchant says a latro on the south-west road has been paying in cohort silver. Find him."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "optio_gaius",
+          "items": [
+            {
+              "item": "stolen_pay_chest",
+              "quantity": 1
+            }
+          ],
+          "log": "Bring the stolen pay chest back to Optio Gaius.",
+          "remind": [
+            "Bring me the chest. Unopened, if you value your skin."
+          ]
+        }
+      ],
+      "complete": [
+        "Every coin, near enough. The men will be paid, and they won't know how close it came.",
+        "Double pay for a soldier who saves the pay. You're a duplicarius now, and you'll ride with the ala when it comes.",
+        "A rider needs a longer reach. Take this spatha. The quartermaster has more, for those who earn them."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 1000,
+          "strength": 1000,
+          "defence": 800,
+          "thieving": 300,
+          "slayer": 200
+        },
+        "items": [
+          {
+            "item": "spatha",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 400
+          }
+        ],
+        "rank": "Duplicarius",
+        "unlocks": "Spathae from the quartermaster"
       }
     }
   }

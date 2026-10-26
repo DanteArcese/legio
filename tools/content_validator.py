@@ -174,7 +174,7 @@ def _check_monster(where, monster_id, monster, items, drops, errors):
         errors.append(f"{where}.drops: unknown drop table {monster.get('drops')!r}")
     if "slayer" in monster:
         slayer = monster["slayer"]
-        _check_keys(f"{where}.slayer", slayer, {"level", "ward_item", "unwarded_effect"}, {"level"}, errors)
+        _check_keys(f"{where}.slayer", slayer, {"level", "ward_item", "ward_carried", "unwarded_effect"}, {"level"}, errors)
         _check_int(f"{where}.slayer", "level", slayer.get("level"), 1, errors, 99)
         if "ward_item" in slayer:
             if slayer["ward_item"] not in items:
@@ -366,7 +366,7 @@ QUEST_KEYS = {"name", "summary", "giver", "requirements", "start", "start_items"
 STEP_KINDS = {"attack": {"tag", "combat", "count"}, "kill": {"monster", "count"}, "talk": {"npc"},
               "deliver": {"npc", "items"}, "reach": {"at", "radius"}}
 COMBAT_KINDS = {"melee", "ranged", "ritus"}
-REWARD_KEYS = {"xp", "items", "rank", "unlocks"}
+REWARD_KEYS = {"xp", "items", "rank", "title", "unlocks"}
 
 
 def _check_quests(content, items, monsters, errors):

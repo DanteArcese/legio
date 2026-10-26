@@ -210,5 +210,37 @@
         "weight": 5
       }
     ]
+  },
+  "larva": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          150,
+          300
+        ]
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "larval_shroud",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "strix_feather",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": null,
+        "weight": 4
+      }
+    ]
   }
 }

@@ -98,6 +98,12 @@ func set_mesh_visible(mesh_name: String, shown: bool) -> void:
 		mesh.visible = shown
 
 
+## Pauses or resumes the animation player (for characters far from anyone).
+func set_animating(on: bool) -> void:
+	if _player.active != on:
+		_player.active = on
+
+
 ## Holds a skilling tool ("kenney:survival/tool-axe") in the weapon hand,
 ## or the weapon again for "".
 func hold_tool(tool: String) -> void:

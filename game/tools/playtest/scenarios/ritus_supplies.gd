@@ -11,6 +11,11 @@ func run() -> void:
 	var me: RefCounted = driver().sim.get_combatant(PLAYER)
 	me.skills.xp["mining"] = me.skills.xp_for_level(10)
 	me.skills.xp["smithing"] = me.skills.xp_for_level(5)
+	# Galena lies near the wolf woods; this is a supply run, not a fight.
+	for skill in ["defence", "vitality"]:
+		me.skills.xp[skill] = me.skills.xp_for_level(30)
+	me.max_hp = 30
+	me.hp = 30
 	driver().sim.give_item(PLAYER, "coins", 50, "test", [])
 	driver().sim.give_item(PLAYER, "bronze_bar", 1, "test", [])
 	var start: int = driver().sim.tick
@@ -47,6 +52,7 @@ func run() -> void:
 	await shot("tomb_menu")
 	await press("ui_accept")
 	await action_done()
+	metric("deaths", count_events("death", {"id": PLAYER}))
 	metric("binding_tablets", me.inventory.count("binding_tablet"))
 	metric("ritus_xp", int(me.skills.xp["ritus"]))
 	metric("minutes", snappedf((driver().sim.tick - start) * 0.6 / 60.0, 0.1))
@@ -55,9 +61,20 @@ func run() -> void:
 
 func _make_at(station_path: String, kind: String, recipe: String) -> void:
 	var station: Node3D = main.get_node(station_path)
-	await route_to(station.global_position + Vector3(0, 0, 1.5), 0.4, 90.0)
+	var spot := station.global_position + Vector3(0, 0, 1.4)
+	# Line up in front of the station first: cutting the corner can snag on
+	# the station's own collision, or the smithy wall behind it.
+	await route_to(station.global_position + Vector3(0, 0, 2.7), 0.4, 90.0)
+	# Close in and let a tick pass, so the sim has us well within reach.
+	await walk_to(spot, 0.2, 10.0)
+	await seconds(0.7)
 	driver().sim.queue_item_action(PLAYER, "craft", {"kind": kind, "recipe": recipe, "count": 28})
 	await action_done()
+	# Evidence for CI logs if nothing got made.
+	var me: RefCounted = driver().sim.get_combatant(PLAYER)
+	metric("at_" + recipe, [snappedf(me.position.distance_to(station.global_position), 0.01),
+		events.filter(func(e): return e["type"] in ["message", "skill_started", "skill_stopped"] and e.get("id") == PLAYER) \
+			.map(func(e): return [e["type"], e.get("text", e.get("action", "")), e["tick"]]).slice(-4)])
 
 
 func _nearest_rock(rock_type: String) -> Node3D:

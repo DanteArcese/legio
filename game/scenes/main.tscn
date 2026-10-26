@@ -621,10 +621,11 @@ script = ExtResource("26_altar")
 kind = "underworld"
 title = "Altar of Dis Pater"
 
-[node name="Sacerdos" type="StaticBody3D" parent="." groups=["navigation_source", "shopkeepers"]]
+[node name="Sacerdos" type="StaticBody3D" parent="." groups=["navigation_source", "quest_npcs", "shopkeepers"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -10.5)
 collision_layer = 8
 metadata/shop_id = "sacerdos"
+metadata/npc_id = "sacerdos"
 metadata/display_name = "Sacerdos"
 metadata/examine = "A priest of the Capitoline gods. He sells incense and wine for the altar."
 
@@ -676,6 +677,10 @@ monster_id = "wild_boar"
 [node name="Latro1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 38)
 monster_id = "latro"
+
+[node name="Larva" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 181, 0, -34)
+monster_id = "larva"
 
 [node name="Lemur1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 145, 0, -23)

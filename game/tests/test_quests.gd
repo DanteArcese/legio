@@ -286,3 +286,52 @@ func test_markers_show_what_an_npc_has_for_you() -> void:
 	sim.give_item(PLAYER, "logs", 10, "test", [])
 	sim.give_item(PLAYER, "bronze_nails", 15, "test", [])
 	check_eq(Quests.marker_for(player, "optio_gaius"), "?", "goods in hand")
+
+
+func test_the_larva_needs_black_beans_carried() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	player.skills.xp["attack"] = player.skills.xp_for_level(70)
+	player.skills.xp["strength"] = player.skills.xp_for_level(70)
+	player.skills.xp["slayer"] = player.skills.xp_for_level(15)
+	var larva := sim.add_monster(RAT, "larva", Vector3(0, 0, 1))
+	larva.can_fight = false
+	sim.queue_attack(PLAYER, RAT)
+	var events := _run(sim, 30)
+	var damage := 0
+	for e in events:
+		if e["type"] == "hit" and e["attacker"] == PLAYER:
+			damage += e["damage"]
+	check_eq(damage, 0, "blows pass through it without the beans")
+	sim.give_item(PLAYER, "black_beans", 9, "test", [])
+	events = _run(sim, 30)
+	damage = 0
+	for e in events:
+		if e["type"] == "hit" and e["attacker"] == PLAYER:
+			damage += e["damage"]
+	check(damage > 0, "the beans in your pack let you hurt it")
+
+
+func test_decurio_ends_in_citizenship() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("sacerdos", Vector3(-1, 0, 0))
+	for quest_id in ["tiro", "miles", "duplicarius"]:
+		player.quests[quest_id] = {"step": 9, "progress": 0, "done": true}
+	player.skills.xp["defence"] = player.skills.xp_for_level(25)
+	player.skills.xp["slayer"] = player.skills.xp_for_level(15)
+	check_eq(Quests.title(player), "Duplicarius of the auxilia", "a duplicarius so far")
+	_talk(sim)
+	check_eq(Quests.status(player, "decurio"), "in_progress", "started")
+	check_eq(Quests.marker_for(player, "sacerdos"), "?", "the sacerdos is marked")
+	sim.queue_item_action(PLAYER, "talk", {"npc": "sacerdos"})
+	_run(sim, 1)
+	check_eq(player.inventory.count("black_beans"), 9, "nine black beans")
+	var larva := sim.add_monster(RAT, "larva", Vector3(0, 0, 1))
+	larva.last_attacker_id = PLAYER
+	larva.hp = 0
+	sim.kill(larva, [])
+	_talk(sim)
+	check(Quests.is_done(player, "decurio"), "complete")
+	check_eq(Quests.title(player), "Civis Romanus", "a citizen of Rome")
+	check_eq(player.inventory.count("diploma"), 1, "the bronze diploma")

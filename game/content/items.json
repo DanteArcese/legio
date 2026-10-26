@@ -799,5 +799,35 @@
     "value": 40,
     "examine": "Anchovies pounded with garum and herbs, spread on bread.",
     "heals": 7
+  },
+  "black_beans": {
+    "name": "Black beans",
+    "value": 1,
+    "examine": "Nine black beans, for the rite of the Lemuria. Throw them behind you, and don't look back.",
+    "stackable": true
+  },
+  "larval_shroud": {
+    "name": "Larval shroud",
+    "value": 900,
+    "examine": "A grave-cloth that still stirs on its own. The Manes listen to whoever wears it.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 2,
+        "ritus_attack": 10,
+        "ritus_strength": 6,
+        "ritus_defence": 6
+      }
+    },
+    "requirements": {
+      "ritus": 25
+    }
+  },
+  "diploma": {
+    "name": "Bronze diploma",
+    "value": 0,
+    "examine": "Two bronze tablets, wired shut: your honourable discharge and grant of Roman citizenship, witnessed by seven."
   }
 }

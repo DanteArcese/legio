@@ -102,6 +102,8 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			var options := [["Talk to " + node.get_meta("display_name", "them"), player.talk.bind(node)]]
 			if node.is_in_group("marks"):
 				options.append(["Pickpocket " + node.get_meta("display_name", "them"), player.pickpocket.bind(node)])
+			if node.get_meta("shop_id", "") == "sacerdos":
+				options.append(["Ask for a cleansing (%d denarii)" % Pietas.CLEANSING_FEE, player.cleanse.bind(node)])
 			options.append(["Examine " + node.get_meta("display_name", "them"), player.examine.bind(node.get_meta("examine", ""))])
 			return options
 		"shopkeepers":

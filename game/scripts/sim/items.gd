@@ -89,6 +89,10 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			player.inventory.take_slot(slot_index)
 			add_ground_pile(player.position, [slot], events)
 			events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+		"release_pet":
+			sim.pets.release(player, slot_index, events)
+		"pickup_pet":
+			sim.pets.pick_up(player, events)
 		"pickup":
 			_pickup(player, command.get("pile", -1), command.get("item", ""), events)
 		"buy":

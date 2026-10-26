@@ -1109,5 +1109,64 @@
     "name": "Legion eagle",
     "value": 5000,
     "examine": "A cohort's eagle standard, tarnished green. Priceless to any legionary: you'd never leave it behind."
+  },
+  "mole": {
+    "name": "Mole",
+    "value": 0,
+    "examine": "It followed you up out of the quarry and won't go back down.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#2e2a28",
+      "accent": "#d9a6a0",
+      "size": 0.3,
+      "features": [
+        "round_ears",
+        "long_snout",
+        "tail"
+      ]
+    }
+  },
+  "magpie": {
+    "name": "Magpie",
+    "value": 0,
+    "examine": "A bird after your own heart. It keeps looking at your purse.",
+    "pet": {
+      "model": "bird",
+      "color": "#1d2230",
+      "accent": "#f2f2f2",
+      "size": 0.35,
+      "features": []
+    }
+  },
+  "leveret": {
+    "name": "Leveret",
+    "value": 0,
+    "examine": "A young hare that decided your traps were a game.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#9b7a55",
+      "accent": "#e8dcc8",
+      "size": 0.3,
+      "features": [
+        "ears",
+        "tail"
+      ]
+    }
+  },
+  "wolf_cub": {
+    "name": "Wolf cub",
+    "value": 0,
+    "examine": "One of the war-chief's hounds, still small enough to carry. It has decided you are its pack now.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#2f2d2c",
+      "accent": "#57524d",
+      "size": 0.45,
+      "features": [
+        "ears",
+        "long_snout",
+        "tail"
+      ]
+    }
   }
 }

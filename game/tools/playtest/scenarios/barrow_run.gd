@@ -9,12 +9,13 @@ func run() -> void:
 	await seconds(0.3) # let the navigation map sync
 	var me: RefCounted = driver().sim.get_combatant(PLAYER)
 	for skill in ["attack", "strength", "defence", "vitality"]:
-		me.skills.xp[skill] = me.skills.xp_for_level(30)
+		me.skills.xp[skill] = me.skills.xp_for_level(35)
 	me.skills.xp["slayer"] = me.skills.xp_for_level(10)
-	me.max_hp = 30
-	me.hp = 30
+	me.max_hp = 35
+	me.hp = 35
 	driver().sim.give_item(PLAYER, "coins", 200, "test", [])
-	driver().sim.give_item(PLAYER, "bread", 10, "test", [])
+	# Lemurs often come in twos and threes; bring plenty.
+	driver().sim.give_item(PLAYER, "bread", 15, "test", [])
 
 	# Buy and wear the charm via Aulus's menu option.
 	var aulus: Node3D = main.get_node("VenatorAulus")
@@ -57,7 +58,7 @@ func _fight(monster_id: String, kills_wanted: int, timeout: float) -> int:
 	var kills := 0
 	var frames_left := ceili(timeout * Engine.physics_ticks_per_second)
 	while kills < kills_wanted and frames_left > 0 and me.is_alive():
-		if me.hp < 15 and _slot_of("bread") != -1:
+		if me.hp < 20 and _slot_of("bread") != -1:
 			driver().sim.queue_item_action(PLAYER, "eat", {"slot": _slot_of("bread")})
 		if me.target_id == -1:
 			var target := _nearest(monster_id)
@@ -65,7 +66,7 @@ func _fight(monster_id: String, kills_wanted: int, timeout: float) -> int:
 				var before := count_events("death", {"id": target.entity_id})
 				player().attack(target.entity_id)
 				while count_events("death", {"id": target.entity_id}) == before and frames_left > 0 and me.is_alive():
-					if me.hp < 15 and _slot_of("bread") != -1:
+					if me.hp < 20 and _slot_of("bread") != -1:
 						driver().sim.queue_item_action(PLAYER, "eat", {"slot": _slot_of("bread")})
 					await seconds(0.5)
 					frames_left -= 30

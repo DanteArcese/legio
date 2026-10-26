@@ -15,6 +15,9 @@ const AGGRO_LEVEL_MULTIPLIER := 2
 const AMMO_RECOVERY_CHANCE := 0.75
 ## Monsters give up on targets farther away than this (e.g. who left the area).
 const CHASE_RANGE := 30.0
+## How long a siren's song holds an unwarded player. Longer than her attack
+## speed, so a player who keeps listening never gets a blow in.
+const ENTRANCE_TICKS := 6
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.
@@ -99,7 +102,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	var chance := CombatMath.hit_chance(floori(roll[0] * boost), roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
 	var damage := 0
 	var lands: bool = sim.rng.randf() < chance
-	if effect == "drain_vitality" and target.is_player():
+	if effect in ["drain_vitality", "entrance"] and target.is_player():
 		lands = true
 	# Silenced: this attack falls on nothing, and the curse is spent.
 	if attacker.curses.has("silenced"):
@@ -113,6 +116,12 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
+	# A siren's song holds an unwarded player: they can't strike for a while.
+	if effect == "entrance" and target.is_player():
+		if tick >= target.entranced_until:
+			sim.message(target, "The siren's song holds you! You can't bring yourself to strike.", events)
+		target.entranced_until = tick + ENTRANCE_TICKS
+		target.next_attack_tick = maxi(target.next_attack_tick, target.entranced_until)
 	attacker.next_attack_tick = tick + attacker.current_attack_speed(tick)
 	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage,
 		"ranged": kind == "ranged", "kind": kind, "tick": tick})

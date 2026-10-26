@@ -114,6 +114,11 @@
       {
         "item": "mortar_and_pestle",
         "price": 10
+      },
+      {
+        "item": "beeswax",
+        "price": 25,
+        "quantity": 10
       }
     ]
   },

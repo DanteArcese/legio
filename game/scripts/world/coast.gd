@@ -31,6 +31,8 @@ const HARBOUR := Rect2(-330, -26, 50, 32)
 const ROAD := [Vector2(-300, -50), Vector2(-300, -26)]
 ## Rocky ground in the east, where the harpies roost.
 const ROCKS_X := -264.0
+## The sirens' rocks at the west end of the beach.
+const SIREN_ROCKS := Vector2(-345, 8)
 
 const GRASS := Color(0.4, 0.57, 0.27)
 const GRASS_LIGHT := Color(0.5, 0.63, 0.3)
@@ -40,6 +42,9 @@ const ROAD_DIRT := Color(0.62, 0.5, 0.35)
 const ROCK := Color(0.55, 0.53, 0.5)
 const PAVING := Color(0.66, 0.63, 0.57)
 const TIMBER := Color(0.45, 0.33, 0.22)
+
+## Places kit models (rocks); optional so the coast still builds without it.
+@export var dresser: Node
 
 var _noise := FastNoiseLite.new()
 var _boats: Array[Node3D] = []
@@ -59,6 +64,7 @@ func _ready() -> void:
 	_build_pier()
 	_build_bounds()
 	_dress_harbour()
+	_dress_siren_rocks()
 
 
 func _process(delta: float) -> void:
@@ -236,6 +242,27 @@ func _dress_harbour() -> void:
 
 
 ## A small fishing boat: a hull, a prow, a mast, and a furled sail.
+## Sea stacks offshore and boulders on the sand where the sirens sing, and
+## the wreck of a boat that listened.
+func _dress_siren_rocks() -> void:
+	var wreck := _boat(Vector3(SIREN_ROCKS.x + 9.0, -0.15, SIREN_ROCKS.y + 2.5), 2.4)
+	wreck.rotation.z = 0.5
+	if not dresser:
+		return
+	for spec in [[Vector2(-349, 16), "rock_tallA", 7.0], [Vector2(-339, 18), "rock_largeA", 7.5],
+			[Vector2(-356, 14.5), "rock_largeC", 6.0]]:
+		var stack: Node3D = dresser.model("nature/" + spec[1])
+		stack.position = Vector3(spec[0].x, height_at(spec[0].x, spec[0].y) - 0.3, spec[0].y)
+		stack.scale = Vector3.ONE * spec[2]
+		add_child(stack)
+	for spec in [[Vector2(-351, 9.5), "rock_largeA"], [Vector2(-342, 10.5), "rock_largeC"]]:
+		var rock: Node3D = dresser.model("nature/" + spec[1])
+		rock.position = Vector3(spec[0].x, height_at(spec[0].x, spec[0].y) - 0.2, spec[0].y)
+		rock.scale = Vector3.ONE * 2.0
+		add_child(rock)
+		_solid(Vector3(1.6, 2.0, 1.6), rock.position + Vector3(0, 0.8, 0), ROCK, false)
+
+
 func _boat(at: Vector3, yaw: float) -> Node3D:
 	var boat := Node3D.new()
 	boat.position = at

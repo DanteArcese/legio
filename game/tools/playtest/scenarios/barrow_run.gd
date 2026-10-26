@@ -37,7 +37,7 @@ func run() -> void:
 	# Fight lemurs, then the strix, eating when low.
 	var lemur_kills := await _fight("lemur", 2, 120.0)
 	await shot("upper_halls")
-	var strix_kills := await _fight("strix", 1, 120.0)
+	var strix_kills := await _fight("strix", 1, 180.0)
 	await shot("depths")
 	metric("lemur_kills", lemur_kills)
 	metric("strix_kills", strix_kills)

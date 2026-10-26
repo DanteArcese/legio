@@ -1191,5 +1191,53 @@
       "ranged": 10,
       "slayer": 20
     }
+  },
+  "beeswax": {
+    "name": "Beeswax",
+    "value": 3,
+    "examine": "A soft yellow cake of wax from the temple's hives. Odysseus's crew would have wanted some.",
+    "stackable": true
+  },
+  "wax_earplugs": {
+    "name": "Wax earplugs",
+    "value": 30,
+    "examine": "Linen pads packed with beeswax. The world goes quiet, and so do the sirens.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 0
+      }
+    }
+  },
+  "venators_helm_sealed": {
+    "name": "Venator's helm (sealed)",
+    "value": 450,
+    "examine": "A venator's helm with wax sewn into the ear flaps. Neither the strix nor the sirens get through.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 5,
+        "ranged_attack": 4,
+        "ranged_defence": 7
+      },
+      "wards": [
+        "whitethorn_charm",
+        "wax_earplugs"
+      ],
+      "slayer_boost": 0.15
+    },
+    "requirements": {
+      "ranged": 10,
+      "slayer": 30
+    }
+  },
+  "pearl": {
+    "name": "Pearl",
+    "value": 250,
+    "examine": "A pearl from a drowned sailor's purse, or so the harbour says."
   }
 }

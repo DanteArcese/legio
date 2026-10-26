@@ -762,6 +762,45 @@
         "xp": 150,
         "tool": "needle",
         "requires_unlock": "venators_helm"
+      },
+      {
+        "id": "wax_earplugs",
+        "inputs": [
+          {
+            "item": "beeswax",
+            "quantity": 2
+          },
+          {
+            "item": "linen",
+            "quantity": 1
+          }
+        ],
+        "output": "wax_earplugs",
+        "level": 20,
+        "xp": 30,
+        "tool": "needle"
+      },
+      {
+        "id": "venators_helm_sealed",
+        "inputs": [
+          {
+            "item": "venators_helm",
+            "quantity": 1
+          },
+          {
+            "item": "wax_earplugs",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 1
+          }
+        ],
+        "output": "venators_helm_sealed",
+        "level": 35,
+        "xp": 80,
+        "tool": "needle",
+        "requires_unlock": "venators_helm"
       }
     ],
     "garum": [

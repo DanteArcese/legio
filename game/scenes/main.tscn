@@ -491,11 +491,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 30.0)
 script = ExtResource("35_patch")
 patch_type = "allotment"
 
-[node name="PortusSalis" type="StaticBody3D" parent="." groups=["map_regions"]]
+[node name="PortusSalis" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
 metadata/map_name = "Portus Salis"
 metadata/map_rect = Rect2(-360, -50, 120, 62)
 metadata/map_color = Color(0.82, 0.74, 0.5, 1)
 script = ExtResource("36_coast")
+dresser = NodePath("../KitDresser")
 
 [node name="PortusSign" type="Label3D" parent="PortusSalis"]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -300, 3.2, -24)
@@ -1049,6 +1050,22 @@ monster_id = "harpy"
 [node name="Harpy3" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -255, 0, -38)
 monster_id = "harpy"
+
+[node name="Siren1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -347, 0, 6)
+monster_id = "siren"
+
+[node name="Siren2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -340, 0, 8)
+monster_id = "siren"
+
+[node name="Siren3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -352, 0, 4)
+monster_id = "siren"
+
+[node name="Siren4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -336, 0, 5)
+monster_id = "siren"
 
 [node name="Larva" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 181, 0, -34)

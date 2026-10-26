@@ -3,7 +3,7 @@
     "beasts": {"name": "Beasts of the woods", "category": "Combat", "items": ["wolf_pelt", "boar_hide", "boar_tusk"]},
     "latrones": {"name": "Latrones", "category": "Combat", "items": ["bronze_galea", "bronze_pugio", "bronze_arrow"]},
     "barrow": {"name": "Barrow of the Lemures", "category": "Combat", "items": ["lemur_ash", "iron_pugio", "composite_bow", "iron_bar"]},
-    "slayer": {"name": "Slayer creatures", "category": "Slayer", "items": ["strix_feather", "iron_gladius", "iron_scutum", "larval_shroud", "harpy_feather", "iron_arrowheads"]},
+    "slayer": {"name": "Slayer creatures", "category": "Slayer", "items": ["strix_feather", "iron_gladius", "iron_scutum", "larval_shroud", "harpy_feather", "iron_arrowheads", "pearl"]},
     "seeds": {"name": "Seeds", "category": "Combat", "items": ["mint_seed", "fennel_seed", "bean_seed", "sage_seed", "wormwood_seed", "poppy_seed"]},
     "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna"]},
     "harvest": {"name": "The harvest", "category": "Skilling", "items": ["mint", "fennel", "sage", "wormwood", "poppy", "cabbage", "broad_beans"]},

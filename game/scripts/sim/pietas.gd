@@ -40,7 +40,14 @@ const WATCH_FINE := 25
 ## The watch fines at most once per this many ticks (a minute).
 const WATCH_FINE_COOLDOWN := 100
 
-var sim: RefCounted
+## Held weakly: the simulation owns this module, so a strong reference back
+## would form a cycle that is never freed.
+var sim: RefCounted:
+	get:
+		return _sim_ref.get_ref()
+	set(value):
+		_sim_ref = weakref(value)
+var _sim_ref: WeakRef
 ## [{"kind": "heavenly" | "underworld", "position": Vector3}]
 var altars: Array[Dictionary] = []
 var springs: Array[Vector3] = []

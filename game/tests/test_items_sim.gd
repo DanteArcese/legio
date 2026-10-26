@@ -91,7 +91,7 @@ func test_eating_heals_consumes_and_delays_attack() -> void:
 	var events := _act(sim, "eat", {"slot": _slot_of(sim, "bread")})
 	check_eq(player.hp, 8, "healed 5")
 	check_eq(player.inventory.count("bread"), 1, "one eaten")
-	check_eq(player.next_attack_tick, sim.tick + Simulation.EAT_DELAY, "attack delayed")
+	check_eq(player.next_attack_tick, sim.tick + Simulation.Items.EAT_DELAY, "attack delayed")
 	check(events.any(func(e): return e["type"] == "ate" and e["healed"] == 5), "ate event")
 	_act(sim, "eat", {"slot": _slot_of(sim, "bread")})
 	check_eq(player.hp, player.max_hp, "never above max")
@@ -132,7 +132,7 @@ func test_ground_items_expire() -> void:
 	sim.give_item(PLAYER, "bread", 1, "test", [])
 	_act(sim, "drop", {"slot": 0})
 	var removed := false
-	for i in Simulation.GROUND_LIFETIME:
+	for i in Simulation.Items.GROUND_LIFETIME:
 		removed = removed or sim.step().any(func(e): return e["type"] == "ground_remove")
 	check(removed, "expired")
 	check(sim.ground_piles().is_empty(), "gone")

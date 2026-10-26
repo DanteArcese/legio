@@ -93,7 +93,7 @@ func test_expired_grave_goes_to_libitinarii_and_reclaim_costs_a_fee() -> void:
 	sim.add_libitinarius(Vector3(0, 0, 0))
 	_give(sim, {"iron_lorica": 1, "iron_scutum": 1, "iron_gladius": 1, "bronze_lorica": 1})
 	_die(sim)
-	for i in Simulation.GRAVE_LIFETIME:
+	for i in Simulation.Graves.GRAVE_LIFETIME:
 		sim.step()
 	check(sim.grave_of(PLAYER).is_empty(), "grave expired")
 	check_eq(sim.reclaimable[PLAYER], [{"item": "bronze_lorica", "quantity": 1}], "held by libitinarii")

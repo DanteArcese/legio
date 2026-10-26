@@ -17,6 +17,7 @@ while [[ $# -gt 0 ]]; do
     *) echo "Unknown option: $1" >&2; exit 2 ;;
   esac
 done
-"$godot" --headless --path "$project" --import >/dev/null 2>&1
+# playtest-all.sh imports once up front and sets PLAYTEST_SKIP_IMPORT.
+[[ -n "${PLAYTEST_SKIP_IMPORT:-}" ]] || "$godot" --headless --path "$project" --import >/dev/null 2>&1
 "$godot" "${mode[@]}" --fixed-fps 60 --path "$project" --script res://tools/playtest/run.gd \
   -- --scenario="$scenario" ${out:+--out="$out"}

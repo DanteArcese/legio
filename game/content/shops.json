@@ -230,6 +230,10 @@
       {
         "item": "cooked_sardine",
         "price": 12
+      },
+      {
+        "item": "garum",
+        "price": 30
       }
     ]
   }

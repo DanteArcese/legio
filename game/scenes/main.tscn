@@ -37,6 +37,7 @@
 [ext_resource type="Script" path="res://scripts/world/burrow_node.gd" id="34_burrow"]
 [ext_resource type="Script" path="res://scripts/world/patch_node.gd" id="35_patch"]
 [ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
+[ext_resource type="Script" path="res://scripts/world/trade_board.gd" id="37_board"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -590,6 +591,16 @@ spot_type = "harpoon_spot"
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -316, -0.3, 13.6)
 script = ExtResource("28_spot")
 spot_type = "net_spot"
+
+[node name="ForumBoard" type="StaticBody3D" parent="Forum"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 4)
+script = ExtResource("37_board")
+board_id = "forum_board"
+
+[node name="PortusBoard" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -303, 0, -9)
+script = ExtResource("37_board")
+board_id = "portus_board"
 
 [node name="Smithy" type="Node3D" parent="."]
 

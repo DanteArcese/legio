@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, hunter, and farming.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, hunter, farming, and mercatura.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -27,6 +27,7 @@ const Thieving := preload("res://scripts/sim/thieving.gd")
 const Athletics := preload("res://scripts/sim/athletics.gd")
 const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
+const Mercatura := preload("res://scripts/sim/mercatura.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -50,6 +51,7 @@ var thieving := Thieving.new(self)
 var athletics := Athletics.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
+var mercatura := Mercatura.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 
@@ -337,6 +339,12 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			hunter.use_spot(player, command.get("spot", -1), events)
 		"farm":
 			farming.use_patch(player, command.get("patch", -1), command.get("seed", ""), events)
+		"take_contract":
+			mercatura.take(player, command.get("board", ""), command.get("contract", ""), events)
+		"abandon_contract":
+			mercatura.abandon(player, events)
+		"deliver_contract":
+			mercatura.deliver(player, command.get("shop", ""), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"chop":

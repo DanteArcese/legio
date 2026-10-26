@@ -232,3 +232,8 @@ def test_each_seed_grows_one_crop(content):
 def test_remedies_boost_real_skills(content):
     errors = errors_after(content, lambda c: c["items"]["mint_tonic"]["remedy"].update(skill="charisma"))
     assert any("items.mint_tonic.remedy.skill" in e for e in errors)
+
+
+def test_contracts_deliver_to_real_shopkeepers(content):
+    errors = errors_after(content, lambda c: c["mercatura"]["contracts"]["salt_for_the_fort"].update(to="nobody"))
+    assert any("salt_for_the_fort.to" in e for e in errors)

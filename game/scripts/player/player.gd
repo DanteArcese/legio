@@ -268,6 +268,20 @@ func talk(npc: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
 
 
+func take_contract(board: Node3D, contract_id: String) -> void:
+	walk_and_do(board.global_position, CLICK_USE_DISTANCE + 0.4, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "take_contract", {"board": board.board_id, "contract": contract_id}))
+
+
+func abandon_contract() -> void:
+	sim_driver.sim.queue_item_action(_entity.entity_id, "abandon_contract")
+
+
+func deliver_contract(shopkeeper: Node3D) -> void:
+	walk_and_do(shopkeeper.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "deliver_contract", {"shop": shopkeeper.get_meta("shop_id")}))
+
+
 func farm(patch: Node3D, seed := "") -> void:
 	walk_and_do(patch.global_position, CLICK_USE_DISTANCE + 0.6, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "farm", {"patch": patch.patch_id, "seed": seed}))

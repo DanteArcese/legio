@@ -4,6 +4,7 @@ extends RefCounted
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Pietas := preload("res://scripts/sim/pietas.gd")
+const Mercatura := preload("res://scripts/sim/mercatura.gd")
 
 ## How far the controller menu looks for things.
 const NEARBY_MONSTER_RANGE := 8.0
@@ -36,7 +37,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "shopkeepers"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -44,6 +45,10 @@ static func options_kind(node: Node) -> String:
 
 static func options_for(player: Node3D, node: Node) -> Array:
 	var options := _options_by_kind(player, node)
+	# A trade contract's cargo goes to this shopkeeper.
+	var trade: Dictionary = player.get_node("SimEntity").combatant.trade_contract
+	if node.has_meta("shop_id") and not trade.is_empty() and ContentDB.contract(trade["id"])["to"] == node.get_meta("shop_id"):
+		options.push_front(["Deliver contract cargo", player.deliver_contract.bind(node)])
 	if node.has_meta("shop_id") and _shop_open_to(player, node.get_meta("shop_id")):
 		# Shop entries go just before Examine (always last for shopkeepers).
 		var examine: Array = options.pop_back() if not options.is_empty() else []
@@ -89,6 +94,19 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 		"venatores":
 			return [["Ask for a contract", player.ask_for_contract.bind(node)],
 				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
+		"trade_boards":
+			var combatant: RefCounted = player.get_node("SimEntity").combatant
+			var options := []
+			if combatant.trade_contract.is_empty():
+				for contract_id in Mercatura.contracts_on(node.board_id, combatant.skills.level("mercatura")):
+					var contract := ContentDB.contract(contract_id)
+					options.append(["Take: %s (%d %s to the %s, %d denarii)" % [contract["name"], contract["quantity"],
+						ContentDB.item(contract["item"])["name"].to_lower(), ContentDB.shop(contract["to"])["name"].to_lower(), contract["coins"]],
+						player.take_contract.bind(node, contract_id)])
+			else:
+				options.append(["Abandon your contract", player.abandon_contract])
+			options.append(["Examine " + node.display_name().to_lower(), player.examine.bind(node.examine_text())])
+			return options
 		"patches":
 			var options := []
 			if node.crop.is_empty():
@@ -161,7 +179,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue

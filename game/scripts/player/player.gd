@@ -349,6 +349,10 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 
 
 func _arrive_through(doorway: Node3D) -> void:
+	if not doorway.warning.is_empty() and not doorway.warned:
+		doorway.warned = true
+		message_requested.emit(doorway.warning)
+		return
 	var id: int = _entity.entity_id
 	sim_driver.sim.queue_stop(id)
 	sim_driver.sim.queue_item_action(id, "stop_action")

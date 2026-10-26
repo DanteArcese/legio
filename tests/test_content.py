@@ -22,8 +22,8 @@ def test_shipped_content_is_valid(content):
 
 
 def test_unknown_drop_item_is_reported(content):
-    errors = errors_after(content, lambda c: c["drops"]["rat"]["always"].append({"item": "gold_bar", "quantity": 1}))
-    assert any("unknown item 'gold_bar'" in e for e in errors)
+    errors = errors_after(content, lambda c: c["drops"]["rat"]["always"].append({"item": "golden_fleece", "quantity": 1}))
+    assert any("unknown item 'golden_fleece'" in e for e in errors)
 
 
 def test_monster_with_missing_drop_table_is_reported(content):

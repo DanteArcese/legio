@@ -8,6 +8,10 @@ extends StaticBody3D
 @export var destination := Vector3.ZERO
 @export var size := Vector3(1.6, 2.2, 0.5)
 @export var color := Color(0.12, 0.1, 0.09)
+## Said the first time the doorway is used; using it again goes through.
+@export_multiline var warning := ""
+
+var warned := false
 
 
 func _init() -> void:

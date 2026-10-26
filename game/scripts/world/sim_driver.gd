@@ -44,6 +44,8 @@ func _ready() -> void:
 		register(entity)
 	for bank in get_tree().get_nodes_in_group("banks"):
 		sim.add_bank(bank.global_position)
+	for zone in get_tree().get_nodes_in_group("danger_zones"):
+		sim.add_danger_zone(zone.danger_area)
 	for undertaker in get_tree().get_nodes_in_group("libitinarii"):
 		sim.add_libitinarius(undertaker.global_position)
 	for venator in get_tree().get_nodes_in_group("venatores"):

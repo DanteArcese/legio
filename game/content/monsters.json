@@ -225,5 +225,54 @@
       "size": 1.5,
       "features": []
     }
+  },
+  "germanic_raider": {
+    "name": "Germanic raider",
+    "level": 36,
+    "stats": {
+      "attack": 34,
+      "strength": 36,
+      "defence": 28,
+      "vitality": 40
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 40,
+    "drops": "germanic_raider",
+    "examine": "He crossed the river to take what Rome has. He will take it from you.",
+    "appearance": {
+      "model": "kaykit",
+      "scene": "adventurers/Barbarian",
+      "size": 1.1,
+      "weapon": "weapons/staff",
+      "attack": "stab",
+      "color": "#6b4a2b"
+    }
+  },
+  "dire_wolf": {
+    "name": "Dire wolf",
+    "level": 30,
+    "stats": {
+      "attack": 30,
+      "strength": 28,
+      "defence": 22,
+      "vitality": 34
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 35,
+    "drops": "dire_wolf",
+    "examine": "A black wolf the size of a pony. The legions tell stories about these.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#2f2d2c",
+      "accent": "#57524d",
+      "size": 1.6,
+      "features": [
+        "ears",
+        "long_snout",
+        "tail"
+      ]
+    }
   }
 }

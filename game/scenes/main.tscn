@@ -38,6 +38,7 @@
 [ext_resource type="Script" path="res://scripts/world/patch_node.gd" id="35_patch"]
 [ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
 [ext_resource type="Script" path="res://scripts/world/trade_board.gd" id="37_board"]
+[ext_resource type="Script" path="res://scripts/world/frontier.gd" id="38_frontier"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1030,3 +1031,86 @@ terrain = NodePath("../Terrain")
 [node name="BarrowDresser" type="Node" parent="." node_paths=PackedStringArray("barrow")]
 script = ExtResource("25_barrow_dresser")
 barrow = NodePath("../Barrow")
+
+[node name="LimesGate" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -46.5)
+script = ExtResource("15_transition")
+verb = "Cross"
+title = "Gate in the limes"
+examine_text = "The frontier road runs north through the limes, into Germanic country."
+destination = Vector3(0, 0, -344)
+size = Vector3(2.4, 2.6, 0.4)
+color = Color(0.42, 0.3, 0.19, 1)
+warning = "Beyond the Limes there are no graves and no libitinarii. If you die there, you keep your 3 most valuable items; everything else drops where you fall and is gone after 3 minutes. Cross again to go on."
+
+[node name="Frontier" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser")]
+script = ExtResource("38_frontier")
+dresser = NodePath("../KitDresser")
+
+[node name="FrontierSign" type="Label3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -347)
+billboard = 1
+text = "Beyond the Limes"
+font_size = 64
+outline_size = 12
+modulate = Color(1, 0.55, 0.45, 1)
+visibility_range_end = 70.0
+
+[node name="RoadToFort" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -341.5)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Castra Ferrea"
+examine_text = "The road runs south, back to the fort and safety."
+destination = Vector3(0, 0, -43)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Gold1" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 0, -433)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="Gold2" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, -436.5)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="Gold3" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 0, -432.5)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="FrontierMonsters" type="Node3D" parent="."]
+
+[node name="GermanicRaider1" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.2, -408)
+monster_id = "germanic_raider"
+
+[node name="GermanicRaider2" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 1.2, -409)
+monster_id = "germanic_raider"
+
+[node name="GermanicRaider3" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1.2, -417)
+monster_id = "germanic_raider"
+
+[node name="GermanicRaider4" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 1.2, -415)
+monster_id = "germanic_raider"
+
+[node name="DireWolf5" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.2, -385)
+monster_id = "dire_wolf"
+
+[node name="DireWolf6" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 1.2, -392)
+monster_id = "dire_wolf"
+
+[node name="DireWolf7" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.2, -396)
+monster_id = "dire_wolf"
+
+[node name="DireWolf8" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.2, -440)
+monster_id = "dire_wolf"

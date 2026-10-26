@@ -52,6 +52,11 @@ var watch_warned_at := -1
 var watch_fined_at := -1
 ## Current skilling action ({} for none); see skilling.gd.
 var skill_action := {}
+## Athletics: the obstacle being crossed ({} for none: {"id", "until", "falls"}),
+## the next obstacle in order for a lap, and laps run.
+var obstacle := {}
+var course_next := 0
+var laps := 0
 ## Stunned (by a failed pickpocket) until this tick: no attacks, thefts, or walking.
 var stunned_until := -1
 ## The next tick the player may try another theft.

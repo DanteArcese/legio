@@ -6,7 +6,7 @@ extends RefCounted
 ## tools/content_validator.py, so this loader trusts its structure.
 
 const CONTENT_DIR := "res://content"
-const FILES := ["items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving"]
+const FILES := ["items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics"]
 
 static var _data := {}
 
@@ -30,6 +30,10 @@ static func quest_ids() -> Array:
 
 static func npc(id: String) -> Dictionary:
 	return data()["quests"]["npcs"].get(id, {})
+
+
+static func course(id: String) -> Dictionary:
+	return data()["athletics"]["courses"].get(id, {})
 
 
 static func stall(id: String) -> Dictionary:

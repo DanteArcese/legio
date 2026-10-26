@@ -207,6 +207,12 @@ func _on_sim_event(event: Dictionary) -> void:
 		"quest_complete":
 			if event["id"] == me:
 				play("quest_done")
+		"obstacle_started":
+			if event["id"] == me:
+				play("wash", player.global_position)
+		"lap_complete":
+			if event["id"] == me:
+				play("coins", player.global_position)
 		"stall_emptied":
 			play("pickup", player.global_position)
 		"pickpocketed":

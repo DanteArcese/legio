@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, and thieving.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, and athletics.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -24,6 +24,7 @@ const Skilling := preload("res://scripts/sim/skilling.gd")
 const Pietas := preload("res://scripts/sim/pietas.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
 const Thieving := preload("res://scripts/sim/thieving.gd")
+const Athletics := preload("res://scripts/sim/athletics.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -44,6 +45,7 @@ var skilling := Skilling.new(self)
 var pietas := Pietas.new(self)
 var quests := Quests.new(self)
 var thieving := Thieving.new(self)
+var athletics := Athletics.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 
@@ -226,6 +228,7 @@ func step() -> Array[Dictionary]:
 	pietas.process(players, events)
 	quests.process(players, events)
 	thieving.process(events)
+	athletics.process(players, events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -284,6 +287,9 @@ func _apply_commands(events: Array[Dictionary]) -> void:
 		var actor: Combatant = _combatants.get(command["actor"])
 		if actor == null or not actor.is_alive():
 			continue
+		# Halfway along a log or up a wall: nothing else until it's done.
+		if not actor.obstacle.is_empty():
+			continue
 		match command["type"]:
 			"attack":
 				var target: Combatant = _combatants.get(command["target"])
@@ -317,6 +323,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			thieving.steal(player, command.get("stall", -1), events)
 		"pickpocket":
 			thieving.pickpocket(player, command.get("mark", -1), events)
+		"obstacle":
+			athletics.start(player, command.get("obstacle", -1), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"chop":

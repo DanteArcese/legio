@@ -82,6 +82,8 @@ Kept as a core skill and the center of progression.
 | Skill | Roman flavor |
 |---|---|
 | Athletics | Replaces Agility. Obstacle courses, plus chariot-racing laps in the circus. |
+
+**Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
 **Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.

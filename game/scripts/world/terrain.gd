@@ -33,7 +33,7 @@ const POND_DEPTH := 1.4
 const WATER_LEVEL := -0.35
 const BARROW := Vector2(-45, -45)
 ## Groups whose members get level ground around them.
-const LEVEL_GROUPS := ["rocks", "trees", "stations", "transitions", "banks", "libitinarii", "venatores", "shopkeepers", "altars"]
+const LEVEL_GROUPS := ["rocks", "trees", "obstacles", "obstacle_ends", "stations", "transitions", "banks", "libitinarii", "venatores", "shopkeepers", "altars"]
 const LEVEL_RADIUS := 3.5
 
 const GRASS := Color(0.37, 0.56, 0.23)

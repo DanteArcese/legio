@@ -31,6 +31,7 @@ const CLICK_RAY_LENGTH := 300.0
 const CLICK_MASK := 1 | 4 | 8 | 16
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
+const Athletics := preload("res://scripts/sim/athletics.gd")
 ## Fishing spots sit out in the pond; the shore is as close as you get.
 const FISHING_USE_DISTANCE := 2.6
 
@@ -53,6 +54,8 @@ var _on_arrival := {}
 @onready var _entity: Node = $SimEntity
 
 var _model: Node3D
+## An obstacle crossing being played out: {"from", "to", "elapsed", "duration", "falls", "kind"}.
+var _crossing := {}
 var _look_key := "?"
 
 
@@ -60,6 +63,57 @@ func _ready() -> void:
 	add_to_group("player")
 	$Mesh.visible = false
 	_entity.combat_moment.connect(_on_combat_moment)
+	if sim_driver:
+		sim_driver.sim_event.connect(_on_sim_event)
+
+
+func _on_sim_event(event: Dictionary) -> void:
+	if event.get("id") != _entity.entity_id:
+		return
+	# The sim decides where the crossing ends; snap there when it's done.
+	if event["type"] == "obstacle_done":
+		var done: Dictionary = sim_driver.sim.athletics.obstacles[event["obstacle"]]
+		var end: Vector3 = done["end"] if event["success"] else done["start"]
+		global_position = Vector3(end.x, 1.0, end.z)
+		_crossing = {}
+		return
+	if event["type"] != "obstacle_started":
+		return
+	var obstacle: Dictionary = sim_driver.sim.athletics.obstacles[event["obstacle"]]
+	destination = null
+	_on_arrival = {}
+	_crossing = {"from": event["from"], "to": event["to"], "elapsed": 0.0,
+		"duration": event["ticks"] * sim_driver.clock.tick_length, "falls": event["falls"],
+		"kind": Athletics.obstacle_data(obstacle["course"], obstacle["index"])["kind"]}
+
+
+func is_crossing() -> bool:
+	return not _crossing.is_empty()
+
+
+## Moves along the obstacle; a fall turns back halfway and drops you at the start.
+func _play_crossing(delta: float) -> void:
+	_crossing["elapsed"] += delta
+	var t := clampf(_crossing["elapsed"] / maxf(_crossing["duration"], 0.01), 0.0, 1.0)
+	var from: Vector3 = _crossing["from"]
+	var to: Vector3 = _crossing["to"]
+	var along := t
+	if _crossing["falls"]:
+		along = t if t < 0.5 else 1.0 - t
+	var at := from.lerp(to, along)
+	var lift := 0.0
+	if _crossing["kind"] in ["wall", "rope"]:
+		lift = sin(along * PI) * (1.6 if _crossing["kind"] == "wall" else 1.2)
+	elif _crossing["kind"] == "hurdles":
+		lift = absf(sin(along * PI * 3.0)) * 0.6
+	global_position = Vector3(at.x, global_position.y if lift == 0.0 else 1.0 + lift, at.z)
+	velocity = Vector3.ZERO
+	var facing := (to - from) * Vector3(1, 0, 1)
+	if facing.length_squared() > 0.0001:
+		rotation.y = atan2(-facing.x, -facing.z)
+	if _model:
+		_model.set_work("cross_" + _crossing["kind"])
+		_model.animate(delta, 0.0)
 
 
 func has_animated_model() -> bool:
@@ -214,6 +268,11 @@ func talk(npc: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
 
 
+func cross(obstacle: Node3D) -> void:
+	walk_and_do(obstacle.global_position, 1.2, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "obstacle", {"obstacle": obstacle.obstacle_id}))
+
+
 func steal(stall: Node3D) -> void:
 	walk_and_do(stall.global_position, CLICK_USE_DISTANCE + 0.4, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "steal", {"stall": stall.stall_id}))
@@ -333,6 +392,10 @@ func interact() -> void:
 	if tree:
 		sim_driver.sim.queue_item_action(id, "chop", {"tree": tree.tree_id})
 		return
+	var obstacle := _nearest_in_group("obstacles", 1.8)
+	if obstacle:
+		sim_driver.sim.queue_item_action(id, "obstacle", {"obstacle": obstacle.obstacle_id})
+		return
 	var stall := _nearest_in_group("stalls", grave_radius + 0.4)
 	if stall:
 		sim_driver.sim.queue_item_action(id, "steal", {"stall": stall.stall_id})
@@ -363,6 +426,9 @@ func interact() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_crossing():
+		_play_crossing(delta)
+		return
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var yaw := camera_rig.global_rotation.y if camera_rig else 0.0
 	var direction := MoveMath.camera_relative(input, yaw)
@@ -380,6 +446,8 @@ func _physics_process(delta: float) -> void:
 	# Stunned after a failed pickpocket: rooted to the spot.
 	if _entity.combatant and sim_driver and _entity.combatant.stunned_until > sim_driver.sim.tick:
 		speed = 0.0
+	if running and _entity.combatant and _entity.combatant.skills:
+		speed *= 1.0 + Athletics.run_speed_bonus(_entity.combatant.skills.level("athletics"))
 	if running and _entity.combatant:
 		speed *= 1.0 + _entity.combatant.blessing_boosts.get("run_speed", 0.0)
 

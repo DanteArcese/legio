@@ -836,7 +836,7 @@
       "log": "pine_logs",
       "level": 30,
       "xp": 58,
-      "difficulty": 0.4,
+      "difficulty": 0.3,
       "fell_chance": 0.12,
       "respawn_ticks": 40,
       "model": "tree_pineTallA",

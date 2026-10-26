@@ -87,8 +87,9 @@ func height_at(x: float, z: float) -> float:
 	# Hills rise beyond the walkable edges, framing the view.
 	var edge := maxf(smoothstep(X_MAX - 6.0, X_MAX + PAD, x), smoothstep(X_MIN + 6.0, X_MIN - PAD, x))
 	edge = maxf(edge, maxf(smoothstep(Z_MIN + 6.0, Z_MIN - PAD, z), smoothstep(Z_MAX - 2.0, Z_MAX + PAD, z)))
-	# The mine sits under a rocky ridge.
-	var ridge := smoothstep(14.0, 4.0, _rect_distance(MINE, p)) * (1.0 - flat) * 2.5
+	# The mine sits under a rocky ridge to its north.
+	var north := smoothstep(MINE.position.y + 2.0, MINE.position.y - 6.0, z)
+	var ridge := smoothstep(16.0, 2.0, _rect_distance(MINE, p)) * north * (1.0 - flat) * 4.0
 	return h + edge * 10.0 + ridge
 
 
@@ -97,7 +98,7 @@ func color_at(x: float, z: float, height: float) -> Color:
 	if _path_distance(p) < 1.8 or YARD.grow(-1.0).has_point(p) or p.distance_to(CAMP) < CAMP_RADIUS - 2.0 \
 			or p.distance_to(CLEARING) < CLEARING_RADIUS - 2.0:
 		return DIRT
-	if _rect_distance(MINE, p) < 3.0 or height > 3.0:
+	if MINE.has_point(p) or height > 2.6:
 		return ROCK
 	var shade := _noise.get_noise_2d(x * 4.0, z * 4.0) * 0.5 + 0.5
 	if z < LIMES_Z and _noise.get_noise_2d(x * 1.5 + 50.0, z * 1.5) > 0.15:

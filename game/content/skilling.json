@@ -243,6 +243,60 @@
         "level": 23,
         "xp": 75,
         "tool": "hammer"
+      },
+      {
+        "id": "bronze_axe",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_axe",
+        "level": 2,
+        "xp": 12,
+        "tool": "hammer"
+      },
+      {
+        "id": "bronze_arrowheads",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_arrowheads",
+        "quantity": 15,
+        "level": 5,
+        "xp": 12,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_axe",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_axe",
+        "level": 16,
+        "xp": 25,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_arrowheads",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_arrowheads",
+        "quantity": 15,
+        "level": 20,
+        "xp": 25,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -273,6 +327,34 @@
         "xp": 40,
         "burnt": "burnt_food",
         "stop_burning": 34
+      },
+      {
+        "id": "cooked_anchovy",
+        "inputs": [
+          {
+            "item": "raw_anchovy",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_anchovy",
+        "level": 8,
+        "xp": 32,
+        "burnt": "burnt_food",
+        "stop_burning": 38
+      },
+      {
+        "id": "cooked_mackerel",
+        "inputs": [
+          {
+            "item": "raw_mackerel",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_mackerel",
+        "level": 18,
+        "xp": 60,
+        "burnt": "burnt_food",
+        "stop_burning": 50
       }
     ],
     "inscribe": [
@@ -364,6 +446,161 @@
         "xp": 80,
         "tool": "stylus"
       }
+    ],
+    "fletch": [
+      {
+        "id": "arrow_shaft",
+        "inputs": [
+          {
+            "item": "logs",
+            "quantity": 1
+          }
+        ],
+        "output": "arrow_shaft",
+        "quantity": 15,
+        "level": 1,
+        "xp": 6,
+        "tool": "knife"
+      },
+      {
+        "id": "oak_arrow_shaft",
+        "inputs": [
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "arrow_shaft",
+        "quantity": 25,
+        "level": 15,
+        "xp": 12,
+        "tool": "knife"
+      },
+      {
+        "id": "bronze_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "feather",
+            "quantity": 15
+          },
+          {
+            "item": "bronze_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "bronze_arrow",
+        "quantity": 15,
+        "level": 1,
+        "xp": 20
+      },
+      {
+        "id": "iron_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "feather",
+            "quantity": 15
+          },
+          {
+            "item": "iron_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "iron_arrow",
+        "quantity": 15,
+        "level": 15,
+        "xp": 38
+      },
+      {
+        "id": "hunting_bow",
+        "inputs": [
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          },
+          {
+            "item": "bowstring",
+            "quantity": 1
+          }
+        ],
+        "output": "hunting_bow",
+        "level": 20,
+        "xp": 40,
+        "tool": "knife"
+      }
     ]
+  },
+  "trees": {
+    "tree": {
+      "name": "Tree",
+      "log": "logs",
+      "level": 1,
+      "xp": 22,
+      "difficulty": 0.0,
+      "fell_chance": 1.0,
+      "respawn_ticks": 30,
+      "model": "tree_default",
+      "examine": "A common tree. Good for firewood and shafts."
+    },
+    "oak_tree": {
+      "name": "Oak",
+      "log": "oak_logs",
+      "level": 15,
+      "xp": 35,
+      "difficulty": 0.25,
+      "fell_chance": 0.14,
+      "respawn_ticks": 25,
+      "model": "tree_oak",
+      "examine": "A broad old oak, sacred to Jupiter."
+    },
+    "pine_tree": {
+      "name": "Pine",
+      "log": "pine_logs",
+      "level": 30,
+      "xp": 58,
+      "difficulty": 0.4,
+      "fell_chance": 0.12,
+      "respawn_ticks": 40,
+      "model": "tree_pineTallA",
+      "examine": "A tall pine, heavy with resin."
+    }
+  },
+  "fishing_spots": {
+    "net_spot": {
+      "name": "Fishing spot",
+      "tool": "net",
+      "examine": "Small fish dart about in the shallows.",
+      "catches": [
+        {
+          "fish": "raw_sardine",
+          "level": 1,
+          "xp": 12
+        },
+        {
+          "fish": "raw_anchovy",
+          "level": 10,
+          "xp": 28
+        }
+      ]
+    },
+    "rod_spot": {
+      "name": "Fishing spot",
+      "tool": "rod",
+      "examine": "Something bigger moves under the surface.",
+      "catches": [
+        {
+          "fish": "raw_mackerel",
+          "level": 20,
+          "xp": 45
+        }
+      ]
+    }
   }
 }

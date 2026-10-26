@@ -23,6 +23,31 @@
         "item": "lead_glans",
         "price": 40,
         "quantity": 50
+      },
+      {
+        "item": "fishing_rod",
+        "price": 25
+      },
+      {
+        "item": "feather",
+        "price": 30,
+        "quantity": 50
+      },
+      {
+        "item": "bowstring",
+        "price": 12
+      },
+      {
+        "item": "small_net",
+        "price": 10
+      },
+      {
+        "item": "knife",
+        "price": 8
+      },
+      {
+        "item": "bronze_axe",
+        "price": 25
       }
     ]
   },

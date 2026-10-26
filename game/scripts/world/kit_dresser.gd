@@ -45,6 +45,7 @@ func _ready() -> void:
 	_dress_fort()
 	_dress_buildings()
 	_dress_trees()
+	_dress_choppable_trees()
 	_dress_forum()
 	_scatter_scenery()
 	_fence_fields()
@@ -250,6 +251,14 @@ func _dress_trees() -> void:
 		instance.scale = Vector3.ONE * (height / TREE_MODEL_HEIGHT) * 1.15
 		instance.rotation.y = float(absi(hash(String(tree.name) + "r")) % 360) * PI / 180.0
 		tree.add_child(instance)
+
+
+## Choppable trees get their Kenney model and a stump for when they fall.
+func _dress_choppable_trees() -> void:
+	for tree in get_tree().get_nodes_in_group("trees"):
+		var stump := model("nature/stump_round")
+		stump.scale = Vector3.ONE * 2.2
+		tree.dress(model("nature/" + tree.model_name()), stump)
 
 
 func _dress_forum() -> void:

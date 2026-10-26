@@ -19,6 +19,18 @@
     {
       "item": "hammer",
       "quantity": 1
+    },
+    {
+      "item": "bronze_axe",
+      "quantity": 1
+    },
+    {
+      "item": "small_net",
+      "quantity": 1
+    },
+    {
+      "item": "knife",
+      "quantity": 1
     }
   ]
 }

@@ -51,6 +51,14 @@ static func rock(id: String) -> Dictionary:
 	return data()["skilling"]["rocks"].get(id, {})
 
 
+static func tree(id: String) -> Dictionary:
+	return data()["skilling"]["trees"].get(id, {})
+
+
+static func fishing_spot(id: String) -> Dictionary:
+	return data()["skilling"]["fishing_spots"].get(id, {})
+
+
 static func recipes(kind: String) -> Array:
 	return data()["skilling"]["recipes"].get(kind, [])
 

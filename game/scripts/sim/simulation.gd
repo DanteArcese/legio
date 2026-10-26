@@ -306,6 +306,10 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			_slayer_task(player, command.get("venator", ""), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
+		"chop":
+			skilling.start_chopping(player, command.get("tree", -1), events)
+		"fish":
+			skilling.start_fishing(player, command.get("spot", -1), events)
 		"craft":
 			skilling.start_craft(player, command.get("kind", ""), command.get("recipe", ""), command.get("count", 1), events)
 		"stop_action":

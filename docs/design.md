@@ -265,7 +265,9 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 - the woods and fields outside the walls, with a copper/tin quarry and an iron outcrop
 - the *Barrow of the Lemures*, a small torchlit dungeon north-west of town: lemurs in the upper halls, two strix in the depths. Aulus sells the whitethorn charm (150 denarii).
 
-**Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking. (Ranged was added in #36 and Ritus in #45 and #46, after the first build.)
+**Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching. (Ranged was added in #36, Ritus in #45 and #46, and the gathering skills in #82, after the first build.)
+
+**Gathering (#82).** A grove west of the fort has common trees (fall after one log), oaks, and, at the edge of the wolf woods, pines; oaks and pines give several logs before they fall and regrow from the stump. The fort's pond has a net spot (sardines, then anchovies at 10) and a rod spot (mackerel at 20), with a campfire nearby for cooking. Fletching works anywhere with a knife: logs into arrow shafts, then shafts, feathers, and smithed arrowheads into arrows, and oak logs and a bowstring into a hunting bow. New players start with a bronze axe, a small net, and a knife.
 
 **Monsters:**
 

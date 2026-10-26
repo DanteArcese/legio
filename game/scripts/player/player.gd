@@ -31,6 +31,8 @@ const CLICK_RAY_LENGTH := 300.0
 const CLICK_MASK := 1 | 4 | 8 | 16
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
+## Fishing spots sit out in the pond; the shore is as close as you get.
+const FISHING_USE_DISTANCE := 2.6
 
 @export var walk_speed := 3.0
 @export var run_speed := 6.0
@@ -197,6 +199,16 @@ func mine(rock: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "mine", {"rock": rock.rock_id}))
 
 
+func chop(tree: Node3D) -> void:
+	walk_and_do(tree.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "chop", {"tree": tree.tree_id}))
+
+
+func fish(spot: Node3D) -> void:
+	walk_and_do(spot.global_position, FISHING_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "fish", {"spot": spot.spot_id}))
+
+
 func use_station(station: Node3D) -> void:
 	walk_and_do(station.global_position, CLICK_USE_DISTANCE, station_opened.emit.bind(station))
 
@@ -284,6 +296,10 @@ func interact() -> void:
 	if _near_any("graves", grave_radius):
 		sim_driver.sim.queue_item_action(id, "loot_grave")
 		return
+	var spot := _nearest_in_group("fishing_spots", FISHING_USE_DISTANCE + 0.4)
+	if spot:
+		sim_driver.sim.queue_item_action(id, "fish", {"spot": spot.spot_id})
+		return
 	if _near_any("springs", 6.0):
 		sim_driver.sim.queue_item_action(id, "wash")
 		return
@@ -297,6 +313,10 @@ func interact() -> void:
 	var rock := _nearest_in_group("rocks", grave_radius + 0.4)
 	if rock:
 		sim_driver.sim.queue_item_action(id, "mine", {"rock": rock.rock_id})
+		return
+	var tree := _nearest_in_group("trees", grave_radius + 0.4)
+	if tree:
+		sim_driver.sim.queue_item_action(id, "chop", {"tree": tree.tree_id})
 		return
 	var station := _nearest_in_group("stations", grave_radius + 0.4)
 	if station:

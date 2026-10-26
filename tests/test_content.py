@@ -237,3 +237,13 @@ def test_remedies_boost_real_skills(content):
 def test_contracts_deliver_to_real_shopkeepers(content):
     errors = errors_after(content, lambda c: c["mercatura"]["contracts"]["salt_for_the_fort"].update(to="nobody"))
     assert any("salt_for_the_fort.to" in e for e in errors)
+
+
+def test_boss_enrage_must_be_faster(content):
+    errors = errors_after(content, lambda c: c["monsters"]["hrodgar"]["boss"].update(enrage_speed=6))
+    assert any("enrage_speed: must be faster" in e for e in errors)
+
+
+def test_boss_blocks_reject_unknown_fields(content):
+    errors = errors_after(content, lambda c: c["monsters"]["hrodgar"]["boss"].update(summons=2))
+    assert any("monsters.hrodgar.boss" in e and "summons" in e for e in errors)

@@ -1061,5 +1061,22 @@
     "name": "Dire wolf pelt",
     "value": 70,
     "examine": "Coarse black fur from a wolf the size of a pony."
+  },
+  "warchiefs_helm": {
+    "name": "War-chief's helm",
+    "value": 1800,
+    "examine": "An iron helm with a boar crest, taken from the war-chief beyond the Limes.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 1,
+        "strength": 3,
+        "defence": 9,
+        "ritus_defence": -3
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
   }
 }

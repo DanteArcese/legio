@@ -430,5 +430,73 @@
         "weight": 2
       }
     ]
+  },
+  "hrodgar": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          200,
+          600
+        ]
+      }
+    ],
+    "rolls": 3,
+    "table": [
+      {
+        "item": "gold_bar",
+        "quantity": 1,
+        "weight": 16
+      },
+      {
+        "item": "framea",
+        "quantity": 1,
+        "weight": 8
+      },
+      {
+        "item": "cooked_tuna",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "item": "iron_arrow",
+        "quantity": [
+          30,
+          60
+        ],
+        "weight": 12
+      },
+      {
+        "item": "gold_ore",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          300,
+          900
+        ],
+        "weight": 12
+      },
+      {
+        "item": "gold_torc",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "warchiefs_helm",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 8
+      }
+    ]
   }
 }

@@ -174,6 +174,8 @@ func _on_sim_event(event: Dictionary) -> void:
 						play("sling" if _is_sling(attacker) else "bow", attacker.position)
 					"ritus":
 						play("cast", attacker.position)
+					"spear":
+						pass
 					_:
 						play("swing", attacker.position)
 			if target:
@@ -189,6 +191,12 @@ func _on_sim_event(event: Dictionary) -> void:
 				play("curse", cursed.position)
 		"summon":
 			play("summon", event["position"])
+		"strike_warn":
+			play("swing", event["position"])
+		"enrage":
+			var enraged: RefCounted = sim.get_combatant(event["id"])
+			if enraged:
+				play("summon", enraged.position)
 		"death":
 			var victim: RefCounted = sim.get_combatant(event["id"])
 			if event["id"] == me:

@@ -30,6 +30,7 @@ var _next_auto_id := AUTO_ID_START
 var _piles := {}
 var _graves := {}
 var _rocks := {}
+var _trees := {}
 var _shades := {}
 
 
@@ -56,6 +57,15 @@ func _ready() -> void:
 		rock.rock_id = _rocks.size() + 1
 		_rocks[rock.rock_id] = rock
 		sim.skilling.add_rock(rock.rock_id, rock.rock_type, rock.global_position)
+	for tree in get_tree().get_nodes_in_group("trees"):
+		tree.tree_id = _trees.size() + 1
+		_trees[tree.tree_id] = tree
+		sim.skilling.add_tree(tree.tree_id, tree.tree_type, tree.global_position)
+	var spot_id := 0
+	for spot in get_tree().get_nodes_in_group("fishing_spots"):
+		spot_id += 1
+		spot.spot_id = spot_id
+		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
 	for station in get_tree().get_nodes_in_group("stations"):
 		sim.skilling.add_station(station.kind, station.global_position)
 
@@ -156,6 +166,8 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]].set_items(event["items"])
 		"rock_depleted", "rock_respawned":
 			_rocks[event["rock"]].set_depleted(event["type"] == "rock_depleted")
+		"tree_felled", "tree_regrown":
+			_trees[event["tree"]].set_felled(event["type"] == "tree_felled")
 		"grave_add":
 			_graves[event["grave"]] = GraveMarker.spawn(get_parent(), self, event["position"], event["expires_at"])
 		"grave_remove":

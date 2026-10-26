@@ -36,7 +36,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "shopkeepers"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -69,6 +69,12 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			var rock: Dictionary = ContentDB.rock(node.rock_type)
 			return [["Mine " + rock["name"], player.mine.bind(node)],
 				["Examine " + rock["name"], player.examine.bind(rock["examine"])]]
+		"trees":
+			return [["Chop " + node.display_name(), player.chop.bind(node)],
+				["Examine " + node.display_name(), player.examine.bind(node.examine_text())]]
+		"fishing_spots":
+			return [[node.verb() + " " + node.display_name(), player.fish.bind(node)],
+				["Examine fishing spot", player.examine.bind(node.examine_text())]]
 		"stations":
 			return [["Use " + node.display_name(), player.use_station.bind(node)],
 				["Examine " + node.display_name(), player.examine.bind(node.examine_text())]]
@@ -120,7 +126,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue

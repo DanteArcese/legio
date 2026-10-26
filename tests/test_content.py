@@ -149,3 +149,23 @@ def test_blessings_and_offerings_are_checked(content):
     errors = errors_after(content, mutate)
     assert any("boost.flying: unknown boost" in e for e in errors)
     assert any("unicorn_horn: unknown item" in e for e in errors)
+
+
+def test_trees_must_drop_real_logs(content):
+    errors = errors_after(content, lambda c: c["skilling"]["trees"]["oak_tree"].update(log="oak_planks"))
+    assert any("skilling.trees.oak_tree.log" in e for e in errors)
+
+
+def test_fishing_spots_need_a_real_tool_and_fish(content):
+    def break_spot(c):
+        c["skilling"]["fishing_spots"]["net_spot"]["tool"] = "trident"
+        c["skilling"]["fishing_spots"]["net_spot"]["catches"][0]["fish"] = "raw_whale"
+
+    errors = errors_after(content, break_spot)
+    assert any("skilling.fishing_spots.net_spot.tool" in e for e in errors)
+    assert any("net_spot.catches[0].fish" in e for e in errors)
+
+
+def test_fell_chance_is_a_probability(content):
+    errors = errors_after(content, lambda c: c["skilling"]["trees"]["tree"].update(fell_chance=1.5))
+    assert any("skilling.trees.tree" in e and "fell_chance" in e for e in errors)

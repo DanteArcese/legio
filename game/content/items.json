@@ -518,5 +518,109 @@
     "requirements": {
       "ritus": 50
     }
+  },
+  "logs": {
+    "name": "Logs",
+    "value": 2,
+    "examine": "Rough-cut wood. It would burn, or whittle."
+  },
+  "oak_logs": {
+    "name": "Oak logs",
+    "value": 8,
+    "examine": "Heavy, close-grained oak."
+  },
+  "pine_logs": {
+    "name": "Pine logs",
+    "value": 18,
+    "examine": "Sticky with resin, and fragrant."
+  },
+  "bronze_axe": {
+    "name": "Bronze axe",
+    "value": 25,
+    "examine": "A woodsman's securis.",
+    "tool": "axe",
+    "tool_tier": 1
+  },
+  "iron_axe": {
+    "name": "Iron axe",
+    "value": 90,
+    "examine": "Holds an edge through oak.",
+    "tool": "axe",
+    "tool_tier": 2,
+    "requirements": {
+      "woodcutting": 10
+    }
+  },
+  "small_net": {
+    "name": "Small net",
+    "value": 10,
+    "examine": "A hand net, for small fish in shallow water.",
+    "tool": "net",
+    "tool_tier": 1
+  },
+  "fishing_rod": {
+    "name": "Fishing rod",
+    "value": 25,
+    "examine": "A reed rod with a horsehair line and a bronze hook.",
+    "tool": "rod",
+    "tool_tier": 1
+  },
+  "knife": {
+    "name": "Knife",
+    "value": 8,
+    "examine": "A small culter, for whittling.",
+    "tool": "knife",
+    "tool_tier": 1
+  },
+  "raw_anchovy": {
+    "name": "Raw anchovies",
+    "value": 6,
+    "examine": "A handful of tiny silver fish. Garum makers want these."
+  },
+  "cooked_anchovy": {
+    "name": "Anchovies",
+    "value": 10,
+    "examine": "Crisp, salty, and gone in a mouthful.",
+    "heals": 3
+  },
+  "raw_mackerel": {
+    "name": "Raw mackerel",
+    "value": 14,
+    "examine": "Striped green and silver."
+  },
+  "cooked_mackerel": {
+    "name": "Mackerel",
+    "value": 24,
+    "examine": "Oily and rich. Romans swear by it.",
+    "heals": 7
+  },
+  "arrow_shaft": {
+    "name": "Arrow shaft",
+    "value": 1,
+    "examine": "A straight wooden shaft, ready for fletching.",
+    "stackable": true
+  },
+  "feather": {
+    "name": "Feather",
+    "value": 1,
+    "examine": "A goose feather.",
+    "stackable": true
+  },
+  "bronze_arrowheads": {
+    "name": "Bronze arrowheads",
+    "value": 1,
+    "examine": "Small bronze points.",
+    "stackable": true
+  },
+  "iron_arrowheads": {
+    "name": "Iron arrowheads",
+    "value": 3,
+    "examine": "Small iron points, wickedly sharp.",
+    "stackable": true
+  },
+  "bowstring": {
+    "name": "Bowstring",
+    "value": 12,
+    "examine": "Twisted sinew, waxed against the damp."
   }
 }

@@ -14,15 +14,18 @@ from pathlib import Path
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
 FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
 AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
+TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
+SPOT_KEYS = {"name", "tool", "catches", "examine"}
+CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
@@ -232,7 +235,8 @@ def _check_venator(where, venator, monsters, items, errors):
 
 
 def _check_skilling(skilling, items, errors):
-    _check_keys("skilling", skilling, {"rocks", "recipes"}, {"rocks", "recipes"}, errors)
+    sections = {"rocks", "trees", "fishing_spots", "recipes"}
+    _check_keys("skilling", skilling, sections, sections, errors)
     for rock_id, rock in skilling.get("rocks", {}).items():
         where = f"skilling.rocks.{rock_id}"
         _check_id(where, rock_id, errors)
@@ -246,6 +250,32 @@ def _check_skilling(skilling, items, errors):
         if not COLOR_PATTERN.match(str(rock.get("color", ""))):
             errors.append(f"{where}.color: expected #rrggbb")
     tools = {item.get("tool") for item in items.values() if "tool" in item}
+    for tree_id, tree in skilling.get("trees", {}).items():
+        where = f"skilling.trees.{tree_id}"
+        _check_id(where, tree_id, errors)
+        _check_keys(where, tree, TREE_KEYS, TREE_KEYS, errors)
+        if tree.get("log") not in items:
+            errors.append(f"{where}.log: unknown item {tree.get('log')!r}")
+        _check_int(where, "level", tree.get("level"), 1, errors, 99)
+        _check_number(where, "xp", tree.get("xp"), 0.1, 10000, errors)
+        _check_number(where, "difficulty", tree.get("difficulty"), 0, 1, errors)
+        _check_number(where, "fell_chance", tree.get("fell_chance"), 0.01, 1, errors)
+        _check_int(where, "respawn_ticks", tree.get("respawn_ticks"), 1, errors)
+    for spot_id, spot in skilling.get("fishing_spots", {}).items():
+        where = f"skilling.fishing_spots.{spot_id}"
+        _check_id(where, spot_id, errors)
+        _check_keys(where, spot, SPOT_KEYS, SPOT_KEYS, errors)
+        if spot.get("tool") not in tools:
+            errors.append(f"{where}.tool: no item provides tool {spot.get('tool')!r}")
+        if not spot.get("catches"):
+            errors.append(f"{where}.catches: at least one catch required")
+        for i, catch in enumerate(spot.get("catches", [])):
+            catch_where = f"{where}.catches[{i}]"
+            _check_keys(catch_where, catch, CATCH_KEYS, CATCH_KEYS, errors)
+            if catch.get("fish") not in items:
+                errors.append(f"{catch_where}.fish: unknown item {catch.get('fish')!r}")
+            _check_int(catch_where, "level", catch.get("level"), 1, errors, 99)
+            _check_number(catch_where, "xp", catch.get("xp"), 0.1, 10000, errors)
     recipes = skilling.get("recipes", {})
     for kind in sorted(set(recipes) - RECIPE_KINDS):
         errors.append(f"skilling.recipes.{kind}: unknown recipe kind")

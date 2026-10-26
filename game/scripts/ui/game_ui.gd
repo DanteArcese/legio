@@ -133,13 +133,26 @@ func open_bank() -> void:
 
 ## Shows what can be made at a station; picking one makes as many as possible.
 func open_station(station: Node) -> void:
-	var kind: String = station.recipe_kind()
+	_show_recipes(station.recipe_kind(), ContentDB.recipes(station.recipe_kind()))
+
+
+## Fletching needs no station: shows the recipes that use this item.
+func open_fletching(item_id: String) -> void:
+	_show_recipes("fletch", _fletch_recipes_using(item_id))
+
+
+func _show_recipes(kind: String, recipes: Array) -> void:
 	var skill: String = Skilling.SKILL_FOR_KIND[kind]
 	var options := []
-	for recipe in ContentDB.recipes(kind):
+	for recipe in recipes:
 		var label := "%s  (%s %d)" % [ContentDB.item(recipe["output"])["name"], skill.capitalize(), recipe["level"]]
 		options.append([label, _act.bind("craft", {"kind": kind, "recipe": recipe["id"], "count": 28})])
 	_show_menu(options, get_viewport().get_visible_rect().size / 2.0)
+
+
+func _fletch_recipes_using(item_id: String) -> Array:
+	return ContentDB.recipes("fletch").filter(func(recipe):
+		return recipe["inputs"].any(func(entry): return entry["item"] == item_id))
 
 
 func close_bank() -> void:
@@ -322,6 +335,8 @@ func _use_inventory_slot(index: int) -> void:
 		_act("equip", {"slot": index})
 	elif item.has("heals"):
 		_act("eat", {"slot": index})
+	elif not _fletch_recipes_using(slot["item"]).is_empty():
+		open_fletching(slot["item"])
 	else:
 		show_message(item["examine"])
 
@@ -339,6 +354,8 @@ func _inventory_options(index: int) -> Array:
 		options.append(["Wear", _act.bind("equip", {"slot": index})])
 	if item.has("heals"):
 		options.append(["Eat", _act.bind("eat", {"slot": index})])
+	if not _fletch_recipes_using(slot["item"]).is_empty():
+		options.append(["Fletch", open_fletching.bind(slot["item"])])
 	options.append(["Drop", _act.bind("drop", {"slot": index})])
 	options.append(["Examine", show_message.bind(item["examine"])])
 	return options

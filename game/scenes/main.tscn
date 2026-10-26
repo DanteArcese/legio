@@ -26,6 +26,8 @@
 [ext_resource type="Script" path="res://scripts/world/npc_model.gd" id="24_npc"]
 [ext_resource type="Script" path="res://scripts/world/barrow_dresser.gd" id="25_barrow_dresser"]
 [ext_resource type="Script" path="res://scripts/world/altar_node.gd" id="26_altar"]
+[ext_resource type="Script" path="res://scripts/world/tree_node.gd" id="27_tree"]
+[ext_resource type="Script" path="res://scripts/world/fishing_spot.gd" id="28_spot"]
 [ext_resource type="Script" path="res://scripts/audio/sound_director.gd" id="27_sound"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
@@ -312,6 +314,85 @@ kind = "range"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.5, 0, 16.5)
 script = ExtResource("11_station")
 kind = "tomb"
+
+[node name="Forestry" type="Node3D" parent="."]
+
+[node name="Tree1" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -2)
+script = ExtResource("27_tree")
+tree_type = "tree"
+height = 5.0
+
+[node name="Tree2" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0, 1)
+script = ExtResource("27_tree")
+tree_type = "tree"
+height = 5.5
+
+[node name="Tree3" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 4)
+script = ExtResource("27_tree")
+tree_type = "tree"
+height = 5.0
+
+[node name="Tree4" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 6)
+script = ExtResource("27_tree")
+tree_type = "tree"
+height = 5.5
+
+[node name="Oak1" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0, -4)
+script = ExtResource("27_tree")
+tree_type = "oak_tree"
+height = 6.5
+
+[node name="Oak2" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37, 0, 0)
+script = ExtResource("27_tree")
+tree_type = "oak_tree"
+height = 7.0
+
+[node name="Oak3" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35, 0, 5)
+script = ExtResource("27_tree")
+tree_type = "oak_tree"
+height = 6.5
+
+[node name="Pine1" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -25)
+script = ExtResource("27_tree")
+tree_type = "pine_tree"
+height = 8.0
+
+[node name="Pine2" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34, 0, -23)
+script = ExtResource("27_tree")
+tree_type = "pine_tree"
+height = 8.5
+
+[node name="Pine3" type="StaticBody3D" parent="Forestry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, -27)
+script = ExtResource("27_tree")
+tree_type = "pine_tree"
+height = 8.0
+
+[node name="Fishing" type="Node3D" parent="."]
+
+[node name="NetSpot" type="StaticBody3D" parent="Fishing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.5, -0.3, 35.5)
+script = ExtResource("28_spot")
+spot_type = "net_spot"
+
+[node name="RodSpot" type="StaticBody3D" parent="Fishing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23.8, -0.3, 38.5)
+script = ExtResource("28_spot")
+spot_type = "rod_spot"
+
+[node name="Campfire" type="StaticBody3D" parent="Fishing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 31)
+script = ExtResource("11_station")
+kind = "fire"
 
 [node name="Quarry" type="Node3D" parent="."]
 

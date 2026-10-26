@@ -54,6 +54,9 @@ func _initialize() -> void:
 	var graphics: Node = main.get_node_or_null("GraphicsSettings")
 	if graphics:
 		graphics.persist = false
+	var sound: Node = main.get_node_or_null("Sound")
+	if sound:
+		sound.persist = false
 	root.add_child(main)
 
 	var script: GDScript = load("res://tools/playtest/scenarios/%s.gd" % scenario_name)

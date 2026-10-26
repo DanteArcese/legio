@@ -44,6 +44,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		"villa": {"owned": player.villa_owned, "furniture": player.villa_furniture.duplicate()},
 		"contracts_done": player.contracts_done,
 		"collection": player.collection.duplicate(),
+		"pet": player.pet,
 		"saved_at": now,
 		"farming": sim.farming.capture(player_id),
 		# Traps left out in the world aren't saved; their owner gets them back.
@@ -94,6 +95,7 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 	player.villa_furniture = villa.get("furniture", {}).duplicate()
 	sim.villa.restore(player, [])
 	player.contracts_done = int(data.get("contracts_done", 0))
+	player.pet = str(data.get("pet", ""))
 	player.collection = {}
 	var collection: Dictionary = data.get("collection", {})
 	for item_id in collection:

@@ -55,6 +55,8 @@ func load_game() -> bool:
 		if patch["owner"] == id:
 			driver.replay_event({"type": "patch_changed", "patch": patch["id"], "crop": patch["crop"], "stage": patch["stage"],
 				"ready": driver.sim.farming.is_ready(patch), "tick": driver.sim.tick})
+	if not combatant.pet.is_empty():
+		driver.replay_event({"type": "pet_changed", "id": id, "pet": combatant.pet, "tick": driver.sim.tick})
 	for hotspot_id in combatant.villa_furniture:
 		driver.replay_event({"type": "furniture_built", "id": id, "hotspot": hotspot_id,
 			"furniture": combatant.villa_furniture[hotspot_id], "tick": driver.sim.tick})

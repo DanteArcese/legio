@@ -10,7 +10,7 @@ const RECLAIM_FEE_RATE := 0.1
 
 
 ## Splits a player's carried and worn items into what they keep and what
-## they lose. Each unstackable item counts once; a stack counts once at its
+## they lose. Pets are always kept. Each unstackable item counts once; a stack counts once at its
 ## unit value, so a big coin stack is never "most valuable".
 ## Returns {"kept_worn": [slot...], "kept_inventory": [{item, quantity}...],
 ## "lost": [{item, quantity}...]}.
@@ -21,8 +21,13 @@ static func split(inventory: RefCounted, equipment: RefCounted) -> Dictionary:
 		if not item_id.is_empty():
 			var quantity: int = equipment.ammo_count if slot == "ammo" else 1
 			entries.append({"item": item_id, "quantity": quantity, "worn_slot": slot})
+	var pets := []
 	for slot in inventory.slots:
 		if slot == null:
+			continue
+		# Pets are never lost, and don't take up one of the kept places.
+		if ContentDB.item(slot["item"]).has("pet"):
+			pets.append({"item": slot["item"], "quantity": slot["quantity"]})
 			continue
 		if inventory.stacks(slot["item"]):
 			entries.append({"item": slot["item"], "quantity": slot["quantity"]})
@@ -39,7 +44,7 @@ static func split(inventory: RefCounted, equipment: RefCounted) -> Dictionary:
 			return a.has("worn_slot")
 		return a["item"] < b["item"])
 
-	var result := {"kept_worn": [], "kept_inventory": [], "lost": []}
+	var result := {"kept_worn": [], "kept_inventory": pets, "lost": []}
 	for i in entries.size():
 		var entry: Dictionary = entries[i]
 		var item := {"item": entry["item"], "quantity": entry["quantity"]}

@@ -373,6 +373,8 @@ func _inventory_options(index: int) -> Array:
 		options.append(["Eat", _act.bind("eat", {"slot": index})])
 	if item.has("remedy"):
 		options.append(["Drink", _act.bind("drink", {"slot": index})])
+	if item.has("pet"):
+		options.append(["Let out", _act.bind("release_pet", {"slot": index})])
 	for kind in Skilling.HANDHELD_KINDS:
 		if not _recipes_using(kind, slot["item"]).is_empty():
 			options.append([Skilling.HANDHELD_KINDS[kind], open_handheld.bind(kind, slot["item"])])

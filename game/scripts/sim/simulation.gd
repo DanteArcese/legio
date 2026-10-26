@@ -28,6 +28,7 @@ const Athletics := preload("res://scripts/sim/athletics.gd")
 const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
+const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
 
@@ -39,7 +40,7 @@ const PLAYER_RESPAWN_TICKS := 3
 const SOLITARIUS_BLOCKED_SOURCES := ["market", "trade"]
 ## Items from these sources count toward the collection log (the Tabularium);
 ## shops, trades, and the starting kit don't.
-const COLLECTION_SOURCES := ["skilling", "thieving", "quest", "drop"]
+const COLLECTION_SOURCES := ["skilling", "thieving", "quest", "drop", "pet"]
 ## Every combatant regains 1 HP this often.
 const REGEN_INTERVAL := 100
 
@@ -57,6 +58,7 @@ var athletics := Athletics.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
+var pets := Pets.new(self)
 var boss := Boss.new(self)
 var villa := Villa.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
@@ -278,6 +280,8 @@ func step() -> Array[Dictionary]:
 func award_xp(combatant: Combatant, skill: String, amount: float, events: Array) -> void:
 	var new_level: int = combatant.skills.add_xp(skill, amount)
 	events.append({"type": "xp", "id": combatant.id, "skill": skill, "amount": amount, "tick": tick})
+	if combatant.is_player():
+		pets.on_xp(combatant, skill, events)
 	if new_level > 0:
 		if skill == "vitality":
 			combatant.hp += new_level - combatant.max_hp
@@ -308,6 +312,7 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 	var killer: Combatant = _combatants.get(victim.last_attacker_id)
 	if killer and killer.is_player() and not victim.monster_id.is_empty():
 		_slayer_kill(killer, victim, events)
+		pets.on_kill(killer, victim.monster_id, events)
 		quests.on_kill(killer, victim, events)
 	victim.last_attacker_id = -1
 	if not victim.drop_table.is_empty():

@@ -31,6 +31,7 @@ func _ready() -> void:
 	_noise.frequency = 0.06
 	_build_ground()
 	_build_walls()
+	_dress()
 
 
 func height_at(x: float, z: float) -> float:
@@ -111,3 +112,52 @@ func _build_walls() -> void:
 		mesh.mesh = box
 		mesh.position = shape.position
 		add_child(mesh)
+
+
+## A fountain in the courtyard, a colonnade along the house front, and
+## shrubs inside the walls.
+func _dress() -> void:
+	var fountain: Node3D = load("res://assets/kenney/town/fountain-round.glb").instantiate()
+	fountain.position = Vector3(320, 0, -1)
+	fountain.scale = Vector3.ONE * 2.2
+	add_child(fountain)
+	var shape := CollisionShape3D.new()
+	shape.shape = CylinderShape3D.new()
+	shape.shape.radius = 1.4
+	shape.shape.height = 1.0
+	shape.position = Vector3(320, 0.5, -1)
+	add_child(shape)
+	var column := StandardMaterial3D.new()
+	column.albedo_color = Color(0.88, 0.85, 0.78)
+	for i in 6:
+		var x := 310.0 + i * 4.0
+		var mesh := MeshInstance3D.new()
+		var cylinder := CylinderMesh.new()
+		cylinder.top_radius = 0.22
+		cylinder.bottom_radius = 0.26
+		cylinder.height = 3.2
+		cylinder.material = column
+		mesh.mesh = cylinder
+		mesh.position = Vector3(x, 1.6, -13.2)
+		add_child(mesh)
+		var post := CollisionShape3D.new()
+		post.shape = CylinderShape3D.new()
+		post.shape.radius = 0.26
+		post.shape.height = 3.2
+		post.position = mesh.position
+		add_child(post)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 5
+	for i in 18:
+		var bush: Node3D = load("res://assets/kenney/nature/plant_bush.glb").instantiate()
+		var along := rng.randf_range(0.0, 1.0)
+		var side := i % 3
+		var at := Vector3(lerpf(X_MIN + 2.0, X_MAX - 2.0, along), 0, Z_MIN + 1.5)
+		if side == 1:
+			at = Vector3(X_MIN + 1.5, 0, lerpf(Z_MIN + 3.0, Z_MAX - 3.0, along))
+		elif side == 2:
+			at = Vector3(X_MAX - 1.5, 0, lerpf(Z_MIN + 3.0, Z_MAX - 3.0, along))
+		bush.position = at
+		bush.scale = Vector3.ONE * rng.randf_range(1.6, 2.4)
+		bush.rotation.y = rng.randf_range(0.0, TAU)
+		add_child(bush)

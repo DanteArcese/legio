@@ -55,9 +55,18 @@ func run() -> void:
 
 func _make_at(station_path: String, kind: String, recipe: String) -> void:
 	var station: Node3D = main.get_node(station_path)
-	await route_to(station.global_position + Vector3(0, 0, 1.5), 0.4, 90.0)
+	var spot := station.global_position + Vector3(0, 0, 1.4)
+	await route_to(spot, 0.4, 90.0)
+	# Close in and let a tick pass, so the sim has us well within reach.
+	await walk_to(spot, 0.2, 10.0)
+	await seconds(0.7)
 	driver().sim.queue_item_action(PLAYER, "craft", {"kind": kind, "recipe": recipe, "count": 28})
 	await action_done()
+	# Evidence for CI logs if nothing got made.
+	var me: RefCounted = driver().sim.get_combatant(PLAYER)
+	metric("at_" + recipe, [snappedf(me.position.distance_to(station.global_position), 0.01),
+		events.filter(func(e): return e["type"] in ["message", "skill_started", "skill_stopped"] and e.get("id") == PLAYER) \
+			.map(func(e): return [e["type"], e.get("text", e.get("action", "")), e["tick"]]).slice(-4)])
 
 
 func _nearest_rock(rock_type: String) -> Node3D:

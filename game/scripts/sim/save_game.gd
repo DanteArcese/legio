@@ -8,7 +8,9 @@ const Skills := preload("res://scripts/sim/skills.gd")
 const VERSION := 1
 
 
-static func capture(sim: RefCounted, player_id: int) -> Dictionary:
+## now is the real time (unix seconds) of the save, so crops can keep
+## growing while the game is closed; 0 leaves that out (tests).
+static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 	var player: RefCounted = sim.get_combatant(player_id)
 	var grave: Dictionary = sim.grave_of(player_id)
 	var saved_grave := {}
@@ -38,6 +40,8 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 		},
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
+		"saved_at": now,
+		"farming": sim.farming.capture(player_id),
 		# Traps left out in the world aren't saved; their owner gets them back.
 		"traps_out": sim.hunter.traps_out(player_id),
 		"grave": saved_grave,
@@ -47,7 +51,8 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 
 ## Applies saved data to an existing player. Returns false if the data is
 ## unusable (newer than this build, or not a save at all).
-static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
+## now is the real time of loading: time since the save grows crops.
+static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0) -> bool:
 	data = migrate(data)
 	if data.is_empty():
 		return false
@@ -79,6 +84,10 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
 	player.slayer_points = int(slayer["points"])
 	player.slayer_tasks_done = int(slayer["tasks_done"])
 	player.laps = int(data.get("laps", 0))
+	sim.farming.restore(player_id, data.get("farming", []), [])
+	var saved_at := int(data.get("saved_at", 0))
+	if now > 0 and saved_at > 0 and now > saved_at:
+		sim.farming.advance(player_id, int((now - saved_at) / sim.farming.TICK_SECONDS), [])
 	var traps := int(data.get("traps_out", 0))
 	if traps > 0:
 		player.inventory.add("box_trap", traps)

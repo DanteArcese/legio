@@ -182,6 +182,20 @@
         "item": "thread",
         "price": 15,
         "quantity": 20
+      },
+      {
+        "item": "trowel",
+        "price": 6
+      },
+      {
+        "item": "mint_seed",
+        "price": 20,
+        "quantity": 10
+      },
+      {
+        "item": "cabbage_seed",
+        "price": 10,
+        "quantity": 10
       }
     ]
   }

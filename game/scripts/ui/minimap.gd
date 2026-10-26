@@ -14,7 +14,7 @@ const RENDER_EVERY := 3
 const GROUPS := {
 	"banks": Color(0.4, 0.7, 1.0), "stations": Color(0.4, 0.7, 1.0), "rocks": Color(0.4, 0.7, 1.0),
 	"trees": Color(0.4, 0.7, 1.0), "fishing_spots": Color(0.4, 0.7, 1.0), "altars": Color(0.4, 0.7, 1.0),
-	"transitions": Color(0.4, 0.7, 1.0), "hunt_spots": Color(0.4, 0.7, 1.0), "shopkeepers": Color(1.0, 0.9, 0.3), "venatores": Color(1.0, 0.9, 0.3),
+	"transitions": Color(0.4, 0.7, 1.0), "hunt_spots": Color(0.4, 0.7, 1.0), "patches": Color(0.4, 0.7, 1.0), "shopkeepers": Color(1.0, 0.9, 0.3), "venatores": Color(1.0, 0.9, 0.3),
 	"libitinarii": Color(1.0, 0.9, 0.3), "quest_npcs": Color(1.0, 0.9, 0.3), "loot_piles": Color(1.0, 1.0, 1.0),
 }
 const MONSTER := Color(0.95, 0.25, 0.2)

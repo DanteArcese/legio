@@ -268,6 +268,11 @@ func talk(npc: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
 
 
+func farm(patch: Node3D, seed := "") -> void:
+	walk_and_do(patch.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "farm", {"patch": patch.patch_id, "seed": seed}))
+
+
 func use_trap_spot(spot: Node3D) -> void:
 	walk_and_do(spot.global_position, CLICK_USE_DISTANCE, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "trap", {"spot": spot.spot_id}))
@@ -396,6 +401,11 @@ func interact() -> void:
 	var tree := _nearest_in_group("trees", grave_radius + 0.4)
 	if tree:
 		sim_driver.sim.queue_item_action(id, "chop", {"tree": tree.tree_id})
+		return
+	var patch := _nearest_in_group("patches", grave_radius + 0.6)
+	if patch:
+		var seeds: Array = sim_driver.sim.farming.plantable_seeds(_entity.combatant, patch.patch_id)
+		sim_driver.sim.queue_item_action(id, "farm", {"patch": patch.patch_id, "seed": seeds[0] if not seeds.is_empty() else ""})
 		return
 	var hunt_spot := _nearest_in_group("hunt_spots", grave_radius + 0.4)
 	if hunt_spot:

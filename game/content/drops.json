@@ -23,6 +23,16 @@
           5
         ],
         "weight": 4
+      },
+      {
+        "item": "mint_seed",
+        "quantity": 2,
+        "weight": 2
+      },
+      {
+        "item": "fennel_seed",
+        "quantity": 1,
+        "weight": 1
       }
     ]
   },
@@ -91,6 +101,16 @@
           15
         ],
         "weight": 3
+      },
+      {
+        "item": "bean_seed",
+        "quantity": 3,
+        "weight": 2
+      },
+      {
+        "item": "fennel_seed",
+        "quantity": 2,
+        "weight": 1
       }
     ]
   },
@@ -175,6 +195,16 @@
         "item": "composite_bow",
         "quantity": 1,
         "weight": 1
+      },
+      {
+        "item": "sage_seed",
+        "quantity": 2,
+        "weight": 2
+      },
+      {
+        "item": "wormwood_seed",
+        "quantity": 2,
+        "weight": 1
       }
     ]
   },
@@ -208,6 +238,11 @@
       {
         "item": null,
         "weight": 5
+      },
+      {
+        "item": "poppy_seed",
+        "quantity": 2,
+        "weight": 2
       }
     ]
   },

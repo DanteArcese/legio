@@ -844,5 +844,91 @@
     "name": "Fox pelt",
     "value": 35,
     "examine": "A thick red pelt with a white-tipped brush."
+  },
+  "trowel": {
+    "name": "Trowel",
+    "value": 6,
+    "examine": "A small iron trowel for planting.",
+    "tool": "trowel",
+    "tool_tier": 1
+  },
+  "mint_seed": {
+    "name": "Mint seed",
+    "value": 2,
+    "examine": "Tiny seeds of mentha.",
+    "stackable": true
+  },
+  "fennel_seed": {
+    "name": "Fennel seed",
+    "value": 4,
+    "examine": "Striped fennel seeds. They smell of aniseed.",
+    "stackable": true
+  },
+  "sage_seed": {
+    "name": "Sage seed",
+    "value": 8,
+    "examine": "Dark sage seeds.",
+    "stackable": true
+  },
+  "wormwood_seed": {
+    "name": "Wormwood seed",
+    "value": 14,
+    "examine": "Wormwood seeds, as bitter as the plant.",
+    "stackable": true
+  },
+  "poppy_seed": {
+    "name": "Poppy seed",
+    "value": 24,
+    "examine": "Tiny blue-black poppy seeds.",
+    "stackable": true
+  },
+  "cabbage_seed": {
+    "name": "Cabbage seed",
+    "value": 1,
+    "examine": "Brassica seed. Cato swore by cabbage for everything.",
+    "stackable": true
+  },
+  "bean_seed": {
+    "name": "Bean seed",
+    "value": 2,
+    "examine": "Dried broad beans for planting.",
+    "stackable": true
+  },
+  "mint": {
+    "name": "Mint",
+    "value": 6,
+    "examine": "A sprig of fresh mint."
+  },
+  "fennel": {
+    "name": "Fennel",
+    "value": 10,
+    "examine": "Feathery fennel fronds."
+  },
+  "sage": {
+    "name": "Sage",
+    "value": 16,
+    "examine": "Grey-green sage leaves."
+  },
+  "wormwood": {
+    "name": "Wormwood",
+    "value": 26,
+    "examine": "Silvery wormwood. Bitter beyond belief."
+  },
+  "poppy": {
+    "name": "Poppy",
+    "value": 40,
+    "examine": "A red poppy head, heavy with milk."
+  },
+  "cabbage": {
+    "name": "Cabbage",
+    "value": 4,
+    "examine": "A crisp green cabbage. Cato would approve.",
+    "heals": 2
+  },
+  "broad_beans": {
+    "name": "Broad beans",
+    "value": 5,
+    "examine": "A double handful of broad beans.",
+    "heals": 3
   }
 }

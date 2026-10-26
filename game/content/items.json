@@ -1039,5 +1039,75 @@
     "name": "Oak plank",
     "value": 20,
     "examine": "A heavy oak plank, straight and true."
+  },
+  "gold_ore": {
+    "name": "Gold ore",
+    "value": 120,
+    "examine": "Heavy, and yellow where the rock has split. Worth the risk."
+  },
+  "gold_bar": {
+    "name": "Gold bar",
+    "value": 260,
+    "examine": "A bar of soft, bright gold."
+  },
+  "gold_torc": {
+    "name": "Gold torc",
+    "value": 900,
+    "examine": "A twisted gold neck-ring in the Germanic style. Chieftains wear these.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 4,
+        "strength": 4,
+        "defence": 2
+      }
+    },
+    "requirements": {
+      "defence": 30
+    }
+  },
+  "framea": {
+    "name": "Framea",
+    "value": 220,
+    "examine": "A Germanic spear with a short, narrow head. Light enough to throw, sharp enough to keep.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 18,
+        "strength": 17,
+        "defence": 0
+      },
+      "attack_speed": 4
+    },
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "dire_wolf_pelt": {
+    "name": "Dire wolf pelt",
+    "value": 70,
+    "examine": "Coarse black fur from a wolf the size of a pony."
+  },
+  "warchiefs_helm": {
+    "name": "War-chief's helm",
+    "value": 1800,
+    "examine": "An iron helm with a boar crest, taken from the war-chief beyond the Limes.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 1,
+        "strength": 3,
+        "defence": 9,
+        "ritus_defence": -3
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "legion_eagle": {
+    "name": "Legion eagle",
+    "value": 5000,
+    "examine": "A cohort's eagle standard, tarnished green. Priceless to any legionary: you'd never leave it behind."
   }
 }

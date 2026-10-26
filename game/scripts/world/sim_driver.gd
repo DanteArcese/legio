@@ -7,6 +7,7 @@ const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
 const LootPile := preload("res://scripts/world/loot_pile.gd")
 const GraveMarker := preload("res://scripts/world/grave_marker.gd")
+const StrikeMarker := preload("res://scripts/world/strike_marker.gd")
 const Projectile := preload("res://scripts/world/projectile.gd")
 const CurseVisuals := preload("res://scripts/world/curse_visuals.gd")
 const CURSE_TINTS := {"binding": Color(0.1, 0.06, 0.16), "withering": Color(0.12, 0.14, 0.06),
@@ -37,6 +38,8 @@ var _hunt_spots := {}
 var _patches := {}
 var _hotspots := {}
 var _shades := {}
+## Strike id -> marker for a boss's throw in the air.
+var _strikes := {}
 
 
 func _ready() -> void:
@@ -46,6 +49,8 @@ func _ready() -> void:
 		register(entity)
 	for bank in get_tree().get_nodes_in_group("banks"):
 		sim.add_bank(bank.global_position)
+	for zone in get_tree().get_nodes_in_group("danger_zones"):
+		sim.add_danger_zone(zone.danger_area)
 	for undertaker in get_tree().get_nodes_in_group("libitinarii"):
 		sim.add_libitinarius(undertaker.global_position)
 	for venator in get_tree().get_nodes_in_group("venatores"):
@@ -196,6 +201,16 @@ func _mirror_ground(event: Dictionary) -> void:
 			if cursed:
 				var seconds: float = maxi(event["until"] - event["tick"], 1) * clock.tick_length
 				CurseVisuals.aura(cursed.body(), seconds, CURSE_TINTS.get(event["curse"], Color.BLACK))
+		"strike_warn":
+			var thrower: Node = _entities.get(event["id"])
+			var from: Vector3 = thrower.body().global_position if thrower else event["position"]
+			var seconds: float = (event["lands_at"] - event["tick"]) * clock.tick_length
+			_strikes[event["strike"]] = StrikeMarker.spawn(get_parent(), from, event["position"], event["radius"], seconds)
+		"strike_land":
+			var marker: Node = _strikes.get(event["strike"])
+			if marker:
+				marker.queue_free()
+				_strikes.erase(event["strike"])
 		"ground_add":
 			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
 		"ground_update":

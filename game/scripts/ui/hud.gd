@@ -17,6 +17,8 @@ var _banner: Label
 var _target_panel: PanelContainer
 var _target_name: Label
 var _target_bar: ProgressBar
+## Shown while the player is beyond the Limes, where deaths are costly.
+var _danger: Label
 
 
 func _ready() -> void:
@@ -45,6 +47,14 @@ func _ready() -> void:
 	_banner.modulate.a = 0.0
 	add_child(_banner)
 
+	_danger = _label(22, HORIZONTAL_ALIGNMENT_CENTER)
+	_danger.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	_danger.position.y = 40
+	_danger.add_theme_color_override("font_color", Color(0.95, 0.35, 0.25))
+	_danger.text = "Beyond the Limes: no graves here"
+	_danger.visible = false
+	add_child(_danger)
+
 	_build_target_panel()
 	driver.sim_event.connect(_on_sim_event)
 	driver.ticked.connect(func(_tick): _refresh())
@@ -71,6 +81,10 @@ func _refresh() -> void:
 		return
 	var s: RefCounted = c.skills
 	_refresh_target(c)
+	var beyond: bool = driver.sim.in_danger_zone(c.position)
+	if beyond != _danger.visible:
+		_danger.visible = beyond
+		_show_banner("You cross the Limes." if beyond else "You are back inside the Limes.")
 	var task_text := "No Slayer contract"
 	if not c.slayer_task.is_empty():
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]

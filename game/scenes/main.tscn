@@ -39,6 +39,7 @@
 [ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
 [ext_resource type="Script" path="res://scripts/world/trade_board.gd" id="37_board"]
 [ext_resource type="Script" path="res://scripts/ui/world_map.gd" id="40_world_map"]
+[ext_resource type="Script" path="res://scripts/world/frontier.gd" id="42_frontier"]
 [ext_resource type="Script" path="res://scripts/world/villa_grounds.gd" id="38_villa"]
 [ext_resource type="Script" path="res://scripts/world/villa_hotspot.gd" id="39_hotspot"]
 [ext_resource type="Script" path="res://scripts/ui/collection_ui.gd" id="41_collection_ui"]
@@ -1189,3 +1190,118 @@ terrain = NodePath("../Terrain")
 [node name="BarrowDresser" type="Node" parent="." node_paths=PackedStringArray("barrow")]
 script = ExtResource("25_barrow_dresser")
 barrow = NodePath("../Barrow")
+
+[node name="LimesGate" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -46.5)
+script = ExtResource("15_transition")
+verb = "Cross"
+title = "Gate in the limes"
+examine_text = "The frontier road runs north through the limes, into Germanic country."
+destination = Vector3(0, 0, -344)
+size = Vector3(2.4, 2.6, 0.4)
+color = Color(0.42, 0.3, 0.19, 1)
+warning = "Beyond the Limes there are no graves and no libitinarii. If you die there, you keep your 3 most valuable items; everything else drops where you fall and is gone after 3 minutes. Cross again to go on."
+
+[node name="Frontier" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
+metadata/map_name = "Beyond the Limes"
+metadata/map_rect = Rect2(-60, -460, 120, 120)
+metadata/map_color = Color(0.36, 0.5, 0.32, 1)
+script = ExtResource("42_frontier")
+dresser = NodePath("../KitDresser")
+
+[node name="FrontierSign" type="Label3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -347)
+billboard = 1
+text = "Beyond the Limes"
+font_size = 64
+outline_size = 12
+modulate = Color(1, 0.55, 0.45, 1)
+visibility_range_end = 70.0
+
+[node name="RoadToFort" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -341.5)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Castra Ferrea"
+examine_text = "The road runs south, back to the fort and safety."
+destination = Vector3(0, 0, -43)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Gold1" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 0, -433)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="Gold2" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, -436.5)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="Gold3" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 0, -432.5)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="FrontierMonsters" type="Node3D" parent="."]
+
+[node name="GermanicRaider1" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.2, -408)
+monster_id = "germanic_raider"
+
+[node name="GermanicRaider2" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 1.2, -409)
+monster_id = "germanic_raider"
+
+[node name="GermanicRaider3" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 1.2, -417)
+monster_id = "germanic_raider"
+
+[node name="GermanicRaider4" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 1.2, -415)
+monster_id = "germanic_raider"
+
+[node name="DireWolf5" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1.2, -385)
+monster_id = "dire_wolf"
+
+[node name="DireWolf6" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 1.2, -392)
+monster_id = "dire_wolf"
+
+[node name="DireWolf7" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1.2, -396)
+monster_id = "dire_wolf"
+
+[node name="DireWolf8" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 1.2, -400)
+monster_id = "dire_wolf"
+
+[node name="Hrodgar" parent="FrontierMonsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.2, -441)
+monster_id = "hrodgar"
+
+[node name="CenturionVarro" type="StaticBody3D" parent="Frontier" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -344)
+collision_layer = 8
+metadata/npc_id = "centurion_varro"
+metadata/display_name = "Centurion Varro"
+metadata/examine = "The centurion who holds the gate in the limes. His crest has seen better days."
+
+[node name="Mesh" type="MeshInstance3D" parent="Frontier/CenturionVarro"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Frontier/CenturionVarro"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Frontier/CenturionVarro"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+weapon = "weapons/sword_1handed"
+
+[node name="Label" type="Label3D" parent="Frontier/CenturionVarro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Centurion Varro"
+font_size = 32
+outline_size = 8

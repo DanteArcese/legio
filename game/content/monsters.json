@@ -225,5 +225,88 @@
       "size": 1.5,
       "features": []
     }
+  },
+  "germanic_raider": {
+    "name": "Germanic raider",
+    "level": 36,
+    "stats": {
+      "attack": 34,
+      "strength": 36,
+      "defence": 28,
+      "vitality": 40
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 40,
+    "drops": "germanic_raider",
+    "examine": "He crossed the river to take what Rome has. He will take it from you.",
+    "appearance": {
+      "model": "kaykit",
+      "scene": "adventurers/Barbarian",
+      "size": 1.1,
+      "weapon": "proc:spear",
+      "attack": "stab",
+      "color": "#6b4a2b"
+    }
+  },
+  "dire_wolf": {
+    "name": "Dire wolf",
+    "level": 30,
+    "stats": {
+      "attack": 30,
+      "strength": 28,
+      "defence": 22,
+      "vitality": 34
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 35,
+    "drops": "dire_wolf",
+    "examine": "A black wolf the size of a pony. The legions tell stories about these.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#2f2d2c",
+      "accent": "#57524d",
+      "size": 1.6,
+      "features": [
+        "ears",
+        "long_snout",
+        "tail"
+      ]
+    }
+  },
+  "hrodgar": {
+    "name": "Hrodgar the War-chief",
+    "level": 75,
+    "stats": {
+      "attack": 62,
+      "strength": 64,
+      "defence": 55,
+      "vitality": 99
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 100,
+    "drops": "hrodgar",
+    "examine": "The war-chief of the raiders beyond the Limes. He has a spear for every Roman.",
+    "boss": {
+      "throw_every": 4,
+      "throw_delay": 3,
+      "throw_radius": 1.6,
+      "throw_damage": [
+        14,
+        28
+      ],
+      "enrage_below": 0.33,
+      "enrage_speed": 3
+    },
+    "appearance": {
+      "model": "kaykit",
+      "scene": "adventurers/Barbarian",
+      "size": 2.0,
+      "weapon": "proc:spear",
+      "attack": "stab",
+      "color": "#8a2f22"
+    }
   }
 }

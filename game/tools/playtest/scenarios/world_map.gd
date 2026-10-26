@@ -10,7 +10,7 @@ func run() -> void:
 	await press("world_map")
 	expect(map.is_open(), "M opens the world map")
 	var names: Array = map.regions().map(func(r): return r["name"])
-	for name in ["Castra Ferrea", "Portus Salis", "Barrow of the Lemures", "Villa"]:
+	for name in ["Castra Ferrea", "Portus Salis", "Barrow of the Lemures", "Villa", "Beyond the Limes"]:
 		expect(name in names, "%s is on the map (%s)" % [name, names])
 	expect(map.region_at(player().global_position) == "Castra Ferrea", "you start in Castra Ferrea")
 	await seconds(0.3)

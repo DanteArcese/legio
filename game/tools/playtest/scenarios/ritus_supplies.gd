@@ -56,7 +56,9 @@ func run() -> void:
 func _make_at(station_path: String, kind: String, recipe: String) -> void:
 	var station: Node3D = main.get_node(station_path)
 	var spot := station.global_position + Vector3(0, 0, 1.4)
-	await route_to(spot, 0.4, 90.0)
+	# Line up in front of the station first: cutting the corner can snag on
+	# the station's own collision, or the smithy wall behind it.
+	await route_to(station.global_position + Vector3(0, 0, 2.7), 0.4, 90.0)
 	# Close in and let a tick pass, so the sim has us well within reach.
 	await walk_to(spot, 0.2, 10.0)
 	await seconds(0.7)

@@ -1014,6 +1014,22 @@
     "value": 60,
     "examine": "A long brown feather that smells of storms. Fletchers prize them."
   },
+  "harpy_arrow": {
+    "name": "Harpy arrow",
+    "value": 9,
+    "examine": "Fletched with harpy feathers. It flies as if it hated its target.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 15
+      },
+      "ammo_type": "arrow"
+    },
+    "requirements": {
+      "ranged": 30
+    }
+  },
   "gold_ore": {
     "name": "Gold ore",
     "value": 120,

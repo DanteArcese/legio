@@ -327,6 +327,8 @@ func _process_craft(player: RefCounted, action: Dictionary, events: Array) -> vo
 ## Why the player can't make this right now, or "" if they can.
 func _craft_problem(player: RefCounted, kind: String, recipe: Dictionary) -> String:
 	var skill: String = SKILL_FOR_KIND[kind]
+	if recipe.has("requires_quest") and not player.quests.get(recipe["requires_quest"], {}).get("done", false):
+		return "You don't know how to make that yet."
 	if player.skills.level(skill) < recipe["level"]:
 		return "You need %s %d to make that." % [skill.capitalize(), recipe["level"]]
 	if recipe.has("tool") and tool_tier(player, recipe["tool"]) == 0:

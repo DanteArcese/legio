@@ -42,6 +42,8 @@ const PAVING := Color(0.66, 0.63, 0.57)
 const TIMBER := Color(0.45, 0.33, 0.22)
 
 var _noise := FastNoiseLite.new()
+var _boats: Array[Node3D] = []
+var _time := 0.0
 
 
 func _init() -> void:
@@ -56,6 +58,15 @@ func _ready() -> void:
 	_build_sea()
 	_build_pier()
 	_build_bounds()
+	_dress_harbour()
+
+
+func _process(delta: float) -> void:
+	_time += delta
+	for i in _boats.size():
+		var boat := _boats[i]
+		boat.position.y = WATER_LEVEL - 0.05 + sin(_time * 1.3 + i * 1.7) * 0.05
+		boat.rotation.z = sin(_time * 0.9 + i) * 0.03
 
 
 func height_at(x: float, z: float) -> float:
@@ -177,6 +188,81 @@ func _build_pier() -> void:
 	ramp_look.position = ramp.position
 	ramp_look.rotation = ramp.rotation
 	add_child(ramp_look)
+
+
+## Life around the harbour: moored boats, crates and barrels on the quay,
+## nets drying on poles, and a rack of fish curing in the sun.
+func _dress_harbour() -> void:
+	for spec in [[Vector3(PIER_X - 3.2, 0, 18.0), 0.0], [Vector3(PIER_X + 3.4, 0, 24.0), PI]]:
+		_boats.append(_boat(spec[0], spec[1]))
+	var crate := TIMBER.lightened(0.15)
+	for spec in [[Vector3(-297.5, 0.35, 1.0), 0.9], [Vector3(-296.6, 0.35, 1.6), 0.7], [Vector3(-297.1, 1.0, 1.2), 0.6],
+			[Vector3(-309.0, 0.35, -6.0), 0.8], [Vector3(-309.8, 0.35, -5.2), 0.8]]:
+		_visual_box(Vector3.ONE * spec[1], spec[0], crate)
+	for at in [Vector3(-295.6, 0, 2.4), Vector3(-295.0, 0, 3.2), Vector3(-310.6, 0, -6.6)]:
+		var barrel := MeshInstance3D.new()
+		var cylinder := CylinderMesh.new()
+		cylinder.top_radius = 0.3
+		cylinder.bottom_radius = 0.34
+		cylinder.height = 0.8
+		var wood := StandardMaterial3D.new()
+		wood.albedo_color = TIMBER.darkened(0.1)
+		cylinder.material = wood
+		barrel.mesh = cylinder
+		barrel.position = at + Vector3(0, 0.4, 0)
+		add_child(barrel)
+	# Nets drying between poles on the beach.
+	var net := StandardMaterial3D.new()
+	net.albedo_color = Color(0.25, 0.28, 0.24, 0.75)
+	net.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	net.cull_mode = BaseMaterial3D.CULL_DISABLED
+	for x in [-318.0, -312.0]:
+		for dx in [0.0, 3.0]:
+			_visual_box(Vector3(0.1, 2.0, 0.1), Vector3(x + dx, 1.0, 7.0), TIMBER.darkened(0.3))
+		var sheet := MeshInstance3D.new()
+		var quad := QuadMesh.new()
+		quad.size = Vector2(3.0, 1.4)
+		quad.material = net
+		sheet.mesh = quad
+		sheet.position = Vector3(x + 1.5, 1.2, 7.0)
+		add_child(sheet)
+	# A rack of fish curing in the sun.
+	_visual_box(Vector3(2.4, 0.08, 0.08), Vector3(-291.0, 1.4, -1.0), TIMBER)
+	for dx in [-1.2, 1.2]:
+		_visual_box(Vector3(0.1, 1.4, 0.1), Vector3(-291.0 + dx, 0.7, -1.0), TIMBER.darkened(0.3))
+	var fish := Color(0.72, 0.74, 0.78)
+	for i in 5:
+		_visual_box(Vector3(0.12, 0.5, 0.05), Vector3(-292.0 + i * 0.5, 1.1, -1.0), fish)
+
+
+## A small fishing boat: a hull, a prow, a mast, and a furled sail.
+func _boat(at: Vector3, yaw: float) -> Node3D:
+	var boat := Node3D.new()
+	boat.position = at
+	boat.rotation.y = yaw
+	add_child(boat)
+	var hull := StandardMaterial3D.new()
+	hull.albedo_color = Color(0.4, 0.27, 0.17)
+	var parts := [[Vector3(1.6, 0.6, 4.0), Vector3(0, 0.2, 0)], [Vector3(1.0, 0.5, 1.0), Vector3(0, 0.25, 2.3)],
+		[Vector3(0.12, 3.0, 0.12), Vector3(0, 1.8, 0.4)], [Vector3(1.4, 0.18, 0.18), Vector3(0, 2.6, 0.4)]]
+	for part in parts:
+		var mesh := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = part[0]
+		box.material = hull
+		mesh.mesh = box
+		mesh.position = part[1]
+		boat.add_child(mesh)
+	var sail := MeshInstance3D.new()
+	var cloth := BoxMesh.new()
+	cloth.size = Vector3(1.3, 0.3, 0.3)
+	var canvas := StandardMaterial3D.new()
+	canvas.albedo_color = Color(0.86, 0.8, 0.66)
+	cloth.material = canvas
+	sail.mesh = cloth
+	sail.position = Vector3(0, 2.4, 0.4)
+	boat.add_child(sail)
+	return boat
 
 
 ## Invisible walls: the shoreline (with a gap for the pier) and the edges.

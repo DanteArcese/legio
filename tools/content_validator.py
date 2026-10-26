@@ -26,7 +26,7 @@ ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
 CATCH_KEYS = {"fish", "level", "xp"}
-RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning"}
+RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy"}
@@ -64,6 +64,10 @@ def validate(content: dict) -> list[str]:
     _check_pietas(content.get("pietas", {}), items, errors)
     quests = content.get("quests", {})
     _check_quests(quests, items, monsters, errors)
+    for kind, entries in content.get("skilling", {}).get("recipes", {}).items():
+        for i, recipe in enumerate(entries):
+            if "requires_quest" in recipe and recipe["requires_quest"] not in quests.get("quests", {}):
+                errors.append(f"skilling.recipes.{kind}[{i}].requires_quest: unknown quest {recipe['requires_quest']!r}")
     _check_thieving(content.get("thieving", {}), items, errors)
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)

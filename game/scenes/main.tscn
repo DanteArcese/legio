@@ -544,10 +544,11 @@ mesh = SubResource("chest_mesh")
 [node name="Collision" type="CollisionShape3D" parent="PortusSalis/HarbourBank"]
 shape = SubResource("chest_shape")
 
-[node name="Fishmonger" type="StaticBody3D" parent="PortusSalis" groups=["shopkeepers", "navigation_source"]]
+[node name="Fishmonger" type="StaticBody3D" parent="PortusSalis" groups=["quest_npcs", "shopkeepers", "navigation_source"]]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -295, 1, -3)
 collision_layer = 8
 metadata/shop_id = "fishmonger"
+metadata/npc_id = "fishmonger"
 metadata/display_name = "Fishmonger"
 metadata/examine = "A weathered fishwife with forearms like a smith's."
 
@@ -565,6 +566,31 @@ scene = "adventurers/Rogue_Hooded"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 text = "Fishmonger"
+font_size = 32
+outline_size = 8
+
+[node name="Harbourmaster" type="StaticBody3D" parent="PortusSalis" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -304.5, 1, 4.5)
+collision_layer = 8
+metadata/npc_id = "harbourmaster"
+metadata/display_name = "Harbourmaster Lucilla"
+metadata/examine = "She runs the harbour with a wax tablet in one hand and a boathook in the other."
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/Harbourmaster"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/Harbourmaster"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="PortusSalis/Harbourmaster"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+weapon = "weapons/staff"
+
+[node name="Label" type="Label3D" parent="PortusSalis/Harbourmaster"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Harbourmaster Lucilla"
 font_size = 32
 outline_size = 8
 

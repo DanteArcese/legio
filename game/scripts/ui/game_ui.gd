@@ -155,7 +155,11 @@ func _handheld_kind_for(item_id: String) -> String:
 func _show_recipes(kind: String, recipes: Array) -> void:
 	var skill: String = Skilling.SKILL_FOR_KIND[kind]
 	var options := []
+	var combatant := _combatant()
 	for recipe in recipes:
+		# Recipes taught by a quest stay hidden until it's done.
+		if recipe.has("requires_quest") and not combatant.quests.get(recipe["requires_quest"], {}).get("done", false):
+			continue
 		var label := "%s  (%s %d)" % [ContentDB.item(recipe["output"])["name"], skill.capitalize(), recipe["level"]]
 		options.append([label, _act.bind("craft", {"kind": kind, "recipe": recipe["id"], "count": 28})])
 	_show_menu(options, get_viewport().get_visible_rect().size / 2.0)

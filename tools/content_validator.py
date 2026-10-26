@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
@@ -65,6 +65,7 @@ def validate(content: dict) -> list[str]:
     _check_quests(quests, items, monsters, errors)
     _check_thieving(content.get("thieving", {}), items, errors)
     _check_athletics(content.get("athletics", {}), errors)
+    _check_hunter(content.get("hunter", {}), items, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -499,6 +500,24 @@ def _check_athletics(athletics, errors):
             pair = obstacle.get("damage")
             if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
                 errors.append(f"{ow}.damage: expected [min, max] whole numbers")
+
+
+HUNT_SPOT_KEYS = {"name", "level", "xp", "catch_chance", "loot", "examine"}
+
+
+def _check_hunter(hunter, items, errors):
+    _check_keys("hunter", hunter, {"spots"}, {"spots"}, errors)
+    for spot_id, spot in hunter.get("spots", {}).items():
+        where = f"hunter.spots.{spot_id}"
+        _check_id(where, spot_id, errors)
+        _check_keys(where, spot, HUNT_SPOT_KEYS, HUNT_SPOT_KEYS, errors)
+        _check_int(where, "level", spot.get("level"), 1, errors, 99)
+        _check_number(where, "xp", spot.get("xp"), 0.1, 10000, errors)
+        _check_number(where, "catch_chance", spot.get("catch_chance"), 0.01, 1, errors)
+        if not spot.get("loot"):
+            errors.append(f"{where}.loot: at least one item required")
+        for i, entry in enumerate(spot.get("loot", [])):
+            _check_drop(f"{where}.loot[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
 
 
 def _check_lines(where, key, lines, errors):

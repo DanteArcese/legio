@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, and athletics.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, and hunter.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -25,6 +25,7 @@ const Pietas := preload("res://scripts/sim/pietas.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
 const Thieving := preload("res://scripts/sim/thieving.gd")
 const Athletics := preload("res://scripts/sim/athletics.gd")
+const Hunter := preload("res://scripts/sim/hunter.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -46,6 +47,7 @@ var pietas := Pietas.new(self)
 var quests := Quests.new(self)
 var thieving := Thieving.new(self)
 var athletics := Athletics.new(self)
+var hunter := Hunter.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 
@@ -229,6 +231,7 @@ func step() -> Array[Dictionary]:
 	quests.process(players, events)
 	thieving.process(events)
 	athletics.process(players, events)
+	hunter.process(events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -325,6 +328,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			thieving.pickpocket(player, command.get("mark", -1), events)
 		"obstacle":
 			athletics.start(player, command.get("obstacle", -1), events)
+		"trap":
+			hunter.use_spot(player, command.get("spot", -1), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"chop":

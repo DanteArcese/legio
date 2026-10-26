@@ -829,5 +829,20 @@
     "name": "Bronze diploma",
     "value": 0,
     "examine": "Two bronze tablets, wired shut: your honourable discharge and grant of Roman citizenship, witnessed by seven."
+  },
+  "box_trap": {
+    "name": "Box trap",
+    "value": 20,
+    "examine": "A wooden box with a trip-stick. Hares are curious; foxes, less so."
+  },
+  "hare_pelt": {
+    "name": "Hare pelt",
+    "value": 8,
+    "examine": "Soft brown fur."
+  },
+  "fox_pelt": {
+    "name": "Fox pelt",
+    "value": 35,
+    "examine": "A thick red pelt with a white-tipped brush."
   }
 }

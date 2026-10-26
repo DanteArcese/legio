@@ -64,6 +64,8 @@ Kept as a core skill and the center of progression.
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 | Hunter | Traps and nets. Live capture for the arena. |
 
+**Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
+
 ### Artisan
 
 | Skill | Roman flavor |

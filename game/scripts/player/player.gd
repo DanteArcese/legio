@@ -268,6 +268,11 @@ func talk(npc: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
 
 
+func use_trap_spot(spot: Node3D) -> void:
+	walk_and_do(spot.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "trap", {"spot": spot.spot_id}))
+
+
 func cross(obstacle: Node3D) -> void:
 	walk_and_do(obstacle.global_position, 1.2, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "obstacle", {"obstacle": obstacle.obstacle_id}))
@@ -391,6 +396,10 @@ func interact() -> void:
 	var tree := _nearest_in_group("trees", grave_radius + 0.4)
 	if tree:
 		sim_driver.sim.queue_item_action(id, "chop", {"tree": tree.tree_id})
+		return
+	var hunt_spot := _nearest_in_group("hunt_spots", grave_radius + 0.4)
+	if hunt_spot:
+		sim_driver.sim.queue_item_action(id, "trap", {"spot": hunt_spot.spot_id})
 		return
 	var obstacle := _nearest_in_group("obstacles", 1.8)
 	if obstacle:

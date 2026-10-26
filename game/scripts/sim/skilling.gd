@@ -19,7 +19,14 @@ const MAX_BURN_CHANCE := 0.5
 const STATION_FOR_KIND := {"smelt": "furnace", "smith": "anvil", "cook": "range", "inscribe": "tomb"}
 const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus"}
 
-var sim: RefCounted
+## Held weakly: the simulation owns this module, so a strong reference back
+## would form a cycle that is never freed.
+var sim: RefCounted:
+	get:
+		return _sim_ref.get_ref()
+	set(value):
+		_sim_ref = weakref(value)
+var _sim_ref: WeakRef
 ## rock id -> {"id", "type", "position", "depleted_until"}
 var rocks := {}
 ## [{"kind": "furnace" | "anvil" | "range", "position": Vector3}]

@@ -76,9 +76,9 @@ func test_the_shade_fades_and_its_kills_count_for_the_caster() -> void:
 	check(events.any(func(e): return e["type"] == "death" and e["id"] == 50), "the rat died")
 	check_eq(player.slayer_task.get("remaining", 0), 1, "the kill counted for the caster")
 	sim.queue_stop(PLAYER)
-	events = _run(sim, Simulation.SHADE_LIFETIME + 2)
+	events = _run(sim, Simulation.Curses.SHADE_LIFETIME + 2)
 	check(events.any(func(e): return e["type"] == "summon_end"), "the shade fades")
-	check(sim.get_combatant(Simulation.SHADE_ID_BASE + PLAYER) == null, "and is gone")
+	check(sim.get_combatant(Simulation.Curses.SHADE_ID_BASE + PLAYER) == null, "and is gone")
 
 
 func test_new_tablets_need_their_ritus_levels() -> void:

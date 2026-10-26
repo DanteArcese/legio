@@ -73,7 +73,7 @@ func test_withering_deals_damage_over_time_and_trains_ritus() -> void:
 	sim.queue_attack(PLAYER, TARGET)
 	var events := _run(sim, 25)
 	var pulses := events.filter(func(e): return e["type"] == "hit" and e["kind"] == "withering")
-	check_eq(pulses.size(), Simulation.WITHERING_PULSES, "five pulses from one tablet")
+	check_eq(pulses.size(), Simulation.Curses.WITHERING_PULSES, "five pulses from one tablet")
 	check(pulses.all(func(e): return e["damage"] == 1), "1 damage each below Ritus 25")
 	check(not sim.get_combatant(TARGET).curses.has("withering"), "wears off")
 	check(player.skills.xp["ritus"] > Skills.xp_for_level(20) + 15.0, "withering damage trains ritus")

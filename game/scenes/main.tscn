@@ -462,12 +462,12 @@ spot_type = "fox_den"
 [node name="Farm" type="Node3D" parent="."]
 
 [node name="HerbPatch1" type="StaticBody3D" parent="Farm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.0, 0, 33.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 0, 41.0)
 script = ExtResource("35_patch")
 patch_type = "herb_patch"
 
 [node name="Allotment1" type="StaticBody3D" parent="Farm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.8, 0, 33.0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0, 41.0)
 script = ExtResource("35_patch")
 patch_type = "allotment"
 

@@ -26,6 +26,11 @@ func run() -> void:
 	driver().sim.queue_item_action(PLAYER, "equip", {"slot": _slot_of("manes_tablet")})
 	await seconds(0.8)
 	var wolf := _nearest("wolf")
+	# A curse only lands on a target that survives the hit; at Ritus 55 one
+	# hit can kill a wolf, so this one gets extra hitpoints (the shade still
+	# has to finish it off).
+	wolf.combatant.max_hp = 40
+	wolf.combatant.hp = 40
 	await route_to(wolf.body().global_position, 5.0, 90.0)
 	player().attack(wolf.entity_id)
 	await _wait_until(func(): return count_events("summon", {"owner": PLAYER}) > 0, 20.0)

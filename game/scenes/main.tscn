@@ -38,6 +38,7 @@
 [ext_resource type="Script" path="res://scripts/world/patch_node.gd" id="35_patch"]
 [ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
 [ext_resource type="Script" path="res://scripts/world/trade_board.gd" id="37_board"]
+[ext_resource type="Script" path="res://scripts/ui/world_map.gd" id="40_world_map"]
 [ext_resource type="Script" path="res://scripts/world/frontier.gd" id="42_frontier"]
 [ext_resource type="Script" path="res://scripts/world/villa_grounds.gd" id="38_villa"]
 [ext_resource type="Script" path="res://scripts/world/villa_hotspot.gd" id="39_hotspot"]
@@ -194,7 +195,9 @@ script = ExtResource("22_lamp")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 9)
 script = ExtResource("22_lamp")
 
-[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("graphics_settings") groups=["navigation_source"]]
+[node name="Terrain" type="StaticBody3D" parent="." node_paths=PackedStringArray("graphics_settings") groups=["navigation_source", "map_regions"]]
+metadata/map_name = "Castra Ferrea"
+metadata/map_rect = Rect2(-80, -80, 160, 160)
 script = ExtResource("20_terrain")
 snap_roots = Array[NodePath]([NodePath("../CastraFerrea/Outside/Woods"), NodePath("../CastraFerrea/Outside/Hills"), NodePath("../Monsters")])
 graphics_settings = NodePath("../GraphicsSettings")
@@ -488,7 +491,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 30.0)
 script = ExtResource("35_patch")
 patch_type = "allotment"
 
-[node name="PortusSalis" type="StaticBody3D" parent="."]
+[node name="PortusSalis" type="StaticBody3D" parent="." groups=["map_regions"]]
+metadata/map_name = "Portus Salis"
+metadata/map_rect = Rect2(-360, -50, 120, 62)
+metadata/map_color = Color(0.82, 0.74, 0.5, 1)
 script = ExtResource("36_coast")
 
 [node name="PortusSign" type="Label3D" parent="PortusSalis"]
@@ -635,8 +641,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -303, 0, -9)
 script = ExtResource("37_board")
 board_id = "portus_board"
 
-[node name="Villa" type="StaticBody3D" parent="."]
+[node name="Villa" type="StaticBody3D" parent="." groups=["map_regions"]]
 script = ExtResource("38_villa")
+metadata/map_name = "Villa"
+metadata/map_rect = Rect2(290, -30, 60, 60)
+metadata/map_color = Color(0.72, 0.62, 0.48, 1)
 
 [node name="VillaHouse" type="StaticBody3D" parent="Villa" groups=["houses", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 320, 2, -18)
@@ -894,7 +903,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, -30.5)
 script = ExtResource("10_rock")
 rock_type = "iron_rock"
 
-[node name="Barrow" parent="." groups=["navigation_source"] instance=ExtResource("14_barrow")]
+[node name="Barrow" parent="." groups=["navigation_source", "map_regions"] instance=ExtResource("14_barrow")]
+metadata/map_name = "Barrow of the Lemures"
+metadata/map_rect = Rect2(138, -40, 48, 48)
+metadata/map_color = Color(0.45, 0.42, 0.4, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, 0)
 
 [node name="RoadToPortus" type="StaticBody3D" parent="."]
@@ -1134,6 +1146,10 @@ day_night = NodePath("../DayNight")
 [node name="QuestUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
 script = ExtResource("29_quest_ui")
 driver = NodePath("../SimDriver")
+player = NodePath("../Player")
+
+[node name="WorldMap" type="CanvasLayer" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("40_world_map")
 player = NodePath("../Player")
 
 [node name="SkillsUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]

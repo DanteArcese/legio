@@ -322,6 +322,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Frontier quest (#134): The Lost Eagle.** Centurion Varro holds the gate in the limes. Twenty years ago a cohort marched north and never came back, and Hrodgar keeps its eagle. Needs Attack, Strength and Defence 45 and *Duplicarius*. Scout the raiders' camp, kill four raiders, defeat Hrodgar to take back the eagle, and bring it to Varro. Rewards: combat, Slayer and Smithing XP, 2,500 denarii, the title "Bearer of the Eagle", and the gold torc recipe. The eagle is valued highly, so it is always among the items you keep on death.
 
+**World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
+
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market (all since added except the market).
 
 ## Villa

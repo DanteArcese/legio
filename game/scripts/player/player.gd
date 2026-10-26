@@ -209,6 +209,11 @@ func fish(spot: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "fish", {"spot": spot.spot_id}))
 
 
+func talk(npc: Node3D) -> void:
+	walk_and_do(npc.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
+
+
 func use_station(station: Node3D) -> void:
 	walk_and_do(station.global_position, CLICK_USE_DISTANCE, station_opened.emit.bind(station))
 
@@ -327,6 +332,10 @@ func interact() -> void:
 		return
 	if _near_any("libitinarii", bank_radius):
 		sim_driver.sim.queue_item_action(id, "reclaim")
+		return
+	var npc := _nearest_in_group("quest_npcs", bank_radius)
+	if npc:
+		sim_driver.sim.queue_item_action(id, "talk", {"npc": npc.get_meta("npc_id")})
 		return
 	for venator in get_tree().get_nodes_in_group("venatores"):
 		if global_position.distance_to(venator.global_position) <= bank_radius:

@@ -247,6 +247,10 @@ Decided: **both.**
 - **Standalone story quests** for side stories, region lore, and mythic adventures, with skill requirements and XP rewards in the OSRS style.
 - Citizenship is the game's main mid-game milestone. It unlocks the capital's forum market, owning a villa, and higher-level venatores.
 
+**Built (#83).** Quests live in `game/content/quests.json`: quest NPCs, and per quest a giver, requirements (skills, other quests), start and completion dialogue, items handed out at the start, ordered steps (`attack` a tagged target with a given combat style, `kill` monsters, `talk` to an NPC; the last step is always handing in), and rewards (XP, items, a rank, and a description of what it unlocks). Progress is per player and saved. Shops can require a finished quest (`requires_quest`). The quest log is on J / D-pad right.
+
+The first rank is **Tiro**, given by Optio Gaius by the forum. He hands out a sling, lead, a lituus, and binding tablets; the recruit strikes the training dummy with a blade, a sling, and a curse, clears three granary rats, and reports back for combat XP, a *parma* (round auxiliary shield), the rank, and the quartermaster's iron stores. *Miles* comes next.
+
 ## IP guardrails
 
 The game should feel like OSRS without copying it. Game mechanics such as skills, XP curves, and Slayer tasks are generally fine to borrow; specific expression is not. *(Not legal advice.)*

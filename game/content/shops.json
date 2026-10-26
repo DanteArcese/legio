@@ -95,5 +95,36 @@
         "price": 18
       }
     ]
+  },
+  "quartermaster": {
+    "name": "Quartermaster's stores",
+    "requires_quest": "tiro",
+    "offers": [
+      {
+        "item": "iron_pugio",
+        "price": 45
+      },
+      {
+        "item": "iron_gladius",
+        "price": 110
+      },
+      {
+        "item": "iron_galea",
+        "price": 70
+      },
+      {
+        "item": "iron_scutum",
+        "price": 130
+      },
+      {
+        "item": "iron_lorica",
+        "price": 180
+      },
+      {
+        "item": "iron_arrow",
+        "price": 150,
+        "quantity": 50
+      }
+    ]
   }
 }

@@ -31,6 +31,8 @@ signal combat_moment(moment: String, info: Dictionary)
 ## Animated models play their death before the body disappears.
 const DEATH_HIDE_DELAY := 1.6
 @export var is_player := false
+## A label quests can point at (e.g. "training_dummy").
+@export var tag := ""
 
 var combatant: RefCounted
 var spawn_position := Vector3.ZERO
@@ -60,6 +62,7 @@ func register(sim: RefCounted) -> void:
 		combatant.can_fight = can_fight
 		combatant.auto_retaliate = auto_retaliate
 		combatant.respawn_ticks = respawn_ticks
+	combatant.tag = tag
 	_update_label()
 
 

@@ -36,7 +36,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "shopkeepers"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -44,7 +44,7 @@ static func options_kind(node: Node) -> String:
 
 static func options_for(player: Node3D, node: Node) -> Array:
 	var options := _options_by_kind(player, node)
-	if node.has_meta("shop_id"):
+	if node.has_meta("shop_id") and _shop_open_to(player, node.get_meta("shop_id")):
 		# Shop entries go just before Examine (always last for shopkeepers).
 		var examine: Array = options.pop_back() if not options.is_empty() else []
 		for offer in ContentDB.shop(node.get_meta("shop_id")).get("offers", []):
@@ -87,6 +87,9 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 		"venatores":
 			return [["Ask for a contract", player.ask_for_contract.bind(node)],
 				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
+		"quest_npcs":
+			return [["Talk to " + node.get_meta("display_name", "them"), player.talk.bind(node)],
+				["Examine " + node.get_meta("display_name", "them"), player.examine.bind(node.get_meta("examine", ""))]]
 		"shopkeepers":
 			var options := []
 			if node.get_meta("shop_id") == "sacerdos":
@@ -126,7 +129,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue
@@ -152,3 +155,11 @@ static func options_nearby(player: Node3D) -> Array:
 
 static func _flat(v: Vector3) -> Vector3:
 	return Vector3(v.x, 0.0, v.z)
+
+
+## Shops behind a quest stay hidden until the player has finished it.
+static func _shop_open_to(player: Node3D, shop_id: String) -> bool:
+	var quest_id: String = ContentDB.shop(shop_id).get("requires_quest", "")
+	if quest_id.is_empty():
+		return true
+	return player.get_node("SimEntity").combatant.quests.get(quest_id, {}).get("done", false)

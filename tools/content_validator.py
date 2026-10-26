@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -61,8 +61,12 @@ def validate(content: dict) -> list[str]:
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, items, errors)
     _check_skilling(content.get("skilling", {}), items, errors)
     _check_pietas(content.get("pietas", {}), items, errors)
+    quests = content.get("quests", {})
+    _check_quests(quests, items, monsters, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
+        if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
+            errors.append(f"shops.{shop_id}.requires_quest: unknown quest {shop['requires_quest']!r}")
     player = content.get("player", {})
     _check_keys("player", player, {"starting_kit"}, {"starting_kit"}, errors)
     kit = player.get("starting_kit", [])
@@ -341,7 +345,7 @@ def _check_pietas(pietas, items, errors):
 
 
 def _check_shop(where, shop, items, errors):
-    _check_keys(where, shop, {"name", "offers"}, {"name", "offers"}, errors)
+    _check_keys(where, shop, {"name", "offers", "requires_quest"}, {"name", "offers"}, errors)
     for i, offer in enumerate(shop.get("offers", [])):
         _check_keys(f"{where}.offers[{i}]", offer, {"item", "price", "quantity"}, {"item", "price"}, errors)
         if offer.get("item") not in items:
@@ -351,6 +355,79 @@ def _check_shop(where, shop, items, errors):
             _check_int(f"{where}.offers[{i}]", "quantity", offer["quantity"], 1, errors)
             if offer["quantity"] > 1 and not items.get(offer.get("item"), {}).get("stackable"):
                 errors.append(f"{where}.offers[{i}].quantity: only stackable items come in bundles")
+
+
+QUEST_KEYS = {"name", "summary", "giver", "requirements", "start", "start_items", "steps", "complete", "rewards"}
+STEP_KINDS = {"attack": {"tag", "combat", "count"}, "kill": {"monster", "count"}, "talk": {"npc"}}
+COMBAT_KINDS = {"melee", "ranged", "ritus"}
+REWARD_KEYS = {"xp", "items", "rank", "unlocks"}
+
+
+def _check_quests(content, items, monsters, errors):
+    _check_keys("quests", content, {"npcs", "quests"}, {"npcs", "quests"}, errors)
+    npcs = content.get("npcs", {})
+    quests = content.get("quests", {})
+    for npc_id, npc in npcs.items():
+        where = f"quests.npcs.{npc_id}"
+        _check_id(where, npc_id, errors)
+        _check_keys(where, npc, {"name", "examine", "idle"}, {"name", "examine", "idle"}, errors)
+        _check_lines(where, "idle", npc.get("idle"), errors)
+    for quest_id, quest in quests.items():
+        where = f"quests.quests.{quest_id}"
+        _check_id(where, quest_id, errors)
+        _check_keys(where, quest, QUEST_KEYS, QUEST_KEYS - {"start_items"}, errors)
+        if quest.get("giver") not in npcs:
+            errors.append(f"{where}.giver: unknown npc {quest.get('giver')!r}")
+        requirements = quest.get("requirements", {})
+        _check_keys(f"{where}.requirements", requirements, {"skills", "quests"}, set(), errors)
+        for skill, level in requirements.get("skills", {}).items():
+            if skill not in SKILLS:
+                errors.append(f"{where}.requirements.skills: unknown skill {skill!r}")
+            _check_int(f"{where}.requirements.skills", skill, level, 1, errors, 99)
+        for needed in requirements.get("quests", []):
+            if needed not in quests or needed == quest_id:
+                errors.append(f"{where}.requirements.quests: unknown quest {needed!r}")
+        for key in ("start", "complete"):
+            _check_lines(where, key, quest.get(key), errors)
+        for i, entry in enumerate(quest.get("start_items", [])):
+            _check_drop(f"{where}.start_items[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+        steps = quest.get("steps", [])
+        if not steps:
+            errors.append(f"{where}.steps: at least one step required")
+        for i, step in enumerate(steps):
+            step_where = f"{where}.steps[{i}]"
+            kind = step.get("kind")
+            if kind not in STEP_KINDS:
+                errors.append(f"{step_where}.kind: must be one of {sorted(STEP_KINDS)}")
+                continue
+            _check_keys(step_where, step, {"kind", "log", "remind"} | STEP_KINDS[kind], {"kind", "log", "remind"} | STEP_KINDS[kind], errors)
+            if "count" in step:
+                _check_int(step_where, "count", step["count"], 1, errors)
+            if kind == "attack" and step.get("combat") not in COMBAT_KINDS:
+                errors.append(f"{step_where}.combat: must be one of {sorted(COMBAT_KINDS)}")
+            if kind == "kill" and step.get("monster") not in monsters:
+                errors.append(f"{step_where}.monster: unknown monster {step.get('monster')!r}")
+            if kind == "talk" and step.get("npc") not in npcs:
+                errors.append(f"{step_where}.npc: unknown npc {step.get('npc')!r}")
+            if not isinstance(step.get("log"), str) or not step.get("log"):
+                errors.append(f"{step_where}.log: expected text")
+            if not isinstance(step.get("remind"), list):
+                errors.append(f"{step_where}.remind: expected a list of lines")
+        if steps and steps[-1].get("kind") != "talk":
+            errors.append(f"{where}.steps: the last step must be talking to someone, to hand in the quest")
+        rewards = quest.get("rewards", {})
+        _check_keys(f"{where}.rewards", rewards, REWARD_KEYS, set(), errors)
+        for skill, amount in rewards.get("xp", {}).items():
+            if skill not in SKILLS:
+                errors.append(f"{where}.rewards.xp: unknown skill {skill!r}")
+            _check_number(f"{where}.rewards.xp", skill, amount, 1, 1_000_000, errors)
+        for i, entry in enumerate(rewards.get("items", [])):
+            _check_drop(f"{where}.rewards.items[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+
+
+def _check_lines(where, key, lines, errors):
+    if not isinstance(lines, list) or not lines or not all(isinstance(line, str) and line for line in lines):
+        errors.append(f"{where}.{key}: expected a non-empty list of lines")
 
 
 def _check_number(where, key, value, minimum, maximum, errors):

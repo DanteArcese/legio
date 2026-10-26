@@ -1,0 +1,116 @@
+{
+  "npcs": {
+    "optio_gaius": {
+      "name": "Optio Gaius",
+      "examine": "The cohort's optio. He has the look of a man who has counted a great many recruits.",
+      "idle": [
+        "Keep your blade clean and your mouth shut, and the auxilia will make something of you."
+      ]
+    }
+  },
+  "quests": {
+    "tiro": {
+      "name": "Tiro",
+      "summary": "Enlist in the auxilia at Castra Ferrea and prove you can fight with blade, sling, and curse.",
+      "giver": "optio_gaius",
+      "requirements": {},
+      "start": [
+        "Another peregrinus looking for a future? Good. The Emperor needs auxilia more than he needs another farmer.",
+        "Serve twenty-five years and you leave a citizen. Serve badly and you leave in a box.",
+        "First I want to see you fight. Here: a sling, some lead, a lituus, and a few binding tablets. Don't lose them.",
+        "Strike the training dummy with your blade. Then with the sling. Then curse it, if you have the stomach for it."
+      ],
+      "start_items": [
+        {
+          "item": "sling",
+          "quantity": 1
+        },
+        {
+          "item": "lead_glans",
+          "quantity": 30
+        },
+        {
+          "item": "lituus",
+          "quantity": 1
+        },
+        {
+          "item": "binding_tablet",
+          "quantity": 10
+        }
+      ],
+      "steps": [
+        {
+          "kind": "attack",
+          "tag": "training_dummy",
+          "combat": "melee",
+          "count": 6,
+          "log": "Strike the training dummy six times with a melee weapon.",
+          "remind": [
+            "The dummy is by the forum. Six good blows with a blade. Go on."
+          ]
+        },
+        {
+          "kind": "attack",
+          "tag": "training_dummy",
+          "combat": "ranged",
+          "count": 5,
+          "log": "Wield the sling and hit the training dummy five times.",
+          "remind": [
+            "Wield the sling, wear the lead as ammunition, and put five into the dummy."
+          ]
+        },
+        {
+          "kind": "attack",
+          "tag": "training_dummy",
+          "combat": "ritus",
+          "count": 3,
+          "log": "Wield the lituus and curse the training dummy three times.",
+          "remind": [
+            "Lituus in hand, tablets ready. Three curses on the dummy. The Manes won't mind; it's only straw."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "rat",
+          "count": 3,
+          "log": "Kill three of the rats in the granary.",
+          "remind": [
+            "The granary rats are eating the cohort's grain. Kill three and we'll call it your first campaign."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "optio_gaius",
+          "log": "Report back to Optio Gaius.",
+          "remind": []
+        }
+      ],
+      "complete": [
+        "Three rats. The poets will sing of it. Still, you did what you were told, and that's rarer than courage.",
+        "From today you're a tiro of the cohort. Take this parma; it's seen better arms than yours.",
+        "When you've the coin, the quartermaster's stores are open to you. Iron, not bronze. Look after it."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 200,
+          "strength": 200,
+          "defence": 200,
+          "ranged": 150,
+          "ritus": 150
+        },
+        "items": [
+          {
+            "item": "parma",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 100
+          }
+        ],
+        "rank": "Tiro",
+        "unlocks": "The quartermaster's stores (Optio Gaius)"
+      }
+    }
+  }
+}

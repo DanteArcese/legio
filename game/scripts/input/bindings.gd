@@ -31,6 +31,7 @@ const DEFAULTS := {
 	"toggle_roofs": [["key", KEY_H], ["joy_button", JOY_BUTTON_RIGHT_STICK]],
 	"run_toggle": [["key", KEY_R], ["joy_button", JOY_BUTTON_LEFT_STICK]],
 	"inventory": [["key", KEY_I], ["joy_button", JOY_BUTTON_BACK]],
+	"quest_log": [["key", KEY_J], ["joy_button", JOY_BUTTON_DPAD_RIGHT]],
 	"pause_menu": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_START]],
 }
 

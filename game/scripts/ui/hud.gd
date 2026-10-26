@@ -3,6 +3,7 @@ extends CanvasLayer
 
 const Slayer := preload("res://scripts/sim/slayer.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
+const Quests := preload("res://scripts/sim/quests.gd")
 
 const DROP_DURATION := 1.6
 const BANNER_DURATION := 3.0
@@ -57,6 +58,8 @@ func _on_sim_event(event: Dictionary) -> void:
 			_xp_drop(event["skill"], event["amount"])
 		"level_up":
 			_show_banner("%s level %d!" % [event["skill"].capitalize(), event["level"]])
+		"quest_complete":
+			_show_banner("Quest complete: %s" % ContentDB.quest(event["quest"])["name"])
 		"death":
 			_show_banner("You have fallen.")
 
@@ -72,6 +75,9 @@ func _refresh() -> void:
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
 	if c.pollution > 0.0:
 		task_text += "   Pollution %d%s" % [ceili(c.pollution), " (polluted)" if c.pollution >= 30.0 else ""]
+	var rank := Quests.rank(c)
+	if not rank.is_empty():
+		task_text = "%s of the auxilia   %s" % [rank, task_text]
 	if c.account_mode == "solitarius":
 		task_text = "[Solitarius]  " + task_text
 	var ammo_text := ""

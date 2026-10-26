@@ -31,6 +31,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | Skills | K | Left trigger |
 | Blessings (Pietas) | P | D-pad left |
 | Hide roofs | H | Right stick click |
+| World map | M | Share |
 | Pause menu (graphics, volume, quit) | Esc | Start |
 
 ### What's in the game

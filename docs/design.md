@@ -312,6 +312,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Second region (#119): Portus Salis.** A salt-and-garum harbour on the coast, reached by the road south-west from Castra Ferrea (it lies far west of the fort, at x around -300). A beach slopes into the sea; a timber pier runs out to a harpoon spot for tuna (Fishing 40, cooked at Cooking 35); sardines can be netted from the beach. The harbour has three timber buildings (dressed like the fort's), a bank chest, the fishmonger (harpoons, nets, rods, salt), two garum vats, and a campfire. Rock crabs (level 3) potter on the beach; harpies (level 28, Slayer 20, and a new task from Aulus) roost on the eastern rocks and drop harpy feathers. It has its own ambience of surf and gulls. Harbourmaster Lucilla gives **Harpies at the Harbour** (#125; Slayer 20, Fishing 15): kill four harpies, bring three feathers as proof, bring the fishmonger linen to mend the nets, and learn to fletch **harpy arrows** (Fletching 30; recipes can require a quest). Boats bob at the pier, nets dry on poles, and fish cure on a rack.
 
+**World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
+
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market.
 
 ## Villa

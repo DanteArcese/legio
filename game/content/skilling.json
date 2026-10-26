@@ -39,6 +39,16 @@
       "respawn_ticks": 8,
       "color": "#5b6470",
       "examine": "Grey, glittering, and very heavy."
+    },
+    "gold_rock": {
+      "name": "Gold rock",
+      "ore": "gold_ore",
+      "level": 40,
+      "xp": 65,
+      "difficulty": 0.4,
+      "respawn_ticks": 50,
+      "color": "#d8b13a",
+      "examine": "A seam of gold glints in the rock. Nobody mines here for long."
     }
   },
   "recipes": {
@@ -83,6 +93,18 @@
         "output": "lead_sheet",
         "level": 5,
         "xp": 8
+      },
+      {
+        "id": "gold_bar",
+        "inputs": [
+          {
+            "item": "gold_ore",
+            "quantity": 1
+          }
+        ],
+        "output": "gold_bar",
+        "level": 40,
+        "xp": 23
       }
     ],
     "smith": [
@@ -297,6 +319,20 @@
         "level": 20,
         "xp": 25,
         "tool": "hammer"
+      },
+      {
+        "id": "gold_torc",
+        "inputs": [
+          {
+            "item": "gold_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "gold_torc",
+        "level": 45,
+        "xp": 90,
+        "tool": "hammer",
+        "requires_quest": "the_lost_eagle"
       }
     ],
     "cook": [

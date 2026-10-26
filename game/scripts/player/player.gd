@@ -58,6 +58,9 @@ var _on_arrival := {}
 var _model: Node3D
 ## An obstacle crossing being played out: {"from", "to", "elapsed", "duration", "falls", "kind"}.
 var _crossing := {}
+## The sim tick a stop was queued on: the target stays set until the next
+## tick, and the player shouldn't walk back toward it meanwhile.
+var _stop_issued_at := -1
 var _look_key := "?"
 
 
@@ -216,13 +219,27 @@ func click(screen_position: Vector2) -> void:
 		return
 	# Ground: walk there, cancelling combat and skilling. Clicking right next
 	# to loot or your grave uses it on arrival.
-	var id: int = _entity.entity_id
-	sim_driver.sim.queue_stop(id)
-	sim_driver.sim.queue_item_action(id, "stop_action")
+	_disengage()
 	if not options.is_empty():
 		options[0][1].call()
 	else:
 		walk_to(hit["position"])
+
+
+## Walks to a point on the ground, dropping combat and skilling on the way
+## (a plain click on the ground).
+func walk_here(point: Vector3) -> void:
+	_disengage()
+	walk_to(point)
+
+
+## Stops fighting and skilling. The sim clears the target on its next tick;
+## until then, don't walk back toward it.
+func _disengage() -> void:
+	var id: int = _entity.entity_id
+	sim_driver.sim.queue_stop(id)
+	sim_driver.sim.queue_item_action(id, "stop_action")
+	_stop_issued_at = sim_driver.sim.tick
 
 
 ## Walks along the navigation mesh to a point.
@@ -245,6 +262,7 @@ func walk_and_do(at: Vector3, distance: float, action: Callable) -> void:
 # --- Precise actions (used by menus, clicks, and Interact) ---------------
 
 func attack(entity_id: int) -> void:
+	_stop_issued_at = -1
 	destination = null
 	_on_arrival = {}
 	sim_driver.sim.queue_attack(_entity.entity_id, entity_id)
@@ -380,6 +398,10 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 
 
 func _arrive_through(doorway: Node3D) -> void:
+	if not doorway.warning.is_empty() and not doorway.warned:
+		doorway.warned = true
+		message_requested.emit(doorway.warning)
+		return
 	var id: int = _entity.entity_id
 	if doorway.requires_villa and not _entity.combatant.villa_owned:
 		message_requested.emit("That's private land. The land surveyor in the forum sells villas to citizens.")
@@ -582,7 +604,7 @@ func _destination_direction() -> Vector3:
 ## otherwise zero.
 func _approach_direction() -> Vector3:
 	var target_position: Variant = _target_position()
-	if target_position == null:
+	if target_position == null or (_stop_issued_at >= 0 and sim_driver.sim.tick <= _stop_issued_at):
 		return Vector3.ZERO
 	if _flat(target_position - global_position).length() <= _entity.combatant.attack_range() * 0.9:
 		return Vector3.ZERO

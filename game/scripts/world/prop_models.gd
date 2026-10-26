@@ -11,6 +11,7 @@ const GRIP := Color(0.25, 0.16, 0.1)
 const STRING := Color(0.92, 0.88, 0.78)
 const CORD := Color(0.6, 0.5, 0.36)
 const STONE := Color(0.5, 0.5, 0.54)
+const IRON := Color(0.42, 0.43, 0.46)
 
 
 static func build(name: String) -> Node3D:
@@ -21,6 +22,8 @@ static func build(name: String) -> Node3D:
 			return _bow(WOOD_DARK, HORN, 0.4)
 		"sling":
 			return _sling()
+		"spear":
+			return _spear()
 	return Node3D.new()
 
 
@@ -46,6 +49,26 @@ static func _bow(wood: Color, tips: Color, recurve: float) -> Node3D:
 	bow.add_child(_rod(points[segments] + Vector3(0, -0.12, 0), points[segments] + Vector3(0, 0.12, 0), 0.085, GRIP))
 	bow.add_child(_rod(points[0], points[points.size() - 1], 0.015, STRING))
 	return bow
+
+
+## A framea: an ash shaft held near its middle, with a short iron head
+## pointing up.
+static func _spear() -> Node3D:
+	var spear := Node3D.new()
+	spear.name = "Spear"
+	spear.add_child(_rod(Vector3(0, -0.9, 0), Vector3(0, 1.25, 0), 0.05, WOOD))
+	var head := MeshInstance3D.new()
+	var cone := CylinderMesh.new()
+	cone.top_radius = 0.0
+	cone.bottom_radius = 0.06
+	cone.height = 0.32
+	cone.radial_segments = 4
+	cone.material = _material(IRON)
+	head.mesh = cone
+	head.position = Vector3(0, 1.25 + 0.16, 0)
+	spear.add_child(head)
+	spear.add_child(_rod(Vector3(0, 1.2, 0), Vector3(0, 1.27, 0), 0.07, IRON))
+	return spear
 
 
 ## Two cords from the hand down to a pouch holding a stone.

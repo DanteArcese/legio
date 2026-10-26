@@ -347,5 +347,156 @@
         "weight": 4
       }
     ]
+  },
+  "germanic_raider": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 2,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          40,
+          160
+        ],
+        "weight": 10
+      },
+      {
+        "item": "gold_ore",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "iron_bar",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "framea",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": "cooked_tuna",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "iron_arrow",
+        "quantity": [
+          10,
+          25
+        ],
+        "weight": 3
+      },
+      {
+        "item": null,
+        "weight": 5
+      }
+    ]
+  },
+  "dire_wolf": {
+    "always": [
+      {
+        "item": "dire_wolf_pelt",
+        "quantity": 1
+      },
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 5
+      },
+      {
+        "item": "raw_meat",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          20,
+          60
+        ],
+        "weight": 2
+      }
+    ]
+  },
+  "hrodgar": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          200,
+          600
+        ]
+      }
+    ],
+    "rolls": 3,
+    "table": [
+      {
+        "item": "gold_bar",
+        "quantity": 1,
+        "weight": 16
+      },
+      {
+        "item": "framea",
+        "quantity": 1,
+        "weight": 8
+      },
+      {
+        "item": "cooked_tuna",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "item": "iron_arrow",
+        "quantity": [
+          30,
+          60
+        ],
+        "weight": 12
+      },
+      {
+        "item": "gold_ore",
+        "quantity": 1,
+        "weight": 12
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          300,
+          900
+        ],
+        "weight": 12
+      },
+      {
+        "item": "gold_torc",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "warchiefs_helm",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 8
+      }
+    ]
   }
 }

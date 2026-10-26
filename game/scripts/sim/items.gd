@@ -140,8 +140,8 @@ func equipment_changed(player: Combatant, events: Array) -> void:
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 
 
-func add_ground_pile(position: Vector3, items: Array, events: Array) -> void:
-	var pile := {"id": _next_pile_id, "position": position, "items": items.duplicate(true), "expires_at": sim.tick + GROUND_LIFETIME}
+func add_ground_pile(position: Vector3, items: Array, events: Array, lifetime := GROUND_LIFETIME) -> void:
+	var pile := {"id": _next_pile_id, "position": position, "items": items.duplicate(true), "expires_at": sim.tick + lifetime}
 	ground[_next_pile_id] = pile
 	_next_pile_id += 1
 	events.append({"type": "ground_add", "pile": pile["id"], "position": position, "items": pile["items"], "tick": sim.tick})

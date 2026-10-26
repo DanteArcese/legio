@@ -10,6 +10,9 @@ const GRAVE_RANGE := 2.0
 const LIBITINARIUS_RANGE := 3.0
 ## Graves last 15 minutes before the libitinarii collect the items.
 const GRAVE_LIFETIME := 1500
+## Beyond the Limes there are no graves: what you lose lies on the ground
+## for 3 minutes, then it is gone for good.
+const DANGER_PILE_LIFETIME := 300
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.
@@ -41,6 +44,8 @@ func restore(player_id: int, position: Vector3, items: Array, ticks_left: int) -
 
 ## Keep the most valuable items; the rest go to a grave at the death spot.
 ## A previous grave still standing goes straight to the libitinarii.
+## Beyond the Limes the rest drop on the ground instead, past recovering
+## once they vanish, and an earlier grave is left alone.
 func on_player_death(player: Combatant, events: Array[Dictionary]) -> void:
 	var tick: int = sim.tick
 	var split := DeathRules.split(player.inventory, player.equipment)
@@ -53,9 +58,15 @@ func on_player_death(player: Combatant, events: Array[Dictionary]) -> void:
 	player.apply_equipment()
 	events.append({"type": "inventory_changed", "id": player.id, "tick": tick})
 	events.append({"type": "equipment_changed", "id": player.id, "tick": tick})
+	var lost: Array = DeathRules.merge(split["lost"])
+	if sim.in_danger_zone(player.position):
+		if not lost.is_empty():
+			sim.items.add_ground_pile(player.position, lost, events, DANGER_PILE_LIFETIME)
+			sim.message(player, "Beyond the Limes there are no graves. You keep your %d most valuable items; the rest lie where you fell for %d minutes." % [
+				DeathRules.KEPT_ON_DEATH, roundi(DANGER_PILE_LIFETIME * 0.6 / 60.0)], events)
+		return
 	if _graves.has(player.id):
 		_send_to_libitinarii(player.id, events)
-	var lost: Array = DeathRules.merge(split["lost"])
 	if lost.is_empty():
 		return
 	var grave := {"id": _next_grave_id, "position": player.position, "items": lost, "expires_at": tick + GRAVE_LIFETIME}

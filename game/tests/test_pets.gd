@@ -85,3 +85,18 @@ func test_pet_survives_a_save() -> void:
 	var other := _make_sim()
 	SaveGame.restore(other, PLAYER, data)
 	check_eq(other.get_combatant(PLAYER).pet, "magpie", "restored")
+
+
+func test_hrodgar_can_leave_a_wolf_cub() -> void:
+	var sim := _make_sim(4)
+	var player: RefCounted = sim.get_combatant(PLAYER)
+	for i in 3000:
+		var hrodgar := sim.add_monster(500 + i, "hrodgar", Vector3(1, 0, 0))
+		hrodgar.last_attacker_id = PLAYER
+		hrodgar.hp = 0
+		var events: Array[Dictionary] = []
+		sim.kill(hrodgar, events)
+		sim.remove_combatant(500 + i)
+		if player.pet == "wolf_cub":
+			break
+	check_eq(player.pet, "wolf_cub", "a wolf cub follows the player")

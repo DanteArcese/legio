@@ -35,6 +35,13 @@
       "idle": [
         "Fresh from the boats! Well, fresh-ish."
       ]
+    },
+    "centurion_varro": {
+      "name": "Centurion Varro",
+      "examine": "The centurion who holds the gate in the limes. His crest has seen better days.",
+      "idle": [
+        "Nothing comes over that palisade without my say. Plenty goes over it without coming back."
+      ]
     }
   },
   "quests": {
@@ -481,6 +488,99 @@
           }
         ],
         "unlocks": "Harpy arrows (Fletching 30, from harpy feathers)"
+      }
+    },
+    "the_lost_eagle": {
+      "name": "The Lost Eagle",
+      "summary": "Recover the eagle of a cohort lost beyond the Limes from the war-chief who took it.",
+      "giver": "centurion_varro",
+      "requirements": {
+        "skills": {
+          "attack": 45,
+          "strength": 45,
+          "defence": 45
+        },
+        "quests": [
+          "duplicarius"
+        ]
+      },
+      "start": [
+        "You've the look of someone who's killed things. Good. Listen.",
+        "Twenty years ago a cohort marched north from this gate and never came back. The raiders took their eagle. Hrodgar wears it like a trophy at his fires.",
+        "No legion forgets its eagle. Scout their camp, thin their spears, and bring it home."
+      ],
+      "steps": [
+        {
+          "kind": "reach",
+          "at": [
+            24,
+            -412
+          ],
+          "radius": 6.0,
+          "log": "Scout the raiders' camp north of the gate in the limes.",
+          "remind": [
+            "Follow the path north from the gate. Their camp is where the smoke is."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "germanic_raider",
+          "count": 4,
+          "log": "Kill four Germanic raiders.",
+          "remind": [
+            "Thin them out before you go for the war-chief. Four should do it."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "hrodgar",
+          "count": 1,
+          "grants": [
+            {
+              "item": "legion_eagle",
+              "quantity": 1
+            }
+          ],
+          "log": "Defeat Hrodgar the War-chief in his clearing and take back the eagle.",
+          "remind": [
+            "Hrodgar holds the clearing north of the camp, ringed with stones. When he throws, don't be where he's aiming."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "centurion_varro",
+          "items": [
+            {
+              "item": "legion_eagle",
+              "quantity": 1
+            }
+          ],
+          "log": "Bring the eagle to Centurion Varro at the gate.",
+          "remind": [
+            "You have it? Then bring it here. Gods, bring it here."
+          ]
+        }
+      ],
+      "complete": [
+        "That's her. Tarnished, but that's her.",
+        "The whole frontier will hear of this by nightfall. Take this, and something more: the raiders' goldsmiths taught a captive of ours to twist a torc. I'll teach you."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 4000,
+          "strength": 4000,
+          "defence": 4000,
+          "slayer": 2000,
+          "smithing": 1500
+        },
+        "items": [
+          {
+            "item": "coins",
+            "quantity": 2500
+          }
+        ],
+        "unlocks": "Gold torcs (Smithing 45)",
+        "title": "Bearer of the Eagle"
       }
     }
   }

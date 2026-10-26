@@ -67,6 +67,24 @@
           ],
           "slayer_level": 20,
           "combat_level": 25
+        },
+        {
+          "monster": "dire_wolf",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "combat_level": 40
+        },
+        {
+          "monster": "germanic_raider",
+          "weight": 3,
+          "amount": [
+            15,
+            25
+          ],
+          "combat_level": 45
         }
       ]
     }

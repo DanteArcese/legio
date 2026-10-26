@@ -59,6 +59,7 @@ const VOICES := 16
 ## The fort's walls, where the ground is paved (matches the town watch's beat).
 const TOWN := Rect2(-20, -20, 40, 40)
 const UNDERGROUND_X := 100.0
+const UNDERGROUND_END_X := 230.0
 ## Portus Salis lies far west of the fort.
 const COAST_X := -150.0
 
@@ -279,7 +280,7 @@ func _update_steps(_delta: float) -> void:
 func _update_ambience() -> void:
 	var here := player.global_position
 	var next := "day"
-	if here.x > UNDERGROUND_X:
+	if here.x > UNDERGROUND_X and here.x < UNDERGROUND_END_X:
 		next = "barrow"
 	elif here.x < COAST_X:
 		next = "coast"

@@ -34,6 +34,7 @@ const DEFAULTS := {
 	"quest_log": [["key", KEY_J], ["joy_button", JOY_BUTTON_DPAD_RIGHT]],
 	"skills_panel": [["key", KEY_K], ["joy_axis", JOY_AXIS_TRIGGER_LEFT, 1.0]],
 	"world_map": [["key", KEY_M], ["joy_button", JOY_BUTTON_MISC1]],
+	"collection_log": [["key", KEY_L], ["joy_axis", JOY_AXIS_TRIGGER_RIGHT, 1.0]],
 	"pause_menu": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_START]],
 }
 

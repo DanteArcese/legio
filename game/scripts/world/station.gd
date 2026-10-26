@@ -8,13 +8,14 @@ const LOOKS := {
 	"range": ["Cooking range", Color(0.55, 0.45, 0.35), Vector3(1.3, 0.9, 0.8), "A clay oven with a fire beneath."],
 	"fire": ["Campfire", Color(0.4, 0.28, 0.18), Vector3(1.0, 0.5, 1.0), "A woodsman's fire, kept burning. Good for cooking fish."],
 	"tanning_rack": ["Tanning rack", Color(0.5, 0.36, 0.22), Vector3(1.4, 1.6, 0.4), "Hides stretched to cure. Tan boar hides into leather here."],
+	"sawpit": ["Sawpit", Color(0.45, 0.33, 0.22), Vector3(2.0, 1.0, 0.8), "A log on trestles and a two-man saw. Saw logs into planks here."],
 	"garum_vat": ["Garum vat", Color(0.55, 0.5, 0.45), Vector3(1.4, 0.8, 1.4), "A stone vat of fish and salt, fermenting in the sun. The smell is something else."],
 	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
 }
 ## Recipe kinds made at each station.
-const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum"}
+const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum", "sawpit": "saw"}
 
-@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit") var kind := "furnace"
 
 var _flame: MeshInstance3D
 var _light: OmniLight3D
@@ -57,6 +58,8 @@ func _ready() -> void:
 			_build_tanning_rack()
 		"garum_vat":
 			_build_garum_vat()
+		"sawpit":
+			_build_sawpit()
 	var shape := CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	shape.shape.size = look[2]
@@ -126,6 +129,16 @@ func _build_tomb() -> void:
 	_add_box(Vector3(1.0, 0.8, 2.0), Vector3(0, 0.4, 0), stone)
 	_add_box(Vector3(1.1, 0.18, 2.1), Vector3(0, 0.89, 0), stone.lightened(0.08))
 	_add_box(Vector3(0.7, 1.2, 0.18), Vector3(0, 0.6, -1.15), stone.darkened(0.12))
+
+
+## A log on two trestles, half sawn through, with the saw left in the cut.
+func _build_sawpit() -> void:
+	var wood := Color(0.45, 0.33, 0.22)
+	for x in [-0.7, 0.7]:
+		_add_box(Vector3(0.12, 0.7, 0.7), Vector3(x, 0.35, 0), wood.darkened(0.25))
+	_add_cylinder(0.22, 2.0, Vector3(0, 0.88, 0), wood)
+	get_child(get_child_count() - 1).rotation.z = PI / 2.0
+	_add_box(Vector3(0.04, 0.5, 0.9), Vector3(0.2, 1.1, 0), Color(0.6, 0.6, 0.62))
 
 
 ## A low stone tank, brimming with dark brine, beside a stack of amphorae.

@@ -39,6 +39,9 @@
 [ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
 [ext_resource type="Script" path="res://scripts/world/trade_board.gd" id="37_board"]
 [ext_resource type="Script" path="res://scripts/ui/world_map.gd" id="40_world_map"]
+[ext_resource type="Script" path="res://scripts/world/villa_grounds.gd" id="38_villa"]
+[ext_resource type="Script" path="res://scripts/world/villa_hotspot.gd" id="39_hotspot"]
+[ext_resource type="Script" path="res://scripts/ui/collection_ui.gd" id="41_collection_ui"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -110,6 +113,9 @@ size = Vector3(7, 3.5, 5)
 
 [sub_resource type="BoxShape3D" id="Warehouse_shape"]
 size = Vector3(10, 4, 6)
+
+[sub_resource type="BoxShape3D" id="VillaHouse_shape"]
+size = Vector3(14, 4, 8)
 
 [node name="Main" type="Node3D"]
 
@@ -634,6 +640,110 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -303, 0, -9)
 script = ExtResource("37_board")
 board_id = "portus_board"
 
+[node name="Villa" type="StaticBody3D" parent="." groups=["map_regions"]]
+script = ExtResource("38_villa")
+metadata/map_name = "Villa"
+metadata/map_rect = Rect2(290, -30, 60, 60)
+metadata/map_color = Color(0.72, 0.62, 0.48, 1)
+
+[node name="VillaHouse" type="StaticBody3D" parent="Villa" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 320, 2, -18)
+collision_layer = 16
+metadata/door_side = "+z"
+
+[node name="Mesh" type="MeshInstance3D" parent="Villa/VillaHouse"]
+
+[node name="Collision" type="CollisionShape3D" parent="Villa/VillaHouse"]
+shape = SubResource("VillaHouse_shape")
+
+[node name="RoadToFort" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 320, 0, 27)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Castra Ferrea"
+examine_text = "The road west, back to the fort."
+destination = Vector3(42.5, 0, -4)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Hotspot_hearth" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 312, 0, -7)
+script = ExtResource("39_hotspot")
+hotspot_id = "hearth"
+hotspot_type = "hearth"
+
+[node name="Hotspot_workbench" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 328, 0, -7)
+script = ExtResource("39_hotspot")
+hotspot_id = "workbench"
+hotspot_type = "workbench"
+
+[node name="Hotspot_shrine" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 316, 0, -11)
+script = ExtResource("39_hotspot")
+hotspot_id = "shrine"
+hotspot_type = "shrine"
+
+[node name="Hotspot_strongbox" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 324, 0, -11)
+script = ExtResource("39_hotspot")
+hotspot_id = "strongbox"
+hotspot_type = "strongbox"
+
+[node name="Hotspot_garden_1" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 309, 0, 1)
+script = ExtResource("39_hotspot")
+hotspot_id = "garden_1"
+hotspot_type = "garden"
+
+[node name="Hotspot_garden_2" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 331, 0, 1)
+script = ExtResource("39_hotspot")
+hotspot_id = "garden_2"
+hotspot_type = "garden"
+
+[node name="Hotspot_waystone" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 320, 0, 8)
+script = ExtResource("39_hotspot")
+hotspot_id = "waystone"
+hotspot_type = "waystone"
+
+[node name="LandSurveyor" type="StaticBody3D" parent="Forum" groups=["surveyors", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1, 6.5)
+collision_layer = 8
+metadata/display_name = "Land surveyor"
+metadata/examine = "An agrimensor with a groma over his shoulder. He measures the province into lots."
+
+[node name="Mesh" type="MeshInstance3D" parent="Forum/LandSurveyor"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Forum/LandSurveyor"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Forum/LandSurveyor"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+weapon = "weapons/staff"
+
+[node name="Label" type="Label3D" parent="Forum/LandSurveyor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Land surveyor
+(Villas)"
+font_size = 32
+outline_size = 8
+
+[node name="RoadToVilla" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, -4)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to your villa"
+examine_text = "A private road east, to the citizens' estates."
+destination = Vector3(320, 0, 24)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+requires_villa = true
+
 [node name="Smithy" type="Node3D" parent="."]
 
 [node name="Furnace" type="StaticBody3D" parent="Smithy"]
@@ -650,6 +760,11 @@ kind = "anvil"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, -9.2)
 script = ExtResource("11_station")
 kind = "range"
+
+[node name="Sawpit" type="StaticBody3D" parent="Smithy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, -9.2)
+script = ExtResource("11_station")
+kind = "sawpit"
 
 [node name="TanningRack" type="StaticBody3D" parent="Smithy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5, 0, -9.2)
@@ -1038,6 +1153,11 @@ player = NodePath("../Player")
 
 [node name="SkillsUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
 script = ExtResource("30_skills_ui")
+driver = NodePath("../SimDriver")
+player = NodePath("../Player")
+
+[node name="CollectionUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
+script = ExtResource("41_collection_ui")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 

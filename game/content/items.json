@@ -1029,5 +1029,15 @@
     "requirements": {
       "ranged": 30
     }
+  },
+  "plank": {
+    "name": "Plank",
+    "value": 6,
+    "examine": "A sawn plank of common wood."
+  },
+  "oak_plank": {
+    "name": "Oak plank",
+    "value": 20,
+    "examine": "A heavy oak plank, straight and true."
   }
 }

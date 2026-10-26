@@ -71,6 +71,8 @@ Kept as a core skill and the center of progression.
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 | Cooking | Bread, garum, roasts, *posca*. Wine making could live here or under Farming. |
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |
+
+**Built (#97): leather first.** Boars always drop a hide; the tanning rack at the smithy turns hides into leather. With a needle and thread (from Aulus), leather is sewn anywhere (the inventory's Sew option) into a leather cap (1) and jerkin (7), and with wolf pelts into a wolfskin hood (15) and jerkin (22). All give ranged attack and more defence against arrows than blades: the ranger's armour line.
 | Fletching | Bows, arrows, javelin shafts, sling bullets (lead *glandes*). |
 | Medicina | Replaces Herblore. Remedies drawn from Dioscorides and Galen. |
 | Engineering | Replaces Construction, with a bigger scope: your villa (the player-owned house), plus **roads, waystations, and aqueduct repairs** that change the world. |

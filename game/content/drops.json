@@ -67,6 +67,10 @@
       {
         "item": "bones",
         "quantity": 1
+      },
+      {
+        "item": "boar_hide",
+        "quantity": 1
       }
     ],
     "rolls": 1,

@@ -14,14 +14,14 @@ from pathlib import Path
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
 FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
 AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}

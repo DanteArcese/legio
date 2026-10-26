@@ -23,8 +23,12 @@ const FISH_BASE_CHANCE := 0.3
 ## Burn chance at the recipe's level, falling to 0 at its stop_burning level.
 const MAX_BURN_CHANCE := 0.5
 ## Where each kind of recipe is made. Fletching needs no station.
-const STATIONS_FOR_KIND := {"smelt": ["furnace"], "smith": ["anvil"], "cook": ["range", "fire"], "inscribe": ["tomb"], "fletch": []}
-const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus", "fletch": "fletching"}
+const STATIONS_FOR_KIND := {"smelt": ["furnace"], "smith": ["anvil"], "cook": ["range", "fire"], "inscribe": ["tomb"], "fletch": [],
+	"tan": ["tanning_rack"], "leatherwork": []}
+const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus", "fletch": "fletching",
+	"tan": "crafting", "leatherwork": "crafting"}
+## Recipe kinds made anywhere, from the inventory, and the verb for each.
+const HANDHELD_KINDS := {"fletch": "Fletch", "leatherwork": "Sew"}
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.

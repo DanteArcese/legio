@@ -7,12 +7,13 @@ const LOOKS := {
 	"anvil": ["Anvil", Color(0.25, 0.25, 0.28), Vector3(0.9, 0.6, 0.5), "Bring bars and a hammer."],
 	"range": ["Cooking range", Color(0.55, 0.45, 0.35), Vector3(1.3, 0.9, 0.8), "A clay oven with a fire beneath."],
 	"fire": ["Campfire", Color(0.4, 0.28, 0.18), Vector3(1.0, 0.5, 1.0), "A woodsman's fire, kept burning. Good for cooking fish."],
+	"tanning_rack": ["Tanning rack", Color(0.5, 0.36, 0.22), Vector3(1.4, 1.6, 0.4), "Hides stretched to cure. Tan boar hides into leather here."],
 	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
 }
 ## Recipe kinds made at each station.
-const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe"}
+const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan"}
 
-@export_enum("furnace", "anvil", "range", "tomb", "fire") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack") var kind := "furnace"
 
 var _flame: MeshInstance3D
 var _light: OmniLight3D

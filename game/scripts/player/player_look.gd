@@ -7,7 +7,7 @@ extends RefCounted
 
 const BODIES := {
 	"": "adventurers/Rogue", "bronze_lorica": "adventurers/Knight", "iron_lorica": "adventurers/Knight", "lorica_hamata": "adventurers/Knight",
-	"ritual_robe": "adventurers/Mage",
+	"ritual_robe": "adventurers/Mage", "leather_jerkin": "adventurers/Rogue", "wolfskin_jerkin": "adventurers/Barbarian",
 }
 ## item -> [model, attack style]
 const WEAPONS := {
@@ -26,6 +26,7 @@ const SHIELDS := {"bronze_scutum": "weapons/shield_square", "iron_scutum": "weap
 const HEADGEAR := {
 	"adventurers/Knight": ["Knight_Helmet", ["bronze_galea", "iron_galea"]],
 	"adventurers/Mage": ["Mage_Hat", ["ritual_hood"]],
+	"adventurers/Barbarian": ["Barbarian_Hat", ["wolfskin_hood"]],
 }
 
 

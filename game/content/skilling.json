@@ -842,6 +842,32 @@
         "xp": 80,
         "tool": "pestle"
       }
+    ],
+    "saw": [
+      {
+        "id": "plank",
+        "inputs": [
+          {
+            "item": "logs",
+            "quantity": 1
+          }
+        ],
+        "output": "plank",
+        "level": 1,
+        "xp": 8
+      },
+      {
+        "id": "oak_plank",
+        "inputs": [
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "oak_plank",
+        "level": 15,
+        "xp": 18
+      }
     ]
   },
   "trees": {

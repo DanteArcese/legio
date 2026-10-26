@@ -1,0 +1,15 @@
+{
+  "pages": {
+    "beasts": {"name": "Beasts of the woods", "category": "Combat", "items": ["wolf_pelt", "boar_hide", "boar_tusk"]},
+    "latrones": {"name": "Latrones", "category": "Combat", "items": ["bronze_galea", "bronze_pugio", "bronze_arrow"]},
+    "barrow": {"name": "Barrow of the Lemures", "category": "Combat", "items": ["lemur_ash", "iron_pugio", "composite_bow", "iron_bar"]},
+    "slayer": {"name": "Slayer creatures", "category": "Slayer", "items": ["strix_feather", "iron_gladius", "iron_scutum", "larval_shroud", "harpy_feather", "iron_arrowheads"]},
+    "seeds": {"name": "Seeds", "category": "Combat", "items": ["mint_seed", "fennel_seed", "bean_seed", "sage_seed", "wormwood_seed", "poppy_seed"]},
+    "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna"]},
+    "harvest": {"name": "The harvest", "category": "Skilling", "items": ["mint", "fennel", "sage", "wormwood", "poppy", "cabbage", "broad_beans"]},
+    "hunter": {"name": "Hunter", "category": "Skilling", "items": ["hare_pelt", "fox_pelt"]},
+    "thieving": {"name": "Light fingers", "category": "Skilling", "items": ["bread", "linen", "silver_fibula"]},
+    "quests": {"name": "Rewards of service", "category": "Quests", "items": ["parma", "lorica_hamata", "spatha", "diploma", "harpy_arrow"]},
+    "frontier": {"name": "Beyond the Limes", "category": "Frontier", "items": ["dire_wolf_pelt", "gold_ore", "framea", "gold_torc", "warchiefs_helm"]}
+  }
+}

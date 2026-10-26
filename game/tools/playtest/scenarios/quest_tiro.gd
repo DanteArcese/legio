@@ -34,7 +34,11 @@ func run() -> void:
 		var step: int = me.quests["tiro"]["step"]
 		await _wield(style[0], style[1])
 		player().attack(DUMMY)
-		await _wait_until(func(): return me.quests["tiro"]["step"] > step, 60.0)
+		# The dummy has 10 hitpoints and can break mid-drill; go again once it's back.
+		await _wait_until(func():
+			if me.target_id == -1 and driver().sim.get_combatant(DUMMY).is_alive():
+				player().attack(DUMMY)
+			return me.quests["tiro"]["step"] > step, 60.0)
 		expect(me.quests["tiro"]["step"] > step, "the %s step is done" % style[0])
 		driver().sim.queue_stop(PLAYER)
 		await seconds(0.7)

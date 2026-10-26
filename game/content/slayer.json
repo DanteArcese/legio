@@ -57,6 +57,16 @@
           ],
           "slayer_level": 10,
           "combat_level": 18
+        },
+        {
+          "monster": "harpy",
+          "weight": 4,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 20,
+          "combat_level": 25
         }
       ]
     }

@@ -36,6 +36,7 @@
 [ext_resource type="Script" path="res://scripts/world/obstacle_node.gd" id="33_obstacle"]
 [ext_resource type="Script" path="res://scripts/world/burrow_node.gd" id="34_burrow"]
 [ext_resource type="Script" path="res://scripts/world/patch_node.gd" id="35_patch"]
+[ext_resource type="Script" path="res://scripts/world/coast.gd" id="36_coast"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -98,6 +99,15 @@ albedo_color = Color(0.42, 0.33, 0.18, 1)
 
 [sub_resource type="CapsuleMesh" id="venator_mesh"]
 material = SubResource("hunter_leather")
+
+[sub_resource type="BoxShape3D" id="HouseHarbour_shape"]
+size = Vector3(8, 3.5, 6)
+
+[sub_resource type="BoxShape3D" id="HouseNet_shape"]
+size = Vector3(7, 3.5, 5)
+
+[sub_resource type="BoxShape3D" id="Warehouse_shape"]
+size = Vector3(10, 4, 6)
 
 [node name="Main" type="Node3D"]
 
@@ -470,6 +480,117 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 30.0)
 script = ExtResource("35_patch")
 patch_type = "allotment"
 
+[node name="PortusSalis" type="StaticBody3D" parent="."]
+script = ExtResource("36_coast")
+
+[node name="PortusSign" type="Label3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -300, 3.2, -24)
+billboard = 1
+text = "Portus Salis"
+font_size = 64
+outline_size = 12
+visibility_range_end = 70.0
+
+[node name="RoadToFort" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -300, 0, -46.5)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Castra Ferrea"
+examine_text = "The road climbs inland, back to the fort."
+destination = Vector3(-15.5, 0, 46.5)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="HouseHarbour" type="StaticBody3D" parent="PortusSalis" groups=["houses", "navigation_source"]]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -314, 1.75, -12)
+collision_layer = 16
+metadata/door_side = "+z"
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/HouseHarbour"]
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/HouseHarbour"]
+shape = SubResource("HouseHarbour_shape")
+
+[node name="HouseNet" type="StaticBody3D" parent="PortusSalis" groups=["houses", "navigation_source"]]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -287, 1.75, -18)
+collision_layer = 16
+metadata/door_side = "+z"
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/HouseNet"]
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/HouseNet"]
+shape = SubResource("HouseNet_shape")
+
+[node name="Warehouse" type="StaticBody3D" parent="PortusSalis" groups=["houses", "navigation_source"]]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -322, 2.0, 0)
+collision_layer = 16
+metadata/door_side = "+x"
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/Warehouse"]
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/Warehouse"]
+shape = SubResource("Warehouse_shape")
+
+[node name="HarbourBank" type="StaticBody3D" parent="PortusSalis" groups=["banks", "navigation_source"]]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -307, 0.45, -3)
+collision_layer = 8
+metadata/examine = "The harbour's strongbox. Your bank is shared across the province."
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/HarbourBank"]
+mesh = SubResource("chest_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/HarbourBank"]
+shape = SubResource("chest_shape")
+
+[node name="Fishmonger" type="StaticBody3D" parent="PortusSalis" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -295, 1, -3)
+collision_layer = 8
+metadata/shop_id = "fishmonger"
+metadata/display_name = "Fishmonger"
+metadata/examine = "A weathered fishwife with forearms like a smith's."
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/Fishmonger"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/Fishmonger"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="PortusSalis/Fishmonger"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue_Hooded"
+
+[node name="Label" type="Label3D" parent="PortusSalis/Fishmonger"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Fishmonger"
+font_size = 32
+outline_size = 8
+
+[node name="GarumWorks1" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -289, 0, -7)
+script = ExtResource("11_station")
+kind = "garum_vat"
+
+[node name="GarumWorks2" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -286, 0, -7)
+script = ExtResource("11_station")
+kind = "garum_vat"
+
+[node name="HarbourFire" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -293, 0, 3)
+script = ExtResource("11_station")
+kind = "fire"
+
+[node name="TunaSpot" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -300, -0.3, 31.0)
+script = ExtResource("28_spot")
+spot_type = "harpoon_spot"
+
+[node name="SardineSpot" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -316, -0.3, 13.6)
+script = ExtResource("28_spot")
+spot_type = "net_spot"
+
 [node name="Smithy" type="Node3D" parent="."]
 
 [node name="Furnace" type="StaticBody3D" parent="Smithy"]
@@ -626,6 +747,16 @@ rock_type = "iron_rock"
 [node name="Barrow" parent="." groups=["navigation_source"] instance=ExtResource("14_barrow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 150, 0, 0)
 
+[node name="RoadToPortus" type="StaticBody3D" parent="."]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -16, 0, 49.4)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Portus Salis"
+examine_text = "The road runs south-west, down to the sea."
+destination = Vector3(-300, 0, -44)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
 [node name="BarrowEntrance" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 0, -38.6)
 script = ExtResource("15_transition")
@@ -728,6 +859,34 @@ monster_id = "wild_boar"
 [node name="Latro1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 38)
 monster_id = "latro"
+
+[node name="Crab1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -276, 0, 6)
+monster_id = "rock_crab"
+
+[node name="Crab2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -270, 0, 4)
+monster_id = "rock_crab"
+
+[node name="Crab3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -282, 0, 8)
+monster_id = "rock_crab"
+
+[node name="Crab4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -266, 0, 7)
+monster_id = "rock_crab"
+
+[node name="Harpy1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -252, 0, -28)
+monster_id = "harpy"
+
+[node name="Harpy2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -249, 0, -18)
+monster_id = "harpy"
+
+[node name="Harpy3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -255, 0, -38)
+monster_id = "harpy"
 
 [node name="Larva" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 181, 0, -34)

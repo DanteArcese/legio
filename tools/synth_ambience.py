@@ -1,8 +1,8 @@
 """Synthesises Legio's ambient loops and a few one-shot sounds as WAV files.
 
 Kenney's CC0 packs cover impacts and UI, but not nature ambience, so these
-are generated: wind, birdsong, crickets, a town murmur, and the barrow's
-drips and drone. Each loop crossfades its tail into its head so it repeats
+are generated: wind, birdsong, crickets, a town murmur, the barrow's
+drips and drone, and the coast's surf and gulls. Each loop crossfades its tail into its head so it repeats
 without a seam. Deterministic (fixed seeds), stdlib only.
 
     uv run tools/synth_ambience.py [output_dir]
@@ -267,6 +267,37 @@ def barrow(n, rng):
     return layer((drone(n, rng), 0.3), (drips, 0.6), (wind(n, rng, 200, 0.8), 0.15))
 
 
+def gull(rng: random.Random) -> list[float]:
+    """A falling two-part cry with a rough edge."""
+    out: list[float] = []
+    for _ in range(rng.randint(2, 3)):
+        f0 = rng.uniform(1700, 2100)
+        part = chirp(rng, f0, f0 * 0.62, rng.uniform(0.18, 0.28))
+        out += [x * (1.0 + 0.3 * math.sin(i * 0.9)) for i, x in enumerate(part)]
+        out += [0.0] * int(0.06 * RATE)
+    return out
+
+
+def surf(n: int, rng: random.Random) -> list[float]:
+    """Waves: slow swells of deep noise, with a hiss as each one breaks."""
+    body = normalise(lowpass(lowpass(noise(n, rng), 260), 260), 1.0)
+    hiss = normalise(highpass(noise(n, rng), 1800), 1.0)
+    period = 7.0
+    phase = rng.uniform(0, math.tau)
+    out = []
+    for i in range(n):
+        t = i / RATE
+        swell = 0.5 + 0.5 * math.sin(math.tau * t / period + phase)
+        crest = max(0.0, math.sin(math.tau * t / period + phase - 0.6)) ** 6
+        out.append(body[i] * (0.35 + 0.65 * swell) + hiss[i] * 0.5 * crest)
+    return normalise(out, 1.0)
+
+
+def coast(n, rng):
+    gulls = scatter(n, rng, gull, 6, (0.12, 0.25))
+    return layer((surf(n, rng), 0.55), (wind(n, rng, 600, 0.5), 0.15), (gulls, 1.0))
+
+
 def swish(seconds: float, low: float, high: float, seed: int) -> list[float]:
     rng = random.Random(seed)
     n = int(seconds * RATE)
@@ -304,6 +335,7 @@ def main() -> None:
         "ambient_night": (night, 2),
         "ambient_town": (town, 3),
         "ambient_barrow": (barrow, 4),
+        "ambient_coast": (coast, 5),
     }
     for name, (build, seed) in loops.items():
         write_wav(out / f"{name}.wav", make_loop(build, seed), 0.7)

@@ -277,5 +277,75 @@
         "weight": 4
       }
     ]
+  },
+  "rock_crab": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 4
+      },
+      {
+        "item": "raw_sardine",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          2,
+          8
+        ],
+        "weight": 3
+      },
+      {
+        "item": "salt",
+        "quantity": 5,
+        "weight": 2
+      }
+    ]
+  },
+  "harpy": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "harpy_feather",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          30,
+          90
+        ],
+        "weight": 8
+      },
+      {
+        "item": "iron_arrowheads",
+        "quantity": 15,
+        "weight": 3
+      },
+      {
+        "item": "poppy_seed",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 4
+      }
+    ]
   }
 }

@@ -1,0 +1,75 @@
+{
+  "stalls": {
+    "bakers_stall": {
+      "name": "Baker's stall",
+      "level": 1,
+      "xp": 16,
+      "loot": {
+        "item": "bread",
+        "quantity": 1
+      },
+      "restock_ticks": 8,
+      "caught_chance": 0.25,
+      "model": "stall-red",
+      "examine": "Loaves of panis quadratus, still warm."
+    },
+    "cloth_stall": {
+      "name": "Cloth stall",
+      "level": 12,
+      "xp": 30,
+      "loot": {
+        "item": "linen",
+        "quantity": 1
+      },
+      "restock_ticks": 16,
+      "caught_chance": 0.3,
+      "model": "stall-green",
+      "examine": "Bolts of Gallic linen and coarse wool."
+    },
+    "silversmiths_stall": {
+      "name": "Silversmith's stall",
+      "level": 25,
+      "xp": 56,
+      "loot": {
+        "item": "silver_fibula",
+        "quantity": 1
+      },
+      "restock_ticks": 35,
+      "caught_chance": 0.35,
+      "model": "stall-red",
+      "examine": "Brooches and rings, under the silversmith's eye."
+    }
+  },
+  "marks": {
+    "townsman": {
+      "name": "Townsman",
+      "level": 1,
+      "xp": 9,
+      "coins": [
+        3,
+        8
+      ],
+      "stun_ticks": 5,
+      "damage": [
+        1,
+        2
+      ],
+      "examine": "A townsman of Castra Ferrea. His purse hangs loose."
+    },
+    "merchant": {
+      "name": "Merchant",
+      "level": 18,
+      "xp": 28,
+      "coins": [
+        14,
+        32
+      ],
+      "stun_ticks": 6,
+      "damage": [
+        1,
+        3
+      ],
+      "examine": "A Gaulish merchant with rings on every finger."
+    }
+  }
+}

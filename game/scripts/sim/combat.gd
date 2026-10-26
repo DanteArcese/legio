@@ -70,7 +70,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		attacker.target_id = -1
 		return
 	var tick: int = sim.tick
-	if tick < attacker.next_attack_tick:
+	if tick < attacker.next_attack_tick or attacker.stunned_until > tick:
 		return
 	if sim.flat_distance(attacker.position, target.position) > attacker.attack_range():
 		return

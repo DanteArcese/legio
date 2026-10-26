@@ -84,13 +84,20 @@ func on_curse(player: RefCounted, events: Array) -> void:
 	events.append({"type": "pollution_changed", "id": player.id, "tick": sim.tick})
 	var p := Vector2(player.position.x, player.position.z)
 	if TOWN.has_point(p):
-		_town_watch(player, events)
+		town_watch(player, events, "A vigil glares at you: \"No curses within the walls, citizen. That's your only warning.\"",
+			"cursing inside the walls")
 
 
-func _town_watch(player: RefCounted, events: Array) -> void:
+static func in_town(position: Vector3) -> bool:
+	return TOWN.has_point(Vector2(position.x, position.z))
+
+
+## The vigiles saw an offence: a warning first, then fines for repeat
+## offences while they remember you (at most one fine a minute).
+func town_watch(player: RefCounted, events: Array, warning: String, offence: String) -> void:
 	if player.watch_warned_at == -1 or sim.tick - player.watch_warned_at > WATCH_MEMORY_TICKS:
 		player.watch_warned_at = sim.tick
-		sim.message(player, "A vigil glares at you: \"No curses within the walls, citizen. That's your only warning.\"", events)
+		sim.message(player, warning, events)
 		events.append({"type": "watch_warning", "id": player.id, "tick": sim.tick})
 		return
 	player.watch_warned_at = sim.tick
@@ -99,7 +106,7 @@ func _town_watch(player: RefCounted, events: Array) -> void:
 	var fine: int = mini(WATCH_FINE, player.inventory.count("coins"))
 	player.inventory.remove("coins", fine)
 	player.watch_fined_at = sim.tick
-	sim.message(player, "The vigiles fine you %d denarii for cursing inside the walls." % fine, events)
+	sim.message(player, "The vigiles fine you %d denarii for %s." % [fine, offence], events)
 	events.append({"type": "watch_fine", "id": player.id, "amount": fine, "tick": sim.tick})
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 

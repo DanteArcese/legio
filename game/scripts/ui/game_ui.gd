@@ -37,7 +37,9 @@ func _ready() -> void:
 	_menu.id_pressed.connect(func(index): _menu_actions[index].call())
 	add_child(_menu)
 	_message = Label.new()
-	_message.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
+	# Full width, centred text, so long messages stay on screen.
+	_message.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	_message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	# Just above the HUD's status panel.
 	_message.position.y -= 215
 	_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

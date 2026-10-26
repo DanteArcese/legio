@@ -40,10 +40,20 @@ func run() -> void:
 	await seconds(0.7)
 	driver().sim.queue_item_action(PLAYER, "equip", {"slot": _slot_of("silencing_tablet")})
 	await seconds(0.7)
-	var other := _nearest("wolf")
-	if other:
+	# A curse only lands on a target that survives the hit, and at Ritus 55
+	# one hit can kill a wolf outright, so this one gets extra hitpoints.
+	for attempt in 3:
+		if count_events("curse", {"source": PLAYER, "curse": "silencing"}) > 0:
+			break
+		var other := _nearest("wolf")
+		if other == null:
+			await seconds(3.0)
+			continue
+		other.combatant.max_hp = 200
+		other.combatant.hp = 200
 		player().attack(other.entity_id)
-		await _wait_until(func(): return count_events("curse", {"source": PLAYER, "curse": "silencing"}) > 0, 30.0)
+		await _wait_until(func(): return count_events("curse", {"source": PLAYER, "curse": "silencing"}) > 0 \
+			or not other.combatant.is_alive(), 30.0)
 	expect(count_events("curse", {"source": PLAYER, "curse": "silencing"}) > 0, "silenced a wolf")
 
 

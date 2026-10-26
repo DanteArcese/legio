@@ -52,6 +52,10 @@ var watch_warned_at := -1
 var watch_fined_at := -1
 ## Current skilling action ({} for none); see skilling.gd.
 var skill_action := {}
+## Stunned (by a failed pickpocket) until this tick: no attacks, thefts, or walking.
+var stunned_until := -1
+## The next tick the player may try another theft.
+var thieving_ready_at := -1
 ## Who last hit this combatant, for kill credit.
 var last_attacker_id := -1
 ## Quest progress: quest id -> {"step", "progress", "done"}; see quests.gd.

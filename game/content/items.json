@@ -655,5 +655,15 @@
     "requirements": {
       "defence": 15
     }
+  },
+  "linen": {
+    "name": "Linen",
+    "value": 20,
+    "examine": "A bolt of fine linen."
+  },
+  "silver_fibula": {
+    "name": "Silver fibula",
+    "value": 90,
+    "examine": "A silver cloak brooch, worked like a crossbow."
   }
 }

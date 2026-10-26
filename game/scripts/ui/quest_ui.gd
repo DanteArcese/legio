@@ -133,6 +133,11 @@ func _refresh_log() -> void:
 	if combatant == null:
 		return
 	var text := ""
+	if not combatant.trade_contract.is_empty():
+		var contract := ContentDB.contract(combatant.trade_contract["id"])
+		text += "[color=#9fc6e8][b]Trade contract: %s[/b][/color]\n    Bring %d %s to the %s (%d / %d).\n\n" % [contract["name"], contract["quantity"],
+			ContentDB.item(contract["item"])["name"].to_lower(), ContentDB.shop(contract["to"])["name"].to_lower(),
+			mini(combatant.inventory.count(contract["item"]), contract["quantity"]), contract["quantity"]]
 	var rank := Quests.rank(combatant)
 	if not rank.is_empty():
 		text += "[i]Rank: %s[/i]\n\n" % rank

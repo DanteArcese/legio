@@ -106,6 +106,8 @@ Mercatura works like a skill rather than a menu over the market:
 - **Unlocks by level:** carts, then wagons, then merchant ships. Also larger cargo, warehouses in each province, more lucrative trade routes, lower fees at the forum market, and membership in a merchants' guild.
 - **Links to other skills:** artisan products sell for more in the right region, so Mercatura rewards specialists.
 
+**Built (#120): trade contracts.** Trade boards at Portus Salis (cargoes wanted inland: garum and salt for the quartermaster, grilled tuna for the Gaulish merchant) and in the fort's forum (cargoes wanted at the coast: iron bars, oak logs, and linen for the fishmonger's shipwrights). Take one contract at a time, source the goods yourself (the fishmonger sells garum cheaply at the coast), and deliver to the named shopkeeper for coins and Mercatura XP. Higher levels unlock bigger contracts. The quest log tracks the current contract. Carts, wagons, ships, regional prices, and risk on the road come later.
+
 ## Replacing magic
 
 OSRS magic does three jobs: a third combat style, teleportation, and utility spells such as alchemy and enchanting. Each needs a replacement.

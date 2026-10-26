@@ -71,6 +71,8 @@ func _ready() -> void:
 		spot_id += 1
 		spot.spot_id = spot_id
 		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
+	for board in get_tree().get_nodes_in_group("trade_boards"):
+		sim.mercatura.add_board(board.board_id, board.global_position)
 	for patch in get_tree().get_nodes_in_group("patches"):
 		patch.patch_id = _patches.size() + 1
 		_patches[patch.patch_id] = patch

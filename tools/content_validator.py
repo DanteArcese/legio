@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
@@ -67,6 +67,7 @@ def validate(content: dict) -> list[str]:
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
+    _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -567,6 +568,31 @@ def _check_farming(farming, items, errors):
             errors.append(f"{where}.yield: expected [min, max] whole numbers")
         if not COLOR_PATTERN.match(str(crop.get("color", ""))):
             errors.append(f"{where}.color: expected #rrggbb")
+
+
+CONTRACT_KEYS = {"name", "board", "level", "item", "quantity", "to", "coins", "xp", "summary"}
+
+
+def _check_mercatura(mercatura, items, shops, errors):
+    _check_keys("mercatura", mercatura, {"boards", "contracts"}, {"boards", "contracts"}, errors)
+    boards = mercatura.get("boards", {})
+    for board_id, board in boards.items():
+        _check_id(f"mercatura.boards.{board_id}", board_id, errors)
+        _check_keys(f"mercatura.boards.{board_id}", board, {"name", "examine"}, {"name", "examine"}, errors)
+    for contract_id, contract in mercatura.get("contracts", {}).items():
+        where = f"mercatura.contracts.{contract_id}"
+        _check_id(where, contract_id, errors)
+        _check_keys(where, contract, CONTRACT_KEYS, CONTRACT_KEYS, errors)
+        if contract.get("board") not in boards:
+            errors.append(f"{where}.board: unknown board {contract.get('board')!r}")
+        if contract.get("item") not in items:
+            errors.append(f"{where}.item: unknown item {contract.get('item')!r}")
+        if contract.get("to") not in shops:
+            errors.append(f"{where}.to: deliveries go to a shopkeeper; unknown shop {contract.get('to')!r}")
+        _check_int(where, "level", contract.get("level"), 1, errors, 99)
+        _check_int(where, "quantity", contract.get("quantity"), 1, errors, 1000)
+        _check_int(where, "coins", contract.get("coins"), 1, errors)
+        _check_number(where, "xp", contract.get("xp"), 0.1, 100000, errors)
 
 
 def _check_lines(where, key, lines, errors):

@@ -66,6 +66,9 @@ var stunned_until := -1
 var thieving_ready_at := -1
 ## Who last hit this combatant, for kill credit.
 var last_attacker_id := -1
+## Mercatura: the current trade contract ({} or {"id"}) and how many are done.
+var trade_contract := {}
+var contracts_done := 0
 ## Quest progress: quest id -> {"step", "progress", "done"}; see quests.gd.
 var quests := {}
 ## A label quests can point at, for things that aren't monsters (the training dummy).

@@ -1,0 +1,80 @@
+{
+  "boards": {
+    "portus_board": {
+      "name": "Portus trade board",
+      "examine": "Wax tablets nailed to a post: cargoes wanted, inland and over the sea."
+    },
+    "forum_board": {
+      "name": "Forum notice board",
+      "examine": "Notices of goods wanted at the coast, and the odd lost dog."
+    }
+  },
+  "contracts": {
+    "garum_for_the_cohort": {
+      "name": "Garum for the cohort",
+      "board": "portus_board",
+      "level": 1,
+      "item": "garum",
+      "quantity": 3,
+      "to": "quartermaster",
+      "coins": 240,
+      "xp": 90,
+      "summary": "The cohort's cooks want garum from the coast."
+    },
+    "salt_for_the_fort": {
+      "name": "Salt for the fort",
+      "board": "portus_board",
+      "level": 1,
+      "item": "salt",
+      "quantity": 40,
+      "to": "quartermaster",
+      "coins": 150,
+      "xp": 60,
+      "summary": "Salt for the cohort's meat stores."
+    },
+    "tuna_for_the_forum": {
+      "name": "Tuna for the forum",
+      "board": "portus_board",
+      "level": 15,
+      "item": "cooked_tuna",
+      "quantity": 8,
+      "to": "gallic_merchant",
+      "coins": 650,
+      "xp": 260,
+      "summary": "The Gaulish merchant has buyers for grilled tunny."
+    },
+    "iron_for_the_shipwrights": {
+      "name": "Iron for the shipwrights",
+      "board": "forum_board",
+      "level": 1,
+      "item": "iron_bar",
+      "quantity": 4,
+      "to": "fishmonger",
+      "coins": 300,
+      "xp": 110,
+      "summary": "The harbour's shipwrights need iron for nails and fittings."
+    },
+    "timber_for_the_pier": {
+      "name": "Timber for the pier",
+      "board": "forum_board",
+      "level": 5,
+      "item": "oak_logs",
+      "quantity": 8,
+      "to": "fishmonger",
+      "coins": 220,
+      "xp": 120,
+      "summary": "The pier needs new oak piles before the winter storms."
+    },
+    "linen_for_sails": {
+      "name": "Linen for sails",
+      "board": "forum_board",
+      "level": 10,
+      "item": "linen",
+      "quantity": 6,
+      "to": "fishmonger",
+      "coins": 360,
+      "xp": 180,
+      "summary": "Sailcloth for the fishing boats."
+    }
+  }
+}

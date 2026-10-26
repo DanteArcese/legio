@@ -257,7 +257,7 @@ func _dress_trees() -> void:
 func _dress_choppable_trees() -> void:
 	for tree in get_tree().get_nodes_in_group("trees"):
 		var stump := model("nature/stump_round")
-		stump.scale = Vector3.ONE * 2.2
+		stump.scale = Vector3.ONE * 3.0
 		tree.dress(model("nature/" + tree.model_name()), stump)
 
 

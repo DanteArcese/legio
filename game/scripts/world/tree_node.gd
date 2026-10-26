@@ -15,6 +15,7 @@ var tree_id := 0
 var felled := false
 var _standing: Node3D
 var _stump: Node3D
+var _label: Label3D
 
 
 ## Joins the groups before any _ready runs, so the driver and dresser find it.
@@ -31,16 +32,15 @@ func _ready() -> void:
 	shape.shape.height = 2.0
 	shape.position.y = 1.0
 	add_child(shape)
-	var label := Label3D.new()
-	label.text = display_name()
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.font_size = 32
-	label.outline_size = 8
-	label.position.y = 2.2
-	label.visibility_range_end = 30.0
-	add_child(label)
+	_label = Label3D.new()
+	_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_label.font_size = 32
+	_label.outline_size = 8
+	_label.visibility_range_end = 30.0
+	add_child(_label)
 	if _standing == null:
 		dress(_greybox(), _greybox_stump())
+	set_felled(felled)
 
 
 func display_name() -> String:
@@ -74,6 +74,9 @@ func set_felled(value: bool) -> void:
 	if _standing:
 		_standing.visible = not felled
 		_stump.visible = felled
+	if _label:
+		_label.text = "%s stump" % display_name() if felled else display_name()
+		_label.position.y = 1.0 if felled else 2.2
 
 
 func _greybox() -> Node3D:

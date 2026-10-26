@@ -235,6 +235,7 @@ func step() -> Array[Dictionary]:
 	athletics.process(players, events)
 	hunter.process(events)
 	farming.process(events)
+	items.decay_remedies(players)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -258,6 +259,7 @@ func message(player: Combatant, text: String, events: Array) -> void:
 
 func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 	victim.curses.clear()
+	victim.remedy_boosts.clear()
 	victim.target_id = -1
 	victim.move_target = null
 	for combatant in _combatants.values():

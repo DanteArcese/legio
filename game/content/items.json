@@ -930,5 +930,65 @@
     "value": 5,
     "examine": "A double handful of broad beans.",
     "heals": 3
+  },
+  "honey": {
+    "name": "Honey",
+    "value": 8,
+    "examine": "A small pot of thyme honey."
+  },
+  "mortar_and_pestle": {
+    "name": "Mortar and pestle",
+    "value": 10,
+    "examine": "A stone mortar and pestle, for grinding herbs.",
+    "tool": "pestle",
+    "tool_tier": 1
+  },
+  "mint_tonic": {
+    "name": "Mint tonic",
+    "value": 20,
+    "examine": "Mint steeped in wine. It sharpens the eye and the hand.",
+    "remedy": {
+      "skill": "attack",
+      "flat": 2,
+      "percent": 0.06
+    }
+  },
+  "fennel_draught": {
+    "name": "Fennel draught",
+    "value": 30,
+    "examine": "Fennel in wine. Gladiators drank it for strength.",
+    "remedy": {
+      "skill": "strength",
+      "flat": 2,
+      "percent": 0.08
+    }
+  },
+  "sage_salve": {
+    "name": "Sage salve",
+    "value": 45,
+    "examine": "Sage worked into honey. Rubbed on before a fight, it toughens the skin.",
+    "remedy": {
+      "skill": "defence",
+      "flat": 3,
+      "percent": 0.08
+    }
+  },
+  "wormwood_bitters": {
+    "name": "Wormwood bitters",
+    "value": 65,
+    "examine": "Wormwood in wine, bitter as a lost war. It steadies the aim.",
+    "remedy": {
+      "skill": "ranged",
+      "flat": 3,
+      "percent": 0.1
+    }
+  },
+  "poppy_draught": {
+    "name": "Poppy draught",
+    "value": 90,
+    "examine": "Poppy milk in honey. It dulls pain, and knits wounds faster.",
+    "remedy": {
+      "heals": 16
+    }
   }
 }

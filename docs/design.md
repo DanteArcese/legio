@@ -81,6 +81,8 @@ Kept as a core skill and the center of progression.
 **Built (#97): leather first.** Boars always drop a hide; the tanning rack at the smithy turns hides into leather. With a needle and thread (from Aulus), leather is sewn anywhere (the inventory's Sew option) into a leather cap (1) and jerkin (7), and with wolf pelts into a wolfskin hood (15) and jerkin (22). All give ranged attack and more defence against arrows than blades: the ranger's armour line.
 | Fletching | Bows, arrows, javelin shafts, sling bullets (lead *glandes*). |
 | Medicina | Replaces Herblore. Remedies drawn from Dioscorides and Galen. |
+
+**Built (#118).** With a mortar and pestle (from the sacerdos, with honey; he already sold wine), herbs from Farming are mixed anywhere (the inventory's Mix option) into remedies: mint tonic (1, Attack), fennel draught (8, Strength), sage salve (16, Defence), wormwood bitters (25, Ranged), and poppy draught (34, heals 16). A boost adds flat levels plus a share of your level (fennel at Strength 50: +6), shows on the HUD as e.g. "Str 50+6", wears off a level a minute, and is lost on death.
 | Engineering | Replaces Construction, with a bigger scope: your villa (the player-owned house), plus **roads, waystations, and aqueduct repairs** that change the world. |
 
 ### Support

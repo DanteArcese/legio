@@ -106,6 +106,14 @@
       {
         "item": "wine",
         "price": 18
+      },
+      {
+        "item": "honey",
+        "price": 8
+      },
+      {
+        "item": "mortar_and_pestle",
+        "price": 10
       }
     ]
   },

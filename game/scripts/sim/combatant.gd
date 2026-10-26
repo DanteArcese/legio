@@ -42,6 +42,9 @@ var slayer_tasks_done := 0
 var favour := 1.0
 var blessings: Array = []
 var blessing_boosts := {}
+## Medicina remedies: skill -> {"amount": levels, "next_decay": tick}. Each
+## boost wears off a level at a time.
+var remedy_boosts := {}
 ## Ritual pollution from casting curses (0-100); see pietas.gd.
 var pollution := 0.0
 ## Summoned allies (shades of the Manes): who called them, and when they fade.
@@ -109,12 +112,17 @@ func level(skill: String) -> int:
 	return skills.level(skill) if skills else levels.get(skill, 1)
 
 
+## Levels added by a remedy right now (0 for none).
+func remedy_boost(skill: String) -> int:
+	return remedy_boosts.get(skill, {}).get("amount", 0)
+
+
 func effective_level(skill: String) -> int:
 	var style_bonus := 0
 	if skills and Skills.STYLE_BONUS_SKILL[style] == skill:
 		style_bonus = CombatMath.STYLE_BONUS
 	# Blessings raise the level itself, e.g. +5% Strength.
-	var boosted := floori(level(skill) * (1.0 + blessing_boosts.get(skill, 0.0)))
+	var boosted := floori(level(skill) * (1.0 + blessing_boosts.get(skill, 0.0))) + remedy_boost(skill)
 	return CombatMath.effective_level(boosted, style_bonus)
 
 

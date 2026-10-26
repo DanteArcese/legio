@@ -12,6 +12,8 @@ const BANK_RANGE := 3.0
 const SHOP_RANGE := 3.0
 ## Eating delays your next attack by this many ticks.
 const EAT_DELAY := 3
+## A remedy's boost wears off one level this often (a minute).
+const REMEDY_DECAY_TICKS := 100
 ## Drops this close to an existing pile join it.
 const PILE_MERGE_RADIUS := 1.5
 
@@ -76,6 +78,11 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			player.next_attack_tick = maxi(player.next_attack_tick, sim.tick + EAT_DELAY)
 			events.append({"type": "ate", "id": player.id, "item": slot["item"], "healed": healed, "tick": sim.tick})
 			events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+		"drink":
+			if slot == null or not ContentDB.item(slot["item"]).has("remedy"):
+				return
+			_remove_from_slot(player, slot_index, 1)
+			_drink(player, slot["item"], events)
 		"drop":
 			if slot == null:
 				return
@@ -91,6 +98,36 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 				sim.message(player, "You need to be at a bank.", events)
 				return
 			_bank_command(player, command, slot, events)
+
+
+func _drink(player: Combatant, item_id: String, events: Array) -> void:
+	var remedy: Dictionary = ContentDB.item(item_id)["remedy"]
+	var name: String = ContentDB.item(item_id)["name"].to_lower()
+	player.next_attack_tick = maxi(player.next_attack_tick, sim.tick + EAT_DELAY)
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+	if remedy.has("heals"):
+		var healed := mini(remedy["heals"], player.max_hp - player.hp)
+		player.hp += healed
+		events.append({"type": "ate", "id": player.id, "item": item_id, "healed": healed, "tick": sim.tick})
+		return
+	var skill: String = remedy["skill"]
+	var amount: int = remedy["flat"] + floori(player.level(skill) * remedy["percent"])
+	player.remedy_boosts[skill] = {"amount": amount, "next_decay": sim.tick + REMEDY_DECAY_TICKS}
+	events.append({"type": "drank", "id": player.id, "item": item_id, "skill": skill, "amount": amount, "tick": sim.tick})
+	sim.message(player, "You drink the %s: +%d %s." % [name, amount, skill.capitalize()], events)
+
+
+## Remedy boosts wear off a level at a time.
+func decay_remedies(players: Array) -> void:
+	for player: Combatant in players:
+		for skill in player.remedy_boosts.keys():
+			var boost: Dictionary = player.remedy_boosts[skill]
+			if sim.tick < boost["next_decay"]:
+				continue
+			boost["amount"] -= 1
+			boost["next_decay"] = sim.tick + REMEDY_DECAY_TICKS
+			if boost["amount"] <= 0:
+				player.remedy_boosts.erase(skill)
 
 
 func equipment_changed(player: Combatant, events: Array) -> void:

@@ -6,7 +6,7 @@ extends RefCounted
 ## about 1.2k, and level 99 about 9.9M.
 ## The constants are first guesses, to be tuned by playtesting.
 
-const NAMES := ["attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming"]
+const NAMES := ["attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina"]
 const MAX_LEVEL := 99
 const MAX_XP := 200_000_000.0
 const CURVE_SCALE := 900.0

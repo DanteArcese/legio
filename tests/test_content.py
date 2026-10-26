@@ -227,3 +227,8 @@ def test_crops_need_a_patch_that_grows_them(content):
 def test_each_seed_grows_one_crop(content):
     errors = errors_after(content, lambda c: c["farming"]["crops"]["sage"].update(seed="mint_seed"))
     assert any("already grows another crop" in e for e in errors)
+
+
+def test_remedies_boost_real_skills(content):
+    errors = errors_after(content, lambda c: c["items"]["mint_tonic"]["remedy"].update(skill="charisma"))
+    assert any("items.mint_tonic.remedy.skill" in e for e in errors)

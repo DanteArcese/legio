@@ -85,9 +85,16 @@ func _refresh() -> void:
 	if c.uses_ammo():
 		var ammo: String = c.equipment.worn["ammo"]
 		ammo_text = "     Ammo: %s" % ("none" if ammo.is_empty() else "%s x%d" % [ContentDB.item(ammo)["name"], c.equipment.ammo_count])
-	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s   Favour %d / %d\nCombat %d   Atk %d   Str %d   Def %d   Rng %d   Rit %d   Pie %d   Vit %d   Slay %d" % [
+	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s   Favour %d / %d\nCombat %d   Atk %s   Str %s   Def %s   Rng %s   Rit %s   Pie %d   Vit %d   Slay %d" % [
 		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), ammo_text, ceili(c.favour), s.level("pietas"), s.combat_level(),
-		s.level("attack"), s.level("strength"), s.level("defence"), s.level("ranged"), s.level("ritus"), s.level("pietas"), s.level("vitality"), s.level("slayer")]
+		_with_boost(c, "attack"), _with_boost(c, "strength"), _with_boost(c, "defence"), _with_boost(c, "ranged"), _with_boost(c, "ritus"),
+		s.level("pietas"), s.level("vitality"), s.level("slayer")]
+
+
+## A level with any remedy boost shown, e.g. "12+3".
+static func _with_boost(c: RefCounted, skill: String) -> String:
+	var boost: int = c.remedy_boost(skill)
+	return "%d+%d" % [c.level(skill), boost] if boost > 0 else str(c.level(skill))
 
 
 ## Top-centre panel naming the current target with an HP bar.

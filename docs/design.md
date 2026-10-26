@@ -316,6 +316,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Frontier boss (#134): Hrodgar the War-chief.** Level 75, in a clearing ringed with standing stones north of the raiders' camp. He fights in melee, but every fourth attack he hurls a framea at where you stand instead: the spot is marked with a red ring and the spear lands 3 ticks later for 14 to 28 damage on anyone still inside. Click away (or hold the stick away) until it lands. Below a third of his health he enrages and attacks every 3 ticks instead of 5. He drops coins, gold, the framea, sometimes the gold torc, and rarely the war-chief's helm (Defence 40), a head piece better than iron. Boss mechanics come from a `boss` block in monsters.json, so later bosses can reuse them.
 
+**Frontier quest (#134): The Lost Eagle.** Centurion Varro holds the gate in the limes. Twenty years ago a cohort marched north and never came back, and Hrodgar keeps its eagle. Needs Attack, Strength and Defence 45 and *Duplicarius*. Scout the raiders' camp, kill four raiders, defeat Hrodgar to take back the eagle, and bring it to Varro. Rewards: combat, Slayer and Smithing XP, 2,500 denarii, the title "Bearer of the Eagle", and the gold torc recipe. The eagle is valued highly, so it is always among the items you keep on death.
+
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market (all since added except the market).
 
 ## Villa

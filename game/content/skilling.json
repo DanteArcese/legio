@@ -331,7 +331,8 @@
         "output": "gold_torc",
         "level": 45,
         "xp": 90,
-        "tool": "hammer"
+        "tool": "hammer",
+        "requires_quest": "the_lost_eagle"
       }
     ],
     "cook": [

@@ -1144,3 +1144,28 @@ monster_id = "dire_wolf"
 [node name="Hrodgar" parent="FrontierMonsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.2, -441)
 monster_id = "hrodgar"
+
+[node name="CenturionVarro" type="StaticBody3D" parent="Frontier" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -344)
+collision_layer = 8
+metadata/npc_id = "centurion_varro"
+metadata/display_name = "Centurion Varro"
+metadata/examine = "The centurion who holds the gate in the limes. His crest has seen better days."
+
+[node name="Mesh" type="MeshInstance3D" parent="Frontier/CenturionVarro"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Frontier/CenturionVarro"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Frontier/CenturionVarro"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+weapon = "weapons/sword_1handed"
+
+[node name="Label" type="Label3D" parent="Frontier/CenturionVarro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Centurion Varro"
+font_size = 32
+outline_size = 8

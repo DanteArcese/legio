@@ -21,6 +21,20 @@
       "idle": [
         "The gods notice what you give them, and what you don't."
       ]
+    },
+    "harbourmaster": {
+      "name": "Harbourmaster Lucilla",
+      "examine": "She runs the harbour with a wax tablet in one hand and a boathook in the other.",
+      "idle": [
+        "Tide's turning. If you're not buying or fishing, you're in the way."
+      ]
+    },
+    "fishmonger": {
+      "name": "Fishmonger",
+      "examine": "A weathered fishwife with forearms like a smith's.",
+      "idle": [
+        "Fresh from the boats! Well, fresh-ish."
+      ]
     }
   },
   "quests": {
@@ -383,6 +397,90 @@
         "rank": "Civis Romanus",
         "unlocks": "Roman citizenship (the legions, the capital, and a villa will open to citizens in time)",
         "title": "Civis Romanus"
+      }
+    },
+    "harpies_at_the_harbour": {
+      "name": "Harpies at the Harbour",
+      "summary": "Drive off the harpies that rob the Portus boats, and help the fishmonger mend the nets they tore.",
+      "giver": "harbourmaster",
+      "requirements": {
+        "skills": {
+          "slayer": 20,
+          "fishing": 15
+        }
+      },
+      "start": [
+        "You there, with the sword. Can you use it?",
+        "Harpies. They come down off the eastern rocks when the boats land, snatch the catch, and shred the nets. Last week they took a child's hat. Just the hat.",
+        "Kill four of them and bring me feathers to prove it. The guild pays bounty on proof, not on stories."
+      ],
+      "steps": [
+        {
+          "kind": "kill",
+          "monster": "harpy",
+          "count": 4,
+          "log": "Kill four harpies on the eastern rocks.",
+          "remind": [
+            "The rocks east of the beach. Four of them, and mind your eyes."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "harbourmaster",
+          "items": [
+            {
+              "item": "harpy_feather",
+              "quantity": 3
+            }
+          ],
+          "log": "Bring Harbourmaster Lucilla three harpy feathers.",
+          "remind": [
+            "Feathers. Three. The guild's clerk counts them."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "fishmonger",
+          "items": [
+            {
+              "item": "linen",
+              "quantity": 2
+            }
+          ],
+          "log": "Bring the fishmonger two bolts of linen to mend the nets.",
+          "remind": [
+            "The nets are in ribbons. The fishmonger needs linen thread to mend them: two bolts. The Gaulish merchant in Castra Ferrea sells it."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "harbourmaster",
+          "log": "Report to Harbourmaster Lucilla.",
+          "remind": []
+        }
+      ],
+      "complete": [
+        "Nets mended, harpies thinned, and the boats coming home full. The guild's grateful, which means I am.",
+        "Here's your bounty. And a trick the archers on the grain ships use: fletch with harpy feathers. They fly true in any wind.",
+        "Bring me more feathers and you'll never run short of good arrows."
+      ],
+      "rewards": {
+        "xp": {
+          "fishing": 1500,
+          "slayer": 1000,
+          "fletching": 600
+        },
+        "items": [
+          {
+            "item": "harpy_arrow",
+            "quantity": 60
+          },
+          {
+            "item": "coins",
+            "quantity": 600
+          }
+        ],
+        "unlocks": "Harpy arrows (Fletching 30, from harpy feathers)"
       }
     }
   }

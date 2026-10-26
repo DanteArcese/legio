@@ -335,3 +335,49 @@ func test_decurio_ends_in_citizenship() -> void:
 	check(Quests.is_done(player, "decurio"), "complete")
 	check_eq(Quests.title(player), "Civis Romanus", "a citizen of Rome")
 	check_eq(player.inventory.count("diploma"), 1, "the bronze diploma")
+
+
+func test_harpies_at_the_harbour() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("harbourmaster", Vector3(1, 0, 0))
+	sim.quests.add_npc("fishmonger", Vector3(-1, 0, 0))
+	player.skills.xp["slayer"] = player.skills.xp_for_level(20)
+	player.skills.xp["fishing"] = player.skills.xp_for_level(15)
+	sim.queue_item_action(PLAYER, "talk", {"npc": "harbourmaster"})
+	_run(sim, 1)
+	check_eq(Quests.status(player, "harpies_at_the_harbour"), "in_progress", "started")
+	for i in 4:
+		var harpy := sim.add_monster(RAT + i, "harpy", Vector3(0, 0, 1))
+		harpy.last_attacker_id = PLAYER
+		harpy.hp = 0
+		sim.kill(harpy, [])
+	check_eq(player.quests["harpies_at_the_harbour"]["step"], 1, "four harpies")
+	sim.give_item(PLAYER, "harpy_feather", 3, "test", [])
+	sim.queue_item_action(PLAYER, "talk", {"npc": "harbourmaster"})
+	_run(sim, 1)
+	check_eq(player.quests["harpies_at_the_harbour"]["step"], 2, "feathers delivered")
+	sim.give_item(PLAYER, "linen", 2, "test", [])
+	sim.queue_item_action(PLAYER, "talk", {"npc": "fishmonger"})
+	_run(sim, 1)
+	check_eq(player.quests["harpies_at_the_harbour"]["step"], 3, "linen for the nets")
+	sim.queue_item_action(PLAYER, "talk", {"npc": "harbourmaster"})
+	_run(sim, 1)
+	check(Quests.is_done(player, "harpies_at_the_harbour"), "complete")
+	check_eq(player.inventory.count("harpy_arrow"), 60, "harpy arrows")
+
+
+func test_harpy_arrows_are_taught_by_the_quest() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	player.skills.xp["fletching"] = player.skills.xp_for_level(30)
+	sim.give_item(PLAYER, "arrow_shaft", 15, "test", [])
+	sim.give_item(PLAYER, "harpy_feather", 1, "test", [])
+	sim.give_item(PLAYER, "iron_arrowheads", 15, "test", [])
+	sim.queue_item_action(PLAYER, "craft", {"kind": "fletch", "recipe": "harpy_arrow", "count": 1})
+	var events := _run(sim, 6)
+	check(events.any(func(e): return e["type"] == "message" and "don't know how" in e["text"]), "not yet")
+	player.quests["harpies_at_the_harbour"] = {"step": 4, "progress": 0, "done": true}
+	sim.queue_item_action(PLAYER, "craft", {"kind": "fletch", "recipe": "harpy_arrow", "count": 1})
+	_run(sim, 6)
+	check_eq(player.inventory.count("harpy_arrow"), 15, "fletched after the quest")

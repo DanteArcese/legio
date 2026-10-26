@@ -37,18 +37,18 @@ func run() -> void:
 	expect(ui.is_menu_open(), "furnace opens the recipe menu")
 	await shot("furnace_menu")
 	await press("ui_accept")
-	await _action_done()
+	await action_done()
 	expect(me.inventory.count("bronze_bar") == target_each, "smelted %d bronze bars" % target_each)
 
 	await walk_to(main.get_node("Smithy/Anvil").global_position + Vector3(0, 0, 1.5), 0.3)
 	driver().sim.queue_item_action(PLAYER, "craft", {"kind": "smith", "recipe": "bronze_pugio", "count": 28})
-	await _action_done()
+	await action_done()
 	expect(me.inventory.count("bronze_pugio") >= target_each, "smithed pugios")
 
 	driver().sim.give_item(PLAYER, "raw_meat", 10, "test", [])
 	await walk_to(main.get_node("Smithy/Range").global_position + Vector3(0, 0, 1.5), 0.3)
 	driver().sim.queue_item_action(PLAYER, "craft", {"kind": "cook", "recipe": "cooked_meat", "count": 28})
-	await _action_done()
+	await action_done()
 	await shot("cooking")
 	metric("cooked", me.inventory.count("cooked_meat"))
 	metric("burnt", me.inventory.count("burnt_food"))
@@ -70,14 +70,3 @@ func _available_rock(rock_type: String) -> Node3D:
 			best_distance = distance
 	return best
 
-
-## Waits for a queued skilling action to start (it waits for the next tick)
-## and then to finish.
-func _action_done() -> void:
-	var me: RefCounted = driver().sim.get_combatant(PLAYER)
-	for i in 30:
-		if not me.skill_action.is_empty():
-			break
-		await seconds(0.1)
-	while not me.skill_action.is_empty():
-		await seconds(0.5)

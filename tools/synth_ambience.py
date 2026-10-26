@@ -298,6 +298,47 @@ def coast(n, rng):
     return layer((surf(n, rng), 0.55), (wind(n, rng, 600, 0.5), 0.15), (gulls, 1.0))
 
 
+def howl(rng: random.Random) -> list[float]:
+    """A distant wolf: a slow rise and fall with a little vibrato."""
+    seconds = rng.uniform(2.2, 3.0)
+    n = int(seconds * RATE)
+    env = envelope(n, seconds * 0.25, seconds * 0.4)
+    base = rng.uniform(360, 420)
+    out, phase = [], 0.0
+    for i in range(n):
+        t = i / n
+        f = base * (1.0 + 0.45 * math.sin(t * math.pi) ** 0.7 - 0.12 * t)
+        f *= 1.0 + 0.012 * math.sin(i / RATE * math.tau * 5.5)
+        phase += math.tau * f / RATE
+        out.append((math.sin(phase) + 0.25 * math.sin(phase * 2.0)) * env[i])
+    return lowpass(out, 1400)
+
+
+def caw(rng: random.Random) -> list[float]:
+    """A raven: two or three harsh, buzzing croaks."""
+    out: list[float] = []
+    for _ in range(rng.randint(2, 3)):
+        seconds = rng.uniform(0.16, 0.24)
+        n = int(seconds * RATE)
+        env = envelope(n, 0.01, seconds * 0.5)
+        rough = bandpass(noise(n, rng), 500, 1800)
+        f = rng.uniform(520, 640)
+        out += [(math.sin(math.tau * f * i / RATE) * 0.6 + rough[i] * 3.0) * env[i] for i in range(n)]
+        out += [0.0] * int(rng.uniform(0.12, 0.2) * RATE)
+    return out
+
+
+def frontier(n, rng):
+    howls = echo(scatter(n, rng, howl, 2, (0.12, 0.2)), [(0.31, 0.3), (0.67, 0.15)])
+    caws = scatter(n, rng, caw, 3, (0.06, 0.12))
+    return layer(
+        (wind(n, rng, 300, 0.85), 0.42),
+        (highpass(wind(n, rng, 2200, 0.9), 1200), 0.1),
+        (howls, 1.0),
+        (caws, 1.0),
+    )
+
+
 def swish(seconds: float, low: float, high: float, seed: int) -> list[float]:
     rng = random.Random(seed)
     n = int(seconds * RATE)
@@ -336,6 +377,7 @@ def main() -> None:
         "ambient_town": (town, 3),
         "ambient_barrow": (barrow, 4),
         "ambient_coast": (coast, 5),
+        "ambient_frontier": (frontier, 6),
     }
     for name, (build, seed) in loops.items():
         write_wav(out / f"{name}.wav", make_loop(build, seed), 0.7)

@@ -51,7 +51,7 @@ const SOUNDS := {
 const GAIN_DB := {"step_grass": -10.0, "step_stone": -12.0, "click": -6.0, "level_up": -4.0,
 	"contract_done": -4.0, "player_death": -4.0, "wash": -6.0, "swing": -4.0, "mine": -3.0}
 const AMBIENCE := {"day": "ambient_day", "night": "ambient_night", "town": "ambient_town", "barrow": "ambient_barrow",
-	"coast": "ambient_coast"}
+	"coast": "ambient_coast", "frontier": "ambient_frontier"}
 const HEARING_RANGE := 32.0
 const STEP_DISTANCE := 1.7
 const AMBIENT_FADE := 2.5
@@ -61,6 +61,8 @@ const TOWN := Rect2(-20, -20, 40, 40)
 const UNDERGROUND_X := 100.0
 ## Portus Salis lies far west of the fort.
 const COAST_X := -150.0
+## North of this is the frontier, beyond the Limes.
+const FRONTIER_Z := -300.0
 
 @export var driver: Node
 @export var player: Node3D
@@ -283,6 +285,8 @@ func _update_ambience() -> void:
 		next = "barrow"
 	elif here.x < COAST_X:
 		next = "coast"
+	elif here.z < FRONTIER_Z:
+		next = "frontier"
 	elif day_night and day_night.is_night():
 		next = "night"
 	elif TOWN.has_point(Vector2(here.x, here.z)):

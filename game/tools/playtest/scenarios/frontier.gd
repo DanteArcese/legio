@@ -35,6 +35,7 @@ func run() -> void:
 	await walk_to(Vector3(0, 0, -362), 0.6, 30.0)
 	await seconds(1.0)
 	expect(hud._danger.visible, "the HUD marks the danger zone")
+	expect(main.get_node("Sound").zone == "frontier", "wind and wolves beyond the Limes (%s)" % main.get_node("Sound").zone)
 	await shot("beyond")
 
 	for waypoint in [Vector3(0, 0, -372), Vector3(-14, 0, -400), Vector3(-26, 0, -428)]:

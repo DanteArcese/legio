@@ -1,0 +1,62 @@
+{
+  "courses": {
+    "fort_course": {
+      "name": "Castra Ferrea training course",
+      "lap_xp": 40,
+      "obstacles": [
+        {
+          "name": "Log balance",
+          "verb": "Walk across",
+          "kind": "log",
+          "level": 1,
+          "xp": 7,
+          "ticks": 5,
+          "fail_chance": 0.25,
+          "damage": [
+            1,
+            2
+          ]
+        },
+        {
+          "name": "Palisade wall",
+          "verb": "Climb",
+          "kind": "wall",
+          "level": 1,
+          "xp": 9,
+          "ticks": 4,
+          "fail_chance": 0.3,
+          "damage": [
+            1,
+            3
+          ]
+        },
+        {
+          "name": "Rope swing",
+          "verb": "Swing on",
+          "kind": "rope",
+          "level": 1,
+          "xp": 10,
+          "ticks": 4,
+          "fail_chance": 0.3,
+          "damage": [
+            1,
+            3
+          ]
+        },
+        {
+          "name": "Hurdles",
+          "verb": "Vault",
+          "kind": "hurdles",
+          "level": 1,
+          "xp": 6,
+          "ticks": 4,
+          "fail_chance": 0.2,
+          "damage": [
+            1,
+            2
+          ]
+        }
+      ]
+    }
+  }
+}

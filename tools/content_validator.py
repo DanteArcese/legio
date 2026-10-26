@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
@@ -64,6 +64,7 @@ def validate(content: dict) -> list[str]:
     quests = content.get("quests", {})
     _check_quests(quests, items, monsters, errors)
     _check_thieving(content.get("thieving", {}), items, errors)
+    _check_athletics(content.get("athletics", {}), errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -469,6 +470,33 @@ def _check_thieving(thieving, items, errors):
             pair = mark.get(key)
             if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
                 errors.append(f"{where}.{key}: expected [min, max] whole numbers")
+
+
+OBSTACLE_KEYS = {"name", "verb", "kind", "level", "xp", "ticks", "fail_chance", "damage"}
+OBSTACLE_KINDS = {"log", "wall", "rope", "hurdles"}
+
+
+def _check_athletics(athletics, errors):
+    _check_keys("athletics", athletics, {"courses"}, {"courses"}, errors)
+    for course_id, course in athletics.get("courses", {}).items():
+        where = f"athletics.courses.{course_id}"
+        _check_id(where, course_id, errors)
+        _check_keys(where, course, {"name", "lap_xp", "obstacles"}, {"name", "lap_xp", "obstacles"}, errors)
+        _check_number(where, "lap_xp", course.get("lap_xp"), 0, 100000, errors)
+        if not course.get("obstacles"):
+            errors.append(f"{where}.obstacles: at least one obstacle required")
+        for i, obstacle in enumerate(course.get("obstacles", [])):
+            ow = f"{where}.obstacles[{i}]"
+            _check_keys(ow, obstacle, OBSTACLE_KEYS, OBSTACLE_KEYS, errors)
+            if obstacle.get("kind") not in OBSTACLE_KINDS:
+                errors.append(f"{ow}.kind: must be one of {sorted(OBSTACLE_KINDS)}")
+            _check_int(ow, "level", obstacle.get("level"), 1, errors, 99)
+            _check_number(ow, "xp", obstacle.get("xp"), 0.1, 10000, errors)
+            _check_int(ow, "ticks", obstacle.get("ticks"), 1, errors, 50)
+            _check_number(ow, "fail_chance", obstacle.get("fail_chance"), 0, 0.9, errors)
+            pair = obstacle.get("damage")
+            if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
+                errors.append(f"{ow}.damage: expected [min, max] whole numbers")
 
 
 def _check_lines(where, key, lines, errors):

@@ -33,6 +33,7 @@
 [ext_resource type="Script" path="res://scripts/ui/skills_ui.gd" id="30_skills_ui"]
 [ext_resource type="Script" path="res://scripts/ui/minimap.gd" id="31_minimap"]
 [ext_resource type="Script" path="res://scripts/world/stall_node.gd" id="32_stall"]
+[ext_resource type="Script" path="res://scripts/world/obstacle_node.gd" id="33_obstacle"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -389,6 +390,32 @@ billboard = 1
 text = "Merchant"
 font_size = 32
 outline_size = 8
+
+[node name="AthleticsCourse" type="Node3D" parent="."]
+
+[node name="LogBalance" type="StaticBody3D" parent="AthleticsCourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 8)
+script = ExtResource("33_obstacle")
+index = 0
+end_offset = Vector3(0, 0, 6)
+
+[node name="PalisadeWall" type="StaticBody3D" parent="AthleticsCourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.5, 0, 16)
+script = ExtResource("33_obstacle")
+index = 1
+end_offset = Vector3(3, 0, 0)
+
+[node name="RopeSwing" type="StaticBody3D" parent="AthleticsCourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 15.5)
+script = ExtResource("33_obstacle")
+index = 2
+end_offset = Vector3(3.5, 0, 3.5)
+
+[node name="Hurdles" type="StaticBody3D" parent="AthleticsCourse"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 0, 22)
+script = ExtResource("33_obstacle")
+index = 3
+end_offset = Vector3(-6, 0, 0)
 
 [node name="Smithy" type="Node3D" parent="."]
 

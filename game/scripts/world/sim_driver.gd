@@ -69,6 +69,11 @@ func _ready() -> void:
 		spot_id += 1
 		spot.spot_id = spot_id
 		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
+	var obstacle_id := 0
+	for obstacle in get_tree().get_nodes_in_group("obstacles"):
+		obstacle_id += 1
+		obstacle.obstacle_id = obstacle_id
+		sim.athletics.add_obstacle(obstacle_id, obstacle.course, obstacle.index, obstacle.global_position, obstacle.end_position())
 	for stall in get_tree().get_nodes_in_group("stalls"):
 		stall.stall_id = _stalls.size() + 1
 		_stalls[stall.stall_id] = stall

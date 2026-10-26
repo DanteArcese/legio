@@ -212,3 +212,8 @@ def test_stall_loot_must_exist(content):
 def test_mark_coin_range_must_be_ordered(content):
     errors = errors_after(content, lambda c: c["thieving"]["marks"]["merchant"].update(coins=[30, 10]))
     assert any("thieving.marks.merchant.coins" in e for e in errors)
+
+
+def test_obstacle_kinds_must_be_known(content):
+    errors = errors_after(content, lambda c: c["athletics"]["courses"]["fort_course"]["obstacles"][0].update(kind="trampoline"))
+    assert any("fort_course.obstacles[0].kind" in e for e in errors)

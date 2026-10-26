@@ -37,6 +37,7 @@ static func capture(sim: RefCounted, player_id: int) -> Dictionary:
 			"tasks_done": player.slayer_tasks_done,
 		},
 		"quests": player.quests.duplicate(true),
+		"laps": player.laps,
 		"grave": saved_grave,
 		"reclaimable": sim.reclaimable.get(player_id, []).duplicate(true),
 	}
@@ -75,6 +76,7 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary) -> bool:
 		player.slayer_task["total"] = int(player.slayer_task["total"])
 	player.slayer_points = int(slayer["points"])
 	player.slayer_tasks_done = int(slayer["tasks_done"])
+	player.laps = int(data.get("laps", 0))
 	player.quests = {}
 	var saved_quests: Dictionary = data.get("quests", {})
 	for quest_id in saved_quests:

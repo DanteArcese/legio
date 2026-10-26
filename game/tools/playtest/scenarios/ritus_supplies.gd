@@ -46,9 +46,7 @@ func run() -> void:
 	expect(ui.is_menu_open() and ui._menu.get_item_text(0).begins_with("Binding tablet"), "tomb offers binding tablets")
 	await shot("tomb_menu")
 	await press("ui_accept")
-	await seconds(0.5)
-	while not me.skill_action.is_empty():
-		await seconds(0.3)
+	await action_done()
 	metric("binding_tablets", me.inventory.count("binding_tablet"))
 	metric("ritus_xp", int(me.skills.xp["ritus"]))
 	metric("minutes", snappedf((driver().sim.tick - start) * 0.6 / 60.0, 0.1))
@@ -59,9 +57,7 @@ func _make_at(station_path: String, kind: String, recipe: String) -> void:
 	var station: Node3D = main.get_node(station_path)
 	await route_to(station.global_position + Vector3(0, 0, 1.5), 0.4, 90.0)
 	driver().sim.queue_item_action(PLAYER, "craft", {"kind": kind, "recipe": recipe, "count": 28})
-	await seconds(0.5)
-	while not driver().sim.get_combatant(PLAYER).skill_action.is_empty():
-		await seconds(0.3)
+	await action_done()
 
 
 func _nearest_rock(rock_type: String) -> Node3D:

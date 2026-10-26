@@ -140,3 +140,17 @@ func shot(name: String) -> void:
 	await RenderingServer.frame_post_draw
 	var image := get_viewport().get_texture().get_image()
 	image.save_png(out_dir.path_join("%s.png" % name))
+
+
+## Waits for the player's queued skilling action to start (commands apply
+## on the next tick, up to 0.6 s away) and then to finish.
+func action_done(timeout := 120.0) -> void:
+	var me: RefCounted = driver().sim.get_combatant(1)
+	for i in 30:
+		if not me.skill_action.is_empty():
+			break
+		await seconds(0.1)
+	var frames := ceili(timeout * Engine.physics_ticks_per_second)
+	while not me.skill_action.is_empty() and frames > 0:
+		await get_tree().physics_frame
+		frames -= 1

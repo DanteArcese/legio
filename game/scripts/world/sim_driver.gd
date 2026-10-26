@@ -33,6 +33,7 @@ var _rocks := {}
 var _trees := {}
 var _stalls := {}
 var _hunt_spots := {}
+var _patches := {}
 var _shades := {}
 
 
@@ -70,6 +71,10 @@ func _ready() -> void:
 		spot_id += 1
 		spot.spot_id = spot_id
 		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
+	for patch in get_tree().get_nodes_in_group("patches"):
+		patch.patch_id = _patches.size() + 1
+		_patches[patch.patch_id] = patch
+		sim.farming.add_patch(patch.patch_id, patch.patch_type, String(patch.name), patch.global_position)
 	for spot in get_tree().get_nodes_in_group("hunt_spots"):
 		spot.spot_id = _hunt_spots.size() + 1
 		_hunt_spots[spot.spot_id] = spot
@@ -188,6 +193,8 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]].set_items(event["items"])
 		"rock_depleted", "rock_respawned":
 			_rocks[event["rock"]].set_depleted(event["type"] == "rock_depleted")
+		"patch_changed":
+			_patches[event["patch"]].show_crop(event["crop"], event["stage"], event["ready"])
 		"trap_set":
 			_hunt_spots[event["spot"]].set_trap_state("set")
 		"trap_caught":

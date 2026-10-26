@@ -35,6 +35,7 @@
 [ext_resource type="Script" path="res://scripts/world/stall_node.gd" id="32_stall"]
 [ext_resource type="Script" path="res://scripts/world/obstacle_node.gd" id="33_obstacle"]
 [ext_resource type="Script" path="res://scripts/world/burrow_node.gd" id="34_burrow"]
+[ext_resource type="Script" path="res://scripts/world/patch_node.gd" id="35_patch"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -446,6 +447,28 @@ spot_type = "fox_den"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -33)
 script = ExtResource("34_burrow")
 spot_type = "fox_den"
+
+[node name="Farm" type="Node3D" parent="."]
+
+[node name="HerbPatch1" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.8, 0, 41.0)
+script = ExtResource("35_patch")
+patch_type = "herb_patch"
+
+[node name="Allotment1" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.6, 0, 41.0)
+script = ExtResource("35_patch")
+patch_type = "allotment"
+
+[node name="HerbPatch2" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.0, 0, 30.0)
+script = ExtResource("35_patch")
+patch_type = "herb_patch"
+
+[node name="Allotment2" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 30.0)
+script = ExtResource("35_patch")
+patch_type = "allotment"
 
 [node name="Smithy" type="Node3D" parent="."]
 

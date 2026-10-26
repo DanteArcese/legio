@@ -217,3 +217,13 @@ def test_mark_coin_range_must_be_ordered(content):
 def test_obstacle_kinds_must_be_known(content):
     errors = errors_after(content, lambda c: c["athletics"]["courses"]["fort_course"]["obstacles"][0].update(kind="trampoline"))
     assert any("fort_course.obstacles[0].kind" in e for e in errors)
+
+
+def test_crops_need_a_patch_that_grows_them(content):
+    errors = errors_after(content, lambda c: c["farming"]["crops"]["mint"].update(kind="tree"))
+    assert any("farming.crops.mint.kind" in e for e in errors)
+
+
+def test_each_seed_grows_one_crop(content):
+    errors = errors_after(content, lambda c: c["farming"]["crops"]["sage"].update(seed="mint_seed"))
+    assert any("already grows another crop" in e for e in errors)

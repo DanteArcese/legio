@@ -1,0 +1,128 @@
+{
+  "patches": {
+    "herb_patch": {
+      "name": "Herb patch",
+      "kind": "herb",
+      "examine": "A small bed of dark, well-turned earth for herbs."
+    },
+    "allotment": {
+      "name": "Allotment",
+      "kind": "vegetable",
+      "examine": "A long strip of ploughed earth for vegetables."
+    }
+  },
+  "crops": {
+    "mint": {
+      "name": "Mint",
+      "kind": "herb",
+      "seed": "mint_seed",
+      "level": 1,
+      "plant_xp": 8,
+      "harvest_xp": 10,
+      "produce": "mint",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 120,
+      "stages": 4,
+      "color": "#5fae5a"
+    },
+    "fennel": {
+      "name": "Fennel",
+      "kind": "herb",
+      "seed": "fennel_seed",
+      "level": 9,
+      "plant_xp": 12,
+      "harvest_xp": 16,
+      "produce": "fennel",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 130,
+      "stages": 4,
+      "color": "#c9d35a"
+    },
+    "sage": {
+      "name": "Sage",
+      "kind": "herb",
+      "seed": "sage_seed",
+      "level": 18,
+      "plant_xp": 18,
+      "harvest_xp": 24,
+      "produce": "sage",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 140,
+      "stages": 4,
+      "color": "#8fa89a"
+    },
+    "wormwood": {
+      "name": "Wormwood",
+      "kind": "herb",
+      "seed": "wormwood_seed",
+      "level": 27,
+      "plant_xp": 26,
+      "harvest_xp": 34,
+      "produce": "wormwood",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 150,
+      "stages": 4,
+      "color": "#a9b8a0"
+    },
+    "poppy": {
+      "name": "Poppy",
+      "kind": "herb",
+      "seed": "poppy_seed",
+      "level": 36,
+      "plant_xp": 36,
+      "harvest_xp": 46,
+      "produce": "poppy",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 160,
+      "stages": 4,
+      "color": "#d8473a"
+    },
+    "cabbage": {
+      "name": "Cabbage",
+      "kind": "vegetable",
+      "seed": "cabbage_seed",
+      "level": 1,
+      "plant_xp": 6,
+      "harvest_xp": 8,
+      "produce": "cabbage",
+      "yield": [
+        4,
+        7
+      ],
+      "stage_ticks": 90,
+      "stages": 4,
+      "color": "#7fbf6a"
+    },
+    "beans": {
+      "name": "Broad beans",
+      "kind": "vegetable",
+      "seed": "bean_seed",
+      "level": 8,
+      "plant_xp": 10,
+      "harvest_xp": 12,
+      "produce": "broad_beans",
+      "yield": [
+        4,
+        7
+      ],
+      "stage_ticks": 100,
+      "stages": 4,
+      "color": "#6f9f4a"
+    }
+  }
+}

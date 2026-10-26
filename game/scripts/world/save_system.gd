@@ -35,7 +35,7 @@ func _notification(what: int) -> void:
 
 
 func save_game() -> void:
-	var data := SaveGame.capture(driver.sim, player_entity.entity_id)
+	var data := SaveGame.capture(driver.sim, player_entity.entity_id, int(Time.get_unix_time_from_system()))
 	var file := FileAccess.open(save_path, FileAccess.WRITE)
 	if file:
 		file.store_string(SaveGame.to_json(data))
@@ -44,13 +44,17 @@ func save_game() -> void:
 func load_game() -> bool:
 	var data := SaveGame.from_json(FileAccess.get_file_as_string(save_path))
 	var id: int = player_entity.entity_id
-	if not SaveGame.restore(driver.sim, id, data):
+	if not SaveGame.restore(driver.sim, id, data, int(Time.get_unix_time_from_system())):
 		push_warning("Save at %s could not be loaded; starting fresh." % save_path)
 		return false
 	var combatant: RefCounted = player_entity.combatant
 	player_entity.body().global_position = combatant.position + Vector3(0, 0.1, 0)
 	for type in ["inventory_changed", "equipment_changed", "bank_changed"]:
 		driver.replay_event({"type": type, "id": id, "tick": driver.sim.tick})
+	for patch in driver.sim.farming.patches.values():
+		if patch["owner"] == id:
+			driver.replay_event({"type": "patch_changed", "patch": patch["id"], "crop": patch["crop"], "stage": patch["stage"],
+				"ready": driver.sim.farming.is_ready(patch), "tick": driver.sim.tick})
 	var grave: Dictionary = driver.sim.grave_of(id)
 	if not grave.is_empty():
 		driver.replay_event({"type": "grave_add", "id": id, "grave": grave["id"], "position": grave["position"],

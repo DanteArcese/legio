@@ -40,15 +40,23 @@ func test_drop_quantities_stay_in_range_and_items_exist() -> void:
 
 
 func test_weights_shape_drop_rates() -> void:
-	# Rat: nothing 6, coins 4 -> roughly 40% coins.
+	# The rat's coin rate should match the coins' share of the table's weight.
+	var table := ContentDB.drop_table("rat")
+	var total := 0
+	var coin_weight := 0
+	for entry in table["table"]:
+		total += entry["weight"]
+		if entry["item"] == "coins":
+			coin_weight += entry["weight"]
+	var expected := 2000.0 * coin_weight / total
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 11
 	var coins := 0
 	for i in 2000:
-		for drop in Drops.roll(ContentDB.drop_table("rat"), rng):
+		for drop in Drops.roll(table, rng):
 			if drop["item"] == "coins":
 				coins += 1
-	check(coins > 700 and coins < 900, "coin drops %d / 2000" % coins)
+	check(absf(coins - expected) < expected * 0.15, "coin drops %d / 2000, expected about %d" % [coins, expected])
 
 
 func test_same_seed_same_drops() -> void:

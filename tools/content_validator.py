@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
@@ -66,6 +66,7 @@ def validate(content: dict) -> list[str]:
     _check_thieving(content.get("thieving", {}), items, errors)
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)
+    _check_farming(content.get("farming", {}), items, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -518,6 +519,43 @@ def _check_hunter(hunter, items, errors):
             errors.append(f"{where}.loot: at least one item required")
         for i, entry in enumerate(spot.get("loot", [])):
             _check_drop(f"{where}.loot[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+
+
+PATCH_KEYS = {"name", "kind", "examine"}
+CROP_KEYS = {"name", "kind", "seed", "level", "plant_xp", "harvest_xp", "produce", "yield", "stage_ticks", "stages", "color"}
+
+
+def _check_farming(farming, items, errors):
+    _check_keys("farming", farming, {"patches", "crops"}, {"patches", "crops"}, errors)
+    kinds = set()
+    for patch_id, patch in farming.get("patches", {}).items():
+        where = f"farming.patches.{patch_id}"
+        _check_id(where, patch_id, errors)
+        _check_keys(where, patch, PATCH_KEYS, PATCH_KEYS, errors)
+        kinds.add(patch.get("kind"))
+    seeds = set()
+    for crop_id, crop in farming.get("crops", {}).items():
+        where = f"farming.crops.{crop_id}"
+        _check_id(where, crop_id, errors)
+        _check_keys(where, crop, CROP_KEYS, CROP_KEYS, errors)
+        if crop.get("kind") not in kinds:
+            errors.append(f"{where}.kind: no patch grows {crop.get('kind')!r}")
+        for key in ("seed", "produce"):
+            if crop.get(key) not in items:
+                errors.append(f"{where}.{key}: unknown item {crop.get(key)!r}")
+        if crop.get("seed") in seeds:
+            errors.append(f"{where}.seed: {crop.get('seed')!r} already grows another crop")
+        seeds.add(crop.get("seed"))
+        _check_int(where, "level", crop.get("level"), 1, errors, 99)
+        for key in ("plant_xp", "harvest_xp"):
+            _check_number(where, key, crop.get(key), 0.1, 10000, errors)
+        _check_int(where, "stage_ticks", crop.get("stage_ticks"), 1, errors)
+        _check_int(where, "stages", crop.get("stages"), 1, errors, 10)
+        pair = crop.get("yield")
+        if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 1 <= pair[0] <= pair[1]):
+            errors.append(f"{where}.yield: expected [min, max] whole numbers")
+        if not COLOR_PATTERN.match(str(crop.get("color", ""))):
+            errors.append(f"{where}.color: expected #rrggbb")
 
 
 def _check_lines(where, key, lines, errors):

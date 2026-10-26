@@ -59,6 +59,8 @@ var mercatura := Mercatura.new(self)
 var villa := Villa.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
+## Beyond the Limes: XZ rectangles where deaths drop items on the ground.
+var danger_zones: Array[Rect2] = []
 
 var _combatants := {}
 var _pending_commands: Array[Dictionary] = []
@@ -119,6 +121,14 @@ func give_starting_kit(id: int) -> void:
 
 func add_bank(position: Vector3) -> void:
 	items.banks.append(position)
+
+
+func add_danger_zone(area: Rect2) -> void:
+	danger_zones.append(area)
+
+
+func in_danger_zone(position: Vector3) -> bool:
+	return danger_zones.any(func(area: Rect2): return area.has_point(Vector2(position.x, position.z)))
 
 
 func add_libitinarius(position: Vector3) -> void:

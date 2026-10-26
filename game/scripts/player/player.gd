@@ -376,6 +376,10 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 
 
 func _arrive_through(doorway: Node3D) -> void:
+	if not doorway.warning.is_empty() and not doorway.warned:
+		doorway.warned = true
+		message_requested.emit(doorway.warning)
+		return
 	var id: int = _entity.entity_id
 	if doorway.requires_villa and not _entity.combatant.villa_owned:
 		message_requested.emit("That's private land. The land surveyor in the forum sells villas to citizens.")

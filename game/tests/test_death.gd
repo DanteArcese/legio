@@ -134,3 +134,46 @@ func _container_with(items: Dictionary) -> RefCounted:
 	for item_id in items:
 		container.add(item_id, items[item_id])
 	return container
+
+
+func test_beyond_the_limes_items_drop_on_the_ground() -> void:
+	var sim := _make_sim()
+	sim.add_danger_zone(Rect2(0, 0, 10, 10))
+	_give(sim, {"iron_lorica": 1, "iron_scutum": 1, "iron_gladius": 1, "bronze_gladius": 1, "bread": 2})
+	_die(sim)
+	check(sim.grave_of(PLAYER).is_empty(), "no grave")
+	var piles := sim.ground_piles()
+	check_eq(piles.size(), 1, "one pile")
+	check_eq(piles[0]["items"], [{"item": "bronze_gladius", "quantity": 1}, {"item": "bread", "quantity": 2}], "lost items on the ground")
+	check_eq(sim.get_combatant(PLAYER).inventory.count("iron_lorica"), 1, "still keeps three")
+
+
+func test_beyond_the_limes_drops_vanish_for_good() -> void:
+	var sim := _make_sim()
+	sim.add_danger_zone(Rect2(0, 0, 10, 10))
+	_give(sim, {"bread": 5})
+	_die(sim)
+	for i in preload("res://scripts/sim/graves.gd").DANGER_PILE_LIFETIME + 1:
+		sim.step()
+	check(sim.ground_piles().is_empty(), "the pile is gone")
+	check(sim.reclaimable.get(PLAYER, []).is_empty(), "nothing for the libitinarii")
+
+
+func test_dying_beyond_the_limes_leaves_an_earlier_grave_alone() -> void:
+	var sim := _make_sim()
+	_give(sim, {"bread": 5})
+	_die(sim)
+	_respawn(sim)
+	sim.add_danger_zone(Rect2(0, 0, 10, 10))
+	_give(sim, {"cooked_sardine": 5})
+	_die(sim)
+	check_eq(sim.grave_of(PLAYER)["items"], [{"item": "bread", "quantity": 2}], "the first grave still stands")
+	check(sim.reclaimable.get(PLAYER, []).is_empty(), "not sent to the libitinarii")
+
+
+func test_in_danger_zone() -> void:
+	var sim := _make_sim()
+	sim.add_danger_zone(Rect2(-60, -460, 120, 110))
+	check(sim.in_danger_zone(Vector3(0, 5, -400)), "inside")
+	check(not sim.in_danger_zone(Vector3(0, 0, -345)), "the arrival yard is safe")
+	check(not sim.in_danger_zone(Vector3.ZERO), "the fort is safe")

@@ -6,6 +6,7 @@ const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
 const LootPile := preload("res://scripts/world/loot_pile.gd")
 const GraveMarker := preload("res://scripts/world/grave_marker.gd")
+const PetFollower := preload("res://scripts/world/pet_follower.gd")
 const Projectile := preload("res://scripts/world/projectile.gd")
 const CurseVisuals := preload("res://scripts/world/curse_visuals.gd")
 const CURSE_TINTS := {"binding": Color(0.1, 0.06, 0.16), "withering": Color(0.12, 0.14, 0.06),
@@ -35,6 +36,8 @@ var _stalls := {}
 var _hunt_spots := {}
 var _patches := {}
 var _shades := {}
+## Player id -> their pet follower node.
+var _pets := {}
 
 
 func _ready() -> void:
@@ -189,6 +192,14 @@ func _mirror_ground(event: Dictionary) -> void:
 			if cursed:
 				var seconds: float = maxi(event["until"] - event["tick"], 1) * clock.tick_length
 				CurseVisuals.aura(cursed.body(), seconds, CURSE_TINTS.get(event["curse"], Color.BLACK))
+		"pet_changed":
+			var old: Node = _pets.get(event["id"])
+			if old:
+				old.queue_free()
+				_pets.erase(event["id"])
+			var owner: Node = _entities.get(event["id"])
+			if not event["pet"].is_empty() and owner:
+				_pets[event["id"]] = PetFollower.spawn(get_parent(), owner.body(), event["pet"])
 		"ground_add":
 			_piles[event["pile"]] = LootPile.spawn(get_parent(), event["pile"], event["position"], event["items"])
 		"ground_update":

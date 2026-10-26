@@ -37,7 +37,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "shopkeepers", "pets"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -172,6 +172,8 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			return options
 		"graves":
 			return [["Loot your grave", player.loot_grave.bind(node)]]
+		"pets":
+			return [["Pick up " + node.title().to_lower(), player.pick_up_pet], ["Examine " + node.title().to_lower(), player.examine.bind(ContentDB.item(node.pet_id)["examine"])]]
 	return []
 
 

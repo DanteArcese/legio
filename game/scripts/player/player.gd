@@ -28,7 +28,7 @@ const WorldMenu := preload("res://scripts/player/world_menu.gd")
 
 const CLICK_RAY_LENGTH := 300.0
 ## Terrain (1), monsters (4), props (8), and structures (16) can be clicked.
-const CLICK_MASK := 1 | 4 | 8 | 16
+const CLICK_MASK := 1 | 4 | 8 | 16 | 32
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
 const Athletics := preload("res://scripts/sim/athletics.gd")
@@ -332,6 +332,10 @@ func take(pile: Node3D, item_id := "") -> void:
 		args["item"] = item_id
 	walk_and_do(pile.global_position, 0.8, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "pickup", args))
+
+
+func pick_up_pet() -> void:
+	sim_driver.sim.queue_item_action(_entity.entity_id, "pickup_pet")
 
 
 func loot_grave(grave: Node3D) -> void:

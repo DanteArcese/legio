@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "collection")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "collection", "pets")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -29,7 +29,7 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet"}
 MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "appearance"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
@@ -73,6 +73,7 @@ def validate(content: dict) -> list[str]:
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_collection(content.get("collection", {}), items, errors)
+    _check_pets(content.get("pets", {}), items, monsters, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -112,6 +113,18 @@ def _check_item(where, item_id, item, items, errors):
                 errors.append(f"{where}.remedy.skill: unknown skill {remedy.get('skill')!r}")
             _check_int(f"{where}.remedy", "flat", remedy.get("flat"), 0, errors, 20)
             _check_number(f"{where}.remedy", "percent", remedy.get("percent"), 0, 0.5, errors)
+    if "pet" in item:
+        look = item["pet"]
+        _check_keys(f"{where}.pet", look, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)
+        if look.get("model") not in MODEL_FEATURES or look.get("model") == "kaykit":
+            errors.append(f"{where}.pet.model: must be one of {sorted(set(MODEL_FEATURES) - {'kaykit'})}")
+        else:
+            for feature in look.get("features", []):
+                if feature not in MODEL_FEATURES[look["model"]]:
+                    errors.append(f"{where}.pet.features: {look['model']} has no feature {feature!r}")
+        for key in ("color", "accent"):
+            if key in look and not COLOR_PATTERN.match(str(look[key])):
+                errors.append(f"{where}.pet.{key}: expected a #rrggbb colour")
     if "tool" in item:
         _check_type(where, "tool", item["tool"], str, errors)
         _check_int(where, "tool_tier", item.get("tool_tier"), 1, errors)
@@ -578,7 +591,7 @@ def _check_farming(farming, items, errors):
 CONTRACT_KEYS = {"name", "board", "level", "item", "quantity", "to", "coins", "xp", "summary"}
 
 
-COLLECTION_CATEGORIES = {"Combat", "Slayer", "Skilling", "Quests", "Frontier"}
+COLLECTION_CATEGORIES = {"Combat", "Slayer", "Skilling", "Quests", "Frontier", "Other"}
 
 
 def _check_collection(collection, items, errors):
@@ -597,6 +610,30 @@ def _check_collection(collection, items, errors):
                 errors.append(f"{where}.items: unknown item {item_id!r}")
         if len(set(page_items)) != len(page_items):
             errors.append(f"{where}.items: an item is listed twice")
+
+
+def _check_pets(pets, items, monsters, errors):
+    _check_keys("pets", pets, {"pets"}, {"pets"}, errors)
+    listed = pets.get("pets", {})
+    for pet_id, pet in listed.items():
+        where = f"pets.pets.{pet_id}"
+        if "pet" not in items.get(pet_id, {}):
+            errors.append(f"{where}: {pet_id!r} must be an item with a pet block")
+        source = pet.get("source")
+        if source == "skill":
+            _check_keys(where, pet, {"source", "skill", "one_in"}, {"source", "skill", "one_in"}, errors)
+            if pet.get("skill") not in SKILLS:
+                errors.append(f"{where}.skill: unknown skill {pet.get('skill')!r}")
+        elif source == "monster":
+            _check_keys(where, pet, {"source", "monster", "one_in"}, {"source", "monster", "one_in"}, errors)
+            if pet.get("monster") not in monsters:
+                errors.append(f"{where}.monster: unknown monster {pet.get('monster')!r}")
+        else:
+            errors.append(f"{where}.source: must be 'skill' or 'monster'")
+        _check_int(where, "one_in", pet.get("one_in"), 1, errors)
+    for item_id, item in items.items():
+        if "pet" in item and item_id not in listed:
+            errors.append(f"items.{item_id}.pet: no source in pets.json")
 
 
 def _check_mercatura(mercatura, items, shops, errors):

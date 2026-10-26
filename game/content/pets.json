@@ -1,0 +1,7 @@
+{
+  "pets": {
+    "mole": {"source": "skill", "skill": "mining", "one_in": 3000},
+    "magpie": {"source": "skill", "skill": "thieving", "one_in": 2500},
+    "leveret": {"source": "skill", "skill": "hunter", "one_in": 800}
+  }
+}

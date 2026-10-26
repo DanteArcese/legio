@@ -247,3 +247,13 @@ def test_collection_pages_list_real_items(content):
 def test_collection_pages_have_known_categories(content):
     errors = errors_after(content, lambda c: c["collection"]["pages"]["beasts"].update(category="Misc"))
     assert any("unknown category 'Misc'" in e for e in errors)
+
+
+def test_pets_need_a_source(content):
+    errors = errors_after(content, lambda c: c["pets"]["pets"].pop("mole"))
+    assert any("items.mole.pet: no source" in e for e in errors)
+
+
+def test_pet_sources_name_real_skills(content):
+    errors = errors_after(content, lambda c: c["pets"]["pets"]["mole"].update(skill="digging"))
+    assert any("unknown skill 'digging'" in e for e in errors)

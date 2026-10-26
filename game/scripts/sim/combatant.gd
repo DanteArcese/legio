@@ -71,6 +71,8 @@ var trade_contract := {}
 var contracts_done := 0
 ## The collection log (the Tabularium): item id -> how many obtained.
 var collection := {}
+## The pet following this player, or "".
+var pet := ""
 ## Quest progress: quest id -> {"step", "progress", "done"}; see quests.gd.
 var quests := {}
 ## A label quests can point at, for things that aren't monsters (the training dummy).

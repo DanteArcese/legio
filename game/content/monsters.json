@@ -274,5 +274,39 @@
         "tail"
       ]
     }
+  },
+  "hrodgar": {
+    "name": "Hrodgar the War-chief",
+    "level": 75,
+    "stats": {
+      "attack": 62,
+      "strength": 64,
+      "defence": 55,
+      "vitality": 99
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 100,
+    "drops": "hrodgar",
+    "examine": "The war-chief of the raiders beyond the Limes. He has a spear for every Roman.",
+    "boss": {
+      "throw_every": 4,
+      "throw_delay": 3,
+      "throw_radius": 1.6,
+      "throw_damage": [
+        14,
+        28
+      ],
+      "enrage_below": 0.33,
+      "enrage_speed": 3
+    },
+    "appearance": {
+      "model": "kaykit",
+      "scene": "adventurers/Barbarian",
+      "size": 2.0,
+      "weapon": "proc:spear",
+      "attack": "stab",
+      "color": "#8a2f22"
+    }
   }
 }

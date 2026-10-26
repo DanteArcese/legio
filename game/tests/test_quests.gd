@@ -381,3 +381,50 @@ func test_harpy_arrows_are_taught_by_the_quest() -> void:
 	sim.queue_item_action(PLAYER, "craft", {"kind": "fletch", "recipe": "harpy_arrow", "count": 1})
 	_run(sim, 6)
 	check_eq(player.inventory.count("harpy_arrow"), 15, "fletched after the quest")
+
+
+func test_the_lost_eagle() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("centurion_varro", Vector3(1, 0, 0))
+	for skill in ["attack", "strength", "defence"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(45)
+	player.quests["duplicarius"] = {"step": 0, "progress": 0, "done": true}
+	sim.queue_item_action(PLAYER, "talk", {"npc": "centurion_varro"})
+	_run(sim, 1)
+	check_eq(Quests.status(player, "the_lost_eagle"), "in_progress", "started")
+	sim.set_position(PLAYER, Vector3(24, 0, -412))
+	_run(sim, 1)
+	check_eq(player.quests["the_lost_eagle"]["step"], 1, "scouted the camp")
+	for i in 4:
+		var raider := sim.add_monster(RAT + i, "germanic_raider", Vector3(24, 0, -411))
+		raider.last_attacker_id = PLAYER
+		raider.hp = 0
+		sim.kill(raider, [])
+	check_eq(player.quests["the_lost_eagle"]["step"], 2, "four raiders")
+	var hrodgar := sim.add_monster(RAT + 10, "hrodgar", Vector3(24, 0, -411))
+	hrodgar.last_attacker_id = PLAYER
+	hrodgar.hp = 0
+	sim.kill(hrodgar, [])
+	check_eq(player.inventory.count("legion_eagle"), 1, "the eagle taken back")
+	sim.set_position(PLAYER, Vector3.ZERO)
+	sim.queue_item_action(PLAYER, "talk", {"npc": "centurion_varro"})
+	_run(sim, 1)
+	check(Quests.is_done(player, "the_lost_eagle"), "complete")
+	check_eq(player.inventory.count("legion_eagle"), 0, "the eagle handed over")
+
+
+func test_gold_torcs_are_taught_by_the_lost_eagle() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	player.skills.xp["smithing"] = player.skills.xp_for_level(45)
+	sim.skilling.add_station("anvil", Vector3(1, 0, 0))
+	sim.give_item(PLAYER, "hammer", 1, "test", [])
+	sim.give_item(PLAYER, "gold_bar", 2, "test", [])
+	sim.queue_item_action(PLAYER, "craft", {"kind": "smith", "recipe": "gold_torc", "count": 1})
+	var events := _run(sim, 8)
+	check(events.any(func(e): return e["type"] == "message" and "don't know how" in e["text"]), "not yet")
+	player.quests["the_lost_eagle"] = {"step": 4, "progress": 0, "done": true}
+	sim.queue_item_action(PLAYER, "craft", {"kind": "smith", "recipe": "gold_torc", "count": 1})
+	_run(sim, 8)
+	check_eq(player.inventory.count("gold_torc"), 1, "smithed after the quest")

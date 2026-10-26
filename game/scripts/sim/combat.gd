@@ -84,6 +84,9 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		sim.message(attacker, "You need Slayer %d to fight this." % Slayer.required_level(target.monster_id), events)
 		return
 
+	if attacker.has_brain and sim.boss.try_throw(attacker, target, events):
+		return
+
 	# Monsters with a ward item are much worse to fight without it.
 	var effect := ""
 	if attacker.is_player() and not target.monster_id.is_empty():

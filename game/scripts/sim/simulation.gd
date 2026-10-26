@@ -28,6 +28,7 @@ const Athletics := preload("res://scripts/sim/athletics.gd")
 const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
+const Boss := preload("res://scripts/sim/boss.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
 
 const INVENTORY_SIZE := 28
@@ -56,6 +57,7 @@ var athletics := Athletics.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
+var boss := Boss.new(self)
 var villa := Villa.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
@@ -256,6 +258,7 @@ func step() -> Array[Dictionary]:
 	for id in ids:
 		if _combatants.has(id):
 			combat.process_attack(_combatants[id], events)
+	boss.process(events)
 	curses.process(events)
 	var players := ids.filter(func(i): return _combatants.has(i)).map(func(i): return _combatants[i]) \
 		.filter(func(c): return c.inventory != null)
@@ -299,6 +302,7 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 	if victim.respawn_ticks >= 0:
 		victim.respawn_at_tick = tick + maxi(victim.respawn_ticks, 1)
 	events.append({"type": "death", "id": victim.id, "tick": tick})
+	boss.on_death(victim, events)
 	if victim.inventory:
 		graves.on_player_death(victim, events)
 	var killer: Combatant = _combatants.get(victim.last_attacker_id)

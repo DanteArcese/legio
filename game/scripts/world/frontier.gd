@@ -28,10 +28,14 @@ const YARD := Rect2(-12, -350, 24, 10)
 const PATHS := [
 	[Vector2(0, -350), Vector2(0, -372), Vector2(14, -402), Vector2(24, -410)],
 	[Vector2(0, -372), Vector2(-14, -400), Vector2(-27, -428)],
+	[Vector2(24, -410), Vector2(39, -430)],
 ]
 const CAMP := Vector2(24, -412)
 const CAMP_RADIUS := 9.0
 const MINE := Rect2(-38, -440, 16, 12)
+## Hrodgar's clearing, ringed with standing stones, north of the camp.
+const CLEARING := Vector2(36, -440)
+const CLEARING_RADIUS := 10.0
 const TREE_COUNT := 260
 ## Trees keep clear of the paths, the camp, the mine, and the palisade.
 const TREE_CLEARANCE := 4.0
@@ -42,6 +46,7 @@ const NEEDLES := Color(0.36, 0.3, 0.2)
 const DIRT := Color(0.5, 0.4, 0.28)
 const ROCK := Color(0.47, 0.45, 0.42)
 const TIMBER := Color(0.42, 0.3, 0.19)
+const STANDING_STONE := Color(0.56, 0.55, 0.52)
 const PINES := ["tree_pineTallA", "tree_pineTallB", "tree_pineTallC", "tree_pineDefaultA", "tree_pineDefaultB", "tree_pineRoundC"]
 
 ## North of the palisade: the danger zone, as an XZ rectangle.
@@ -77,6 +82,7 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(2.5, 6.0, _path_distance(p)))
 	flat = maxf(flat, 1.0 - smoothstep(CAMP_RADIUS, CAMP_RADIUS + 4.0, p.distance_to(CAMP)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(MINE, p)))
+	flat = maxf(flat, 1.0 - smoothstep(CLEARING_RADIUS, CLEARING_RADIUS + 4.0, p.distance_to(CLEARING)))
 	flat = maxf(flat, 1.0 - smoothstep(1.0, 4.0, absf(z - LIMES_Z)))
 	h = lerpf(h, 0.0, flat)
 	# Hills rise beyond the walkable edges, framing the view.
@@ -90,7 +96,8 @@ func height_at(x: float, z: float) -> float:
 
 func color_at(x: float, z: float, height: float) -> Color:
 	var p := Vector2(x, z)
-	if _path_distance(p) < 1.8 or YARD.grow(-1.0).has_point(p) or p.distance_to(CAMP) < CAMP_RADIUS - 2.0:
+	if _path_distance(p) < 1.8 or YARD.grow(-1.0).has_point(p) or p.distance_to(CAMP) < CAMP_RADIUS - 2.0 \
+			or p.distance_to(CLEARING) < CLEARING_RADIUS - 2.0:
 		return DIRT
 	if MINE.has_point(p) or height > 2.6:
 		return ROCK
@@ -209,7 +216,8 @@ func _plant_forest() -> void:
 
 
 func _clear_for_tree(p: Vector2) -> bool:
-	if _path_distance(p) < TREE_CLEARANCE or p.distance_to(CAMP) < CAMP_RADIUS + 2.0:
+	if _path_distance(p) < TREE_CLEARANCE or p.distance_to(CAMP) < CAMP_RADIUS + 2.0 \
+			or p.distance_to(CLEARING) < CLEARING_RADIUS + 2.0:
 		return false
 	if _rect_distance(MINE, p) < TREE_CLEARANCE or _rect_distance(YARD, p) < TREE_CLEARANCE:
 		return false
@@ -243,6 +251,25 @@ func _dress() -> void:
 		logs.rotation.y = angle + PI / 2.0
 		logs.scale = Vector3.ONE * 2.2
 		add_child(logs)
+	# Standing stones round the clearing, with a gap to the south for the path.
+	for i in 9:
+		var angle := TAU * (i + 0.5) / 10.0 + PI / 2.0
+		var spot := CLEARING + Vector2(cos(angle), sin(angle)) * (CLEARING_RADIUS - 0.5)
+		var stone := MeshInstance3D.new()
+		var slab := BoxMesh.new()
+		slab.size = Vector3(1.1, 2.8 + 0.4 * sin(i * 2.3), 0.7)
+		var grey := StandardMaterial3D.new()
+		grey.albedo_color = STANDING_STONE.darkened(0.08 * (i % 3))
+		slab.material = grey
+		stone.mesh = slab
+		stone.position = Vector3(spot.x, slab.size.y / 2.0 - 0.15, spot.y)
+		stone.rotation = Vector3(0.05 * sin(i * 1.7), angle + PI / 2.0, 0.05 * cos(i * 1.3))
+		add_child(stone)
+		_solid(Vector3(1.2, 3.0, 1.2), stone.position + Vector3(0, 1.5, 0))
+	var banner: Node3D = dresser.model("castle/flag")
+	banner.position = Vector3(CLEARING.x, 0, CLEARING.y - 6.0)
+	banner.scale = Vector3.ONE * 3.0
+	add_child(banner)
 	for spec in [[Vector2(-35, -444), "rock_largeA"], [Vector2(-26, -445), "rock_tallA"], [Vector2(-18, -443), "rock_largeC"]]:
 		var rock: Node3D = dresser.model("nature/" + spec[1])
 		rock.position = Vector3(spec[0].x, height_at(spec[0].x, spec[0].y) - 0.2, spec[0].y)

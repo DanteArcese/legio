@@ -239,6 +239,16 @@ def test_contracts_deliver_to_real_shopkeepers(content):
     assert any("salt_for_the_fort.to" in e for e in errors)
 
 
+def test_boss_enrage_must_be_faster(content):
+    errors = errors_after(content, lambda c: c["monsters"]["hrodgar"]["boss"].update(enrage_speed=6))
+    assert any("enrage_speed: must be faster" in e for e in errors)
+
+
+def test_boss_blocks_reject_unknown_fields(content):
+    errors = errors_after(content, lambda c: c["monsters"]["hrodgar"]["boss"].update(summons=2))
+    assert any("monsters.hrodgar.boss" in e and "summons" in e for e in errors)
+
+
 def test_furniture_goes_on_a_real_hotspot(content):
     errors = errors_after(content, lambda c: c["villa"]["furniture"]["lararium"].update(hotspot="roof"))
     assert any("villa.furniture.lararium.hotspot" in e for e in errors)

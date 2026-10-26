@@ -30,7 +30,8 @@ RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy"}
-MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "appearance"}
+MONSTER_KEYS = {"name", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance"}
+BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
@@ -155,9 +156,30 @@ def _check_item(where, item_id, item, items, errors):
             errors.append(f"{where}.equip.ammo_type: only ammo-slot items have an ammo type")
 
 
+def _check_boss(where, boss, attack_speed, errors):
+    _check_keys(where, boss, BOSS_KEYS, BOSS_KEYS, errors)
+    _check_int(where, "throw_every", boss.get("throw_every"), 2, errors)
+    _check_int(where, "throw_delay", boss.get("throw_delay"), 1, errors)
+    _check_int(where, "enrage_speed", boss.get("enrage_speed"), 1, errors)
+    radius = boss.get("throw_radius")
+    if not isinstance(radius, (int, float)) or isinstance(radius, bool) or radius <= 0:
+        errors.append(f"{where}.throw_radius: expected a positive number")
+    below = boss.get("enrage_below")
+    if not isinstance(below, (int, float)) or isinstance(below, bool) or not 0 < below < 1:
+        errors.append(f"{where}.enrage_below: expected a fraction between 0 and 1")
+    damage = boss.get("throw_damage")
+    if not (isinstance(damage, list) and len(damage) == 2 and all(isinstance(x, int) and not isinstance(x, bool) for x in damage)
+            and 0 <= damage[0] <= damage[1]):
+        errors.append(f"{where}.throw_damage: expected [min, max] integers")
+    if isinstance(attack_speed, int) and isinstance(boss.get("enrage_speed"), int) and boss["enrage_speed"] >= attack_speed:
+        errors.append(f"{where}.enrage_speed: must be faster (lower) than attack_speed")
+
+
 def _check_monster(where, monster_id, monster, items, drops, errors):
     _check_id(where, monster_id, errors)
-    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"slayer"}, errors)
+    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"slayer", "boss"}, errors)
+    if "boss" in monster:
+        _check_boss(f"{where}.boss", monster["boss"], monster.get("attack_speed"), errors)
     _check_type(where, "name", monster.get("name"), str, errors)
     _check_type(where, "examine", monster.get("examine"), str, errors)
     _check_int(where, "level", monster.get("level"), 1, errors)

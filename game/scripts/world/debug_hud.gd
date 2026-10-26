@@ -1,5 +1,6 @@
 extends CanvasLayer
-## Prototype overlay: tick counter, tick length, and a pulse on every tick.
+## Prototype overlay: tick counter, tick length, frames per second, and a
+## pulse on every tick.
 
 @export var driver: Node
 
@@ -13,6 +14,6 @@ func _ready() -> void:
 
 
 func _on_ticked(tick: int) -> void:
-	_label.text = "Tick %d   |   %.1f s per tick (F3 to change)" % [tick, driver.clock.tick_length]
+	_label.text = "Tick %d   |   %.1f s per tick (F3 to change)   |   %d fps" % [tick, driver.clock.tick_length, Engine.get_frames_per_second()]
 	_pulse.modulate.a = 1.0
 	create_tween().tween_property(_pulse, "modulate:a", 0.0, 0.25)

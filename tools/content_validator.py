@@ -67,6 +67,9 @@ def validate(content: dict) -> list[str]:
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
             errors.append(f"shops.{shop_id}.requires_quest: unknown quest {shop['requires_quest']!r}")
+        for i, offer in enumerate(shop.get("offers", [])):
+            if "requires_quest" in offer and offer["requires_quest"] not in quests.get("quests", {}):
+                errors.append(f"shops.{shop_id}.offers[{i}].requires_quest: unknown quest {offer['requires_quest']!r}")
     player = content.get("player", {})
     _check_keys("player", player, {"starting_kit"}, {"starting_kit"}, errors)
     kit = player.get("starting_kit", [])
@@ -347,7 +350,7 @@ def _check_pietas(pietas, items, errors):
 def _check_shop(where, shop, items, errors):
     _check_keys(where, shop, {"name", "offers", "requires_quest"}, {"name", "offers"}, errors)
     for i, offer in enumerate(shop.get("offers", [])):
-        _check_keys(f"{where}.offers[{i}]", offer, {"item", "price", "quantity"}, {"item", "price"}, errors)
+        _check_keys(f"{where}.offers[{i}]", offer, {"item", "price", "quantity", "requires_quest"}, {"item", "price"}, errors)
         if offer.get("item") not in items:
             errors.append(f"{where}.offers[{i}].item: unknown item {offer.get('item')!r}")
         _check_int(f"{where}.offers[{i}]", "price", offer.get("price"), 1, errors)
@@ -358,7 +361,8 @@ def _check_shop(where, shop, items, errors):
 
 
 QUEST_KEYS = {"name", "summary", "giver", "requirements", "start", "start_items", "steps", "complete", "rewards"}
-STEP_KINDS = {"attack": {"tag", "combat", "count"}, "kill": {"monster", "count"}, "talk": {"npc"}}
+STEP_KINDS = {"attack": {"tag", "combat", "count"}, "kill": {"monster", "count"}, "talk": {"npc"},
+              "deliver": {"npc", "items"}, "reach": {"at", "radius"}}
 COMBAT_KINDS = {"melee", "ranged", "ritus"}
 REWARD_KEYS = {"xp", "items", "rank", "unlocks"}
 
@@ -407,7 +411,17 @@ def _check_quests(content, items, monsters, errors):
                 errors.append(f"{step_where}.combat: must be one of {sorted(COMBAT_KINDS)}")
             if kind == "kill" and step.get("monster") not in monsters:
                 errors.append(f"{step_where}.monster: unknown monster {step.get('monster')!r}")
-            if kind == "talk" and step.get("npc") not in npcs:
+            if kind == "deliver":
+                if not step.get("items"):
+                    errors.append(f"{step_where}.items: at least one item required")
+                for j, entry in enumerate(step.get("items", [])):
+                    _check_drop(f"{step_where}.items[{j}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+            if kind == "reach":
+                at = step.get("at")
+                if not (isinstance(at, list) and len(at) == 2 and all(isinstance(v, (int, float)) for v in at)):
+                    errors.append(f"{step_where}.at: expected [x, z]")
+                _check_number(step_where, "radius", step.get("radius"), 0.5, 100, errors)
+            if kind in ("talk", "deliver") and step.get("npc") not in npcs:
                 errors.append(f"{step_where}.npc: unknown npc {step.get('npc')!r}")
             if not isinstance(step.get("log"), str) or not step.get("log"):
                 errors.append(f"{step_where}.log: expected text")

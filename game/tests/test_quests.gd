@@ -129,7 +129,7 @@ func test_the_whole_quest() -> void:
 	check_eq(player.inventory.count("parma"), 1, "parma reward")
 	check_eq(Quests.rank(player), "Tiro", "rank")
 	check(events.any(func(e): return e["type"] == "quest_complete"), "quest_complete event")
-	check_eq(_dialogue(_talk(sim)), ContentDB.npc("optio_gaius")["idle"], "idle chatter afterwards")
+	check("Defence 5" in _dialogue(_talk(sim))[0], "afterwards he points at the next rank, Miles")
 
 
 func test_quartermaster_needs_tiro() -> void:
@@ -155,3 +155,66 @@ func test_quest_progress_survives_a_save() -> void:
 	check(SaveGame.restore(loaded, PLAYER, data), "restored")
 	check_eq(_player(loaded).quests["tiro"], {"step": 3, "progress": 2, "done": false}, "same progress")
 	check_eq(typeof(_player(loaded).quests["tiro"]["step"]), TYPE_INT, "ints after JSON")
+
+
+func _finish_tiro(sim: Simulation) -> void:
+	_player(sim).quests["tiro"] = {"step": 5, "progress": 0, "done": true}
+
+
+func test_miles_needs_tiro_and_defence() -> void:
+	var sim := _make_sim()
+	_finish_tiro(sim)
+	var lines := _dialogue(_talk(sim))
+	check(lines.size() == 1 and "Defence 5" in lines[0], "asks for Defence 5 (%s)" % [lines])
+	check_eq(Quests.status(_player(sim), "miles"), "not_started", "not started yet")
+	_player(sim).skills.xp["defence"] = _player(sim).skills.xp_for_level(5)
+	_talk(sim)
+	check_eq(Quests.status(_player(sim), "miles"), "in_progress", "starts at Defence 5")
+
+
+func test_miles_from_wolves_to_the_barrow() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	_finish_tiro(sim)
+	player.skills.xp["defence"] = player.skills.xp_for_level(5)
+	_talk(sim)
+	for i in 5:
+		var wolf := sim.add_monster(RAT + i, "wolf", Vector3(0, 0, 1))
+		wolf.last_attacker_id = PLAYER
+		wolf.hp = 0
+		sim.kill(wolf, [])
+	check_eq(player.quests["miles"]["step"], 1, "wolves done")
+
+	sim.give_item(PLAYER, "logs", 10, "test", [])
+	sim.give_item(PLAYER, "bronze_nails", 10, "test", [])
+	_talk(sim)
+	check_eq(player.quests["miles"]["step"], 1, "not enough nails: still waiting")
+	check_eq(player.inventory.count("logs"), 10, "nothing taken")
+	sim.give_item(PLAYER, "bronze_nails", 5, "test", [])
+	var lines := _dialogue(_talk(sim))
+	check_eq(player.quests["miles"]["step"], 2, "delivered")
+	check_eq(player.inventory.count("logs") + player.inventory.count("bronze_nails"), 0, "items handed over")
+	check(lines[0].begins_with("You hand over 10 logs and 15 bronze nails"), "says what was handed over (%s)" % [lines])
+
+	sim.set_position(PLAYER, Vector3(-44, 0, -34))
+	_run(sim, 1)
+	check_eq(player.quests["miles"]["step"], 3, "scouted the barrow")
+	sim.set_position(PLAYER, Vector3(1, 0, 0))
+	_talk(sim)
+	check(Quests.is_done(player, "miles"), "complete")
+	check_eq(Quests.rank(player), "Miles", "rank goes up")
+	check_eq(player.inventory.count("lorica_hamata"), 1, "mail reward")
+
+
+func test_quartermaster_keeps_mail_for_miles() -> void:
+	var sim := _make_sim()
+	sim.add_shopkeeper("quartermaster", Vector3(1, 0, 0))
+	sim.give_item(PLAYER, "coins", 1000, "test", [])
+	_finish_tiro(sim)
+	sim.queue_item_action(PLAYER, "buy", {"shop": "quartermaster", "item": "lorica_hamata"})
+	_run(sim, 1)
+	check_eq(_player(sim).inventory.count("lorica_hamata"), 0, "not for a tiro")
+	_player(sim).quests["miles"] = {"step": 4, "progress": 0, "done": true}
+	sim.queue_item_action(PLAYER, "buy", {"shop": "quartermaster", "item": "lorica_hamata"})
+	_run(sim, 1)
+	check_eq(_player(sim).inventory.count("lorica_hamata"), 1, "a miles may buy it")

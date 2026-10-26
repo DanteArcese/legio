@@ -6,7 +6,7 @@ extends RefCounted
 ## The pack has no bow or sling, so those are built in code (prop_models.gd).
 
 const BODIES := {
-	"": "adventurers/Rogue", "bronze_lorica": "adventurers/Knight", "iron_lorica": "adventurers/Knight",
+	"": "adventurers/Rogue", "bronze_lorica": "adventurers/Knight", "iron_lorica": "adventurers/Knight", "lorica_hamata": "adventurers/Knight",
 	"ritual_robe": "adventurers/Mage",
 }
 ## item -> [model, attack style]

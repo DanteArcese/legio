@@ -11,6 +11,7 @@ given as thanks, not because it is required.
 | [Skeletons Character Pack](https://kaylousberg.itch.io/kaykit-skeletons) | Kay Lousberg (KayKit) | CC0 1.0 | Lemurs (`game/assets/kaykit/skeletons`) |
 | [Dungeon Remastered](https://kaylousberg.itch.io/kaykit-dungeon-remastered) | Kay Lousberg (KayKit) | CC0 1.0 | Barrow walls, floors, pillars, torches, and props (`game/assets/kaykit/dungeon`) |
 | [Castle Kit](https://kenney.nl/assets/castle-kit) | Kenney (kenney.nl) | CC0 1.0 | Fort walls, towers and flags (`game/assets/kenney/castle`) |
+| [Survival Kit](https://kenney.nl/assets/survival-kit) | Kenney (kenney.nl) | CC0 1.0 | The anvil, campfire pit, bank chest, and the pickaxe, axe and hammer held while skilling (`game/assets/kenney/survival`) |
 | [Impact Sounds](https://kenney.nl/assets/impact-sounds), [Interface Sounds](https://kenney.nl/assets/interface-sounds), [RPG Audio](https://kenney.nl/assets/rpg-audio), [Music Jingles](https://kenney.nl/assets/music-jingles) | Kenney (kenney.nl) | CC0 1.0 | Combat, skilling, footstep and UI sounds, and the level-up jingles (`game/assets/kenney/audio`) |
 
 The ambient loops and swish sounds in `game/assets/audio/synth` are generated

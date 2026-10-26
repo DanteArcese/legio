@@ -41,18 +41,19 @@ func _init() -> void:
 
 func _ready() -> void:
 	var look: Array = LOOKS[kind]
-	if kind == "fire":
-		_build_fire(look[1])
-	else:
-		var mesh := MeshInstance3D.new()
-		var box := BoxMesh.new()
-		box.size = look[2]
-		var material := StandardMaterial3D.new()
-		material.albedo_color = look[1]
-		box.material = material
-		mesh.mesh = box
-		mesh.position.y = look[2].y / 2.0
-		add_child(mesh)
+	match kind:
+		"fire":
+			_build_fire()
+		"anvil":
+			_add_model("workbench-anvil", 3.0)
+		"furnace":
+			_build_furnace()
+		"range":
+			_build_range()
+		"tomb":
+			_build_tomb()
+		"tanning_rack":
+			_build_tanning_rack()
 	var shape := CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	shape.shape.size = look[2]
@@ -68,57 +69,122 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if _flame == null:
+	if _light == null:
 		return
 	_time += delta
 	var flicker := 0.85 + 0.1 * sin(_time * 11.0) + 0.05 * sin(_time * 23.0 + 1.3)
-	_flame.scale = Vector3(1.0, flicker, 1.0)
+	if _flame:
+		_flame.scale = Vector3(1.0, flicker, 1.0)
 	_light.light_energy = 1.6 * flicker
 
 
-## Crossed logs in a ring of stones, with a flickering flame and light.
-func _build_fire(wood: Color) -> void:
-	var wood_material := StandardMaterial3D.new()
-	wood_material.albedo_color = wood
-	for i in 4:
-		var log_mesh := MeshInstance3D.new()
-		var cylinder := CylinderMesh.new()
-		cylinder.top_radius = 0.08
-		cylinder.bottom_radius = 0.09
-		cylinder.height = 0.9
-		cylinder.material = wood_material
-		log_mesh.mesh = cylinder
-		log_mesh.rotation = Vector3(deg_to_rad(65), i * PI / 2.0, 0)
-		log_mesh.position = Vector3(0, 0.18, 0)
-		add_child(log_mesh)
-	var stone_material := StandardMaterial3D.new()
-	stone_material.albedo_color = Color(0.48, 0.46, 0.43)
-	for i in 8:
-		var stone := MeshInstance3D.new()
-		var sphere := SphereMesh.new()
-		sphere.radius = 0.12
-		sphere.height = 0.16
-		sphere.material = stone_material
-		stone.mesh = sphere
-		var angle := i * TAU / 8.0
-		stone.position = Vector3(cos(angle) * 0.55, 0.06, sin(angle) * 0.55)
-		add_child(stone)
-	_flame = MeshInstance3D.new()
-	var cone := CylinderMesh.new()
-	cone.top_radius = 0.0
-	cone.bottom_radius = 0.22
-	cone.height = 0.6
-	var fire_material := StandardMaterial3D.new()
-	fire_material.albedo_color = Color(1.0, 0.55, 0.15)
-	fire_material.emission_enabled = true
-	fire_material.emission = Color(1.0, 0.45, 0.1)
-	fire_material.emission_energy_multiplier = 2.5
-	cone.material = fire_material
-	_flame.mesh = cone
-	_flame.position.y = 0.4
-	add_child(_flame)
+## Kenney's campfire pit, with a flickering flame and light.
+func _build_fire() -> void:
+	_add_model("campfire-pit", 3.6)
+	_add_glow(Vector3(0, 0.4, 0), 0.6)
+
+
+## A Kenney Survival Kit model (CC0), scaled up from its tiny units.
+func _add_model(model: String, size: float) -> void:
+	var instance: Node3D = load("res://assets/kenney/survival/%s.glb" % model).instantiate()
+	instance.scale = Vector3.ONE * size
+	add_child(instance)
+
+
+## A stone bloomery: a squat stack with a chimney and a glowing mouth.
+func _build_furnace() -> void:
+	var stone := Color(0.5, 0.42, 0.36)
+	_add_box(Vector3(1.3, 0.9, 1.3), Vector3(0, 0.45, 0), stone)
+	_add_box(Vector3(1.0, 0.5, 1.0), Vector3(0, 1.15, 0), stone.darkened(0.1))
+	_add_cylinder(0.22, 0.8, Vector3(0, 1.75, 0), stone.darkened(0.2))
+	_add_box(Vector3(0.5, 0.4, 0.05), Vector3(0, 0.35, 0.66), Color(1.0, 0.45, 0.1), true)
+	_add_glow(Vector3(0, 0.5, 0.9), 0.0)
+
+
+## A domed clay oven on a stone base, its mouth aglow.
+func _build_range() -> void:
+	_add_box(Vector3(1.4, 0.5, 1.0), Vector3(0, 0.25, 0), Color(0.55, 0.5, 0.45))
+	var dome := MeshInstance3D.new()
+	var sphere := SphereMesh.new()
+	sphere.radius = 0.55
+	sphere.height = 0.8
+	sphere.is_hemisphere = true
+	sphere.material = _material(Color(0.68, 0.42, 0.28))
+	dome.mesh = sphere
+	dome.position.y = 0.5
+	add_child(dome)
+	_add_box(Vector3(0.36, 0.24, 0.05), Vector3(0, 0.66, 0.5), Color(1.0, 0.5, 0.15), true)
+	_add_glow(Vector3(0, 0.7, 0.8), 0.0)
+
+
+## A weathered stone sarcophagus with a lid and a small stele.
+func _build_tomb() -> void:
+	var stone := Color(0.5, 0.5, 0.48)
+	_add_box(Vector3(1.0, 0.8, 2.0), Vector3(0, 0.4, 0), stone)
+	_add_box(Vector3(1.1, 0.18, 2.1), Vector3(0, 0.89, 0), stone.lightened(0.08))
+	_add_box(Vector3(0.7, 1.2, 0.18), Vector3(0, 0.6, -1.15), stone.darkened(0.12))
+
+
+## Two posts and a crossbar with a hide stretched between them.
+func _build_tanning_rack() -> void:
+	var wood := Color(0.45, 0.32, 0.2)
+	for x in [-0.65, 0.65]:
+		_add_cylinder(0.06, 1.7, Vector3(x, 0.85, 0), wood)
+	_add_box(Vector3(1.5, 0.1, 0.1), Vector3(0, 1.6, 0), wood)
+	_add_box(Vector3(1.1, 1.1, 0.03), Vector3(0, 0.95, 0), Color(0.62, 0.46, 0.32))
+
+
+func _add_box(size: Vector3, at: Vector3, color: Color, glowing := false) -> void:
+	var mesh := MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = size
+	box.material = _material(color, glowing)
+	mesh.mesh = box
+	mesh.position = at
+	add_child(mesh)
+
+
+func _add_cylinder(radius: float, height: float, at: Vector3, color: Color) -> void:
+	var mesh := MeshInstance3D.new()
+	var cylinder := CylinderMesh.new()
+	cylinder.top_radius = radius
+	cylinder.bottom_radius = radius
+	cylinder.height = height
+	cylinder.material = _material(color)
+	mesh.mesh = cylinder
+	mesh.position = at
+	add_child(mesh)
+
+
+static func _material(color: Color, glowing := false) -> StandardMaterial3D:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	if glowing:
+		material.emission_enabled = true
+		material.emission = color
+		material.emission_energy_multiplier = 2.0
+	return material
+
+
+## A flickering orange light, and a flame cone when flame_height > 0.
+func _add_glow(at: Vector3, flame_height: float) -> void:
+	if flame_height > 0.0:
+		_flame = MeshInstance3D.new()
+		var cone := CylinderMesh.new()
+		cone.top_radius = 0.0
+		cone.bottom_radius = 0.22
+		cone.height = flame_height
+		var fire_material := StandardMaterial3D.new()
+		fire_material.albedo_color = Color(1.0, 0.55, 0.15)
+		fire_material.emission_enabled = true
+		fire_material.emission = Color(1.0, 0.45, 0.1)
+		fire_material.emission_energy_multiplier = 2.5
+		cone.material = fire_material
+		_flame.mesh = cone
+		_flame.position = at
+		add_child(_flame)
 	_light = OmniLight3D.new()
 	_light.light_color = Color(1.0, 0.65, 0.35)
-	_light.omni_range = 6.0
-	_light.position.y = 0.8
+	_light.omni_range = 5.0
+	_light.position = at + Vector3(0, 0.4, 0)
 	add_child(_light)

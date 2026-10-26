@@ -665,5 +665,94 @@
     "name": "Silver fibula",
     "value": 90,
     "examine": "A silver cloak brooch, worked like a crossbow."
+  },
+  "boar_hide": {
+    "name": "Boar hide",
+    "value": 6,
+    "examine": "A coarse, bristly hide. It needs tanning."
+  },
+  "leather": {
+    "name": "Leather",
+    "value": 12,
+    "examine": "Tanned boar hide, tough and supple."
+  },
+  "needle": {
+    "name": "Needle",
+    "value": 4,
+    "examine": "A bronze needle for heavy stitching.",
+    "tool": "needle",
+    "tool_tier": 1
+  },
+  "thread": {
+    "name": "Thread",
+    "value": 1,
+    "examine": "Waxed linen thread.",
+    "stackable": true
+  },
+  "leather_cap": {
+    "name": "Leather cap",
+    "value": 25,
+    "examine": "A close-fitting cap of boiled leather.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 2,
+        "ranged_attack": 2,
+        "ranged_defence": 3
+      }
+    }
+  },
+  "leather_jerkin": {
+    "name": "Leather jerkin",
+    "value": 60,
+    "examine": "A sleeveless leather coat. Light enough to draw a bow in.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 6,
+        "ranged_attack": 4,
+        "ranged_defence": 8
+      }
+    }
+  },
+  "wolfskin_hood": {
+    "name": "Wolfskin hood",
+    "value": 90,
+    "examine": "A wolf's head and pelt, worn as a hood. The aquiliferi would approve.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 4,
+        "ranged_attack": 4,
+        "ranged_defence": 6
+      }
+    },
+    "requirements": {
+      "ranged": 10
+    }
+  },
+  "wolfskin_jerkin": {
+    "name": "Wolfskin jerkin",
+    "value": 180,
+    "examine": "Leather lined and trimmed with wolf fur. Warm on the frontier.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 10,
+        "ranged_attack": 8,
+        "ranged_defence": 12
+      }
+    },
+    "requirements": {
+      "ranged": 15
+    }
   }
 }

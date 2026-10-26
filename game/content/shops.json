@@ -48,6 +48,15 @@
       {
         "item": "bronze_axe",
         "price": 25
+      },
+      {
+        "item": "needle",
+        "price": 4
+      },
+      {
+        "item": "thread",
+        "price": 15,
+        "quantity": 20
       }
     ]
   },

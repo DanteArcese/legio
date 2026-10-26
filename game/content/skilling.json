@@ -535,6 +535,98 @@
         "xp": 40,
         "tool": "knife"
       }
+    ],
+    "tan": [
+      {
+        "id": "leather",
+        "inputs": [
+          {
+            "item": "boar_hide",
+            "quantity": 1
+          }
+        ],
+        "output": "leather",
+        "level": 1,
+        "xp": 5
+      }
+    ],
+    "leatherwork": [
+      {
+        "id": "leather_cap",
+        "inputs": [
+          {
+            "item": "leather",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 1
+          }
+        ],
+        "output": "leather_cap",
+        "level": 1,
+        "xp": 14,
+        "tool": "needle"
+      },
+      {
+        "id": "leather_jerkin",
+        "inputs": [
+          {
+            "item": "leather",
+            "quantity": 3
+          },
+          {
+            "item": "thread",
+            "quantity": 2
+          }
+        ],
+        "output": "leather_jerkin",
+        "level": 7,
+        "xp": 42,
+        "tool": "needle"
+      },
+      {
+        "id": "wolfskin_hood",
+        "inputs": [
+          {
+            "item": "leather",
+            "quantity": 1
+          },
+          {
+            "item": "wolf_pelt",
+            "quantity": 2
+          },
+          {
+            "item": "thread",
+            "quantity": 1
+          }
+        ],
+        "output": "wolfskin_hood",
+        "level": 15,
+        "xp": 60,
+        "tool": "needle"
+      },
+      {
+        "id": "wolfskin_jerkin",
+        "inputs": [
+          {
+            "item": "leather",
+            "quantity": 3
+          },
+          {
+            "item": "wolf_pelt",
+            "quantity": 3
+          },
+          {
+            "item": "thread",
+            "quantity": 2
+          }
+        ],
+        "output": "wolfskin_jerkin",
+        "level": 22,
+        "xp": 110,
+        "tool": "needle"
+      }
     ]
   },
   "trees": {

@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, hunter, farming, and mercatura.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, thieving, athletics, hunter, farming, mercatura, and the villa.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -29,6 +29,7 @@ const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
+const Villa := preload("res://scripts/sim/villa.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -57,6 +58,7 @@ var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
 var pets := Pets.new(self)
+var villa := Villa.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 
@@ -363,6 +365,12 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			hunter.use_spot(player, command.get("spot", -1), events)
 		"farm":
 			farming.use_patch(player, command.get("patch", -1), command.get("seed", ""), events)
+		"buy_villa":
+			villa.buy(player, events)
+		"build":
+			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events)
+		"remove_furniture":
+			villa.remove(player, command.get("hotspot", ""), events)
 		"take_contract":
 			mercatura.take(player, command.get("board", ""), command.get("contract", ""), events)
 		"abandon_contract":

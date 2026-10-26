@@ -5,6 +5,7 @@ extends RefCounted
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Pietas := preload("res://scripts/sim/pietas.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
+const Villa := preload("res://scripts/sim/villa.gd")
 
 ## How far the controller menu looks for things.
 const NEARBY_MONSTER_RANGE := 8.0
@@ -37,7 +38,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "shopkeepers", "pets"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "villa_hotspots", "shopkeepers", "pets"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -94,6 +95,28 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 		"venatores":
 			return [["Ask for a contract", player.ask_for_contract.bind(node)],
 				["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))]]
+		"surveyors":
+			var combatant: RefCounted = player.get_node("SimEntity").combatant
+			var options := []
+			if not combatant.villa_owned:
+				options.append(["Buy a villa (%d denarii)" % ContentDB.data()["villa"]["price"], player.buy_villa.bind(node)])
+			options.append(["Examine " + node.get_meta("display_name", "surveyor"), player.examine.bind(node.get_meta("examine", ""))])
+			return options
+		"waystones":
+			return [["Travel to Portus Salis", player.use_waystone.bind(node)]]
+		"villa_hotspots":
+			var combatant: RefCounted = player.get_node("SimEntity").combatant
+			var options := []
+			if node.furniture.is_empty():
+				for furniture_id in Villa.options_for(node.hotspot_type):
+					var furniture := ContentDB.furniture(furniture_id)
+					var materials := ", ".join(furniture["materials"].map(func(m): return "%d %s" % [m["quantity"], ContentDB.item(m["item"])["name"].to_lower()]))
+					options.append(["Build %s (Engineering %d: %s)" % [furniture["name"].to_lower(), furniture["level"], materials],
+						player.build_furniture.bind(node, furniture_id)])
+			else:
+				options.append(["Remove the %s" % ContentDB.furniture(node.furniture)["name"].to_lower(), player.remove_furniture.bind(node)])
+			options.append(["Examine " + node.display_name().to_lower(), player.examine.bind(node.examine_text())])
+			return options
 		"trade_boards":
 			var combatant: RefCounted = player.get_node("SimEntity").combatant
 			var options := []
@@ -181,7 +204,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "villa_hotspots", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue

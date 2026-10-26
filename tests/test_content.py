@@ -239,6 +239,16 @@ def test_contracts_deliver_to_real_shopkeepers(content):
     assert any("salt_for_the_fort.to" in e for e in errors)
 
 
+def test_furniture_goes_on_a_real_hotspot(content):
+    errors = errors_after(content, lambda c: c["villa"]["furniture"]["lararium"].update(hotspot="roof"))
+    assert any("villa.furniture.lararium.hotspot" in e for e in errors)
+
+
+def test_furniture_provides_something_known(content):
+    errors = errors_after(content, lambda c: c["villa"]["furniture"]["villa_range"].update(provides={"station": "jacuzzi"}))
+    assert any("villa.furniture.villa_range.provides.station" in e for e in errors)
+
+
 def test_collection_pages_list_real_items(content):
     errors = errors_after(content, lambda c: c["collection"]["pages"]["beasts"]["items"].append("golden_fleece"))
     assert any("unknown item 'golden_fleece'" in e for e in errors)

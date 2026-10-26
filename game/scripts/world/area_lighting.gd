@@ -1,8 +1,10 @@
 extends Node
 ## Switches the lighting when the player is underground (the dungeon area
-## lies east of x = UNDERGROUND_X), and back when they return.
+## lies between x = UNDERGROUND_X and UNDERGROUND_END_X), and back when
+## they return. The villa grounds lie farther east, in daylight.
 
 const UNDERGROUND_X := 100.0
+const UNDERGROUND_END_X := 230.0
 
 @export var environment: WorldEnvironment
 @export var sun: DirectionalLight3D
@@ -23,7 +25,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var below := player.global_position.x > UNDERGROUND_X
+	var below := player.global_position.x > UNDERGROUND_X and player.global_position.x < UNDERGROUND_END_X
 	if below != underground:
 		underground = below
 		_apply()

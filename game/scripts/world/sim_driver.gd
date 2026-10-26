@@ -2,6 +2,7 @@ extends Node
 ## Runs the simulation on game ticks and relays its events to the scene.
 ## Press F3 to cycle tick lengths (debug only; the game uses 0.6 s).
 
+const Villa := preload("res://scripts/sim/villa.gd")
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
 const LootPile := preload("res://scripts/world/loot_pile.gd")
@@ -35,6 +36,7 @@ var _trees := {}
 var _stalls := {}
 var _hunt_spots := {}
 var _patches := {}
+var _hotspots := {}
 var _shades := {}
 ## Player id -> their pet follower node.
 var _pets := {}
@@ -74,6 +76,11 @@ func _ready() -> void:
 		spot_id += 1
 		spot.spot_id = spot_id
 		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
+	for hotspot in get_tree().get_nodes_in_group("villa_hotspots"):
+		_hotspots[hotspot.hotspot_id] = hotspot
+		sim.villa.add_hotspot(hotspot.hotspot_id, hotspot.hotspot_type, hotspot.global_position)
+	for surveyor in get_tree().get_nodes_in_group("surveyors"):
+		sim.villa.set_surveyor(surveyor.global_position)
 	for board in get_tree().get_nodes_in_group("trade_boards"):
 		sim.mercatura.add_board(board.board_id, board.global_position)
 	for patch in get_tree().get_nodes_in_group("patches"):
@@ -206,6 +213,14 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]].set_items(event["items"])
 		"rock_depleted", "rock_respawned":
 			_rocks[event["rock"]].set_depleted(event["type"] == "rock_depleted")
+		"furniture_built":
+			var hotspot: Node3D = _hotspots[event["hotspot"]]
+			var built: Node3D = hotspot.show_furniture(event["furniture"], Villa.patch_id(sim.villa.hotspots[event["hotspot"]]))
+			# Garden beds are farming patches the driver must know about.
+			if built and built.is_in_group("patches"):
+				_patches[built.patch_id] = built
+		"furniture_removed":
+			_hotspots[event["hotspot"]].show_furniture("")
 		"patch_changed":
 			_patches[event["patch"]].show_crop(event["crop"], event["stage"], event["ready"])
 		"trap_set":

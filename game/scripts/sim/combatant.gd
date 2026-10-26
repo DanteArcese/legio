@@ -66,6 +66,9 @@ var stunned_until := -1
 var thieving_ready_at := -1
 ## Who last hit this combatant, for kill credit.
 var last_attacker_id := -1
+## The villa: owned or not, and hotspot id -> furniture id.
+var villa_owned := false
+var villa_furniture := {}
 ## Mercatura: the current trade contract ({} or {"id"}) and how many are done.
 var trade_contract := {}
 var contracts_done := 0

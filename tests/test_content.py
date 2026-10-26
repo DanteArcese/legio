@@ -1,4 +1,5 @@
 import copy
+import re
 
 import pytest
 
@@ -190,3 +191,14 @@ def test_quests_end_by_handing_in(content):
 def test_shop_quest_gate_must_name_a_real_quest(content):
     errors = errors_after(content, lambda c: c["shops"]["quartermaster"].update(requires_quest="centurio"))
     assert any("shops.quartermaster.requires_quest" in e for e in errors)
+
+
+def test_examine_text_uses_an_before_vowels():
+    content = load_content()
+    bad = []
+    for section in ("items", "monsters"):
+        for entry_id, entry in content[section].items():
+            text = entry.get("examine", "")
+            if re.search(r"\bA [aeiouAEIOU]", text):
+                bad.append(f"{section}.{entry_id}: {text}")
+    assert not bad, bad

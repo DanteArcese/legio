@@ -193,7 +193,7 @@
   "iron_pugio": {
     "name": "Iron pugio",
     "value": 30,
-    "examine": "A iron pugio.",
+    "examine": "An iron pugio.",
     "equip": {
       "slot": "weapon",
       "bonuses": {
@@ -210,7 +210,7 @@
   "iron_gladius": {
     "name": "Iron gladius",
     "value": 75,
-    "examine": "A iron gladius.",
+    "examine": "An iron gladius.",
     "equip": {
       "slot": "weapon",
       "bonuses": {
@@ -227,7 +227,7 @@
   "iron_galea": {
     "name": "Iron galea",
     "value": 45,
-    "examine": "A iron galea.",
+    "examine": "An iron galea.",
     "equip": {
       "slot": "head",
       "bonuses": {
@@ -244,7 +244,7 @@
   "iron_lorica": {
     "name": "Iron lorica",
     "value": 120,
-    "examine": "A iron lorica.",
+    "examine": "An iron lorica.",
     "equip": {
       "slot": "body",
       "bonuses": {
@@ -261,7 +261,7 @@
   "iron_scutum": {
     "name": "Iron scutum",
     "value": 90,
-    "examine": "A iron scutum.",
+    "examine": "An iron scutum.",
     "equip": {
       "slot": "shield",
       "bonuses": {

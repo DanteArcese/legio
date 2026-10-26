@@ -11,6 +11,11 @@ func run() -> void:
 	var me: RefCounted = driver().sim.get_combatant(PLAYER)
 	me.skills.xp["mining"] = me.skills.xp_for_level(10)
 	me.skills.xp["smithing"] = me.skills.xp_for_level(5)
+	# Galena lies near the wolf woods; this is a supply run, not a fight.
+	for skill in ["defence", "vitality"]:
+		me.skills.xp[skill] = me.skills.xp_for_level(30)
+	me.max_hp = 30
+	me.hp = 30
 	driver().sim.give_item(PLAYER, "coins", 50, "test", [])
 	driver().sim.give_item(PLAYER, "bronze_bar", 1, "test", [])
 	var start: int = driver().sim.tick
@@ -47,6 +52,7 @@ func run() -> void:
 	await shot("tomb_menu")
 	await press("ui_accept")
 	await action_done()
+	metric("deaths", count_events("death", {"id": PLAYER}))
 	metric("binding_tablets", me.inventory.count("binding_tablet"))
 	metric("ritus_xp", int(me.skills.xp["ritus"]))
 	metric("minutes", snappedf((driver().sim.tick - start) * 0.6 / 60.0, 0.1))

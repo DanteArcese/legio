@@ -12,9 +12,9 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving")
 
-SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching"}
+SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
@@ -63,6 +63,7 @@ def validate(content: dict) -> list[str]:
     _check_pietas(content.get("pietas", {}), items, errors)
     quests = content.get("quests", {})
     _check_quests(quests, items, monsters, errors)
+    _check_thieving(content.get("thieving", {}), items, errors)
     for shop_id, shop in content.get("shops", {}).items():
         _check_shop(f"shops.{shop_id}", shop, items, errors)
         if "requires_quest" in shop and shop["requires_quest"] not in quests.get("quests", {}):
@@ -437,6 +438,37 @@ def _check_quests(content, items, monsters, errors):
             _check_number(f"{where}.rewards.xp", skill, amount, 1, 1_000_000, errors)
         for i, entry in enumerate(rewards.get("items", [])):
             _check_drop(f"{where}.rewards.items[{i}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
+
+
+STALL_KEYS = {"name", "level", "xp", "loot", "restock_ticks", "caught_chance", "model", "examine"}
+MARK_KEYS = {"name", "level", "xp", "coins", "stun_ticks", "damage", "examine"}
+STALL_MODELS = {"stall-red", "stall-green"}
+
+
+def _check_thieving(thieving, items, errors):
+    _check_keys("thieving", thieving, {"stalls", "marks"}, {"stalls", "marks"}, errors)
+    for stall_id, stall in thieving.get("stalls", {}).items():
+        where = f"thieving.stalls.{stall_id}"
+        _check_id(where, stall_id, errors)
+        _check_keys(where, stall, STALL_KEYS, STALL_KEYS, errors)
+        _check_int(where, "level", stall.get("level"), 1, errors, 99)
+        _check_number(where, "xp", stall.get("xp"), 0.1, 10000, errors)
+        _check_drop(f"{where}.loot", stall.get("loot", {}), items, errors, nothing_allowed=False, multiples_allowed=True)
+        _check_int(where, "restock_ticks", stall.get("restock_ticks"), 1, errors)
+        _check_number(where, "caught_chance", stall.get("caught_chance"), 0, 1, errors)
+        if stall.get("model") not in STALL_MODELS:
+            errors.append(f"{where}.model: must be one of {sorted(STALL_MODELS)}")
+    for mark_id, mark in thieving.get("marks", {}).items():
+        where = f"thieving.marks.{mark_id}"
+        _check_id(where, mark_id, errors)
+        _check_keys(where, mark, MARK_KEYS, MARK_KEYS, errors)
+        _check_int(where, "level", mark.get("level"), 1, errors, 99)
+        _check_number(where, "xp", mark.get("xp"), 0.1, 10000, errors)
+        _check_int(where, "stun_ticks", mark.get("stun_ticks"), 1, errors, 50)
+        for key in ("coins", "damage"):
+            pair = mark.get(key)
+            if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
+                errors.append(f"{where}.{key}: expected [min, max] whole numbers")
 
 
 def _check_lines(where, key, lines, errors):

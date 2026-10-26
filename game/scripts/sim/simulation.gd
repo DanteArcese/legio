@@ -7,7 +7,7 @@ extends RefCounted
 ## keeps the logic testable and lets it move to a server later.
 ##
 ## This script owns the combatants, the command queue, and the tick order.
-## The systems live in modules: items, combat, curses, graves, skilling, pietas, and quests.
+## The systems live in modules: items, combat, curses, graves, skilling, pietas, quests, and thieving.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -23,6 +23,7 @@ const Graves := preload("res://scripts/sim/graves.gd")
 const Skilling := preload("res://scripts/sim/skilling.gd")
 const Pietas := preload("res://scripts/sim/pietas.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
+const Thieving := preload("res://scripts/sim/thieving.gd")
 
 const INVENTORY_SIZE := 28
 const BANK_SIZE := 400
@@ -42,6 +43,7 @@ var graves := Graves.new(self)
 var skilling := Skilling.new(self)
 var pietas := Pietas.new(self)
 var quests := Quests.new(self)
+var thieving := Thieving.new(self)
 ## player id -> items held by the libitinarii, waiting to be reclaimed.
 var reclaimable := {}
 
@@ -223,6 +225,7 @@ func step() -> Array[Dictionary]:
 	skilling.process(players, events)
 	pietas.process(players, events)
 	quests.process(players, events)
+	thieving.process(events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -310,6 +313,10 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			_slayer_task(player, command.get("venator", ""), events)
 		"talk":
 			quests.talk(player, command.get("npc", ""), events)
+		"steal":
+			thieving.steal(player, command.get("stall", -1), events)
+		"pickpocket":
+			thieving.pickpocket(player, command.get("mark", -1), events)
 		"mine":
 			skilling.start_mining(player, command.get("rock", -1), events)
 		"chop":

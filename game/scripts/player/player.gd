@@ -214,6 +214,16 @@ func talk(npc: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "talk", {"npc": npc.get_meta("npc_id")}))
 
 
+func steal(stall: Node3D) -> void:
+	walk_and_do(stall.global_position, CLICK_USE_DISTANCE + 0.4, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "steal", {"stall": stall.stall_id}))
+
+
+func pickpocket(mark: Node3D) -> void:
+	walk_and_do(mark.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "pickpocket", {"mark": mark.get_meta("mark_id")}))
+
+
 func use_station(station: Node3D) -> void:
 	walk_and_do(station.global_position, CLICK_USE_DISTANCE, station_opened.emit.bind(station))
 
@@ -323,6 +333,10 @@ func interact() -> void:
 	if tree:
 		sim_driver.sim.queue_item_action(id, "chop", {"tree": tree.tree_id})
 		return
+	var stall := _nearest_in_group("stalls", grave_radius + 0.4)
+	if stall:
+		sim_driver.sim.queue_item_action(id, "steal", {"stall": stall.stall_id})
+		return
 	var station := _nearest_in_group("stations", grave_radius + 0.4)
 	if station:
 		station_opened.emit(station)
@@ -363,6 +377,9 @@ func _physics_process(delta: float) -> void:
 		direction = approach
 		face_target = approach == Vector3.ZERO and _target_position() != null
 	var speed := run_speed if running else walk_speed
+	# Stunned after a failed pickpocket: rooted to the spot.
+	if _entity.combatant and sim_driver and _entity.combatant.stunned_until > sim_driver.sim.tick:
+		speed = 0.0
 	if running and _entity.combatant:
 		speed *= 1.0 + _entity.combatant.blessing_boosts.get("run_speed", 0.0)
 

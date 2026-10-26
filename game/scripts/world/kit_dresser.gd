@@ -46,6 +46,7 @@ func _ready() -> void:
 	_dress_buildings()
 	_dress_trees()
 	_dress_choppable_trees()
+	_dress_stalls()
 	_dress_forum()
 	_scatter_scenery()
 	_fence_fields()
@@ -253,6 +254,14 @@ func _dress_trees() -> void:
 		tree.add_child(instance)
 
 
+## Market stalls (the thieving targets in the forum).
+func _dress_stalls() -> void:
+	for stall in get_tree().get_nodes_in_group("stalls"):
+		var prop := model("town/" + stall.model_name())
+		prop.scale = Vector3.ONE * 2.0
+		stall.dress(prop)
+
+
 ## Choppable trees get their Kenney model and a stump for when they fall.
 func _dress_choppable_trees() -> void:
 	for tree in get_tree().get_nodes_in_group("trees"):
@@ -270,8 +279,7 @@ func _dress_forum() -> void:
 		statue.position = Vector3(column.position.x, 0.6, column.position.z)
 		statue.scale = Vector3.ONE * 3.4
 		buildings.add_child(statue)
-	for spec in [["town/stall-red", Vector3(-5.5, 0, -6.5), PI / 2.0], ["town/stall-green", Vector3(5.5, 0, -6.5), -PI / 2.0],
-			["town/cart", Vector3(10.8, 0, 2.0), 0.4]]:
+	for spec in [["town/cart", Vector3(10.8, 0, 2.0), 0.4]]:
 		var prop := model(spec[0])
 		prop.position = spec[1]
 		prop.rotation.y = spec[2]

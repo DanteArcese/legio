@@ -31,6 +31,7 @@ var _piles := {}
 var _graves := {}
 var _rocks := {}
 var _trees := {}
+var _stalls := {}
 var _shades := {}
 
 
@@ -68,6 +69,15 @@ func _ready() -> void:
 		spot_id += 1
 		spot.spot_id = spot_id
 		sim.skilling.add_fishing_spot(spot_id, spot.spot_type, spot.global_position)
+	for stall in get_tree().get_nodes_in_group("stalls"):
+		stall.stall_id = _stalls.size() + 1
+		_stalls[stall.stall_id] = stall
+		sim.thieving.add_stall(stall.stall_id, stall.stall_type, stall.global_position)
+	var mark_id := 0
+	for mark in get_tree().get_nodes_in_group("marks"):
+		mark_id += 1
+		mark.set_meta("mark_id", mark_id)
+		sim.thieving.add_mark(mark_id, mark.get_meta("mark_type"), mark.global_position)
 	for station in get_tree().get_nodes_in_group("stations"):
 		sim.skilling.add_station(station.kind, station.global_position)
 
@@ -168,6 +178,8 @@ func _mirror_ground(event: Dictionary) -> void:
 			_piles[event["pile"]].set_items(event["items"])
 		"rock_depleted", "rock_respawned":
 			_rocks[event["rock"]].set_depleted(event["type"] == "rock_depleted")
+		"stall_emptied", "stall_restocked":
+			_stalls[event["stall"]].set_empty(event["type"] == "stall_emptied")
 		"tree_felled", "tree_regrown":
 			_trees[event["tree"]].set_felled(event["type"] == "tree_felled")
 		"grave_add":

@@ -81,6 +81,8 @@ Kept as a core skill and the center of progression.
 |---|---|
 | Athletics | Replaces Agility. Obstacle courses, plus chariot-racing laps in the circus. |
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
+
+**Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.
 | Mercatura | Trade contracts between provinces. See [Mercatura](#mercatura). A later addition, not part of the first vertical slice. |
 
 ### Mercatura

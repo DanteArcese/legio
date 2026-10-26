@@ -202,3 +202,13 @@ def test_examine_text_uses_an_before_vowels():
             if re.search(r"\bA [aeiouAEIOU]", text):
                 bad.append(f"{section}.{entry_id}: {text}")
     assert not bad, bad
+
+
+def test_stall_loot_must_exist(content):
+    errors = errors_after(content, lambda c: c["thieving"]["stalls"]["cloth_stall"]["loot"].update(item="silk"))
+    assert any("thieving.stalls.cloth_stall.loot" in e for e in errors)
+
+
+def test_mark_coin_range_must_be_ordered(content):
+    errors = errors_after(content, lambda c: c["thieving"]["marks"]["merchant"].update(coins=[30, 10]))
+    assert any("thieving.marks.merchant.coins" in e for e in errors)

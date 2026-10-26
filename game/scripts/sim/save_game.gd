@@ -42,6 +42,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		"laps": player.laps,
 		"trade_contract": player.trade_contract.duplicate(),
 		"contracts_done": player.contracts_done,
+		"collection": player.collection.duplicate(),
 		"saved_at": now,
 		"farming": sim.farming.capture(player_id),
 		# Traps left out in the world aren't saved; their owner gets them back.
@@ -88,6 +89,10 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 	player.laps = int(data.get("laps", 0))
 	player.trade_contract = data.get("trade_contract", {}).duplicate()
 	player.contracts_done = int(data.get("contracts_done", 0))
+	player.collection = {}
+	var collection: Dictionary = data.get("collection", {})
+	for item_id in collection:
+		player.collection[item_id] = int(collection[item_id])
 	sim.farming.restore(player_id, data.get("farming", []), [])
 	var saved_at := int(data.get("saved_at", 0))
 	if now > 0 and saved_at > 0 and now > saved_at:

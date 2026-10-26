@@ -85,6 +85,8 @@ Kept as a core skill and the center of progression.
 **Built (#118).** With a mortar and pestle (from the sacerdos, with honey; he already sold wine), herbs from Farming are mixed anywhere (the inventory's Mix option) into remedies: mint tonic (1, Attack), fennel draught (8, Strength), sage salve (16, Defence), wormwood bitters (25, Ranged), and poppy draught (34, heals 16). A boost adds flat levels plus a share of your level (fennel at Strength 50: +6), shows on the HUD as e.g. "Str 50+6", wears off a level a minute, and is lost on death.
 | Engineering | Replaces Construction, with a bigger scope: your villa (the player-owned house), plus **roads, waystations, and aqueduct repairs** that change the world. |
 
+**Built (#129): the villa.** Citizens (Decurio done) buy a villa from the land surveyor in the forum for 5000 denarii. A private road east of the fort leads to the villa grounds (a walled estate far east, past the barrow), closed to anyone without one. Logs are sawn into planks at the sawpit by the smithy (Engineering). Seven hotspots around the courtyard take furniture built from planks, nails, and iron with a hammer, and each piece is the real thing: the hearth holds a campfire (1) or a clay oven (20); the workshop a tanning rack (5) or an anvil (25); the shrine a lararium (10) to pray at; the strongroom a strongbox (30) that opens your bank; two garden beds take herb (1) or vegetable (8) beds that grow like any patch; and the road stone takes a waystone (40) that sends you straight to Portus Salis. Furniture can be removed and rebuilt, and the villa and everything in it are saved.
+
 ### Support
 
 | Skill | Roman flavor |

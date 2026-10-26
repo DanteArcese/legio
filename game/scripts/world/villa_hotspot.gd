@@ -1,0 +1,142 @@
+extends StaticBody3D
+## A building spot in the villa: an outlined stone pad when empty. Built
+## furniture appears as a working node of its own (a station, a bank chest,
+## an altar, a farming patch, or a waystone) beside the pad's label.
+
+const ContentDB := preload("res://scripts/content/content_db.gd")
+const Station := preload("res://scripts/world/station.gd")
+const Altar := preload("res://scripts/world/altar_node.gd")
+const Patch := preload("res://scripts/world/patch_node.gd")
+const Villa := preload("res://scripts/sim/villa.gd")
+
+## Unique per spot, e.g. "garden_1"; saves use it.
+@export var hotspot_id := "hearth"
+## The kind of spot, matching content: hearth, workbench, shrine, ...
+@export var hotspot_type := "hearth"
+
+var furniture := ""
+var _pad: MeshInstance3D
+var _label: Label3D
+var _built: Node3D
+
+
+func _init() -> void:
+	collision_layer = 8
+	add_to_group("villa_hotspots")
+
+
+func _ready() -> void:
+	var shape := CollisionShape3D.new()
+	shape.shape = BoxShape3D.new()
+	shape.shape.size = Vector3(1.6, 0.1, 1.6)
+	shape.position.y = 0.05
+	add_child(shape)
+	_pad = MeshInstance3D.new()
+	var box := BoxMesh.new()
+	box.size = Vector3(1.6, 0.05, 1.6)
+	var stone := StandardMaterial3D.new()
+	stone.albedo_color = Color(0.55, 0.52, 0.46, 0.6)
+	stone.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	box.material = stone
+	_pad.mesh = box
+	_pad.position.y = 0.03
+	add_child(_pad)
+	_label = Label3D.new()
+	_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_label.font_size = 28
+	_label.outline_size = 8
+	_label.position.y = 1.0
+	_label.visibility_range_end = 30.0
+	add_child(_label)
+	show_furniture("")
+
+
+func display_name() -> String:
+	return ContentDB.hotspot(hotspot_type)["name"]
+
+
+func examine_text() -> String:
+	return ContentDB.hotspot(hotspot_type)["examine"]
+
+
+## Shows the furniture ("" for an empty spot). Returns the working node, if any.
+func show_furniture(furniture_id: String, patch_id := -1) -> Node3D:
+	furniture = furniture_id
+	if _built:
+		_built.queue_free()
+		_built = null
+	_pad.visible = furniture.is_empty()
+	_label.visible = furniture.is_empty()
+	_label.text = "%s (build)" % display_name()
+	if furniture.is_empty():
+		return null
+	var provides: Dictionary = ContentDB.furniture(furniture)["provides"]
+	if provides.has("station"):
+		var station := Station.new()
+		station.kind = provides["station"]
+		_built = station
+	elif provides.has("altar"):
+		var altar := Altar.new()
+		altar.kind = provides["altar"]
+		altar.title = "Lararium"
+		_built = altar
+	elif provides.has("patch"):
+		var patch := Patch.new()
+		patch.patch_type = provides["patch"]
+		patch.patch_id = patch_id
+		_built = patch
+	elif provides.has("bank"):
+		_built = _strongbox()
+	elif provides.has("travel"):
+		_built = _waystone()
+	add_child(_built)
+	return _built
+
+
+## A bank chest (Kenney's chest) that the bank menu recognises.
+func _strongbox() -> Node3D:
+	var chest := StaticBody3D.new()
+	chest.collision_layer = 8
+	chest.add_to_group("banks")
+	chest.set_meta("examine", "Your own iron-bound strongbox. The same bank as everywhere.")
+	var model: Node3D = load("res://assets/kenney/survival/chest.glb").instantiate()
+	model.scale = Vector3.ONE * 3.6
+	chest.add_child(model)
+	var shape := CollisionShape3D.new()
+	shape.shape = BoxShape3D.new()
+	shape.shape.size = Vector3(1.0, 0.8, 1.4)
+	shape.position.y = 0.4
+	chest.add_child(shape)
+	return chest
+
+
+## A carved milestone that sends you down the road to Portus Salis.
+func _waystone() -> Node3D:
+	var stone := StaticBody3D.new()
+	stone.collision_layer = 8
+	stone.add_to_group("waystones")
+	var mesh := MeshInstance3D.new()
+	var cylinder := CylinderMesh.new()
+	cylinder.top_radius = 0.3
+	cylinder.bottom_radius = 0.38
+	cylinder.height = 1.6
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.7, 0.68, 0.62)
+	cylinder.material = material
+	mesh.mesh = cylinder
+	mesh.position.y = 0.8
+	stone.add_child(mesh)
+	var shape := CollisionShape3D.new()
+	shape.shape = CylinderShape3D.new()
+	shape.shape.radius = 0.38
+	shape.shape.height = 1.6
+	shape.position.y = 0.8
+	stone.add_child(shape)
+	var label := Label3D.new()
+	label.text = "Waystone\n(Portus Salis)"
+	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	label.font_size = 28
+	label.outline_size = 8
+	label.position.y = 2.0
+	stone.add_child(label)
+	return stone

@@ -26,6 +26,8 @@ func _ready() -> void:
 	_build_dialogue()
 	_build_log()
 	driver.sim_event.connect(_on_sim_event)
+	driver.ticked.connect(func(_tick): _refresh_markers())
+	_refresh_markers.call_deferred()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -92,6 +94,33 @@ func _on_sim_event(event: Dictionary) -> void:
 		"quest_started", "quest_step", "quest_progress", "quest_complete":
 			if _log_panel.visible:
 				_refresh_log.call_deferred()
+
+
+## The "!" and "?" over quest NPCs' heads.
+func _refresh_markers() -> void:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	if combatant == null:
+		return
+	for npc in get_tree().get_nodes_in_group("quest_npcs"):
+		var marker: Label3D = npc.get_node_or_null("QuestMarker")
+		if marker == null:
+			marker = Label3D.new()
+			marker.name = "QuestMarker"
+			marker.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+			marker.font_size = 96
+			marker.outline_size = 14
+			marker.modulate = Color(1.0, 0.85, 0.2)
+			marker.position.y = 2.25
+			marker.no_depth_test = true
+			npc.add_child(marker)
+		marker.text = Quests.marker_for(combatant, npc.get_meta("npc_id"))
+		marker.visible = not marker.text.is_empty()
+
+
+## The marker over an NPC, for tests ("" for none).
+func marker_text(npc: Node) -> String:
+	var marker: Label3D = npc.get_node_or_null("QuestMarker")
+	return marker.text if marker and marker.visible else ""
 
 
 func _show_line() -> void:

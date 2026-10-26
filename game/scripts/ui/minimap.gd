@@ -4,6 +4,8 @@ extends CanvasLayer
 ## main camera, and dots mark what's around: monsters (red), other people
 ## (yellow), loot (white), and places to use (blue).
 
+const Quests := preload("res://scripts/sim/quests.gd")
+
 const SIZE := 190
 ## Metres from the centre to the rim.
 const RADIUS := 32.0
@@ -127,6 +129,14 @@ func _draw_overlay() -> void:
 	for dot in dots():
 		_overlay.draw_circle(dot["position"], 3.0, Color.BLACK)
 		_overlay.draw_circle(dot["position"], 2.2, dot["color"])
+	# Quest markers next to the NPCs that have something for you.
+	var combatant: RefCounted = player.get_node("SimEntity").combatant if player.has_node("SimEntity") else null
+	if combatant:
+		for npc in get_tree().get_nodes_in_group("quest_npcs"):
+			var marker := Quests.marker_for(combatant, npc.get_meta("npc_id"))
+			var at := to_map(npc.global_position)
+			if not marker.is_empty() and at.distance_to(centre) <= SIZE / 2.0 - 9.0:
+				_overlay.draw_string(ThemeDB.fallback_font, at + Vector2(-4, -4), marker, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1.0, 0.85, 0.2))
 	# The player: a white arrow pointing the way they face, relative to the camera.
 	var facing := -(player.global_rotation.y - yaw())
 	var tip := centre + Vector2(0, -7).rotated(facing)

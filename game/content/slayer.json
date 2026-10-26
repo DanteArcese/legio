@@ -85,6 +85,16 @@
             25
           ],
           "combat_level": 45
+        },
+        {
+          "monster": "siren",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 30,
+          "combat_level": 35
         }
       ]
     }

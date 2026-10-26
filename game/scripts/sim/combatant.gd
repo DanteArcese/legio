@@ -40,6 +40,8 @@ var slayer_tasks_done := 0
 ## Monsters this player has paid never to be assigned, and Slayer unlocks bought.
 var slayer_blocked: Array = []
 var slayer_unlocks: Array = []
+## Held by a siren's song until this tick (see combat.gd).
+var entranced_until := 0
 ## Pietas: favour points, active blessing ids, and their summed boosts
 ## (e.g. {"strength": 0.05}); see pietas.gd.
 var favour := 1.0

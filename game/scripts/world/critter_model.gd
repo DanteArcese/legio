@@ -2,8 +2,8 @@ extends Node3D
 ## Animals built in code to match the KayKit characters' chunky, rounded
 ## style: soft capsule and sphere shapes, big heads, stubby legs, and big
 ## eyes. Kinds come from content "appearance": quadruped (rat, wolf, boar)
-## and bird (strix), with optional features (ears, round_ears, long_snout,
-## tusks, bristles, tail, ear_tufts).
+## and bird (strix, sirens, harpies), with optional features (ears, round_ears, long_snout,
+## tusks, bristles, tail, ear_tufts, woman_face).
 ##
 ## Same API as KaykitCharacter: create(), animate(delta, speed), attack(),
 ## hurt(), die(), revive(), set_work().
@@ -169,20 +169,10 @@ func _build_bird(main: Color, accent: Color, features: Array) -> void:
 	_body = _part(_rig, _sphere(0.36, main), Vector3(0, 0.62, 0))
 	_body.scale = Vector3(1.0, 1.15, 0.95)
 	_part(_body, _sphere(0.26, main.lightened(0.2)), Vector3(0, -0.05, -0.16))
-	_head = _part(_body, _sphere(0.3, main), Vector3(0, 0.42, -0.03))
-	# Huge glowing eyes: the strix hunts at night.
-	for side in [-1, 1]:
-		var disc := _part(_head, _cylinder(0.12, 0.04, accent.lightened(0.3)), Vector3(side * 0.12, 0.02, -0.24), Vector3(PI / 2.0, 0, 0))
-		var eye := _part(disc, _sphere(0.075, Color(1.0, 0.75, 0.15)), Vector3(0, -0.025, 0))
-		var glow := eye.mesh.material as StandardMaterial3D
-		glow.emission_enabled = true
-		glow.emission = Color(1.0, 0.6, 0.1)
-		glow.emission_energy_multiplier = 1.5
-		_part(eye, _sphere(0.035, PUPIL), Vector3(0, -0.055, 0))
-	_part(_head, _cone(0.05, 0.13, Color(0.85, 0.7, 0.3)), Vector3(0, -0.08, -0.29), Vector3(-PI / 2.0 - 0.3, 0, 0))
-	if features.has("ear_tufts"):
-		for side in [-1, 1]:
-			_part(_head, _cone(0.07, 0.22, accent), Vector3(side * 0.17, 0.27, 0), Vector3(0, 0, side * -0.35))
+	if features.has("woman_face"):
+		_build_woman_head()
+	else:
+		_build_owl_head(main, accent, features)
 	for side in [-1, 1]:
 		var shoulder := Node3D.new()
 		shoulder.position = Vector3(side * 0.3, 0.78, 0.02)
@@ -198,6 +188,34 @@ func _build_bird(main: Color, accent: Color, features: Array) -> void:
 		_part(hip, _capsule(0.04, 0.3, Color(0.85, 0.7, 0.3), false), Vector3(0, -0.14, 0))
 		_part(hip, _sphere(0.06, Color(0.25, 0.2, 0.15)), Vector3(0, -0.3, -0.04))
 		_legs.append(hip)
+
+
+## The strix's owl head: huge glowing eyes, for a night hunter.
+func _build_owl_head(main: Color, accent: Color, features: Array) -> void:
+	_head = _part(_body, _sphere(0.3, main), Vector3(0, 0.42, -0.03))
+	for side in [-1, 1]:
+		var disc := _part(_head, _cylinder(0.12, 0.04, accent.lightened(0.3)), Vector3(side * 0.12, 0.02, -0.24), Vector3(PI / 2.0, 0, 0))
+		var eye := _part(disc, _sphere(0.075, Color(1.0, 0.75, 0.15)), Vector3(0, -0.025, 0))
+		var glow := eye.mesh.material as StandardMaterial3D
+		glow.emission_enabled = true
+		glow.emission = Color(1.0, 0.6, 0.1)
+		glow.emission_energy_multiplier = 1.5
+		_part(eye, _sphere(0.035, PUPIL), Vector3(0, -0.055, 0))
+	_part(_head, _cone(0.05, 0.13, Color(0.85, 0.7, 0.3)), Vector3(0, -0.08, -0.29), Vector3(-PI / 2.0 - 0.3, 0, 0))
+	if features.has("ear_tufts"):
+		for side in [-1, 1]:
+			_part(_head, _cone(0.07, 0.22, accent), Vector3(side * 0.17, 0.27, 0), Vector3(0, 0, side * -0.35))
+
+
+## Sirens and harpies: a woman's face and long dark hair on a bird.
+func _build_woman_head() -> void:
+	var hair := Color(0.2, 0.13, 0.09)
+	_head = _part(_body, _sphere(0.24, Color(0.87, 0.72, 0.6)), Vector3(0, 0.42, -0.06))
+	for side in [-1, 1]:
+		_part(_head, _sphere(0.035, PUPIL), Vector3(side * 0.08, 0.03, -0.21))
+	_part(_head, _sphere(0.04, Color(0.7, 0.35, 0.33)), Vector3(0, -0.1, -0.2)).scale = Vector3(1.4, 0.5, 0.6)
+	_part(_head, _sphere(0.26, hair), Vector3(0, 0.06, 0.06)).scale = Vector3(1.0, 1.0, 0.9)
+	_part(_head, _capsule(0.2, 0.5, hair, false), Vector3(0, -0.2, 0.15)).scale = Vector3(1.0, 1.0, 0.45)
 
 
 func _add_eyes(head: Node3D, head_radius: float, eye_radius: float) -> void:

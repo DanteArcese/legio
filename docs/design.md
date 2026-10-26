@@ -70,6 +70,8 @@ Kept as a core skill and the center of progression.
 |---|---|
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 | Cooking | Bread, garum, roasts, *posca*. Wine making could live here or under Farming. |
+
+**Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |
 
 **Built (#97): leather first.** Boars always drop a hide; the tanning rack at the smithy turns hides into leather. With a needle and thread (from Aulus), leather is sewn anywhere (the inventory's Sew option) into a leather cap (1) and jerkin (7), and with wolf pelts into a wolfskin hood (15) and jerkin (22). All give ranged attack and more defence against arrows than blades: the ranger's armour line.

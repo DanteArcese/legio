@@ -161,5 +161,24 @@
         "requires_quest": "duplicarius"
       }
     ]
+  },
+  "gallic_merchant": {
+    "name": "Gaulish merchant",
+    "offers": [
+      {
+        "item": "salt",
+        "price": 30,
+        "quantity": 20
+      },
+      {
+        "item": "linen",
+        "price": 30
+      },
+      {
+        "item": "thread",
+        "price": 15,
+        "quantity": 20
+      }
+    ]
   }
 }

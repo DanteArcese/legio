@@ -990,5 +990,28 @@
     "remedy": {
       "heals": 16
     }
+  },
+  "harpoon": {
+    "name": "Harpoon",
+    "value": 45,
+    "examine": "A barbed iron harpoon on a long ash shaft.",
+    "tool": "harpoon",
+    "tool_tier": 1
+  },
+  "raw_tuna": {
+    "name": "Raw tuna",
+    "value": 30,
+    "examine": "A thick-bodied tunny, fresh from the deep."
+  },
+  "cooked_tuna": {
+    "name": "Tuna",
+    "value": 50,
+    "examine": "A tunny steak, grilled over vine-wood.",
+    "heals": 10
+  },
+  "harpy_feather": {
+    "name": "Harpy feather",
+    "value": 60,
+    "examine": "A long brown feather that smells of storms. Fletchers prize them."
   }
 }

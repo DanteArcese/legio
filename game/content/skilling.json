@@ -393,6 +393,20 @@
         "xp": 95,
         "burnt": "burnt_food",
         "stop_burning": 55
+      },
+      {
+        "id": "cooked_tuna",
+        "inputs": [
+          {
+            "item": "raw_tuna",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_tuna",
+        "level": 35,
+        "xp": 100,
+        "burnt": "burnt_food",
+        "stop_burning": 65
       }
     ],
     "inscribe": [
@@ -834,6 +848,18 @@
           "fish": "raw_mackerel",
           "level": 20,
           "xp": 45
+        }
+      ]
+    },
+    "harpoon_spot": {
+      "name": "Fishing spot",
+      "tool": "harpoon",
+      "examine": "Big shapes circle in the deep water off the pier.",
+      "catches": [
+        {
+          "fish": "raw_tuna",
+          "level": 40,
+          "xp": 80
         }
       ]
     }

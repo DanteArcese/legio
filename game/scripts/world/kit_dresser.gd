@@ -48,6 +48,7 @@ func _ready() -> void:
 	_dress_choppable_trees()
 	_dress_stalls()
 	_dress_banks()
+	_dress_houses()
 	_dress_forum()
 	_scatter_scenery()
 	_fence_fields()
@@ -253,6 +254,19 @@ func _dress_trees() -> void:
 		instance.scale = Vector3.ONE * (height / TREE_MODEL_HEIGHT) * 1.15
 		instance.rotation.y = float(absi(hash(String(tree.name) + "r")) % 360) * PI / 180.0
 		tree.add_child(instance)
+
+
+## Houses outside the fort (the coast): any greybox box in the "houses"
+## group, with a door_side meta, gets the same walls and a gabled roof.
+func _dress_houses() -> void:
+	for body in get_tree().get_nodes_in_group("houses"):
+		var size: Vector3 = (body.get_node("Collision").shape as BoxShape3D).size
+		_hide_mesh(body)
+		_build_walls(body, size, body.get_meta("door_side", "+z"))
+		var roof := MeshInstance3D.new()
+		roof.mesh = _gable_roof(size.x + ROOF_OVERHANG * 2.0, size.z + ROOF_OVERHANG * 2.0)
+		roof.position = Vector3(0, size.y / 2.0, 0)
+		body.add_child(roof)
 
 
 ## Bank chests get Kenney's Survival Kit chest (the box stays for collision).

@@ -206,5 +206,31 @@
         "quantity": 10
       }
     ]
+  },
+  "fishmonger": {
+    "name": "Fishmonger",
+    "offers": [
+      {
+        "item": "harpoon",
+        "price": 45
+      },
+      {
+        "item": "small_net",
+        "price": 10
+      },
+      {
+        "item": "fishing_rod",
+        "price": 25
+      },
+      {
+        "item": "salt",
+        "price": 20,
+        "quantity": 20
+      },
+      {
+        "item": "cooked_sardine",
+        "price": 12
+      }
+    ]
   }
 }

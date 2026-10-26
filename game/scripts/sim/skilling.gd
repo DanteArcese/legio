@@ -20,6 +20,8 @@ const MINE_BASE_CHANCE := 0.35
 const MINE_CHANCE_PER_LEVEL := 0.015
 const MINE_CHANCE_PER_TIER := 0.1
 const FISH_BASE_CHANCE := 0.3
+## What each fishing tool is called, for messages.
+const FISHING_TOOLS := {"net": "small net", "rod": "fishing rod", "harpoon": "harpoon"}
 ## Burn chance at the recipe's level, falling to 0 at its stop_burning level.
 const MAX_BURN_CHANCE := 0.5
 ## Where each kind of recipe is made. Fletching needs no station.
@@ -156,7 +158,7 @@ func start_fishing(player: RefCounted, spot_id: int, events: Array) -> void:
 		sim.message(player, "You need Fishing %d to fish here." % lowest, events)
 		return
 	if tool_tier(player, data["tool"]) == 0:
-		sim.message(player, "You need a %s to fish here." % ("fishing rod" if data["tool"] == "rod" else "small net"), events)
+		sim.message(player, "You need a %s to fish here." % FISHING_TOOLS.get(data["tool"], data["tool"]), events)
 		return
 	player.target_id = -1
 	player.skill_action = {"type": "fish", "spot": spot_id, "next_tick": sim.tick + FISH_TICKS}

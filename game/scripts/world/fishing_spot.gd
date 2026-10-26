@@ -6,6 +6,7 @@ extends StaticBody3D
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const RING_PERIOD := 1.8
 const RINGS := 3
+const VERBS := {"net": "Net", "rod": "Cast", "harpoon": "Harpoon"}
 
 @export var spot_type := "net_spot"
 
@@ -73,8 +74,8 @@ func examine_text() -> String:
 
 
 func verb() -> String:
-	return "Cast" if ContentDB.fishing_spot(spot_type).get("tool") == "rod" else "Net"
+	return VERBS.get(ContentDB.fishing_spot(spot_type).get("tool"), "Fish")
 
 
 func _tool_name() -> String:
-	return "rod" if ContentDB.fishing_spot(spot_type).get("tool") == "rod" else "net"
+	return ContentDB.fishing_spot(spot_type).get("tool", "net")

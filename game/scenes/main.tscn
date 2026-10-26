@@ -30,6 +30,7 @@
 [ext_resource type="Script" path="res://scripts/world/fishing_spot.gd" id="28_spot"]
 [ext_resource type="Script" path="res://scripts/audio/sound_director.gd" id="27_sound"]
 [ext_resource type="Script" path="res://scripts/ui/quest_ui.gd" id="29_quest_ui"]
+[ext_resource type="Script" path="res://scripts/ui/skills_ui.gd" id="30_skills_ui"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -664,12 +665,18 @@ script = ExtResource("29_quest_ui")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 
-[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound")]
+[node name="SkillsUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
+script = ExtResource("30_skills_ui")
+driver = NodePath("../SimDriver")
+player = NodePath("../Player")
+
+[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound", "skills_ui")]
 layer = 10
 script = ExtResource("19_pause")
 settings = NodePath("../GraphicsSettings")
 game_ui = NodePath("../GameUi")
 sound = NodePath("../Sound")
+skills_ui = NodePath("../SkillsUi")
 
 [node name="DayNight" type="Node" parent="." node_paths=PackedStringArray("environment", "sun", "moon", "area_lighting")]
 script = ExtResource("21_daynight")

@@ -32,6 +32,7 @@ const DEFAULTS := {
 	"run_toggle": [["key", KEY_R], ["joy_button", JOY_BUTTON_LEFT_STICK]],
 	"inventory": [["key", KEY_I], ["joy_button", JOY_BUTTON_BACK]],
 	"quest_log": [["key", KEY_J], ["joy_button", JOY_BUTTON_DPAD_RIGHT]],
+	"skills_panel": [["key", KEY_K], ["joy_axis", JOY_AXIS_TRIGGER_LEFT, 1.0]],
 	"pause_menu": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_START]],
 }
 

@@ -6,6 +6,7 @@ extends CanvasLayer
 @export var settings: Node
 @export var game_ui: Node
 @export var sound: Node
+@export var skills_ui: Node
 
 var _panel: PanelContainer
 var _graphics_button: Button
@@ -52,6 +53,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	# Esc also closes the bank; let that happen first.
 	if game_ui and game_ui.is_bank_open():
+		return
+	# Esc also closes the skills panel.
+	if skills_ui and skills_ui.is_open():
 		return
 	if is_open():
 		close()

@@ -21,6 +21,8 @@ var _label: Label3D
 func _init() -> void:
 	collision_layer = 8
 	add_to_group("patches")
+	# Solid to walkers, so the navmesh must route around it.
+	add_to_group("navigation_source")
 
 
 func _ready() -> void:

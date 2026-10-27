@@ -25,6 +25,10 @@
     "waystone": {
       "name": "Road stone",
       "examine": "The villa's gate onto the provincial road network."
+    },
+    "atrium": {
+      "name": "Courtyard floor",
+      "examine": "Bare paving in the middle of the courtyard. It deserves better."
     }
   },
   "furniture": {
@@ -193,6 +197,25 @@
       ],
       "provides": {
         "travel": "portus_salis"
+      }
+    },
+    "mosaic_floor": {
+      "name": "Mosaic floor",
+      "hotspot": "atrium",
+      "level": 45,
+      "xp": 520,
+      "materials": [
+        {
+          "item": "tesserae",
+          "quantity": 150
+        },
+        {
+          "item": "oak_plank",
+          "quantity": 2
+        }
+      ],
+      "provides": {
+        "comfort": true
       }
     }
   }

@@ -9,6 +9,9 @@ const ContentDB := preload("res://scripts/content/content_db.gd")
 
 const SURVEYOR_RANGE := 3.0
 const BUILD_RANGE := 3.0
+## Resting on a mosaic floor: +5% XP for half an hour of play.
+const REST_TICKS := 3000
+const RESTED_XP_BONUS := 0.05
 ## Farming patch ids for garden beds, clear of the fixed patches.
 const PATCH_ID_BASE := 1000
 
@@ -116,6 +119,22 @@ func remove(player: Combatant, hotspot_id: String, events: Array) -> void:
 	player.villa_furniture.erase(hotspot_id)
 	events.append({"type": "furniture_removed", "id": player.id, "hotspot": hotspot_id, "tick": sim.tick})
 	sim.message(player, "You clear the space.", events)
+
+
+## Rests a while on a comfortable piece of furniture (a mosaic floor).
+func rest(player: Combatant, hotspot_id: String, events: Array) -> void:
+	if not hotspots.has(hotspot_id) or sim.flat_distance(hotspots[hotspot_id]["position"], player.position) > BUILD_RANGE:
+		return
+	var furniture_id: String = player.villa_furniture.get(hotspot_id, "")
+	if furniture_id.is_empty() or not ContentDB.furniture(furniture_id)["provides"].has("comfort"):
+		return
+	player.rested_until = sim.tick + REST_TICKS
+	events.append({"type": "rested", "id": player.id, "until": player.rested_until, "tick": sim.tick})
+	sim.message(player, "You sit a while and admire your mosaic. You feel rested. (+5% XP for 30 minutes)", events)
+
+
+static func is_rested(player: Combatant, tick: int) -> bool:
+	return player.rested_until > tick
 
 
 ## After loading a save: put back what the furniture provides.

@@ -49,6 +49,7 @@ const SOUNDS := {
 	"throw": ["impactSoft_medium_000", "impactSoft_medium_001"],
 	"kiln": ["metalPot1", "metalPot2"],
 	"jewelcraft": ["metalClick"],
+	"masonry": ["metalClick"],
 	"fire": ["impactGlass_light_000", "impactGlass_light_001", "impactGlass_light_002"],
 	"special": ["impactBell_heavy_000"],
 	"net": ["cloth1", "cloth2"],

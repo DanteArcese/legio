@@ -416,6 +416,10 @@
       {
         "item": "blowpipe",
         "price": 30
+      },
+      {
+        "item": "chisel",
+        "price": 40
       }
     ],
     "buys": {

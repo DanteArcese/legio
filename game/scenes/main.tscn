@@ -45,6 +45,7 @@
 [ext_resource type="Script" path="res://scripts/ui/collection_ui.gd" id="41_collection_ui"]
 [ext_resource type="Script" path="res://scripts/world/vipasca.gd" id="43_vipasca"]
 [ext_resource type="Script" path="res://scripts/world/deep_gallery.gd" id="44_deep_gallery"]
+[ext_resource type="Script" path="res://scripts/world/seriphos.gd" id="45_seriphos"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -119,6 +120,9 @@ size = Vector3(8, 3.5, 6)
 
 [sub_resource type="BoxShape3D" id="VipascaOffice_shape"]
 size = Vector3(10, 4, 7)
+
+[sub_resource type="BoxShape3D" id="GreekHouse_shape"]
+size = Vector3(7, 3.5, 6)
 
 [sub_resource type="BoxShape3D" id="Warehouse_shape"]
 size = Vector3(10, 4, 6)
@@ -523,6 +527,17 @@ examine_text = "The road climbs inland, back to the fort."
 destination = Vector3(-15.5, 0, 46.5)
 size = Vector3(1.4, 2.2, 0.3)
 color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="FerryToSeriphos" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -300, 0.35, 29.2)
+script = ExtResource("15_transition")
+verb = "Sail"
+title = "Ferry to Seriphos"
+examine_text = "A Greek trading boat that runs to the islands and back. The ferryman takes 25 denarii."
+destination = Vector3(-300, 0.35, 262)
+size = Vector3(2.4, 2.2, 0.3)
+color = Color(0.34, 0.45, 0.6, 1)
+fare = 25
 
 [node name="HouseHarbour" type="StaticBody3D" parent="PortusSalis" groups=["houses", "navigation_source"]]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -314, 1.75, -12)
@@ -1619,3 +1634,94 @@ rock_type = "gold_rock"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0, 393.5)
 script = ExtResource("10_rock")
 rock_type = "gold_rock"
+
+[node name="Seriphos" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
+metadata/map_name = "Seriphos"
+metadata/map_rect = Rect2(-360, 260, 120, 120)
+metadata/map_color = Color(0.7, 0.72, 0.5, 1)
+script = ExtResource("45_seriphos")
+dresser = NodePath("../KitDresser")
+
+[node name="FerryToPortus" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -300, 0.35, 253.2)
+script = ExtResource("15_transition")
+verb = "Sail"
+title = "Ferry to Portus Salis"
+examine_text = "The boat back to the mainland. The ferryman takes 25 denarii."
+destination = Vector3(-300, 0.35, 27)
+size = Vector3(2.4, 2.2, 0.3)
+color = Color(0.34, 0.45, 0.6, 1)
+fare = 25
+
+[node name="SeriphosSign" type="Label3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -300, 3.2, 278)
+billboard = 1
+text = "ΣΕΡΙΦΟΣ  SERIPHOS"
+font_size = 56
+outline_size = 12
+
+[node name="IslandBank" type="StaticBody3D" parent="Seriphos" groups=["banks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -308, 0.45, 288)
+collision_layer = 8
+metadata/examine = "A Greek strongbox, bound in bronze. Your bank is shared across the province, and beyond it."
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/IslandBank"]
+mesh = SubResource("chest_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/IslandBank"]
+shape = SubResource("chest_shape")
+
+[node name="Nikias" type="StaticBody3D" parent="Seriphos" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -292, 1, 288)
+collision_layer = 8
+metadata/shop_id = "greek_merchant"
+metadata/display_name = "Nikias the merchant"
+metadata/examine = "A Greek merchant in a sun-faded chiton. He buys anything, for a little more than the Gauls."
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/Nikias"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/Nikias"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Seriphos/Nikias"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+hide_meshes = Array[String](["Mage_Hat"])
+
+[node name="Label" type="Label3D" parent="Seriphos/Nikias"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Nikias the merchant"
+font_size = 32
+outline_size = 8
+
+[node name="GreekHouseWest" type="StaticBody3D" parent="Seriphos" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -314, 1.75, 292)
+collision_layer = 16
+metadata/door_side = "+x"
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/GreekHouseWest"]
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/GreekHouseWest"]
+shape = SubResource("GreekHouse_shape")
+
+[node name="GreekHouseEast" type="StaticBody3D" parent="Seriphos" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -286, 1.75, 293)
+collision_layer = 16
+metadata/door_side = "-x"
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/GreekHouseEast"]
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/GreekHouseEast"]
+shape = SubResource("GreekHouse_shape")
+
+[node name="GreekHouseSouth" type="StaticBody3D" parent="Seriphos" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -311, 1.75, 281)
+collision_layer = 16
+metadata/door_side = "+z"
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/GreekHouseSouth"]
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/GreekHouseSouth"]
+shape = SubResource("GreekHouse_shape")

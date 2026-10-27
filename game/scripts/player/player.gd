@@ -428,6 +428,11 @@ func _arrive_through(doorway: Node3D) -> void:
 	if not doorway.requires_quest.is_empty() and not _entity.combatant.quests.get(doorway.requires_quest, {}).get("done", false):
 		message_requested.emit(doorway.locked_message if not doorway.locked_message.is_empty() else "That way is shut to you for now.")
 		return
+	if doorway.fare > 0:
+		if _entity.combatant.inventory.count("coins") < doorway.fare:
+			message_requested.emit("The ferryman wants %d denarii for the crossing." % doorway.fare)
+			return
+		sim_driver.sim.queue_item_action(id, "pay_fare", {"amount": doorway.fare})
 	sim_driver.sim.queue_stop(id)
 	sim_driver.sim.queue_item_action(id, "stop_action")
 	destination = null

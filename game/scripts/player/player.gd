@@ -425,6 +425,9 @@ func _arrive_through(doorway: Node3D) -> void:
 	if doorway.requires_villa and not _entity.combatant.villa_owned:
 		message_requested.emit("That's private land. The land surveyor in the forum sells villas to citizens.")
 		return
+	if not doorway.requires_quest.is_empty() and not _entity.combatant.quests.get(doorway.requires_quest, {}).get("done", false):
+		message_requested.emit(doorway.locked_message if not doorway.locked_message.is_empty() else "That way is shut to you for now.")
+		return
 	sim_driver.sim.queue_stop(id)
 	sim_driver.sim.queue_item_action(id, "stop_action")
 	destination = null

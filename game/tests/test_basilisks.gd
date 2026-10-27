@@ -92,3 +92,13 @@ func test_both_venatores_assign_basilisks_at_slayer_40() -> void:
 		check(tasks.has("basilisk"), "%s at 40" % venator)
 		tasks = Slayer.eligible_tasks(ContentDB.venator(venator), 60, 39).map(func(t): return t["monster"])
 		check(not tasks.has("basilisk"), "%s not at 39" % venator)
+
+
+func test_the_drain_never_takes_a_level_below_one() -> void:
+	var sim := _make_sim()
+	var player: RefCounted = sim.get_combatant(PLAYER)
+	for skill in ["attack", "strength", "defence"]:
+		player.skills.xp[skill] = 0.0
+	_gaze(sim, 60)
+	check_eq(player.remedy_boost("attack"), 0, "level 1 can't be drained")
+	check_eq(player.effective_level("attack") > 0, true, "still a fighter")

@@ -18,7 +18,7 @@ func run() -> void:
 	player().destination = null
 	player().global_position = Vector3(-20, 1, 424)
 	await seconds(1.0)
-	var basilisks := get_tree().get_nodes_in_group("sim_entities").filter(func(e): return e.monster_id == "basilisk")
+	var basilisks := get_tree().get_nodes_in_group("sim_entities").filter(func(e): return e.monster_id == "basilisk" and e.body().global_position.x < 100.0)
 	expect(basilisks.size() == 4, "four basilisks at the gallery (%d)" % basilisks.size())
 	main.get_node("CameraRig")._orbit(PI, 0.0)
 	await seconds(0.5)

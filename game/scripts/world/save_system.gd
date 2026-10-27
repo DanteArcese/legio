@@ -5,8 +5,8 @@ extends Node
 const SaveGame := preload("res://scripts/sim/save_game.gd")
 
 const MODES := [
-	["standard", "Citizen-to-be", "The usual path. Trade at the forum market freely."],
-	["solitarius", "Solitarius", "Self-sufficient. No market, no trading. You earn everything yourself.\nYou can leave this mode later, but never return to it."],
+	["standard", "Citizen-to-be", "The usual path. You'll be free to trade with others when there's someone to trade with."],
+	["solitarius", "Solitarius", "Self-sufficient. You'll never trade with other players or a market; shops and everything else work as usual.\nYou can give it up later from the pause menu, but never return to it."],
 ]
 
 @export var driver: Node

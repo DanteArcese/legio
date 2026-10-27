@@ -40,7 +40,7 @@ A first pass at Roman-themed skills. Names are working names.
 |---|---|
 | Attack, Strength, Defence | Kept as-is. Gladius, spatha, pilum, scutum. |
 | Vitality | Hitpoints. |
-| Ranged | Bows (*arcus*) and slings (*funda*, with lead *glandes*), with javelins and the hand-held *manuballista* later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
+| Ranged | Bows (*arcus*), slings (*funda*, with lead *glandes*), and javelins thrown with an *amentum* (a leather throwing loop; Aulus sells it with bronze javelins, the quartermaster sells iron ones after Miles, and the smith makes five from a bar and a log, up to the steel *pilum* at Ranged 30). Javelins reach 5 m and throw every 5 ticks but hit hardest. The hand-held *manuballista* comes later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods. The heavenly gods are Mars (strength), Minerva (defence), Diana (ranged), and Mercury (movement and run energy). The underworld gods (Dis Pater, Proserpina, Hecate) favour Ritus. XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. See [Curses and Pietas](#curses-and-pietas). |
 | Ritus | The third combat style: curse tablets. See [Ritus](#ritus). |
 

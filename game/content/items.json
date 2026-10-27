@@ -1787,5 +1787,11 @@
       "defence": 60,
       "slayer": 70
     }
+  },
+  "lockpick": {
+    "name": "Lockpick",
+    "value": 6,
+    "examine": "A bent iron pick and a tension wire. Not for honest work.",
+    "stackable": true
   }
 }

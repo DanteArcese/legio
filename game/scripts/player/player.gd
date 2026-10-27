@@ -350,6 +350,11 @@ func cross(obstacle: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "obstacle", {"obstacle": obstacle.obstacle_id}))
 
 
+func crack(box: Node3D) -> void:
+	walk_and_do(box.global_position, CLICK_USE_DISTANCE + 0.4, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "crack", {"strongbox": box.strongbox_id}))
+
+
 func steal(stall: Node3D) -> void:
 	walk_and_do(stall.global_position, CLICK_USE_DISTANCE + 0.4, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "steal", {"stall": stall.stall_id}))

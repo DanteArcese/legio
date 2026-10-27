@@ -275,7 +275,7 @@ func step() -> Array[Dictionary]:
 	skilling.process(players, events)
 	pietas.process(players, events)
 	quests.process(players, events)
-	thieving.process(events)
+	thieving.process(events, players)
 	athletics.process(players, events)
 	hunter.process(events)
 	farming.process(events)
@@ -423,6 +423,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			thieving.steal(player, command.get("stall", -1), events)
 		"pickpocket":
 			thieving.pickpocket(player, command.get("mark", -1), events)
+		"crack":
+			thieving.crack(player, command.get("strongbox", -1), events)
 		"obstacle":
 			athletics.start(player, command.get("obstacle", -1), events)
 		"trap":

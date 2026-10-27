@@ -406,6 +406,20 @@
         "tool": "hammer"
       },
       {
+        "id": "lockpick",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "lockpick",
+        "quantity": 5,
+        "level": 16,
+        "xp": 25,
+        "tool": "hammer"
+      },
+      {
         "id": "iron_axe",
         "inputs": [
           {

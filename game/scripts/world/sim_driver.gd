@@ -35,6 +35,7 @@ var _graves := {}
 var _rocks := {}
 var _trees := {}
 var _stalls := {}
+var _strongboxes := {}
 var _hunt_spots := {}
 var _patches := {}
 var _hotspots := {}
@@ -107,6 +108,10 @@ func _ready() -> void:
 		stall.stall_id = _stalls.size() + 1
 		_stalls[stall.stall_id] = stall
 		sim.thieving.add_stall(stall.stall_id, stall.stall_type, stall.global_position)
+	for box in get_tree().get_nodes_in_group("strongboxes"):
+		box.strongbox_id = _strongboxes.size() + 1
+		_strongboxes[box.strongbox_id] = box
+		sim.thieving.add_strongbox(box.strongbox_id, box.box_type, box.global_position)
 	var mark_id := 0
 	for mark in get_tree().get_nodes_in_group("marks"):
 		mark_id += 1
@@ -248,6 +253,8 @@ func _mirror_ground(event: Dictionary) -> void:
 			_hunt_spots[event["spot"]].set_trap_state("")
 		"stall_emptied", "stall_restocked":
 			_stalls[event["stall"]].set_empty(event["type"] == "stall_emptied")
+		"strongbox_emptied", "strongbox_refilled":
+			_strongboxes[event["strongbox"]].set_empty(event["type"] == "strongbox_emptied")
 		"tree_felled", "tree_regrown":
 			_trees[event["tree"]].set_felled(event["type"] == "tree_felled")
 		"grave_add":

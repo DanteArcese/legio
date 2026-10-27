@@ -99,6 +99,9 @@ func _refresh() -> void:
 	if c.uses_ammo():
 		var ammo: String = c.equipment.worn["ammo"]
 		ammo_text = "     Ammo: %s" % ("none" if ammo.is_empty() else "%s x%d" % [ContentDB.item(ammo)["name"], c.equipment.ammo_count])
+	var special: Dictionary = c.equipment.weapon().get("special", {})
+	if not special.is_empty():
+		ammo_text += "   Impetus %d%s" % [c.impetus, "  [%s ready]" % special["name"] if c.special_armed else " (F / B)"]
 	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s   Favour %d / %d\nCombat %d   Atk %s   Str %s   Def %s   Rng %s   Rit %s   Pie %d   Vit %d   Slay %d" % [
 		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), ammo_text, ceili(c.favour), s.level("pietas"), s.combat_level(),
 		_with_boost(c, "attack"), _with_boost(c, "strength"), _with_boost(c, "defence"), _with_boost(c, "ranged"), _with_boost(c, "ritus"),

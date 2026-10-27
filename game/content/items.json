@@ -1672,5 +1672,37 @@
     "name": "Glass bowl",
     "value": 120,
     "examine": "A bowl of clear blown glass. Rome would pay well for it."
+  },
+  "firepot": {
+    "name": "Firepot",
+    "value": 30,
+    "examine": "A clay pot packed with olives and oil, a rag in the neck. Light it, throw it, run.",
+    "throwable": {
+      "range": 7,
+      "damage": [
+        3,
+        9
+      ],
+      "sear_ticks": 25
+    }
+  },
+  "hydra_scale_lorica": {
+    "name": "Hydra-scale lorica",
+    "value": 5000,
+    "examine": "Overlapping green scales from the Hydra's necks, on a leather backing. They still turn a blade.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 2,
+        "defence": 28,
+        "ranged_defence": 12,
+        "ritus_defence": -6
+      }
+    },
+    "requirements": {
+      "defence": 60,
+      "slayer": 70
+    }
   }
 }

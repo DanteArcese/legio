@@ -31,14 +31,14 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest", "requires_unlock"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item"}
-MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable"}
+MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
     "kaykit": set(),
-    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard"},
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads"},
     "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs", "one_eye", "snakes", "green_skin"},
     "bird": {"ear_tufts", "woman_face"},
 }
@@ -122,6 +122,14 @@ def _check_item(where, item_id, item, items, errors):
                 errors.append(f"{where}.remedy.skill: unknown skill {remedy.get('skill')!r}")
             _check_int(f"{where}.remedy", "flat", remedy.get("flat"), 0, errors, 20)
             _check_number(f"{where}.remedy", "percent", remedy.get("percent"), 0, 0.5, errors)
+    if "throwable" in item:
+        throwable = item["throwable"]
+        _check_keys(f"{where}.throwable", throwable, {"range", "damage", "sear_ticks"}, {"range", "damage", "sear_ticks"}, errors)
+        _check_number(f"{where}.throwable", "range", throwable.get("range"), 1, 15, errors)
+        _check_int(f"{where}.throwable", "sear_ticks", throwable.get("sear_ticks"), 1, errors)
+        damage = throwable.get("damage")
+        if not (isinstance(damage, list) and len(damage) == 2 and all(_is_int(d) and d >= 0 for d in damage) and damage[0] <= damage[1]):
+            errors.append(f"{where}.throwable.damage: expected [min, max]")
     if "pet" in item:
         look = item["pet"]
         _check_keys(f"{where}.pet", look, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)
@@ -212,7 +220,10 @@ def _check_boss(where, boss, attack_speed, errors):
 
 def _check_monster(where, monster_id, monster, items, drops, errors):
     _check_id(where, monster_id, errors)
-    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss"}, errors)
+    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss", "regenerate"}, errors)
+    if "regenerate" in monster:
+        _check_keys(f"{where}.regenerate", monster["regenerate"], {"amount"}, {"amount"}, errors)
+        _check_int(f"{where}.regenerate", "amount", monster["regenerate"].get("amount"), 1, errors, 10)
     if "boss" in monster:
         _check_boss(f"{where}.boss", monster["boss"], monster.get("attack_speed"), errors)
     _check_type(where, "name", monster.get("name"), str, errors)

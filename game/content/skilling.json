@@ -1313,6 +1313,22 @@
         "level": 32,
         "xp": 55,
         "tool": "blowpipe"
+      },
+      {
+        "id": "firepot",
+        "inputs": [
+          {
+            "item": "clay_pot",
+            "quantity": 1
+          },
+          {
+            "item": "olives",
+            "quantity": 2
+          }
+        ],
+        "output": "firepot",
+        "level": 30,
+        "xp": 40
       }
     ]
   },

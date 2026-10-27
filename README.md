@@ -40,11 +40,12 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 
 ### What's in the game
 
-- **Combat** in three styles: melee, ranged (bows and slings), and Ritus (curse tablets with a lituus), with Slayer contracts from Aulus the venator and a barrow dungeon of lemures, strix, and a boss.
-- **The auxilia career**: four ranked quests from Optio Gaius, from tiro to decurio and Roman citizenship.
-- **Skills**: Attack, Strength, Defence, Vitality, Ranged, Ritus, Pietas, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching, Crafting, Thieving, Athletics, and Hunter.
-- **The town**: a bank, shops, a smithy, an altar and sacred spring, market stalls (mind the vigiles), a garum vat, and a training course.
-- A minimap, a quest log, a skills panel, a collection log, sound, a day and night cycle, and saving.
+- **Five regions and two dungeons**: Castra Ferrea, the frontier fort town; Portus Salis, a harbour on the coast; Beyond the Limes, the danger zone past the palisade; Vipasca, the silver mines of Hispania, with the deep gallery under them; and Seriphos, a Greek island across the sea. The barrow of the lemures lies under the woods. M shows the world map.
+- **Combat** in three styles (melee, ranged with bows and slings, and Ritus curse tablets), with weapon special attacks (F / B), Pietas blessings, and four bosses: Hrodgar the War-chief, Regulus the basilisk king, and the Hydra on Seriphos, plus the barrow's own.
+- **Slayer** from two venatores, Aulus in the fort and Ursa beyond the Limes, with gear checks (whitethorn against the strix, earplugs against sirens, a mirror shield against basilisks and gorgons), points to spend, and a venator's helm. **Arena contracts** from Lanista Marcia: net beasts alive for the games.
+- **Quests**: the auxilia career from tiro to citizen, and quests at the harbour, the limes, the mines and on Seriphos. **Region tasks** in the quest log give each region a list worth working through.
+- **22 skills**: Attack, Strength, Defence, Vitality, Ranged, Ritus, Pietas, Slayer, Mining, Smithing (bronze, iron and Noric steel), Cooking, Woodcutting, Fishing, Fletching, Crafting (leather, pottery, glass and jewellery), Thieving, Athletics, Hunter, Farming, Medicina, Mercatura (trade contracts) and Engineering (your villa).
+- **Shops buy and sell**, a shared bank, a collection log (the Tabularium), pets, a Solitarius (ironman) mode, first-time hints, and saving. The pause menu lists every control.
 
 ## Development
 

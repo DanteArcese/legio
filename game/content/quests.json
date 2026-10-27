@@ -42,6 +42,22 @@
       "idle": [
         "Nothing comes over that palisade without my say. Plenty goes over it without coming back."
       ]
+    },
+    "procurator": {
+      "name": "Procurator metallorum",
+      "examine": "The emperor's man at the mines. Every ingot passes under his stamp.",
+      "idle": [
+        "Silver for the treasury, lead for the pipes, and a stamp on every bar. That's Vipasca.",
+        "If you're not buying, mining, or paying a fine, you're loitering."
+      ]
+    },
+    "foreman_masculus": {
+      "name": "Foreman Masculus",
+      "examine": "The pit foreman. He moves slowly and stiffly, like a man made of plaster.",
+      "idle": [
+        "Mind the gallery. Mind your eyes.",
+        "My knees haven't bent properly since the spring. Don't ask."
+      ]
     }
   },
   "quests": {
@@ -581,6 +597,86 @@
         ],
         "unlocks": "Gold torcs (Smithing 45)",
         "title": "Bearer of the Eagle"
+      }
+    },
+    "the_silent_gallery": {
+      "name": "The Silent Gallery",
+      "summary": "Miners who work Vipasca's deep gallery come up stiff as statues. Clear it, and help the procurator make his silver quota.",
+      "giver": "procurator",
+      "requirements": {
+        "skills": {
+          "mining": 30,
+          "smithing": 30,
+          "slayer": 40
+        }
+      },
+      "start": [
+        "You. You look like you can swing more than a pickaxe.",
+        "The deep gallery has gone quiet. The men I send down come back up slow and grey, if they come back at all, and the treasury doesn't accept excuses in place of silver.",
+        "Talk to Foreman Masculus at the pit. He went down last. He can tell you what's in there, if he can still move his jaw."
+      ],
+      "steps": [
+        {
+          "kind": "talk",
+          "npc": "foreman_masculus",
+          "log": "Talk to Foreman Masculus by the pit.",
+          "remind": [
+            "The foreman's by the pit, on the track south of town. You'll know him. He moves like a statue."
+          ],
+          "say": [
+            "Basilisks. A whole nest of them at the gallery mouth, came up out of the old workings in the spring.",
+            "One looked at me. Just looked. My arms went heavy as lead, and I've walked like this ever since.",
+            "Don't meet their eyes. My grandfather fought in the east; he said they used polished bronze, so the beast saw only itself. Three bronze bars and a silver one, polished bright, at an anvil."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "basilisk",
+          "count": 4,
+          "log": "Kill four basilisks at the mouth of the deep gallery.",
+          "remind": [
+            "A mirror shield, friend. Three bronze bars and a silver one at an anvil. Then four of them, and the men can go back down."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "procurator",
+          "items": [
+            {
+              "item": "silver_bar",
+              "quantity": 5
+            }
+          ],
+          "log": "Bring the procurator five silver bars to make up the quota.",
+          "remind": [
+            "The gallery's clear? Good. Now the quota. Five bars of silver, smelted and stamped. The furnace is behind you."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "procurator",
+          "log": "Report to the procurator.",
+          "remind": []
+        }
+      ],
+      "complete": [
+        "Five bars, and the gallery working again. The treasury will be very nearly pleased.",
+        "Here's your fee, and something better: I'll sell you the good steel picks we keep for the gallery crews, and coal from the stores.",
+        "Masculus says his knees are coming back. He wants you to know. I wanted you to know that I don't care, but well done."
+      ],
+      "rewards": {
+        "xp": {
+          "mining": 3000,
+          "smithing": 3000,
+          "slayer": 2500
+        },
+        "items": [
+          {
+            "item": "coins",
+            "quantity": 2000
+          }
+        ],
+        "unlocks": "The procurator sells steel pickaxes and coal"
       }
     }
   }

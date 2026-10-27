@@ -488,7 +488,7 @@ def _check_quests(content, items, monsters, errors):
             if kind not in STEP_KINDS:
                 errors.append(f"{step_where}.kind: must be one of {sorted(STEP_KINDS)}")
                 continue
-            _check_keys(step_where, step, {"kind", "log", "remind", "grants"} | STEP_KINDS[kind], {"kind", "log", "remind"} | STEP_KINDS[kind], errors)
+            _check_keys(step_where, step, {"kind", "log", "remind", "grants", "say"} | STEP_KINDS[kind], {"kind", "log", "remind"} | STEP_KINDS[kind], errors)
             for j, entry in enumerate(step.get("grants", [])):
                 _check_drop(f"{step_where}.grants[{j}]", entry, items, errors, nothing_allowed=False, multiples_allowed=True)
             if "count" in step:
@@ -511,6 +511,8 @@ def _check_quests(content, items, monsters, errors):
                 errors.append(f"{step_where}.npc: unknown npc {step.get('npc')!r}")
             if not isinstance(step.get("log"), str) or not step.get("log"):
                 errors.append(f"{step_where}.log: expected text")
+            if "say" in step and (kind not in ("talk", "deliver") or not isinstance(step["say"], list) or not step["say"]):
+                errors.append(f"{step_where}.say: only talk and deliver steps speak, as a non-empty list of lines")
             if not isinstance(step.get("remind"), list):
                 errors.append(f"{step_where}.remind: expected a list of lines")
         if steps and steps[-1].get("kind") not in ("talk", "deliver"):

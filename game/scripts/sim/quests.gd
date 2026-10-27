@@ -103,9 +103,11 @@ func talk(player: Combatant, npc_id: String, events: Array) -> void:
 	for quest_id in ContentDB.quest_ids():
 		var step := current_step(player, quest_id)
 		if step.get("kind") == "talk" and step.get("npc") == npc_id:
+			_say(player, npc_id, step, events)
 			_advance(player, quest_id, events)
 			return
 		if step.get("kind") == "deliver" and step.get("npc") == npc_id and _carries(player, step["items"]):
+			_say(player, npc_id, step, events)
 			_deliver(player, quest_id, step, events)
 			return
 	for quest_id in ContentDB.quest_ids():
@@ -194,6 +196,12 @@ func _progress(player: Combatant, quest_id: String, step: Dictionary, events: Ar
 		"count": step["count"], "tick": sim.tick})
 	if state["progress"] >= step["count"]:
 		_advance(player, quest_id, events)
+
+
+## A step can give its NPC something to say as it's handed in.
+func _say(player: Combatant, npc_id: String, step: Dictionary, events: Array) -> void:
+	if step.has("say"):
+		_dialogue(player, npc_id, step["say"], events)
 
 
 func _advance(player: Combatant, quest_id: String, events: Array) -> void:

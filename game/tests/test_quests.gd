@@ -428,3 +428,38 @@ func test_gold_torcs_are_taught_by_the_lost_eagle() -> void:
 	sim.queue_item_action(PLAYER, "craft", {"kind": "smith", "recipe": "gold_torc", "count": 1})
 	_run(sim, 8)
 	check_eq(player.inventory.count("gold_torc"), 1, "smithed after the quest")
+
+
+func test_the_silent_gallery() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("procurator", Vector3(1, 0, 0))
+	sim.quests.add_npc("foreman_masculus", Vector3(-1, 0, 0))
+	sim.queue_item_action(PLAYER, "talk", {"npc": "procurator"})
+	_run(sim, 1)
+	check_eq(Quests.status(player, "the_silent_gallery"), "not_started", "needs Mining, Smithing and Slayer")
+	for skill in ["mining", "smithing"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(30)
+	player.skills.xp["slayer"] = player.skills.xp_for_level(40)
+	sim.queue_item_action(PLAYER, "talk", {"npc": "procurator"})
+	_run(sim, 1)
+	check_eq(Quests.status(player, "the_silent_gallery"), "in_progress", "started")
+	sim.queue_item_action(PLAYER, "talk", {"npc": "foreman_masculus"})
+	var events := _run(sim, 1)
+	check(_dialogue(events).any(func(line): return "polished bronze" in line), "the foreman explains the mirror")
+	check_eq(player.quests["the_silent_gallery"]["step"], 1, "talked to the foreman")
+	for i in 4:
+		var basilisk := sim.add_monster(RAT + i, "basilisk", Vector3(0, 0, 1))
+		basilisk.last_attacker_id = PLAYER
+		basilisk.hp = 0
+		sim.kill(basilisk, [])
+	check_eq(player.quests["the_silent_gallery"]["step"], 2, "four basilisks")
+	sim.give_item(PLAYER, "silver_bar", 5, "test", [])
+	sim.queue_item_action(PLAYER, "talk", {"npc": "procurator"})
+	_run(sim, 1)
+	check_eq(player.quests["the_silent_gallery"]["step"], 3, "quota delivered")
+	check_eq(player.inventory.count("silver_bar"), 0, "the bars handed over")
+	sim.queue_item_action(PLAYER, "talk", {"npc": "procurator"})
+	_run(sim, 1)
+	check(Quests.is_done(player, "the_silent_gallery"), "complete")
+	check_eq(player.inventory.count("coins"), 2000, "the fee")

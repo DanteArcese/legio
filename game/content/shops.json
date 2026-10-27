@@ -264,6 +264,16 @@
       {
         "item": "cooked_sardine",
         "price": 8
+      },
+      {
+        "item": "steel_pickaxe",
+        "price": 600,
+        "requires_quest": "the_silent_gallery"
+      },
+      {
+        "item": "coal",
+        "price": 40,
+        "requires_quest": "the_silent_gallery"
       }
     ]
   }

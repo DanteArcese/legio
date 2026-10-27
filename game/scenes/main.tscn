@@ -1427,10 +1427,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 350)
 script = ExtResource("11_station")
 kind = "anvil"
 
-[node name="Procurator" type="StaticBody3D" parent="Vipasca" groups=["shopkeepers", "navigation_source"]]
+[node name="Procurator" type="StaticBody3D" parent="Vipasca" groups=["quest_npcs", "shopkeepers", "navigation_source"]]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -5.5, 1, 367)
 collision_layer = 8
 metadata/shop_id = "procurator"
+metadata/npc_id = "procurator"
 metadata/display_name = "Procurator metallorum"
 metadata/examine = "The emperor's man at the mines. Every ingot passes under his stamp."
 
@@ -1450,6 +1451,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 text = "Procurator metallorum
 (Mining supplies)"
+font_size = 32
+outline_size = 8
+
+[node name="ForemanMasculus" type="StaticBody3D" parent="Vipasca" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 1, 386)
+collision_layer = 8
+metadata/npc_id = "foreman_masculus"
+metadata/display_name = "Foreman Masculus"
+metadata/examine = "The pit foreman. He moves slowly and stiffly, like a man made of plaster."
+
+[node name="Mesh" type="MeshInstance3D" parent="Vipasca/ForemanMasculus"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Vipasca/ForemanMasculus"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Vipasca/ForemanMasculus"]
+script = ExtResource("24_npc")
+scene = "adventurers/Barbarian"
+weapon = "kenney:survival/tool-pickaxe"
+hide_meshes = Array[String](["Barbarian_Hat"])
+
+[node name="Label" type="Label3D" parent="Vipasca/ForemanMasculus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Foreman Masculus"
 font_size = 32
 outline_size = 8
 

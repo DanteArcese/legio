@@ -15,7 +15,9 @@ var sim: RefCounted:
 	set(value):
 		_sim_ref = weakref(value)
 var _sim_ref: WeakRef
-## Throws in the air: {"id", "boss", "position", "lands_at", "radius", "damage"}.
+## What a boss shouts as it throws, by the boss block's throw_kind.
+const THROW_WARNINGS := {"spear": "%s hurls a spear at you. Move!", "venom": "%s spits venom at you. Move!"}
+## Throws in the air: {"id", "boss", "kind", "position", "lands_at", "radius", "damage"}.
 var strikes: Array[Dictionary] = []
 var _next_strike_id := 1
 ## boss id -> attacks made since it last (re)spawned.
@@ -41,14 +43,15 @@ func try_throw(boss: Combatant, target: Combatant, events: Array[Dictionary]) ->
 	if _attacks[boss.id] % int(spec["throw_every"]) != 0:
 		return false
 	var tick: int = sim.tick
-	var strike := {"id": _next_strike_id, "boss": boss.id, "position": target.position, "lands_at": tick + int(spec["throw_delay"]),
+	var kind: String = spec.get("throw_kind", "spear")
+	var strike := {"id": _next_strike_id, "boss": boss.id, "kind": kind, "position": target.position, "lands_at": tick + int(spec["throw_delay"]),
 		"radius": float(spec["throw_radius"]), "damage": spec["throw_damage"]}
 	_next_strike_id += 1
 	strikes.append(strike)
 	boss.next_attack_tick = tick + boss.current_attack_speed(tick)
-	events.append({"type": "strike_warn", "id": boss.id, "strike": strike["id"], "position": strike["position"], "radius": strike["radius"],
-		"lands_at": strike["lands_at"], "tick": tick})
-	sim.message(target, "%s hurls a spear at you. Move!" % ContentDB.monster(boss.monster_id)["name"], events)
+	events.append({"type": "strike_warn", "id": boss.id, "strike": strike["id"], "kind": kind, "position": strike["position"],
+		"radius": strike["radius"], "lands_at": strike["lands_at"], "tick": tick})
+	sim.message(target, THROW_WARNINGS[kind] % ContentDB.monster(boss.monster_id)["name"], events)
 	return true
 
 
@@ -101,6 +104,6 @@ func _land(strike: Dictionary, events: Array[Dictionary]) -> void:
 		combatant.hp -= damage
 		combatant.last_attacker_id = boss.id
 		events.append({"type": "hit", "attacker": boss.id, "target": combatant.id, "damage": damage,
-			"ranged": false, "kind": "spear", "tick": sim.tick})
+			"ranged": false, "kind": strike["kind"], "tick": sim.tick})
 		if not combatant.is_alive():
 			sim.kill(combatant, events)

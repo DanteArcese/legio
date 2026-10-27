@@ -1,8 +1,29 @@
 {
   "pets": {
-    "mole": {"source": "skill", "skill": "mining", "one_in": 3000},
-    "magpie": {"source": "skill", "skill": "thieving", "one_in": 2500},
-    "leveret": {"source": "skill", "skill": "hunter", "one_in": 800},
-    "wolf_cub": {"source": "monster", "monster": "hrodgar", "one_in": 150}
+    "mole": {
+      "source": "skill",
+      "skill": "mining",
+      "one_in": 3000
+    },
+    "magpie": {
+      "source": "skill",
+      "skill": "thieving",
+      "one_in": 2500
+    },
+    "leveret": {
+      "source": "skill",
+      "skill": "hunter",
+      "one_in": 800
+    },
+    "wolf_cub": {
+      "source": "monster",
+      "monster": "hrodgar",
+      "one_in": 150
+    },
+    "basilisk_hatchling": {
+      "source": "monster",
+      "monster": "regulus",
+      "one_in": 120
+    }
   }
 }

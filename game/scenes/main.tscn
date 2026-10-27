@@ -1071,6 +1071,10 @@ monster_id = "basilisk"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179, 0, 403)
 monster_id = "basilisk"
 
+[node name="Regulus" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 182, 0, 430)
+monster_id = "regulus"
+
 [node name="Harpy1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -252, 0, -28)
 monster_id = "harpy"

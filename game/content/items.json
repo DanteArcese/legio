@@ -1409,5 +1409,42 @@
     "name": "Basilisk eye",
     "value": 450,
     "examine": "Dull and grey now. Still, you don't look at it for long."
+  },
+  "crown_of_regulus": {
+    "name": "Crown of Regulus",
+    "value": 2500,
+    "examine": "A ring of golden horn from the basilisk king's brow. Basilisks see a king when they look at you, and look away.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 2,
+        "strength": 4,
+        "defence": 10,
+        "ritus_defence": -2
+      },
+      "wards": [
+        "mirror_shield"
+      ]
+    },
+    "requirements": {
+      "defence": 45,
+      "slayer": 50
+    }
+  },
+  "basilisk_hatchling": {
+    "name": "Basilisk hatchling",
+    "value": 0,
+    "examine": "A basilisk no bigger than a cat. When it looks at you, your fingers tingle a little.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#5d6b45",
+      "accent": "#c9b13a",
+      "size": 0.45,
+      "features": [
+        "long_snout",
+        "tail",
+        "lizard"
+      ]
+    }
   }
 }

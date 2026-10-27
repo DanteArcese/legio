@@ -488,3 +488,13 @@ func test_the_shepherds_flock() -> void:
 	_run(sim, 1)
 	check(Quests.is_done(player, "the_shepherds_flock"), "complete")
 	check_eq(player.inventory.count("cyclops_cheese"), 5, "paid in cheese")
+
+
+func test_unmet_requirements_lists_everything_missing() -> void:
+	var sim := _make_sim()
+	var player: RefCounted = _player(sim)
+	var unmet := Quests.unmet_requirements(player, "miles")
+	check(unmet.has("Defence 5"), "needs Defence 5 (%s)" % [unmet])
+	check(unmet.has("the quest Tiro"), "needs Tiro first")
+	check_eq(Quests.unmet_requirement(player, "miles"), unmet[0], "the single reason is the first")
+	check(Quests.unmet_requirements(player, "tiro").is_empty(), "Tiro is open to anyone")

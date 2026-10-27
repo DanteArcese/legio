@@ -166,6 +166,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var styles: Array = Skills.styles_for(_entity.combatant.combat_kind())
 		var next: String = styles[(styles.find(_entity.combatant.style) + 1) % styles.size()]
 		sim_driver.sim.queue_style(_entity.entity_id, next)
+	elif event.is_action_pressed("special_attack") and sim_driver:
+		sim_driver.sim.queue_item_action(_entity.entity_id, "special")
 	elif event.is_action_pressed("interact") and sim_driver:
 		interact()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and sim_driver:

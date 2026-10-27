@@ -131,7 +131,12 @@
         "strength": 3,
         "defence": 0
       },
-      "attack_speed": 3
+      "attack_speed": 3,
+      "special": {
+        "name": "twin thrust",
+        "cost": 25,
+        "effect": "twin"
+      }
     }
   },
   "bronze_gladius": {
@@ -145,7 +150,12 @@
         "strength": 6,
         "defence": 0
       },
-      "attack_speed": 4
+      "attack_speed": 4,
+      "special": {
+        "name": "legion's thrust",
+        "cost": 50,
+        "effect": "strong"
+      }
     }
   },
   "bronze_galea": {
@@ -201,7 +211,12 @@
         "strength": 6,
         "defence": 0
       },
-      "attack_speed": 3
+      "attack_speed": 3,
+      "special": {
+        "name": "twin thrust",
+        "cost": 25,
+        "effect": "twin"
+      }
     },
     "requirements": {
       "attack": 10
@@ -218,7 +233,12 @@
         "strength": 12,
         "defence": 0
       },
-      "attack_speed": 4
+      "attack_speed": 4,
+      "special": {
+        "name": "legion's thrust",
+        "cost": 50,
+        "effect": "strong"
+      }
     },
     "requirements": {
       "attack": 10
@@ -287,7 +307,12 @@
       "attack_speed": 4,
       "style": "ranged",
       "range": 7.0,
-      "ammo": "arrow"
+      "ammo": "arrow",
+      "special": {
+        "name": "volley",
+        "cost": 50,
+        "effect": "volley"
+      }
     }
   },
   "composite_bow": {
@@ -302,7 +327,12 @@
       "attack_speed": 4,
       "style": "ranged",
       "range": 8.0,
-      "ammo": "arrow"
+      "ammo": "arrow",
+      "special": {
+        "name": "volley",
+        "cost": 50,
+        "effect": "volley"
+      }
     },
     "requirements": {
       "ranged": 20
@@ -320,7 +350,12 @@
       "attack_speed": 3,
       "style": "ranged",
       "range": 5.0,
-      "ammo": "sling_bullet"
+      "ammo": "sling_bullet",
+      "special": {
+        "name": "heavy glans",
+        "cost": 25,
+        "effect": "heavy"
+      }
     }
   },
   "bronze_arrow": {
@@ -771,7 +806,12 @@
         "strength": 22,
         "defence": 0
       },
-      "attack_speed": 5
+      "attack_speed": 5,
+      "special": {
+        "name": "cavalry sweep",
+        "cost": 50,
+        "effect": "heavy"
+      }
     },
     "requirements": {
       "attack": 20
@@ -1077,7 +1117,12 @@
         "strength": 17,
         "defence": 0
       },
-      "attack_speed": 4
+      "attack_speed": 4,
+      "special": {
+        "name": "hurled framea",
+        "cost": 50,
+        "effect": "sure"
+      }
     },
     "requirements": {
       "attack": 20
@@ -1272,7 +1317,12 @@
         "strength": 9,
         "defence": 0
       },
-      "attack_speed": 3
+      "attack_speed": 3,
+      "special": {
+        "name": "twin thrust",
+        "cost": 25,
+        "effect": "twin"
+      }
     },
     "requirements": {
       "attack": 20
@@ -1289,7 +1339,12 @@
         "strength": 18,
         "defence": 0
       },
-      "attack_speed": 4
+      "attack_speed": 4,
+      "special": {
+        "name": "legion's thrust",
+        "cost": 50,
+        "effect": "strong"
+      }
     },
     "requirements": {
       "attack": 20

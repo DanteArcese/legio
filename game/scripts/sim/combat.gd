@@ -22,6 +22,14 @@ const ENTRANCE_TICKS := 6
 const PETRIFY_MAX_DRAIN := 0.3
 ## How much harder a gorgon hits an unwarded player.
 const GORGON_DAMAGE := 1.5
+## What each kind of weapon special does to the attack it's spent on.
+const SPECIAL_EFFECTS := {
+	"twin": {"hits": 2},
+	"strong": {"accuracy": 1.5, "damage": 1.2},
+	"heavy": {"accuracy": 0.9, "damage": 1.5},
+	"sure": {"accuracy": 2.0, "damage": 1.1},
+	"volley": {"hits": 2},
+}
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.
@@ -103,7 +111,13 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 
 	var roll: Array = attacker.attack_roll_parts()
 	var boost := Slayer.boost(attacker, target)
-	var chance := CombatMath.hit_chance(floori(roll[0] * boost), roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
+	var special := _take_special(attacker, events)
+	var chance := CombatMath.hit_chance(floori(roll[0] * boost * special.get("accuracy", 1.0)), roll[1],
+		target.effective_level("defence"), target.defence_bonus_against(kind))
+	var max_damage := floori(attacker.max_hit() * boost * special.get("damage", 1.0))
+	# A gorgon's gaze holds an unwarded player still for the blow.
+	if effect == "gorgon_gaze" and target.is_player():
+		max_damage = floori(max_damage * GORGON_DAMAGE)
 	var damage := 0
 	var lands: bool = sim.rng.randf() < chance
 	if effect in ["drain_vitality", "entrance", "petrify", "gorgon_gaze"] and target.is_player():
@@ -114,10 +128,6 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		attacker.curses.erase("silenced")
 		events.append({"type": "silenced_miss", "id": attacker.id, "tick": tick})
 	if lands and not (effect == "no_damage" and attacker.is_player()):
-		var max_damage := floori(attacker.max_hit() * boost)
-		# A gorgon's gaze holds an unwarded player still for the blow.
-		if effect == "gorgon_gaze" and target.is_player():
-			max_damage = floori(max_damage * GORGON_DAMAGE)
 		damage = mini(sim.rng.randi_range(1, max_damage), target.hp)
 	target.hp -= damage
 	# Kills by a summoned shade count as its caster's.
@@ -136,6 +146,17 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	attacker.next_attack_tick = tick + attacker.current_attack_speed(tick)
 	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage,
 		"ranged": kind == "ranged", "kind": kind, "tick": tick})
+	# A twin thrust or a volley strikes again at once.
+	if special.get("hits", 1) > 1 and target.is_alive():
+		var second := 0
+		if sim.rng.randf() < chance and not (effect == "no_damage" and attacker.is_player()):
+			second = mini(sim.rng.randi_range(1, max_damage), target.hp)
+		target.hp -= second
+		damage += second
+		if attacker.uses_ammo():
+			_use_ammo(attacker, target.position, events)
+		events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": second,
+			"ranged": kind == "ranged", "kind": kind, "tick": tick})
 	if attacker.is_player():
 		sim.quests.on_attack(attacker, target, kind, events)
 	var curse: String = attacker.equipment.curse() if kind == "ritus" else ""
@@ -176,6 +197,24 @@ func _petrify(player: Combatant, events: Array) -> void:
 			player.remedy_boosts[skill] = boost
 	if drained:
 		sim.message(player, "The gaze turns your limbs to stone!", events)
+
+
+## Spends an armed special attack, if the weapon has one and there's
+## enough impetus, and returns its effect ({} for a plain attack).
+func _take_special(attacker: Combatant, events: Array) -> Dictionary:
+	if not attacker.is_player() or not attacker.special_armed:
+		return {}
+	attacker.special_armed = false
+	var special: Dictionary = attacker.equipment.weapon().get("special", {})
+	if special.is_empty():
+		return {}
+	if attacker.impetus < special["cost"]:
+		sim.message(attacker, "You need %d impetus for %s." % [special["cost"], special["name"]], events)
+		return {}
+	attacker.impetus -= special["cost"]
+	events.append({"type": "special", "id": attacker.id, "name": special["name"], "tick": sim.tick})
+	sim.message(attacker, "%s!" % special["name"].capitalize(), events)
+	return SPECIAL_EFFECTS[special["effect"]]
 
 
 func award_combat_xp(attacker: Combatant, damage: int, events: Array) -> void:

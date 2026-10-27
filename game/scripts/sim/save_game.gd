@@ -23,6 +23,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 	return {
 		"version": VERSION,
 		"account_mode": player.account_mode,
+		"impetus": player.impetus,
 		"position": _vec_to_array(player.position),
 		"hp": player.hp,
 		"favour": player.favour,
@@ -65,6 +66,7 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 		return false
 	var player: RefCounted = sim.get_combatant(player_id)
 	player.account_mode = data["account_mode"]
+	player.impetus = int(data.get("impetus", player.MAX_IMPETUS))
 	player.position = _array_to_vec(data["position"])
 	for skill in data["skills"]:
 		if player.skills.xp.has(skill):

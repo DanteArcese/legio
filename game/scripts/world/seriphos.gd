@@ -30,10 +30,18 @@ const PATHS := [
 	[Vector2(-300, 276), Vector2(-300, 304), Vector2(-318, 322)],
 	[Vector2(-300, 298), Vector2(-272, 306)],
 	[Vector2(-300, 298), Vector2(-330, 300)],
+	[Vector2(-272, 306), Vector2(-262, 338)],
+	[Vector2(-318, 322), Vector2(-330, 342)],
 ]
 const GROVE := Rect2(-354, 290, 24, 26)
 const TEMPLE := Rect2(-276, 300, 22, 14)
 const OLIVE_COUNT := 26
+## A grassy hollow in the hills where the cyclopes keep their flocks, with
+## their cave in its far side.
+const HOLLOW := Rect2(-272, 338, 24, 24)
+const CAVE := Vector3(-258, 0, 360.5)
+## The broken ruins in the south-west where the gorgons nest.
+const RUINS := Rect2(-350, 342, 30, 26)
 
 const GRASS := Color(0.55, 0.6, 0.32)
 const GRASS_LIGHT := Color(0.63, 0.66, 0.38)
@@ -63,6 +71,7 @@ func _ready() -> void:
 	_build_pier()
 	_build_bounds()
 	_build_temple()
+	_build_cave()
 	if dresser:
 		_dress()
 
@@ -74,6 +83,8 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(2.5, 6.0, _path_distance(p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(GROVE, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(TEMPLE, p)))
+	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(HOLLOW, p)))
+	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(RUINS, p)))
 	h = lerpf(h, 0.0, flat)
 	# Rocky hills rise inland, to the south.
 	h += smoothstep(330.0, 375.0, z) * (3.0 + _noise.get_noise_2d(x * 2.0, z * 2.0) * 2.0) * (1.0 - flat)
@@ -219,6 +230,15 @@ func _build_temple() -> void:
 	_visual_box(Vector3(half.x * 1.4, 0.6, 1.4), Vector3(centre.x - half.x * 0.5, 5.3, centre.y - half.y), MARBLE.darkened(0.05))
 
 
+## The cyclopes' cave: a dark mouth in the hill behind the hollow, framed
+## by boulders.
+func _build_cave() -> void:
+	_visual_box(Vector3(4.2, 3.4, 0.4), CAVE + Vector3(0, 1.7, 1.2), Color(0.06, 0.05, 0.05))
+	for spec in [[Vector3(-2.8, 1.6, 1.0), Vector3(1.6, 3.6, 2.2)], [Vector3(2.8, 1.6, 1.0), Vector3(1.6, 3.6, 2.2)], [Vector3(0, 3.8, 1.0), Vector3(7.2, 1.2, 2.4)]]:
+		_visual_box(spec[1], CAVE + spec[0], ROCK.darkened(0.1))
+		_solid(spec[1], CAVE + spec[0])
+
+
 ## Olives in the grove, rocks on the hills, and boats at the pier.
 func _dress() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -238,7 +258,7 @@ func _dress() -> void:
 		add_child(trunk)
 	for n in 30:
 		var p := Vector2(rng.randf_range(X_MIN + 4.0, X_MAX - 4.0), rng.randf_range(335.0, Z_MAX - 4.0))
-		if _path_distance(p) < 5.0:
+		if _path_distance(p) < 5.0 or HOLLOW.grow(2.0).has_point(p) or RUINS.grow(2.0).has_point(p):
 			continue
 		var rock: Node3D = dresser.model("nature/" + ["rock_largeA", "rock_largeC", "rock_smallA", "rock_tallA"][n % 4])
 		rock.position = Vector3(p.x, height_at(p.x, p.y) - 0.2, p.y)

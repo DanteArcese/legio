@@ -422,5 +422,43 @@
         "lizard"
       ]
     }
+  },
+  "cyclops": {
+    "name": "Cyclops",
+    "plural": "Cyclopes",
+    "level": 62,
+    "stats": {
+      "attack": 55,
+      "strength": 64,
+      "defence": 48,
+      "vitality": 80
+    },
+    "attack_speed": 6,
+    "aggressive": true,
+    "respawn_ticks": 45,
+    "drops": "cyclops",
+    "boss": {
+      "throw_every": 4,
+      "throw_delay": 3,
+      "throw_radius": 1.6,
+      "throw_damage": [
+        10,
+        20
+      ],
+      "enrage_below": 0.25,
+      "enrage_speed": 5,
+      "throw_kind": "boulder"
+    },
+    "examine": "A shepherd the size of a house, with one eye and no patience. He throws rocks at ships, and at you.",
+    "appearance": {
+      "model": "humanoid",
+      "color": "#8a7454",
+      "accent": "#5c4a33",
+      "size": 2.3,
+      "features": [
+        "one_eye",
+        "bare_legs"
+      ]
+    }
   }
 }

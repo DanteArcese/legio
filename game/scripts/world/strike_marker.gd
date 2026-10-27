@@ -1,7 +1,7 @@
 extends Node3D
 ## A boss's throw: a ring on the ground where it will land, and the missile
 ## arcing down onto it, timed to land with the simulation. A spear (red
-## ring) or a glob of venom (green ring). Purely visual; the driver frees
+## ring), a glob of venom (green) or a boulder (amber). Purely visual; the driver frees
 ## it when the throw lands.
 
 const SPEAR_LENGTH := 1.8
@@ -11,7 +11,10 @@ var _disc: MeshInstance3D
 var _age := 0.0
 
 
-const RING_COLORS := {"spear": Color(0.9, 0.12, 0.08, 0.5), "venom": Color(0.35, 0.85, 0.15, 0.5)}
+const RING_COLORS := {"spear": Color(0.9, 0.12, 0.08, 0.5), "venom": Color(0.35, 0.85, 0.15, 0.5),
+	"boulder": Color(0.95, 0.6, 0.1, 0.5)}
+## Lobbed missiles: [radius, colour, glows].
+const LOBS := {"venom": [0.22, Color(0.4, 0.9, 0.2), true], "boulder": [0.5, Color(0.55, 0.52, 0.48), false]}
 
 
 static func spawn(parent: Node, from: Vector3, at: Vector3, radius: float, seconds: float, kind := "spear") -> Node3D:
@@ -19,8 +22,8 @@ static func spawn(parent: Node, from: Vector3, at: Vector3, radius: float, secon
 	parent.add_child(marker)
 	marker.global_position = at + Vector3(0, 0.06, 0)
 	marker._build(radius, RING_COLORS.get(kind, RING_COLORS["spear"]))
-	if kind == "venom":
-		marker._spit(from + Vector3(0, 1.0, 0), seconds)
+	if LOBS.has(kind):
+		marker._lob(from + Vector3(0, 1.0, 0), seconds, LOBS[kind])
 	else:
 		marker._throw(from + Vector3(0, 1.6, 0), seconds)
 	return marker
@@ -61,16 +64,16 @@ func _throw(from: Vector3, seconds: float) -> void:
 			spear.look_at(ahead, Vector3.UP), 0.0, 1.0, maxf(seconds, 0.1))
 
 
-## A glob of venom lobbed in a high arc.
-func _spit(from: Vector3, seconds: float) -> void:
+## A glob of venom or a boulder, lobbed in a high arc.
+func _lob(from: Vector3, seconds: float, look: Array) -> void:
 	var glob := MeshInstance3D.new()
 	var sphere := SphereMesh.new()
-	sphere.radius = 0.22
-	sphere.height = 0.44
+	sphere.radius = look[0]
+	sphere.height = look[0] * 2.0
 	var material := StandardMaterial3D.new()
-	material.albedo_color = Color(0.4, 0.9, 0.2)
-	material.emission_enabled = true
-	material.emission = Color(0.25, 0.6, 0.1)
+	material.albedo_color = look[1]
+	material.emission_enabled = look[2]
+	material.emission = look[1].darkened(0.4)
 	sphere.material = material
 	glob.mesh = sphere
 	add_child(glob)

@@ -83,6 +83,8 @@ func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 
 func _build_humanoid(main: Color, accent: Color, features: Array) -> void:
 	var skin := Color(0.78, 0.6, 0.45) if not features.has("ghostly") else main.lightened(0.2)
+	if features.has("green_skin"):
+		skin = Color(0.48, 0.6, 0.42)
 	_body = _part(self, _box(Vector3(0.5, 0.6, 0.28), main), Vector3(0, 1.15, 0))
 	var head := _part(_body, _sphere(0.17, skin), Vector3(0, 0.48, 0))
 	if features.has("hood"):
@@ -90,6 +92,16 @@ func _build_humanoid(main: Color, accent: Color, features: Array) -> void:
 	if features.has("helmet"):
 		_part(head, _sphere(0.19, accent), Vector3(0, 0.07, 0))
 		_part(head, _box(Vector3(0.05, 0.12, 0.3), Color(0.7, 0.15, 0.1)), Vector3(0, 0.26, 0))
+	if features.has("one_eye"):
+		# A cyclops: one great eye in the middle of the brow.
+		var white := _part(head, _sphere(0.07, Color(0.95, 0.93, 0.88)), Vector3(0, 0.04, -0.14))
+		_part(white, _sphere(0.035, Color(0.15, 0.1, 0.08)), Vector3(0, 0, -0.05))
+	if features.has("snakes"):
+		# A gorgon: a writhing crown of serpents for hair.
+		for i in 10:
+			var angle := TAU * i / 10.0
+			var snake := _part(head, _cone(0.025, 0.24, Color(0.25, 0.42, 0.2)), Vector3(cos(angle) * 0.14, 0.12, sin(angle) * 0.14))
+			snake.rotation = Vector3(sin(angle) * 0.9, 0, -cos(angle) * 0.9)
 	if features.has("glowing_eyes"):
 		for side in [-1, 1]:
 			var eye := _part(head, _sphere(0.035, Color(0.6, 0.9, 1.0)), Vector3(side * 0.06, 0.02, -0.15))

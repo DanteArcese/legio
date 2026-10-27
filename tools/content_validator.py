@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -80,6 +80,7 @@ def validate(content: dict) -> list[str]:
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
+    _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
     _check_pets(content.get("pets", {}), items, monsters, errors)
@@ -323,6 +324,41 @@ def _check_arena(arena, items, monsters, shops, errors):
         _check_int(where, "hunter", contract.get("hunter"), 1, errors, 99)
         for key in ("count", "coins", "xp"):
             _check_int(where, key, contract.get(key), 1, errors)
+TASK_FIELDS = {"obtain": {"item"}, "kill": {"monster"}, "quest": {"quest"}, "level": {"skill", "level"}, "visit": {"area"}}
+
+
+def _check_tasks(tasks, items, monsters, quests, errors):
+    _check_keys("tasks", tasks, {"regions"}, {"regions"}, errors)
+    for region_id, region in tasks.get("regions", {}).items():
+        where = f"tasks.regions.{region_id}"
+        _check_id(where, region_id, errors)
+        _check_keys(where, region, {"name", "reward", "tasks"}, {"name", "reward", "tasks"}, errors)
+        _check_int(where, "reward", region.get("reward"), 1, errors)
+        seen = set()
+        for i, task in enumerate(region.get("tasks", [])):
+            task_where = f"{where}.tasks[{i}]"
+            kind = task.get("kind")
+            if kind not in TASK_FIELDS:
+                errors.append(f"{task_where}.kind: must be one of {sorted(TASK_FIELDS)}")
+                continue
+            _check_keys(task_where, task, {"id", "kind", "text"} | TASK_FIELDS[kind], {"id", "kind", "text"} | TASK_FIELDS[kind], errors)
+            if task.get("id") in seen:
+                errors.append(f"{task_where}.id: duplicate {task.get('id')!r}")
+            seen.add(task.get("id"))
+            if kind == "obtain" and task.get("item") not in items:
+                errors.append(f"{task_where}.item: unknown item {task.get('item')!r}")
+            if kind == "kill" and task.get("monster") not in monsters:
+                errors.append(f"{task_where}.monster: unknown monster {task.get('monster')!r}")
+            if kind == "quest" and task.get("quest") not in quests:
+                errors.append(f"{task_where}.quest: unknown quest {task.get('quest')!r}")
+            if kind == "level":
+                if task.get("skill") not in SKILLS:
+                    errors.append(f"{task_where}.skill: unknown skill {task.get('skill')!r}")
+                _check_int(task_where, "level", task.get("level"), 2, errors, 99)
+            if kind == "visit":
+                area = task.get("area")
+                if not (isinstance(area, list) and len(area) == 4 and all(isinstance(a, (int, float)) for a in area) and area[2] > 0 and area[3] > 0):
+                    errors.append(f"{task_where}.area: expected [x, z, width, depth]")
 
 
 def _check_slayer_rewards(rewards, errors):

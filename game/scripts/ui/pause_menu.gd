@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## Esc / Start: pauses the game and offers Resume, the graphics preset,
-## Hide roofs, volume sliders, and Quit. Fully controller-navigable
+## Hide roofs, volume sliders, leaving the Solitarius path (for those on
+## it), and Quit. Fully controller-navigable
 ## (left and right adjust a focused slider).
 
 @export var settings: Node
@@ -11,6 +12,11 @@ extends CanvasLayer
 var _panel: PanelContainer
 var _graphics_button: Button
 var _roofs_button: Button
+## Shown to Solitarius players; the first press asks, the second gives it up.
+var _leave_button: Button
+var _leave_armed := false
+## Set once the player has chosen to leave, before the simulation applies it.
+var _left := false
 
 
 func _ready() -> void:
@@ -44,6 +50,8 @@ func _ready() -> void:
 	if sound:
 		for bus in sound.BUSES:
 			column.add_child(_volume_row(bus))
+	_leave_button = _button("", _leave_solitarius)
+	column.add_child(_leave_button)
 	column.add_child(_button("Quit", func(): get_tree().quit()))
 	_panel.visible = false
 
@@ -73,6 +81,7 @@ func open() -> void:
 
 func close() -> void:
 	_panel.visible = false
+	_leave_armed = false
 	get_tree().paused = false
 	var focused := get_viewport().gui_get_focus_owner()
 	if focused:
@@ -86,6 +95,27 @@ func is_open() -> bool:
 func _refresh() -> void:
 	_graphics_button.text = "Graphics: %s" % settings.preset.capitalize()
 	_roofs_button.text = "Hide roofs: %s" % ("On" if settings.hide_roofs() else "Off")
+	var combatant := _combatant()
+	_leave_button.visible = combatant != null and combatant.account_mode == "solitarius" and not _left
+	_leave_button.text = "Really give it up? Press again" if _leave_armed else "Leave the Solitarius path"
+
+
+func _leave_solitarius() -> void:
+	if not _leave_armed:
+		_leave_armed = true
+		_refresh()
+		return
+	_leave_armed = false
+	var player := get_tree().get_first_node_in_group("player")
+	# Applied on the next tick, once the game resumes; hidden until then.
+	player.sim_driver.sim.queue_item_action(player.get_node("SimEntity").entity_id, "leave_solitarius")
+	_left = true
+	_refresh()
+
+
+func _combatant() -> RefCounted:
+	var player := get_tree().get_first_node_in_group("player")
+	return player.get_node("SimEntity").combatant if player else null
 
 
 func _button(text: String, action: Callable) -> Button:

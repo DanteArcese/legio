@@ -18,6 +18,8 @@ var _line: Label
 var _continue: Button
 var _lines: Array = []
 var _line_index := 0
+## The quest log's text area; it scrolls beyond this.
+const LOG_HEIGHT := 330.0
 var _log_panel: PanelContainer
 var _log_text: RichTextLabel
 
@@ -141,7 +143,14 @@ func _refresh_log() -> void:
 	var rank := Quests.rank(combatant)
 	if not rank.is_empty():
 		text += "[i]Rank: %s[/i]\n\n" % rank
-	for quest_id in ContentDB.quest_ids():
+	# Quests under way first, then ones to start, then finished ones.
+	var order := {"in_progress": 0, "not_started": 1, "done": 2}
+	var listed := ContentDB.quest_ids()
+	var rank_of := func(quest_id: String) -> int:
+		return order[Quests.status(combatant, quest_id)] * 1000 + listed.find(quest_id)
+	var quest_ids := listed.duplicate()
+	quest_ids.sort_custom(func(a, b): return rank_of.call(a) < rank_of.call(b))
+	for quest_id in quest_ids:
 		var quest := ContentDB.quest(quest_id)
 		match Quests.status(combatant, quest_id):
 			"done":
@@ -215,7 +224,8 @@ func _build_log() -> void:
 	column.add_child(heading)
 	_log_text = RichTextLabel.new()
 	_log_text.bbcode_enabled = true
-	_log_text.fit_content = true
-	_log_text.custom_minimum_size = Vector2(420, 120)
+	# A fixed height that scrolls, so a long log ends above the HUD.
+	_log_text.scroll_active = true
+	_log_text.custom_minimum_size = Vector2(440, LOG_HEIGHT)
 	column.add_child(_log_text)
 	_log_panel.visible = false

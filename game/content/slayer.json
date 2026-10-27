@@ -183,6 +183,16 @@
             40
           ],
           "slayer_level": 40
+        },
+        {
+          "monster": "regulus",
+          "weight": 1,
+          "amount": [
+            3,
+            6
+          ],
+          "slayer_level": 55,
+          "combat_level": 80
         }
       ]
     }

@@ -379,5 +379,48 @@
         "lizard"
       ]
     }
+  },
+  "regulus": {
+    "name": "Regulus, the Basilisk King",
+    "level": 88,
+    "stats": {
+      "attack": 72,
+      "strength": 66,
+      "defence": 78,
+      "vitality": 99
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 100,
+    "drops": "regulus",
+    "slayer": {
+      "level": 50,
+      "ward_item": "mirror_shield",
+      "unwarded_effect": "petrify"
+    },
+    "boss": {
+      "throw_every": 3,
+      "throw_delay": 3,
+      "throw_radius": 1.8,
+      "throw_damage": [
+        12,
+        26
+      ],
+      "enrage_below": 0.3,
+      "enrage_speed": 3,
+      "throw_kind": "venom"
+    },
+    "examine": "The little king of the old workings, crowned in gold horn. Its gaze is stone; its spit is worse.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#4c5a38",
+      "accent": "#d9b23a",
+      "size": 2.6,
+      "features": [
+        "long_snout",
+        "tail",
+        "lizard"
+      ]
+    }
   }
 }

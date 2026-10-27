@@ -582,5 +582,57 @@
         "weight": 3
       }
     ]
+  },
+  "regulus": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          300,
+          800
+        ]
+      }
+    ],
+    "rolls": 2,
+    "table": [
+      {
+        "item": "steel_bar",
+        "quantity": 1,
+        "weight": 6
+      },
+      {
+        "item": "silver_bar",
+        "quantity": 1,
+        "weight": 6
+      },
+      {
+        "item": "gold_ore",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "item": "basilisk_eye",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "steel_gladius",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "crown_of_regulus",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 5
+      }
+    ]
   }
 }

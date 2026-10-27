@@ -40,7 +40,7 @@ A first pass at Roman-themed skills. Names are working names.
 |---|---|
 | Attack, Strength, Defence | Kept as-is. Gladius, spatha, pilum, scutum. |
 | Vitality | Hitpoints. |
-| Ranged | Bows (*arcus*) and slings (*funda*, with lead *glandes*), with javelins and the hand-held *manuballista* later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
+| Ranged | Bows (*arcus*), slings (*funda*, with lead *glandes*), and javelins thrown with an *amentum* (a leather throwing loop; Aulus sells it with bronze javelins, the quartermaster sells iron ones after Miles, and the smith makes five from a bar and a log, up to the steel *pilum* at Ranged 30). Javelins reach 5 m and throw every 5 ticks but hit hardest. The hand-held *manuballista* comes later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods. The heavenly gods are Mars (strength), Minerva (defence), Diana (ranged), and Mercury (movement and run energy). The underworld gods (Dis Pater, Proserpina, Hecate) favour Ritus. XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. See [Curses and Pietas](#curses-and-pietas). |
 | Ritus | The third combat style: curse tablets. See [Ritus](#ritus). |
 
@@ -70,7 +70,7 @@ Kept as a core skill and the center of progression.
 |---|---|
 | Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying. |
 | Woodcutting | Oak, pine, cedar, olive wood. |
-| Fishing | Anchovy and mackerel feed garum production; tuna and eels come later. |
+| Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.
@@ -388,7 +388,8 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - Restrictions: you can't use the forum market, and you can't pick up items you didn't earn. In single-player, the restriction that matters is the market. You also can't buy materials from the trade contracts that Mercatura delivers.
 - **Architecture impact:** every item-acquisition path (shops, market, drops, rewards) goes through one place that checks the account mode. Content data marks shop stock that a Solitarius character can't buy.
 - **Built (#176): leaving.** A Solitarius can give the mode up from the pause menu ("Leave the Solitarius path", pressed twice to be sure); it's permanent. The new-character screen says plainly what each path means while there's no market yet.
-- Possible later: a "hardcore" variant with one life, and group modes in the MMO.
+- **Built (#209): Hardcore Solitarius.** A third choice on the new-character screen: a Solitarius with one life. The first death, anywhere, makes it a plain Solitarius for good (with a message), and the HUD shows which one you are. A hardcore character can also leave for the standard path from the pause menu.
+- Possible later: group modes in the MMO.
 
 ## Other decisions
 

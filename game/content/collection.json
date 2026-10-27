@@ -5,7 +5,7 @@
     "barrow": {"name": "Barrow of the Lemures", "category": "Combat", "items": ["lemur_ash", "iron_pugio", "composite_bow", "iron_bar"]},
     "slayer": {"name": "Slayer creatures", "category": "Slayer", "items": ["strix_feather", "iron_gladius", "iron_scutum", "larval_shroud", "harpy_feather", "iron_arrowheads", "pearl", "basilisk_eye", "gorgon_scale", "aegis"]},
     "seeds": {"name": "Seeds", "category": "Combat", "items": ["mint_seed", "fennel_seed", "bean_seed", "sage_seed", "wormwood_seed", "poppy_seed"]},
-    "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna"]},
+    "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna", "raw_eel"]},
     "harvest": {"name": "The harvest", "category": "Skilling", "items": ["mint", "fennel", "sage", "wormwood", "poppy", "cabbage", "broad_beans"]},
     "hunter": {"name": "Hunter", "category": "Skilling", "items": ["hare_pelt", "fox_pelt"]},
     "thieving": {"name": "Light fingers", "category": "Skilling", "items": ["bread", "linen", "silver_fibula"]},

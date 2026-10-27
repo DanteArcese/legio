@@ -22,7 +22,7 @@ const MINE_CHANCE_PER_LEVEL := 0.015
 const MINE_CHANCE_PER_TIER := 0.1
 const FISH_BASE_CHANCE := 0.3
 ## What each fishing tool is called, for messages.
-const FISHING_TOOLS := {"net": "small net", "rod": "fishing rod", "harpoon": "harpoon"}
+const FISHING_TOOLS := {"net": "small net", "rod": "fishing rod", "harpoon": "harpoon", "pot": "eel pot"}
 ## Burn chance at the recipe's level, falling to 0 at its stop_burning level.
 const MAX_BURN_CHANCE := 0.5
 ## Where each kind of recipe is made. Fletching needs no station.

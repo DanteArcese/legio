@@ -352,8 +352,12 @@ func _click() -> void:
 	play("click")
 
 
+## Slings and javelins whirl rather than twang.
 func _is_sling(combatant: RefCounted) -> bool:
-	return combatant.equipment != null and "sling" in String(combatant.equipment.worn.get("weapon", ""))
+	if combatant.equipment == null:
+		return false
+	var weapon := String(combatant.equipment.worn.get("weapon", ""))
+	return "sling" in weapon or weapon == "amentum"
 
 
 func _stream(variant: String) -> AudioStream:

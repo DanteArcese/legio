@@ -352,6 +352,60 @@
         "tool": "hammer"
       },
       {
+        "id": "bronze_javelin",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          },
+          {
+            "item": "logs",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_javelin",
+        "quantity": 5,
+        "level": 7,
+        "xp": 14,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_javelin",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_javelin",
+        "quantity": 5,
+        "level": 22,
+        "xp": 30,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_pilum",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_pilum",
+        "quantity": 5,
+        "level": 36,
+        "xp": 48,
+        "tool": "hammer"
+      },
+      {
         "id": "iron_axe",
         "inputs": [
           {
@@ -622,6 +676,20 @@
         "xp": 95,
         "burnt": "burnt_food",
         "stop_burning": 55
+      },
+      {
+        "id": "cooked_eel",
+        "inputs": [
+          {
+            "item": "raw_eel",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_eel",
+        "level": 28,
+        "xp": 75,
+        "burnt": "burnt_food",
+        "stop_burning": 58
       },
       {
         "id": "cooked_tuna",
@@ -1434,6 +1502,18 @@
           "fish": "raw_tuna",
           "level": 40,
           "xp": 80
+        }
+      ]
+    },
+    "eel_spot": {
+      "name": "Eel pool",
+      "tool": "pot",
+      "examine": "Dark water under the reeds. Something long and thin flicks past.",
+      "catches": [
+        {
+          "fish": "raw_eel",
+          "level": 30,
+          "xp": 60
         }
       ]
     }

@@ -29,6 +29,7 @@ func _init() -> void:
 	_gather("Fishing", "fishing", "net spot", [1, 20, 40], "small_net", func(sim): sim.skilling.add_fishing_spot(1, "net_spot", NEAR), "fish", {"spot": 1}, ["raw_sardine", "raw_anchovy"])
 	_gather("Fishing", "fishing", "rod spot (mackerel)", [20, 40, 70], "fishing_rod", func(sim): sim.skilling.add_fishing_spot(1, "rod_spot", NEAR), "fish", {"spot": 1}, ["raw_mackerel"])
 	_gather("Fishing", "fishing", "harpoon spot (tuna)", [40, 60, 90], "harpoon", func(sim): sim.skilling.add_fishing_spot(1, "harpoon_spot", NEAR), "fish", {"spot": 1}, ["raw_tuna"])
+	_gather("Fishing", "fishing", "eel pool", [30, 50, 80], "eel_pot", func(sim): sim.skilling.add_fishing_spot(1, "eel_spot", NEAR), "fish", {"spot": 1}, ["raw_eel"])
 	_make("Cooking", "cooking", "sardines (range)", [1, 34], "cook", "cooked_sardine", "range")
 	_make("Cooking", "cooking", "tuna (range)", [35, 65], "cook", "cooked_tuna", "range")
 	_make("Cooking", "cooking", "olive oil (villa press)", [25, 50], "press_oil", "olive_oil", "olive_press")

@@ -95,7 +95,8 @@ var pet := ""
 var quests := {}
 ## A label quests can point at, for things that aren't monsters (the training dummy).
 var tag := ""
-## "standard" or "solitarius" (self-sufficient: no market or trading).
+## "standard", "solitarius" (self-sufficient: no market or trading), or
+## "hardcore" (a Solitarius with one life; a death makes it a plain Solitarius).
 var account_mode := "standard"
 ## Region tasks done, as "region/task" keys (see tasks.gd).
 var tasks_done: Array = []
@@ -162,6 +163,11 @@ func combat_kind() -> String:
 
 func is_ranged() -> bool:
 	return combat_kind() == "ranged"
+
+
+## Solitarius rules apply to hardcore characters too.
+func is_solitarius() -> bool:
+	return account_mode == "solitarius" or account_mode == "hardcore"
 
 
 func uses_ammo() -> bool:

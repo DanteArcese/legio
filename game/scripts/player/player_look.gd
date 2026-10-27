@@ -16,7 +16,7 @@ const WEAPONS := {
 	"steel_gladius": ["weapons/sword_1handed", "slash"],
 	"spatha": ["weapons/sword_1handed", "slash"], "framea": ["proc:spear", "stab"],
 	"hunting_bow": ["proc:bow", "bow"], "composite_bow": ["proc:bow_composite", "bow"],
-	"sling": ["proc:sling", "throw"], "lituus": ["weapons/staff", "ritus"],
+	"sling": ["proc:sling", "throw"], "amentum": ["proc:spear", "throw"], "lituus": ["weapons/staff", "ritus"],
 }
 ## Palette textures baked with tools/bake_palette.gd (green and blue to red).
 const LEGION_TEXTURES := {

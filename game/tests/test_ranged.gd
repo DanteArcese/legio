@@ -173,3 +173,36 @@ func test_shop_sells_arrow_bundles() -> void:
 	sim.step()
 	check_eq(sim.get_combatant(PLAYER).inventory.count("bronze_arrow"), 50, "50 arrows")
 	check_eq(sim.get_combatant(PLAYER).inventory.count("coins"), 25, "for 75 denarii")
+
+
+## An amentum throws javelins: shorter range and slower than a bow, but
+## each throw hits harder, and arrows don't fit the strap.
+func test_amentum_throws_javelins() -> void:
+	var sim := _make_sim()
+	var player: RefCounted = _player(sim)
+	sim.give_item(PLAYER, "amentum", 1, "test", [])
+	sim.give_item(PLAYER, "bronze_javelin", 10, "test", [])
+	_equip(sim, "amentum")
+	check(player.is_ranged(), "ranged with an amentum")
+	check_eq(_run(sim, 8).filter(func(e): return e["type"] == "hit").size(), 0, "arrows don't fit an amentum")
+	sim.queue_attack(PLAYER, -1)
+	_equip(sim, "bronze_javelin")
+	check_eq(player.equipment.ammo_count, 10, "javelins worn as ammo")
+	check_eq(player.attack_range(), 5.0, "shorter reach than a bow")
+	check_eq(player.attack_speed, 5, "slower than a bow")
+	var bow_max: int = CombatMathRef.max_hit(player.effective_level("ranged"), 6)
+	check(player.max_hit() >= bow_max, "a javelin hits at least as hard as a bronze arrow")
+	sim.queue_attack(PLAYER, DUMMY)
+	var events := _run(sim, 12)
+	check(events.filter(func(e): return e["type"] == "hit" and e["attacker"] == PLAYER).size() >= 1, "threw at the dummy")
+	check(player.equipment.ammo_count < 10, "throws spend javelins")
+
+
+func test_javelins_need_ranged_levels_and_smith_in_fives() -> void:
+	check_eq(ContentDB.item("steel_pilum")["requirements"]["ranged"], 30, "the pilum needs Ranged 30")
+	var recipe := ContentDB.recipe("smith", "iron_javelin")
+	check_eq(recipe["quantity"], 5, "five javelins a bar")
+
+
+const CombatMathRef := preload("res://scripts/sim/combat_math.gd")
+const ContentDB := preload("res://scripts/content/content_db.gd")

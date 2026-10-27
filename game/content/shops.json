@@ -25,6 +25,15 @@
         "quantity": 50
       },
       {
+        "item": "amentum",
+        "price": 40
+      },
+      {
+        "item": "bronze_javelin",
+        "price": 70,
+        "quantity": 10
+      },
+      {
         "item": "fishing_rod",
         "price": 25
       },
@@ -169,6 +178,12 @@
         "item": "iron_arrow",
         "price": 150,
         "quantity": 50
+      },
+      {
+        "item": "iron_javelin",
+        "price": 130,
+        "quantity": 10,
+        "requires_quest": "miles"
       },
       {
         "item": "lorica_hamata",

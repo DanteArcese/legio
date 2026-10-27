@@ -1239,5 +1239,15 @@
     "name": "Pearl",
     "value": 250,
     "examine": "A pearl from a drowned sailor's purse, or so the harbour says."
+  },
+  "silver_ore": {
+    "name": "Silver ore",
+    "value": 30,
+    "examine": "Grey argentiferous rock, heavier than it looks. Hispania's wealth."
+  },
+  "silver_bar": {
+    "name": "Silver bar",
+    "value": 80,
+    "examine": "A small ingot of refined silver, stamped by the procurator."
   }
 }

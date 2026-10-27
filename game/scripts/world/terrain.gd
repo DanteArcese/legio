@@ -22,6 +22,7 @@ const PATHS := [
 	[Vector2(0, -20), Vector2(0, -44)], [Vector2(0, 20), Vector2(0, 28)],
 	[Vector2(4, 22.5), Vector2(-16, 22.5), Vector2(-16, 50)],
 	[Vector2(0, -22), Vector2(-20, -30), Vector2(-45, -37)],
+	[Vector2(36, 2), Vector2(48, 20), Vector2(58, 50)],
 ]
 const PATH_HALF_WIDTH := 1.6
 const QUARRY := Rect2(25, -6.5, 10, 8)

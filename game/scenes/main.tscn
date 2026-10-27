@@ -43,6 +43,7 @@
 [ext_resource type="Script" path="res://scripts/world/villa_grounds.gd" id="38_villa"]
 [ext_resource type="Script" path="res://scripts/world/villa_hotspot.gd" id="39_hotspot"]
 [ext_resource type="Script" path="res://scripts/ui/collection_ui.gd" id="41_collection_ui"]
+[ext_resource type="Script" path="res://scripts/world/vipasca.gd" id="43_vipasca"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -111,6 +112,12 @@ size = Vector3(8, 3.5, 6)
 
 [sub_resource type="BoxShape3D" id="HouseNet_shape"]
 size = Vector3(7, 3.5, 5)
+
+[sub_resource type="BoxShape3D" id="VipascaHouse_shape"]
+size = Vector3(8, 3.5, 6)
+
+[sub_resource type="BoxShape3D" id="VipascaOffice_shape"]
+size = Vector3(10, 4, 7)
 
 [sub_resource type="BoxShape3D" id="Warehouse_shape"]
 size = Vector3(10, 4, 6)
@@ -1348,3 +1355,154 @@ billboard = 1
 text = "Centurion Varro"
 font_size = 32
 outline_size = 8
+
+[node name="RoadToVipasca" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, 50.5)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Vipasca"
+examine_text = "The road runs south-east, down to the silver mines of Hispania."
+destination = Vector3(0, 0, 347)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Vipasca" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
+metadata/map_name = "Vipasca"
+metadata/map_rect = Rect2(-60, 340, 120, 120)
+metadata/map_color = Color(0.78, 0.6, 0.42, 1)
+script = ExtResource("43_vipasca")
+dresser = NodePath("../KitDresser")
+
+[node name="RoadToFort" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 341.5)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Castra Ferrea"
+examine_text = "The road climbs north, back to the fort."
+destination = Vector3(56.5, 0, 47.5)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="VipascaSign" type="Label3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 344)
+billboard = 1
+text = "VIPASCA"
+font_size = 64
+outline_size = 12
+
+[node name="MineBank" type="StaticBody3D" parent="Vipasca" groups=["banks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.45, 350)
+collision_layer = 8
+metadata/examine = "The procurator's strongbox, guarded day and night. Your bank is shared across the province."
+
+[node name="Mesh" type="MeshInstance3D" parent="Vipasca/MineBank"]
+mesh = SubResource("chest_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Vipasca/MineBank"]
+shape = SubResource("chest_shape")
+
+[node name="Furnace" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 350)
+script = ExtResource("11_station")
+kind = "furnace"
+
+[node name="Anvil" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, 0, 350)
+script = ExtResource("11_station")
+kind = "anvil"
+
+[node name="Procurator" type="StaticBody3D" parent="Vipasca" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -5.5, 1, 367)
+collision_layer = 8
+metadata/shop_id = "procurator"
+metadata/display_name = "Procurator metallorum"
+metadata/examine = "The emperor's man at the mines. Every ingot passes under his stamp."
+
+[node name="Mesh" type="MeshInstance3D" parent="Vipasca/Procurator"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Vipasca/Procurator"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Vipasca/Procurator"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+hide_meshes = Array[String](["Mage_Hat"])
+
+[node name="Label" type="Label3D" parent="Vipasca/Procurator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Procurator metallorum
+(Mining supplies)"
+font_size = 32
+outline_size = 8
+
+[node name="ProcuratorOffice" type="StaticBody3D" parent="Vipasca" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 2.0, 367)
+collision_layer = 16
+metadata/door_side = "+x"
+
+[node name="Mesh" type="MeshInstance3D" parent="Vipasca/ProcuratorOffice"]
+
+[node name="Collision" type="CollisionShape3D" parent="Vipasca/ProcuratorOffice"]
+shape = SubResource("VipascaOffice_shape")
+
+[node name="MinersHouseWest" type="StaticBody3D" parent="Vipasca" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 1.75, 356)
+collision_layer = 16
+metadata/door_side = "+x"
+
+[node name="Mesh" type="MeshInstance3D" parent="Vipasca/MinersHouseWest"]
+
+[node name="Collision" type="CollisionShape3D" parent="Vipasca/MinersHouseWest"]
+shape = SubResource("VipascaHouse_shape")
+
+[node name="MinersHouseEast" type="StaticBody3D" parent="Vipasca" groups=["houses", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 1.75, 358)
+collision_layer = 16
+metadata/door_side = "-x"
+
+[node name="Mesh" type="MeshInstance3D" parent="Vipasca/MinersHouseEast"]
+
+[node name="Collision" type="CollisionShape3D" parent="Vipasca/MinersHouseEast"]
+shape = SubResource("VipascaHouse_shape")
+
+[node name="Silver1" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 401)
+script = ExtResource("10_rock")
+rock_type = "silver_rock"
+
+[node name="Silver2" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 409)
+script = ExtResource("10_rock")
+rock_type = "silver_rock"
+
+[node name="Silver3" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 404)
+script = ExtResource("10_rock")
+rock_type = "silver_rock"
+
+[node name="Silver4" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 412)
+script = ExtResource("10_rock")
+rock_type = "silver_rock"
+
+[node name="Iron1" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 0, 407)
+script = ExtResource("10_rock")
+rock_type = "iron_rock"
+
+[node name="Iron2" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 411)
+script = ExtResource("10_rock")
+rock_type = "iron_rock"
+
+[node name="Galena1" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 397)
+script = ExtResource("10_rock")
+rock_type = "galena_rock"
+
+[node name="Galena2" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 404)
+script = ExtResource("10_rock")
+rock_type = "galena_rock"

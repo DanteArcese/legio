@@ -1458,5 +1458,11 @@
     "value": 5,
     "examine": "Sun-dried figs, sweet as honey.",
     "heals": 6
+  },
+  "cyclops_cheese": {
+    "name": "Cyclops cheese",
+    "value": 40,
+    "examine": "A wheel of hard ewe's cheese from a cyclops's cave. Polyphemus made it better, they say.",
+    "heals": 14
   }
 }

@@ -105,6 +105,15 @@
           ],
           "slayer_level": 40,
           "combat_level": 45
+        },
+        {
+          "monster": "cyclops",
+          "weight": 3,
+          "amount": [
+            10,
+            20
+          ],
+          "combat_level": 55
         }
       ]
     },
@@ -193,6 +202,14 @@
           ],
           "slayer_level": 55,
           "combat_level": 80
+        },
+        {
+          "monster": "cyclops",
+          "weight": 6,
+          "amount": [
+            20,
+            35
+          ]
         }
       ]
     }

@@ -177,7 +177,7 @@ func _on_sim_event(event: Dictionary) -> void:
 						play("sling" if _is_sling(attacker) else "bow", attacker.position)
 					"ritus":
 						play("cast", attacker.position)
-					"spear", "venom":
+					"spear", "venom", "boulder":
 						pass
 					_:
 						play("swing", attacker.position)

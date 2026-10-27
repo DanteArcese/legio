@@ -16,7 +16,8 @@ var sim: RefCounted:
 		_sim_ref = weakref(value)
 var _sim_ref: WeakRef
 ## What a boss shouts as it throws, by the boss block's throw_kind.
-const THROW_WARNINGS := {"spear": "%s hurls a spear at you. Move!", "venom": "%s spits venom at you. Move!"}
+const THROW_WARNINGS := {"spear": "%s hurls a spear at you. Move!", "venom": "%s spits venom at you. Move!",
+	"boulder": "%s heaves a boulder at you. Move!"}
 ## Throws in the air: {"id", "boss", "kind", "position", "lands_at", "radius", "damage"}.
 var strikes: Array[Dictionary] = []
 var _next_strike_id := 1

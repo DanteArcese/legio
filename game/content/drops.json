@@ -634,5 +634,48 @@
         "weight": 5
       }
     ]
+  },
+  "cyclops": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          90,
+          240
+        ],
+        "weight": 8
+      },
+      {
+        "item": "cyclops_cheese",
+        "quantity": 1,
+        "weight": 6
+      },
+      {
+        "item": "steel_bar",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "olives",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "steel_scutum",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 3
+      }
+    ]
   }
 }

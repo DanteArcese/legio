@@ -319,6 +319,10 @@
         "price": 10
       },
       {
+        "item": "jewellers_tools",
+        "price": 25
+      },
+      {
         "item": "bread",
         "price": 4
       },

@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -23,7 +23,7 @@ CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "jewelcraft"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -79,6 +79,7 @@ def validate(content: dict) -> list[str]:
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
+    _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
     _check_pets(content.get("pets", {}), items, monsters, errors)
@@ -292,6 +293,25 @@ def _check_drop(where, entry, items, errors, nothing_allowed, multiples_allowed=
         _check_int(where, "quantity", quantity, 1, errors)
         if _is_int(quantity) and quantity > 1 and not items[item_id].get("stackable") and not multiples_allowed:
             errors.append(f"{where}.quantity: {item_id} isn't stackable, so drop at most 1")
+
+
+def _check_arena(arena, items, monsters, shops, errors):
+    _check_keys("arena", arena, {"lanista", "net", "capture_below", "contracts"}, {"lanista", "net", "capture_below", "contracts"}, errors)
+    if arena.get("lanista") not in shops:
+        errors.append(f"arena.lanista: unknown shop {arena.get('lanista')!r}")
+    if arena.get("net") not in items:
+        errors.append(f"arena.net: unknown item {arena.get('net')!r}")
+    _check_number("arena", "capture_below", arena.get("capture_below"), 0.05, 0.9, errors)
+    for contract_id, contract in arena.get("contracts", {}).items():
+        where = f"arena.contracts.{contract_id}"
+        _check_id(where, contract_id, errors)
+        _check_keys(where, contract, {"name", "monster", "hunter", "count", "coins", "xp"}, {"name", "monster", "hunter", "count", "coins", "xp"}, errors)
+        _check_type(where, "name", contract.get("name"), str, errors)
+        if contract.get("monster") not in monsters:
+            errors.append(f"{where}.monster: unknown monster {contract.get('monster')!r}")
+        _check_int(where, "hunter", contract.get("hunter"), 1, errors, 99)
+        for key in ("count", "coins", "xp"):
+            _check_int(where, key, contract.get(key), 1, errors)
 
 
 def _check_slayer_rewards(rewards, errors):

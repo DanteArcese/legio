@@ -1,0 +1,47 @@
+{
+  "lanista": "lanista",
+  "net": "weighted_net",
+  "capture_below": 0.25,
+  "contracts": {
+    "boars": {
+      "name": "Boars for the morning hunt",
+      "monster": "wild_boar",
+      "hunter": 20,
+      "count": 5,
+      "coins": 220,
+      "xp": 60
+    },
+    "wolves": {
+      "name": "Wolves for the venatio",
+      "monster": "wolf",
+      "hunter": 25,
+      "count": 5,
+      "coins": 280,
+      "xp": 75
+    },
+    "harpies": {
+      "name": "Harpies for the games",
+      "monster": "harpy",
+      "hunter": 35,
+      "count": 4,
+      "coins": 480,
+      "xp": 120
+    },
+    "dire_wolves": {
+      "name": "Dire wolves from beyond the Limes",
+      "monster": "dire_wolf",
+      "hunter": 45,
+      "count": 4,
+      "coins": 750,
+      "xp": 180
+    },
+    "basilisks": {
+      "name": "A basilisk for the emperor",
+      "monster": "basilisk",
+      "hunter": 60,
+      "count": 2,
+      "coins": 1300,
+      "xp": 400
+    }
+  }
+}

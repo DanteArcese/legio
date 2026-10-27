@@ -62,7 +62,7 @@ Kept as a core skill and the center of progression.
 **Built (#149): Ursa the Venatrix.** The second venator, a Germanic huntress in Roman pay, stands in the safe yard just inside the limes. She only works with hunters of combat 50 or more, pays 10 points a contract (streak bonuses apply), and hands out long contracts on the frontier and the hardest Slayer creatures: dire wolves and raiders (30 to 50), sirens, harpies, strix, lemures, and, at combat 75 and Slayer 50, three to six kills of Hrodgar himself. A venator's `combat_level` is now the minimum to get any contract from them.
 
 **Built (#155): basilisks.** Four basilisks (level 52, Slayer 40) guard the mouth of Vipasca's deep gallery. Unwarded, their gaze always lands and drains Attack, Strength and Defence by a level a hit (eating into any remedy boost first), down to 30% below your level; the HUD shows it ("Atk 50-4") and it recovers a level a minute. A mirror shield wards it: three bronze bars and a silver bar polished at an anvil (Smithing 30), a weaker shield than steel, so it's a real trade. Both venatores assign basilisks at Slayer 40. They drop coins, steel bars, coal, silver ore, and rarely a basilisk eye.
-- **Twist (idea):** "Arena contracts." You capture rather than kill certain beasts and ship them to the capital's arena, which ties Slayer to Hunter.
+- **Built (#188): arena contracts.** Lanista Marcia at Portus Salis buys beasts for the games in Rome. Her menu offers contracts by Hunter level: five wild boars (Hunter 20), five wolves (25), four harpies (35), four dire wolves (45), two basilisks (60). Beat the beast below a quarter of its health and throw a weighted net over it (she sells them; it's on the beast's menu): it's taken alive, with no drops but Hunter XP, and she pays 220 to 1,300 denarii when the contract is done. The HUD shows what's left to net.
 
 ### Gathering
 
@@ -91,6 +91,8 @@ Kept as a core skill and the center of progression.
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |
 
 **Built (#97): leather first.** Boars always drop a hide; the tanning rack at the smithy turns hides into leather. With a needle and thread (from Aulus), leather is sewn anywhere (the inventory's Sew option) into a leather cap (1) and jerkin (7), and with wolf pelts into a wolfskin hood (15) and jerkin (22). All give ranged attack and more defence against arrows than blades: the ranger's armour line.
+
+**Built (#186): jewellery.** With jeweller's tools (the procurator sells them), silver and gold bars are worked anywhere (the inventory's Work option) into neck pieces: a silver pendant (Crafting 30; a crescent for Hecate, with Ritus bonuses), an amulet of Diana (38, two silver bars; ranged bonuses), and a gold bulla (45; the locket freeborn Roman children wore, with melee and defence bonuses, needing Defence 35).
 | Fletching | Bows, arrows, javelin shafts, sling bullets (lead *glandes*). |
 | Medicina | Replaces Herblore. Remedies drawn from Dioscorides and Galen. |
 

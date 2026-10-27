@@ -1506,3 +1506,18 @@ rock_type = "galena_rock"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 404)
 script = ExtResource("10_rock")
 rock_type = "galena_rock"
+
+[node name="Coal1" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 401)
+script = ExtResource("10_rock")
+rock_type = "coal_rock"
+
+[node name="Coal2" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 414)
+script = ExtResource("10_rock")
+rock_type = "coal_rock"
+
+[node name="Coal3" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 415)
+script = ExtResource("10_rock")
+rock_type = "coal_rock"

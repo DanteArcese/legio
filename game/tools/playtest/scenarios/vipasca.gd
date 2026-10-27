@@ -27,6 +27,8 @@ func run() -> void:
 	player().mine(rock)
 	await _wait_until(func(): return me.inventory.count("silver_ore") > 0, 90.0)
 	expect(me.inventory.count("silver_ore") > 0, "mined silver ore")
+	var coal := get_tree().get_nodes_in_group("rocks").filter(func(r): return r.rock_type == "coal_rock")
+	expect(coal.size() == 3, "three coal rocks in the pit (%d)" % coal.size())
 
 	await walk_to(Vector3(0, 0, 372), 1.0, 60.0)
 	expect(await walk_to(main.get_node("Vipasca/Furnace").global_position + Vector3(0, 0, 1.2), 0.4, 60.0), "at the furnace")

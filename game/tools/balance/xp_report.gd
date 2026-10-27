@@ -19,6 +19,9 @@ var _rows: Array = []
 func _init() -> void:
 	_gather("Mining", "mining", "copper rock", [1, 30], "bronze_pickaxe", func(sim): sim.skilling.add_rock(1, "copper_rock", NEAR), "mine", {"rock": 1}, ["copper_ore"])
 	_gather("Mining", "mining", "iron rock", [15, 40, 70], "iron_pickaxe", func(sim): sim.skilling.add_rock(1, "iron_rock", NEAR), "mine", {"rock": 1}, ["iron_ore"])
+	_gather("Mining", "mining", "silver rock", [30, 50, 70], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "silver_rock", NEAR), "mine", {"rock": 1}, ["silver_ore"])
+	_gather("Mining", "mining", "coal rock", [30, 50, 70], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "coal_rock", NEAR), "mine", {"rock": 1}, ["coal"])
+	_gather("Mining", "mining", "gold rock", [40, 60, 80], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "gold_rock", NEAR), "mine", {"rock": 1}, ["gold_ore"])
 	_gather("Woodcutting", "woodcutting", "tree", [1, 30], "bronze_axe", func(sim): sim.skilling.add_tree(1, "tree", NEAR), "chop", {"tree": 1}, ["logs"])
 	_gather("Woodcutting", "woodcutting", "oak", [15, 40, 70], "iron_axe", func(sim): sim.skilling.add_tree(1, "oak_tree", NEAR), "chop", {"tree": 1}, ["oak_logs"])
 	_gather("Woodcutting", "woodcutting", "pine", [30, 60, 90], "iron_axe", func(sim): sim.skilling.add_tree(1, "pine_tree", NEAR), "chop", {"tree": 1}, ["pine_logs"])
@@ -29,6 +32,8 @@ func _init() -> void:
 	_make("Cooking", "cooking", "tuna (range)", [35, 65], "cook", "cooked_tuna", "range")
 	_make("Smithing", "smithing", "bronze pugio", [1, 10], "smith", "bronze_pugio", "anvil")
 	_make("Smithing", "smithing", "iron gladius", [19, 40], "smith", "iron_gladius", "anvil")
+	_make("Smithing", "smithing", "steel gladius", [34, 60], "smith", "steel_gladius", "anvil")
+	_make("Engineering", "engineering", "oak planks (sawpit)", [20, 40], "saw", "oak_plank", "sawpit")
 	_make("Fletching", "fletching", "arrow shafts", [1, 15], "fletch", "arrow_shaft", "")
 	_make("Fletching", "fletching", "bronze arrows", [1, 15], "fletch", "bronze_arrow", "")
 	_make("Crafting", "crafting", "leather caps", [1, 15], "leatherwork", "leather_cap", "")

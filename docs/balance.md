@@ -16,6 +16,8 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Mining | iron rock | 15 | 8,940 |
 | Mining | iron rock | 40 | 11,910 |
 | Mining | iron rock | 70 | 13,620 |
+| Mining | clay | 1 | 4,232 |
+| Mining | clay | 20 | 4,816 |
 | Mining | silver rock | 30 | 6,360 |
 | Mining | silver rock | 50 | 7,560 |
 | Mining | silver rock | 70 | 8,160 |
@@ -42,30 +44,36 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Fishing | harpoon spot (tuna) | 40 | 34,160 |
 | Fishing | harpoon spot (tuna) | 60 | 59,120 |
 | Fishing | harpoon spot (tuna) | 90 | 91,280 |
-| Cooking | sardines (range) | 1 | 53,160 |
-| Cooking | sardines (range) | 34 | 57,040 |
-| Cooking | tuna (range) | 35 | 89,000 |
-| Cooking | tuna (range) | 65 | 142,600 |
-| Smithing | bronze pugio | 1 | 17,112 |
-| Smithing | bronze pugio | 10 | 17,112 |
-| Smithing | iron gladius | 19 | 67,900 |
-| Smithing | iron gladius | 40 | 67,900 |
-| Smithing | steel gladius | 34 | 103,208 |
-| Smithing | steel gladius | 60 | 103,208 |
-| Engineering | oak planks (sawpit) | 20 | 25,668 |
-| Engineering | oak planks (sawpit) | 40 | 25,668 |
-| Fletching | arrow shafts | 1 | 8,556 |
-| Fletching | arrow shafts | 15 | 8,556 |
+| Cooking | sardines (range) | 1 | 53,040 |
+| Cooking | sardines (range) | 34 | 56,920 |
+| Cooking | tuna (range) | 35 | 88,800 |
+| Cooking | tuna (range) | 65 | 142,300 |
+| Smithing | bronze pugio | 1 | 17,076 |
+| Smithing | bronze pugio | 10 | 17,076 |
+| Smithing | iron gladius | 19 | 67,350 |
+| Smithing | iron gladius | 40 | 67,350 |
+| Smithing | steel gladius | 34 | 102,372 |
+| Smithing | steel gladius | 60 | 102,372 |
+| Engineering | oak planks (sawpit) | 20 | 25,614 |
+| Engineering | oak planks (sawpit) | 40 | 25,614 |
+| Fletching | arrow shafts | 1 | 8,538 |
+| Fletching | arrow shafts | 15 | 8,538 |
 | Fletching | bronze arrows | 1 | 28,240 |
 | Fletching | bronze arrows | 15 | 28,240 |
 | Crafting | leather caps | 1 | 19,012 |
 | Crafting | leather caps | 15 | 19,012 |
 | Crafting | wolfskin jerkins | 22 | 101,530 |
 | Crafting | wolfskin jerkins | 40 | 101,530 |
-| Medicina | mint tonics | 1 | 27,160 |
-| Medicina | mint tonics | 20 | 27,160 |
-| Engineering | planks (sawpit) | 1 | 11,408 |
-| Engineering | planks (sawpit) | 20 | 11,408 |
+| Crafting | throwing pots | 1 | 8,538 |
+| Crafting | throwing pots | 10 | 8,538 |
+| Crafting | firing amphorae | 12 | 28,460 |
+| Crafting | firing amphorae | 30 | 28,460 |
+| Crafting | glass bowls | 32 | 77,660 |
+| Crafting | glass bowls | 50 | 77,660 |
+| Medicina | mint tonics | 1 | 26,940 |
+| Medicina | mint tonics | 20 | 26,940 |
+| Engineering | planks (sawpit) | 1 | 11,384 |
+| Engineering | planks (sawpit) | 20 | 11,384 |
 | Thieving | baker's stall | 1 | 10,400 |
 | Thieving | baker's stall | 20 | 10,544 |
 | Thieving | silversmith's stall | 25 | 16,912 |
@@ -100,6 +108,10 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 - Silver (Mining 30), coal (30) and gold (40) give less XP an hour than iron at the same level (6,000 to 8,600 against 12,000 to 13,600) because they respawn slowly (25, 20 and 50 ticks) and sell for more. Iron stays the fast training rock, as in OSRS; the pit has four silver, three coal and two iron rocks, so real rates are higher.
 - The steel pickaxe and axe (tier 3) are as fast as iron but land 10% more often.
 - Steel gladii (Smithing 34) give about 103,000 XP an hour from bars on hand, up from 68,000 for iron. Each bar takes an iron ore and two coal, so coal is the brake.
+
+## Pottery and glass (#185)
+
+- Throwing pots gives about 8,500 Crafting XP an hour at level 1, under leather caps (19,000), but the clay is free: dig it by the pond (about 4,200 Mining XP an hour) and fire the pots for more XP and a little money. Amphorae at 12 give 28,000 and glass bowls at 32 give 78,000, with sand bought from Nikias or the fishmonger as the brake.
 
 ## Open questions for the balance pass
 

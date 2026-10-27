@@ -1604,5 +1604,73 @@
     "name": "Weighted net",
     "value": 15,
     "examine": "A heavy rope net with lead weights round the edge. Throw it over something tired."
+  },
+  "clay": {
+    "name": "Clay",
+    "value": 2,
+    "examine": "A lump of wet grey clay from the pond's edge."
+  },
+  "sand": {
+    "name": "Sand",
+    "value": 2,
+    "examine": "Fine white sand from a Greek beach. Good for glass.",
+    "stackable": true
+  },
+  "blowpipe": {
+    "name": "Blowpipe",
+    "value": 30,
+    "examine": "A long iron tube for gathering molten glass and blowing it into shape.",
+    "tool": "blowpipe",
+    "tool_tier": 1
+  },
+  "unfired_pot": {
+    "name": "Unfired pot",
+    "value": 1,
+    "examine": "A pot of soft clay. It needs the kiln."
+  },
+  "unfired_bowl": {
+    "name": "Unfired bowl",
+    "value": 1,
+    "examine": "A bowl of soft clay. It needs the kiln."
+  },
+  "unfired_amphora": {
+    "name": "Unfired amphora",
+    "value": 2,
+    "examine": "A tall jar of soft clay, two handles and a point. It needs the kiln."
+  },
+  "unfired_lamp": {
+    "name": "Unfired lamp",
+    "value": 2,
+    "examine": "A little oil lamp of soft clay. It needs the kiln."
+  },
+  "clay_pot": {
+    "name": "Clay pot",
+    "value": 14,
+    "examine": "A plain fired pot. Every kitchen in the Empire has ten."
+  },
+  "clay_bowl": {
+    "name": "Clay bowl",
+    "value": 24,
+    "examine": "A red-glazed bowl, the kind they make by the thousand in Gaul."
+  },
+  "amphora": {
+    "name": "Amphora",
+    "value": 42,
+    "examine": "A tall fired amphora, for wine, oil or garum."
+  },
+  "oil_lamp": {
+    "name": "Oil lamp",
+    "value": 58,
+    "examine": "A fired lamp with a little gladiator stamped on the top."
+  },
+  "glass_vial": {
+    "name": "Glass vial",
+    "value": 70,
+    "examine": "A small vial of green glass, for perfume or medicine."
+  },
+  "glass_bowl": {
+    "name": "Glass bowl",
+    "value": 120,
+    "examine": "A bowl of clear blown glass. Rome would pay well for it."
   }
 }

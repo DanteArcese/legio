@@ -13,6 +13,7 @@
     "frontier": {"name": "Beyond the Limes", "category": "Frontier", "items": ["dire_wolf_pelt", "gold_ore", "framea", "gold_torc", "warchiefs_helm"]},
     "vipasca": {"name": "The silver mines", "category": "Skilling", "items": ["silver_ore", "coal", "silver_bar", "steel_bar"]},
     "regulus": {"name": "The basilisk king", "category": "Combat", "items": ["crown_of_regulus", "basilisk_eye", "steel_gladius"]},
+    "pottery": {"name": "The potter's craft", "category": "Skilling", "items": ["clay_pot", "clay_bowl", "amphora", "oil_lamp", "glass_vial", "glass_bowl"]},
     "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling"]}
   }
 }

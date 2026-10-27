@@ -14,7 +14,7 @@ func run() -> void:
 	driver().sim.give_item(PLAYER, "mint", 2, "test", [])
 	var sacerdos: Node3D = main.get_node("Sacerdos")
 	for label in ["Buy wine", "Buy mortar and pestle"]:
-		var option: Array = WorldMenu.options_for(player(), sacerdos).filter(func(o): return o[0].begins_with(label))
+		var option: Array = WorldMenu.wares_for(player(), sacerdos).filter(func(o): return o[0].begins_with(label))
 		expect(option.size() == 1, "the sacerdos sells: %s" % label)
 		if option.size() == 1:
 			option[0][1].call()

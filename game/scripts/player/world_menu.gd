@@ -9,6 +9,8 @@ const Villa := preload("res://scripts/sim/villa.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 
 ## How far the controller menu looks for things.
+## Menus longer than this fold a shopkeeper's wares into a Trade submenu.
+const MAX_MENU_ENTRIES := 8
 const NEARBY_MONSTER_RANGE := 8.0
 const NEARBY_OBJECT_RANGE := 3.0
 const NEARBY_LOOT_RANGE := 2.5
@@ -54,16 +56,35 @@ static func options_for(player: Node3D, node: Node) -> Array:
 	if node.has_meta("shop_id") and _shop_open_to(player, node.get_meta("shop_id")):
 		# Shop entries go just before Examine (always last for shopkeepers).
 		var examine: Array = options.pop_back() if not options.is_empty() else []
+		var wares := []
 		for offer in ContentDB.shop(node.get_meta("shop_id")).get("offers", []):
 			if offer.has("requires_quest") and not _quest_done(player, offer["requires_quest"]):
 				continue
 			var item_name: String = ContentDB.item(offer["item"])["name"].to_lower()
 			if offer.get("quantity", 1) > 1:
 				item_name += " x%d" % offer["quantity"]
-			options.append(["Buy %s (%d denarii)" % [item_name, offer["price"]], player.buy.bind(node, offer["item"])])
+			wares.append(["Buy %s (%d denarii)" % [item_name, offer["price"]], player.buy.bind(node, offer["item"])])
+		# A long list folds into its own menu, so it's quick to get past
+		# on a controller.
+		if options.size() + wares.size() + 1 > MAX_MENU_ENTRIES:
+			options.append(["Trade (%d wares)" % wares.size(), player.show_options.bind(wares)])
+		else:
+			options.append_array(wares)
 		if not examine.is_empty():
 			options.append(examine)
 	return options
+
+
+## Every Buy entry for a shopkeeper, whether listed directly or folded
+## into its Trade submenu.
+static func wares_for(player: Node3D, node: Node) -> Array:
+	var wares := []
+	for option in options_for(player, node):
+		if option[0].begins_with("Buy "):
+			wares.append(option)
+		elif option[0].begins_with("Trade ("):
+			wares.append_array(option[1].get_bound_arguments()[0])
+	return wares
 
 
 static func _options_by_kind(player: Node3D, node: Node) -> Array:

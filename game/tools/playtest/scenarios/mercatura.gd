@@ -18,7 +18,7 @@ func run() -> void:
 
 	var fishmonger: Node3D = main.get_node("PortusSalis/Fishmonger")
 	for i in 3:
-		var buy: Array = WorldMenu.options_for(player(), fishmonger).filter(func(o): return o[0].begins_with("Buy garum"))
+		var buy: Array = WorldMenu.wares_for(player(), fishmonger).filter(func(o): return o[0].begins_with("Buy garum"))
 		if buy.size() == 1:
 			buy[0][1].call()
 		await _wait_until(func(): return me.inventory.count("garum") == i + 1, 15.0)

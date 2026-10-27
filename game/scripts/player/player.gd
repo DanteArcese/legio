@@ -188,6 +188,12 @@ func open_menu_at(screen_position: Vector2) -> void:
 	world_menu_requested.emit(options, screen_position)
 
 
+## Opens a follow-on menu (such as a shopkeeper's wares) in the middle of
+## the screen, after the menu that led here has closed.
+func show_options(options: Array) -> void:
+	world_menu_requested.emit.call_deferred(options, get_viewport().get_visible_rect().size / 2.0)
+
+
 ## Controller Y: options for everything within reach, nearest first.
 func open_menu_nearby() -> void:
 	var options := WorldMenu.options_nearby(self)

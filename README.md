@@ -27,6 +27,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | Options for what's under the cursor or nearby | Right-click | Y |
 | Next / previous target | Tab / Q | Right / left shoulder |
 | Combat style | C | X |
+| Special attack (spends Impetus on your next attack) | F | B |
 | Run on / off | R | Left stick click |
 | Inventory and equipment | I | Back |
 | Quest log | J | D-pad right |
@@ -35,7 +36,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | Blessings (Pietas) | P | D-pad left |
 | Hide roofs | H | Right stick click |
 | World map | M | Share |
-| Pause menu (graphics, volume, quit) | Esc | Start |
+| Pause menu (graphics, volume, controls, quit) | Esc | Start |
 
 ### What's in the game
 

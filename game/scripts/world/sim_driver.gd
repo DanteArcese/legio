@@ -64,6 +64,8 @@ func _ready() -> void:
 		sim.quests.add_npc(npc.get_meta("npc_id"), npc.global_position)
 	for shopkeeper in get_tree().get_nodes_in_group("shopkeepers"):
 		sim.add_shopkeeper(shopkeeper.get_meta("shop_id"), shopkeeper.global_position)
+		if shopkeeper.get_meta("shop_id") == ContentDB.data()["arena"]["lanista"]:
+			sim.arena.set_lanista(shopkeeper.global_position)
 		if shopkeeper.get_meta("shop_id") == "sacerdos":
 			sim.pietas.set_priest(shopkeeper.global_position)
 	# Springs are built by the terrain after this runs.

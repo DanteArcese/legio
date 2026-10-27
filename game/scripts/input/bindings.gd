@@ -27,6 +27,7 @@ const DEFAULTS := {
 	"target_next": [["key", KEY_TAB], ["joy_button", JOY_BUTTON_RIGHT_SHOULDER]],
 	"target_prev": [["key", KEY_Q], ["joy_button", JOY_BUTTON_LEFT_SHOULDER]],
 	"combat_style": [["key", KEY_C], ["joy_button", JOY_BUTTON_X]],
+	"special_attack": [["key", KEY_F], ["joy_button", JOY_BUTTON_B]],
 	"pietas_menu": [["key", KEY_P], ["joy_button", JOY_BUTTON_DPAD_LEFT]],
 	"toggle_roofs": [["key", KEY_H], ["joy_button", JOY_BUTTON_RIGHT_STICK]],
 	"run_toggle": [["key", KEY_R], ["joy_button", JOY_BUTTON_LEFT_STICK]],

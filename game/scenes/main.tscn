@@ -539,6 +539,33 @@ size = Vector3(2.4, 2.2, 0.3)
 color = Color(0.34, 0.45, 0.6, 1)
 fare = 25
 
+[node name="LanistaMarcia" type="StaticBody3D" parent="PortusSalis" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -314, 1, 4)
+collision_layer = 8
+metadata/shop_id = "lanista"
+metadata/display_name = "Lanista Marcia"
+metadata/examine = "She buys beasts for the games in Rome, and ships them from here. Alive, mind. Dead ones are no use to anyone."
+
+[node name="Mesh" type="MeshInstance3D" parent="PortusSalis/LanistaMarcia"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="PortusSalis/LanistaMarcia"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="PortusSalis/LanistaMarcia"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+weapon = "weapons/staff"
+hide_meshes = Array[String](["Knight_Helmet"])
+
+[node name="Label" type="Label3D" parent="PortusSalis/LanistaMarcia"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Lanista Marcia
+(Arena contracts)"
+font_size = 32
+outline_size = 8
+
 [node name="HouseHarbour" type="StaticBody3D" parent="PortusSalis" groups=["houses", "navigation_source"]]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -314, 1.75, -12)
 collision_layer = 16
@@ -1735,6 +1762,31 @@ mesh = SubResource("chest_mesh")
 
 [node name="Collision" type="CollisionShape3D" parent="Seriphos/IslandBank"]
 shape = SubResource("chest_shape")
+
+[node name="Melissa" type="StaticBody3D" parent="Seriphos" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -328, 1, 300)
+collision_layer = 8
+metadata/npc_id = "melissa"
+metadata/display_name = "Melissa the shepherd"
+metadata/examine = "A shepherd girl with a crook taller than she is, and no sheep."
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/Melissa"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/Melissa"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Seriphos/Melissa"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+weapon = "weapons/staff"
+
+[node name="Label" type="Label3D" parent="Seriphos/Melissa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Melissa the shepherd"
+font_size = 32
+outline_size = 8
 
 [node name="Nikias" type="StaticBody3D" parent="Seriphos" groups=["shopkeepers", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -292, 1, 288)

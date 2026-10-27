@@ -43,6 +43,8 @@ const SOLITARIUS_BLOCKED_SOURCES := ["market", "trade"]
 const COLLECTION_SOURCES := ["skilling", "thieving", "quest", "drop", "pet"]
 ## Every combatant regains 1 HP this often.
 const REGEN_INTERVAL := 100
+## Impetus players regain each REGEN_INTERVAL: full from empty in 5 minutes.
+const IMPETUS_PER_REGEN := 20
 
 var tick := 0
 var rng := RandomNumberGenerator.new()
@@ -369,6 +371,12 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			_slayer_task(player, command.get("venator", ""), events)
 		"slayer_reward":
 			_slayer_reward(player, command, events)
+		"special":
+			if player.equipment.weapon().get("special", {}).is_empty():
+				message(player, "This weapon has no special attack.", events)
+			else:
+				player.special_armed = not player.special_armed
+				events.append({"type": "special_armed", "id": player.id, "armed": player.special_armed, "tick": tick})
 		"talk":
 			quests.talk(player, command.get("npc", ""), events)
 		"steal":
@@ -523,3 +531,5 @@ func _regenerate() -> void:
 	for combatant in _combatants.values():
 		if combatant.is_alive() and combatant.hp < combatant.max_hp:
 			combatant.hp += 1
+		if combatant.is_player():
+			combatant.impetus = mini(combatant.impetus + IMPETUS_PER_REGEN, Combatant.MAX_IMPETUS)

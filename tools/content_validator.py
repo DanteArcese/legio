@@ -20,6 +20,8 @@ EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
 AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
+# Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
+SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
 RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
@@ -138,7 +140,15 @@ def _check_item(where, item_id, item, items, errors):
         _check_levels(f"{where}.requirements", item["requirements"], SKILLS, errors)
     if "equip" in item:
         equip = item["equip"]
-        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type", "curse", "wards", "slayer_boost"}, {"slot", "bonuses"}, errors)
+        _check_keys(f"{where}.equip", equip, {"slot", "bonuses", "attack_speed", "style", "range", "ammo", "ammo_type", "curse", "wards", "slayer_boost", "special"}, {"slot", "bonuses"}, errors)
+        if "special" in equip:
+            special = equip["special"]
+            _check_keys(f"{where}.equip.special", special, {"name", "cost", "effect"}, {"name", "cost", "effect"}, errors)
+            _check_int(f"{where}.equip.special", "cost", special.get("cost"), 5, errors, 100)
+            if special.get("effect") not in SPECIAL_EFFECTS:
+                errors.append(f"{where}.equip.special.effect: must be one of {sorted(SPECIAL_EFFECTS)}")
+            if equip.get("slot") != "weapon":
+                errors.append(f"{where}.equip.special: only weapons have specials")
         for ward in equip.get("wards", []):
             if ward not in items:
                 errors.append(f"{where}.equip.wards: unknown item {ward!r}")

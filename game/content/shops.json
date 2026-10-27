@@ -389,5 +389,14 @@
       "items": "*",
       "rate": 0.45
     }
+  },
+  "lanista": {
+    "name": "Lanista Marcia",
+    "offers": [
+      {
+        "item": "weighted_net",
+        "price": 15
+      }
+    ]
   }
 }

@@ -88,6 +88,9 @@ func _refresh() -> void:
 	var task_text := "No Slayer contract"
 	if not c.slayer_task.is_empty():
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
+	if not c.arena_contract.is_empty():
+		var beast: String = ContentDB.data()["arena"]["contracts"][c.arena_contract["id"]]["monster"]
+		task_text += "   Arena: %s" % ("hand in to Marcia" if c.arena_contract["remaining"] == 0 else "net %d %s" % [c.arena_contract["remaining"], Slayer.plural_name(beast)])
 	if c.pollution > 0.0:
 		task_text += "   Pollution %d%s" % [ceili(c.pollution), " (polluted)" if c.pollution >= 30.0 else ""]
 	var title := Quests.title(c)

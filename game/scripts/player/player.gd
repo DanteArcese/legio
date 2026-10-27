@@ -413,6 +413,28 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
 
 
+func take_arena(lanista: Node3D, contract_id: String) -> void:
+	walk_and_do(lanista.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "take_arena", {"contract": contract_id}))
+
+
+func hand_in_arena(lanista: Node3D) -> void:
+	walk_and_do(lanista.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "hand_in_arena"))
+
+
+func abandon_arena() -> void:
+	sim_driver.sim.queue_item_action(_entity.entity_id, "abandon_arena")
+
+
+## Walks up to a weakened beast and throws a net over it.
+func capture(monster: Node) -> void:
+	var body: Node3D = monster.body()
+	walk_and_do(body.global_position, 2.2, func():
+		sim_driver.sim.queue_stop(_entity.entity_id)
+		sim_driver.sim.queue_item_action(_entity.entity_id, "capture", {"target": monster.entity_id}))
+
+
 func sell(shopkeeper: Node3D, item_id: String) -> void:
 	walk_and_do(shopkeeper.global_position, CLICK_USE_DISTANCE, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "sell", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))

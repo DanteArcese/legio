@@ -8,6 +8,7 @@ const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 const Items := preload("res://scripts/sim/items.gd")
+const Arena := preload("res://scripts/sim/arena.gd")
 
 ## How far the controller menu looks for things.
 ## Menus longer than this fold a shopkeeper's wares into a Trade submenu.
@@ -50,6 +51,8 @@ static func options_kind(node: Node) -> String:
 
 static func options_for(player: Node3D, node: Node) -> Array:
 	var options := _options_by_kind(player, node)
+	if node.get_meta("shop_id", "") == Arena.data()["lanista"]:
+		options = _arena_options(player, node) + options
 	# A trade contract's cargo goes to this shopkeeper.
 	var trade: Dictionary = player.get_node("SimEntity").combatant.trade_contract
 	if node.has_meta("shop_id") and not trade.is_empty() and ContentDB.contract(trade["id"])["to"] == node.get_meta("shop_id"):
@@ -118,8 +121,12 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			var entity: Node = node.get_node("SimEntity")
 			var name := "%s (level %d)" % [entity.display_name(), entity.combatant.display_level]
 			var monster: Dictionary = ContentDB.monster(entity.monster_id)
-			return [["Attack " + name, player.attack.bind(entity.entity_id)],
-				["Examine " + entity.display_name(), player.examine.bind(monster.get("examine", ""))]]
+			var options := [["Attack " + name, player.attack.bind(entity.entity_id)]]
+			var contract: Dictionary = player.get_node("SimEntity").combatant.arena_contract
+			if not contract.is_empty() and Arena.data()["contracts"][contract["id"]]["monster"] == entity.monster_id:
+				options.append(["Throw a net over the " + entity.display_name().to_lower(), player.capture.bind(entity)])
+			options.append(["Examine " + entity.display_name(), player.examine.bind(monster.get("examine", ""))])
+			return options
 		"rocks":
 			var rock: Dictionary = ContentDB.rock(node.rock_type)
 			return [["Mine " + rock["name"], player.mine.bind(node)],
@@ -271,6 +278,23 @@ static func options_nearby(player: Node3D) -> Array:
 	var options := []
 	for candidate in candidates:
 		options.append_array(options_for(player, candidate[1]))
+	return options
+
+
+## The lanista's arena contracts: take one, hand it in, or give it up.
+static func _arena_options(player: Node3D, node: Node) -> Array:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	var contract: Dictionary = combatant.arena_contract
+	var options := []
+	if contract.is_empty():
+		for contract_id in Arena.contracts_for(combatant.skills.level("hunter")):
+			var spec: Dictionary = Arena.data()["contracts"][contract_id]
+			options.append(["Take: %s (%d %s alive, %d denarii)" % [spec["name"], spec["count"],
+				Slayer.plural_name(spec["monster"]), spec["coins"]], player.take_arena.bind(node, contract_id)])
+	elif contract["remaining"] == 0:
+		options.append(["Hand in the beasts", player.hand_in_arena.bind(node)])
+	else:
+		options.append(["Give up the contract", player.abandon_arena])
 	return options
 
 

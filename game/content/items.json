@@ -1599,5 +1599,10 @@
     "requirements": {
       "defence": 35
     }
+  },
+  "weighted_net": {
+    "name": "Weighted net",
+    "value": 15,
+    "examine": "A heavy rope net with lead weights round the edge. Throw it over something tired."
   }
 }

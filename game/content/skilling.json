@@ -1137,6 +1137,47 @@
         "level": 15,
         "xp": 18
       }
+    ],
+    "jewelcraft": [
+      {
+        "id": "silver_pendant",
+        "inputs": [
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "silver_pendant",
+        "level": 30,
+        "xp": 45,
+        "tool": "jeweller"
+      },
+      {
+        "id": "amulet_of_diana",
+        "inputs": [
+          {
+            "item": "silver_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "amulet_of_diana",
+        "level": 38,
+        "xp": 90,
+        "tool": "jeweller"
+      },
+      {
+        "id": "gold_bulla",
+        "inputs": [
+          {
+            "item": "gold_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "gold_bulla",
+        "level": 45,
+        "xp": 80,
+        "tool": "jeweller"
+      }
     ]
   },
   "trees": {

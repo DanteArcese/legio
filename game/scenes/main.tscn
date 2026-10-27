@@ -1734,6 +1734,31 @@ mesh = SubResource("chest_mesh")
 [node name="Collision" type="CollisionShape3D" parent="Seriphos/IslandBank"]
 shape = SubResource("chest_shape")
 
+[node name="Melissa" type="StaticBody3D" parent="Seriphos" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -328, 1, 300)
+collision_layer = 8
+metadata/npc_id = "melissa"
+metadata/display_name = "Melissa the shepherd"
+metadata/examine = "A shepherd girl with a crook taller than she is, and no sheep."
+
+[node name="Mesh" type="MeshInstance3D" parent="Seriphos/Melissa"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Seriphos/Melissa"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Seriphos/Melissa"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+weapon = "weapons/staff"
+
+[node name="Label" type="Label3D" parent="Seriphos/Melissa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Melissa the shepherd"
+font_size = 32
+outline_size = 8
+
 [node name="Nikias" type="StaticBody3D" parent="Seriphos" groups=["shopkeepers", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -292, 1, 288)
 collision_layer = 8

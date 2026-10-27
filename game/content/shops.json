@@ -319,6 +319,10 @@
         "price": 10
       },
       {
+        "item": "jewellers_tools",
+        "price": 25
+      },
+      {
         "item": "bread",
         "price": 4
       },
@@ -374,6 +378,11 @@
       {
         "item": "cooked_tuna",
         "price": 20
+      },
+      {
+        "item": "cyclops_cheese",
+        "price": 60,
+        "requires_quest": "the_shepherds_flock"
       }
     ],
     "buys": {

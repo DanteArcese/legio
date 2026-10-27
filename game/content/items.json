@@ -1546,6 +1546,60 @@
       "slayer": 60
     }
   },
+  "jewellers_tools": {
+    "name": "Jeweller's tools",
+    "value": 25,
+    "examine": "Files, a burin and a tiny hammer, rolled in leather.",
+    "tool": "jeweller",
+    "tool_tier": 1
+  },
+  "silver_pendant": {
+    "name": "Silver pendant",
+    "value": 110,
+    "examine": "A crescent moon in silver, sacred to Hecate. Curse-writers wear them.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 1,
+        "ritus_attack": 5,
+        "ritus_strength": 3,
+        "ritus_defence": 4
+      }
+    }
+  },
+  "amulet_of_diana": {
+    "name": "Amulet of Diana",
+    "value": 220,
+    "examine": "Silver worked into a hunting hound. The huntress's hunters wear it.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 2,
+        "ranged_attack": 7,
+        "ranged_strength": 3
+      }
+    }
+  },
+  "gold_bulla": {
+    "name": "Gold bulla",
+    "value": 320,
+    "examine": "A gold locket, like the one every freeborn Roman child wears against bad luck. Yours is bigger.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 3,
+        "strength": 3,
+        "defence": 4
+      }
+    },
+    "requirements": {
+      "defence": 35
+    }
+  },
   "weighted_net": {
     "name": "Weighted net",
     "value": 15,

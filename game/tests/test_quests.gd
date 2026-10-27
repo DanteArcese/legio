@@ -463,3 +463,28 @@ func test_the_silent_gallery() -> void:
 	_run(sim, 1)
 	check(Quests.is_done(player, "the_silent_gallery"), "complete")
 	check_eq(player.inventory.count("coins"), 2000, "the fee")
+
+
+func test_the_shepherds_flock() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("melissa", Vector3(1, 0, 0))
+	for skill in ["attack", "strength", "defence"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(45)
+	sim.queue_item_action(PLAYER, "talk", {"npc": "melissa"})
+	_run(sim, 1)
+	check_eq(Quests.status(player, "the_shepherds_flock"), "in_progress", "started")
+	for i in 4:
+		var cyclops := sim.add_monster(RAT + i, "cyclops", Vector3(0, 0, 1))
+		cyclops.last_attacker_id = PLAYER
+		cyclops.hp = 0
+		sim.kill(cyclops, [])
+	check_eq(player.quests["the_shepherds_flock"]["step"], 1, "four cyclopes")
+	sim.give_item(PLAYER, "cyclops_cheese", 3, "test", [])
+	sim.queue_item_action(PLAYER, "talk", {"npc": "melissa"})
+	var events := _run(sim, 1)
+	check(_dialogue(events).any(func(line): return "thyme" in line), "she knows the cheese")
+	sim.queue_item_action(PLAYER, "talk", {"npc": "melissa"})
+	_run(sim, 1)
+	check(Quests.is_done(player, "the_shepherds_flock"), "complete")
+	check_eq(player.inventory.count("cyclops_cheese"), 5, "paid in cheese")

@@ -1,6 +1,7 @@
 extends "res://tests/test_case.gd"
 
 const Bindings := preload("res://scripts/input/bindings.gd")
+const ControlsText := preload("res://scripts/input/controls_text.gd")
 
 
 func test_every_action_has_keyboard_or_mouse_and_gamepad_binding() -> void:
@@ -37,3 +38,19 @@ func test_stick_actions_respond_to_joypad_motion() -> void:
 	motion.axis_value = -0.8
 	check(motion.is_action_pressed("move_forward"), "left stick up should map to move_forward")
 	check(not motion.is_action_pressed("move_back"), "left stick up should not map to move_back")
+
+
+func test_every_action_is_on_the_controls_page() -> void:
+	var listed := []
+	for row in ControlsText.ROWS:
+		listed.append_array(row[1])
+	for action in Bindings.DEFAULTS:
+		check(listed.has(action), "%s is listed" % action)
+
+
+func test_controls_rows_name_both_bindings() -> void:
+	for row in ControlsText.rows():
+		check(not row[1].is_empty() and not row[2].is_empty(), "%s has keyboard and controller (%s)" % [row[0], row])
+	var special: Array = ControlsText.rows().filter(func(r): return r[0] == "Special attack")[0]
+	check_eq(special[1], "F", "keyboard")
+	check_eq(special[2], "B", "controller")

@@ -298,3 +298,8 @@ def test_slayer_streaks_list_longest_first(content):
 def test_shop_buy_lists_must_name_real_items(content):
     errors = errors_after(content, lambda c: c["shops"]["aulus"]["buys"]["items"].append("unicorn_horn"))
     assert any("shops.aulus.buys.items: unknown item 'unicorn_horn'" in e for e in errors)
+
+
+def test_arena_contracts_must_name_real_monsters(content):
+    errors = errors_after(content, lambda c: c["arena"]["contracts"]["boars"].update(monster="griffin"))
+    assert any("arena.contracts.boars.monster: unknown monster 'griffin'" in e for e in errors)

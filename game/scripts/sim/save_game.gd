@@ -44,6 +44,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
 		"trade_contract": player.trade_contract.duplicate(),
+		"arena": {"contract": player.arena_contract.duplicate(), "done": player.arena_contracts_done},
 		"villa": {"owned": player.villa_owned, "furniture": player.villa_furniture.duplicate()},
 		"contracts_done": player.contracts_done,
 		"collection": player.collection.duplicate(),
@@ -96,6 +97,11 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 	player.slayer_unlocks = slayer.get("unlocks", []).duplicate()
 	player.laps = int(data.get("laps", 0))
 	player.trade_contract = data.get("trade_contract", {}).duplicate()
+	var arena: Dictionary = data.get("arena", {})
+	player.arena_contract = arena.get("contract", {}).duplicate()
+	if player.arena_contract.has("remaining"):
+		player.arena_contract["remaining"] = int(player.arena_contract["remaining"])
+	player.arena_contracts_done = int(arena.get("done", 0))
 	var villa: Dictionary = data.get("villa", {})
 	player.villa_owned = bool(villa.get("owned", false))
 	player.villa_furniture = villa.get("furniture", {}).duplicate()

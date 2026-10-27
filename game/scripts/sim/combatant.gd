@@ -40,6 +40,10 @@ var slayer_tasks_done := 0
 ## Monsters this player has paid never to be assigned, and Slayer unlocks bought.
 var slayer_blocked: Array = []
 var slayer_unlocks: Array = []
+## Arena: the current capture contract ({"id", "remaining"} or {}), and
+## how many have been handed in.
+var arena_contract := {}
+var arena_contracts_done := 0
 ## Impetus (0-100) for weapon specials, and whether the next attack spends it.
 const MAX_IMPETUS := 100
 var impetus := MAX_IMPETUS

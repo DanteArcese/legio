@@ -60,3 +60,21 @@ func test_selling_needs_the_shopkeeper_nearby() -> void:
 	sim.give_item(PLAYER, "wolf_pelt", 1, "test", [])
 	_sell(sim, "aulus", "wolf_pelt")
 	check_eq(player.inventory.count("wolf_pelt"), 1, "too far away")
+
+
+func test_the_ferry_fare_is_paid_once_and_only_if_carried() -> void:
+	var sim := _make_sim()
+	var player: RefCounted = sim.get_combatant(PLAYER)
+	sim.give_item(PLAYER, "coins", 30, "test", [])
+	sim.queue_item_action(PLAYER, "pay_fare", {"amount": 25})
+	sim.step()
+	check_eq(player.inventory.count("coins"), 5, "paid 25")
+	sim.queue_item_action(PLAYER, "pay_fare", {"amount": 25})
+	sim.step()
+	check_eq(player.inventory.count("coins"), 5, "can't pay what you don't have")
+
+
+func test_messages_use_the_right_article() -> void:
+	check_eq(Items._with_article("needle"), "a needle", "a")
+	check_eq(Items._with_article("iron axe"), "an iron axe", "an")
+	check_eq(Items._with_article("olives"), "some olives", "plural")

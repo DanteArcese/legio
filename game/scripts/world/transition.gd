@@ -13,6 +13,8 @@ extends StaticBody3D
 ## Only players who've finished this quest may go this way, and what they're
 ## told otherwise.
 @export var requires_quest := ""
+## Coins this way costs (the ferry), paid each time.
+@export var fare := 0
 @export_multiline var locked_message := ""
 ## Said the first time the doorway is used; using it again goes through.
 @export_multiline var warning := ""

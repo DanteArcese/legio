@@ -1446,5 +1446,17 @@
         "lizard"
       ]
     }
+  },
+  "olives": {
+    "name": "Olives",
+    "value": 3,
+    "examine": "A twist of cloth full of black olives from Seriphos.",
+    "heals": 4
+  },
+  "figs": {
+    "name": "Figs",
+    "value": 5,
+    "examine": "Sun-dried figs, sweet as honey.",
+    "heals": 6
   }
 }

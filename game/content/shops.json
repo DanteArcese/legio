@@ -354,5 +354,30 @@
       ],
       "rate": 0.6
     }
+  },
+  "greek_merchant": {
+    "name": "Nikias the merchant",
+    "offers": [
+      {
+        "item": "olives",
+        "price": 4
+      },
+      {
+        "item": "figs",
+        "price": 7
+      },
+      {
+        "item": "wine",
+        "price": 6
+      },
+      {
+        "item": "cooked_tuna",
+        "price": 20
+      }
+    ],
+    "buys": {
+      "items": "*",
+      "rate": 0.45
+    }
   }
 }

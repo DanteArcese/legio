@@ -99,6 +99,12 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			_buy(player, command.get("shop", ""), command.get("item", ""), events)
 		"sell":
 			_sell(player, command.get("shop", ""), command.get("item", ""), events)
+		"pay_fare":
+			var fare: int = command.get("amount", 0)
+			if fare > 0 and player.inventory.count("coins") >= fare:
+				player.inventory.remove("coins", fare)
+				sim.message(player, "You pay the ferryman %d denarii." % fare, events)
+				events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 		"deposit", "deposit_all", "withdraw":
 			if not _near_bank(player):
 				sim.message(player, "You need to be at a bank.", events)
@@ -276,6 +282,13 @@ static func sell_price(shop_id: String, item_id: String) -> int:
 	return maxi(1, floori(item["value"] * buys["rate"]))
 
 
+## "a needle", "an iron axe", "some olives".
+static func _with_article(name: String) -> String:
+	if name.ends_with("s") and not name.ends_with("ss"):
+		return "some " + name
+	return ("an " if name[0] in "aeiou" else "a ") + name
+
+
 ## Sells every one of an item the player carries to a shopkeeper.
 func _sell(player: Combatant, shop_id: String, item_id: String, events: Array[Dictionary]) -> void:
 	if not shopkeepers.has(shop_id) or sim.flat_distance(shopkeepers[shop_id], player.position) > SHOP_RANGE:
@@ -294,7 +307,7 @@ func _sell(player: Combatant, shop_id: String, item_id: String, events: Array[Di
 	player.inventory.remove(item_id, count)
 	sim.give_item(player.id, "coins", price * count, "shop", events)
 	var name: String = ContentDB.item(item_id)["name"].to_lower()
-	sim.message(player, "You sell %s for %d denarii." % [("a " + name) if count == 1 else "%d %s" % [count, name], price * count], events)
+	sim.message(player, "You sell %s for %d denarii." % [_with_article(name) if count == 1 else "%d %s" % [count, name], price * count], events)
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 
 
@@ -322,4 +335,4 @@ func _buy(player: Combatant, shop_id: String, item_id: String, events: Array[Dic
 	player.inventory.remove("coins", price)
 	sim.give_item(player.id, item_id, quantity, "shop", events)
 	var name: String = ContentDB.item(item_id)["name"].to_lower()
-	sim.message(player, "You buy %s." % (("a " + name) if quantity == 1 else "%d %s" % [quantity, name]), events)
+	sim.message(player, "You buy %s." % (_with_article(name) if quantity == 1 else "%d %s" % [quantity, name]), events)

@@ -1,6 +1,6 @@
 extends "res://tools/playtest/scenario.gd"
 ## The new-character dialog: it pauses the game, the D-pad moves between
-## the two modes, and A picks one.
+## the three modes, and A picks one.
 
 const PLAYER := 1
 

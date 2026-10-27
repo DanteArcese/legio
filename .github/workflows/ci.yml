@@ -43,9 +43,11 @@ jobs:
             echo godot=true >> "$GITHUB_OUTPUT"
           fi
 
+  # PR checks already run on the PR merged with main, so pushes to main
+  # skip the slow Godot jobs rather than queue behind open PRs.
   godot:
     needs: changes
-    if: needs.changes.outputs.godot == 'true'
+    if: needs.changes.outputs.godot == 'true' && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false

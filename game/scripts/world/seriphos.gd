@@ -32,6 +32,7 @@ const PATHS := [
 	[Vector2(-300, 298), Vector2(-330, 300)],
 	[Vector2(-272, 306), Vector2(-262, 338)],
 	[Vector2(-318, 322), Vector2(-330, 342)],
+	[Vector2(-266, 360), Vector2(-264, 366)],
 ]
 const GROVE := Rect2(-354, 290, 24, 26)
 const TEMPLE := Rect2(-276, 300, 22, 14)
@@ -40,6 +41,8 @@ const OLIVE_COUNT := 26
 ## their cave in its far side.
 const HOLLOW := Rect2(-272, 338, 24, 24)
 const CAVE := Vector3(-258, 0, 360.5)
+## A reedy marsh pool south of the hollow, where the Hydra lairs.
+const MARSH := Rect2(-268, 364, 20, 12)
 ## The broken ruins in the south-west where the gorgons nest.
 const RUINS := Rect2(-350, 342, 30, 26)
 
@@ -73,6 +76,7 @@ func _ready() -> void:
 	_build_temple()
 	_build_cave()
 	_build_ruins()
+	_build_marsh()
 	if dresser:
 		_dress()
 
@@ -86,6 +90,7 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(TEMPLE, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(HOLLOW, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(RUINS, p)))
+	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(MARSH, p)))
 	h = lerpf(h, 0.0, flat)
 	# Rocky hills rise inland, to the south.
 	h += smoothstep(330.0, 375.0, z) * (3.0 + _noise.get_noise_2d(x * 2.0, z * 2.0) * 2.0) * (1.0 - flat)
@@ -287,6 +292,29 @@ func _build_ruins() -> void:
 		_solid(Vector3(0.7, 1.9, 0.7), figure.position + Vector3(0, 0.95, 0))
 
 
+## The Hydra's marsh: shallow green water over the hollow's floor, ringed
+## with reeds.
+func _build_marsh() -> void:
+	var water := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = MARSH.size
+	var material := ShaderMaterial.new()
+	material.shader = preload("res://shaders/water.gdshader")
+	plane.material = material
+	water.mesh = plane
+	water.position = Vector3(MARSH.get_center().x, 0.05, MARSH.get_center().y)
+	add_child(water)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 7311
+	var reed := Color(0.45, 0.55, 0.28)
+	for n in 60:
+		var p := Vector2(rng.randf_range(MARSH.position.x - 1.0, MARSH.end.x + 1.0), rng.randf_range(MARSH.position.y - 1.0, MARSH.end.y + 1.0))
+		if MARSH.grow(-2.0).has_point(p):
+			continue
+		var stalk := _visual_box(Vector3(0.06, rng.randf_range(0.8, 1.6), 0.06), Vector3(p.x, 0.5, p.y), reed.darkened(rng.randf_range(0.0, 0.3)))
+		stalk.rotation = Vector3(rng.randf_range(-0.2, 0.2), 0, rng.randf_range(-0.2, 0.2))
+
+
 ## Olives in the grove, rocks on the hills, and boats at the pier.
 func _dress() -> void:
 	var rng := RandomNumberGenerator.new()
@@ -306,7 +334,7 @@ func _dress() -> void:
 		add_child(trunk)
 	for n in 30:
 		var p := Vector2(rng.randf_range(X_MIN + 4.0, X_MAX - 4.0), rng.randf_range(335.0, Z_MAX - 4.0))
-		if _path_distance(p) < 5.0 or HOLLOW.grow(2.0).has_point(p) or RUINS.grow(2.0).has_point(p):
+		if _path_distance(p) < 5.0 or HOLLOW.grow(2.0).has_point(p) or RUINS.grow(2.0).has_point(p) or MARSH.grow(2.0).has_point(p):
 			continue
 		var rock: Node3D = dresser.model("nature/" + ["rock_largeA", "rock_largeC", "rock_smallA", "rock_tallA"][n % 4])
 		rock.position = Vector3(p.x, height_at(p.x, p.y) - 0.2, p.y)

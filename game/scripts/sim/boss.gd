@@ -24,6 +24,7 @@ var _next_strike_id := 1
 ## boss id -> attacks made since it last (re)spawned.
 var _attacks := {}
 var _enraged := {}
+var _regen_warned := {}
 
 
 func _init(p_sim: RefCounted) -> void:
@@ -63,6 +64,7 @@ func process(events: Array[Dictionary]) -> void:
 	strikes = strikes.filter(func(strike): return strike["lands_at"] > tick)
 	for strike in due:
 		_land(strike, events)
+	_regenerate(events)
 	for combatant in sim.combatants():
 		var spec := data(combatant.monster_id)
 		if spec.is_empty():
@@ -81,6 +83,24 @@ func process(events: Array[Dictionary]) -> void:
 			_enraged.erase(combatant.id)
 			_attacks.erase(combatant.id)
 			combatant.attack_speed = base
+
+
+## Monsters with a "regenerate" block (the hydra) heal every tick unless
+## seared by fire. Their foe is told the first time the wounds close.
+func _regenerate(events: Array[Dictionary]) -> void:
+	for combatant in sim.combatants():
+		if combatant.monster_id.is_empty() or not combatant.is_alive() or combatant.hp >= combatant.max_hp:
+			continue
+		var regen: Dictionary = ContentDB.monster(combatant.monster_id).get("regenerate", {})
+		if regen.is_empty() or sim.tick < combatant.seared_until:
+			continue
+		combatant.hp = mini(combatant.hp + int(regen["amount"]), combatant.max_hp)
+		var foe: Combatant = sim.get_combatant(combatant.target_id)
+		if foe and foe.is_player() and not _regen_warned.get(combatant.id, false):
+			_regen_warned[combatant.id] = true
+			sim.message(foe, "The %s's wounds close as fast as you make them! Sear them with fire." % ContentDB.monster(combatant.monster_id)["name"].to_lower(), events)
+		if combatant.hp == combatant.max_hp:
+			_regen_warned.erase(combatant.id)
 
 
 ## A boss that dies takes its throws in the air with it.

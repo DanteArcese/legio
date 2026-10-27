@@ -24,6 +24,10 @@ func run() -> void:
 	await route_to(anvil.global_position + Vector3(0, 0, 3.5), 0.5, 90.0)
 	await seconds(0.5)
 	await shot("smithy")
+	var kiln: Node3D = main.get_node("Smithy/Kiln")
+	await route_to(kiln.global_position + Vector3(-3.0, 0, 0.5), 0.8, 90.0)
+	await seconds(0.5)
+	await shot("potters")
 
 
 func _wait_until(condition: Callable, timeout: float) -> void:

@@ -69,6 +69,16 @@
       "respawn_ticks": 20,
       "color": "#2e2b2a",
       "examine": "A black seam of coal in the pit wall."
+    },
+    "clay_rock": {
+      "name": "Clay deposit",
+      "ore": "clay",
+      "level": 1,
+      "xp": 8,
+      "difficulty": 0.0,
+      "respawn_ticks": 3,
+      "color": "#8c8478",
+      "examine": "Soft grey clay at the water's edge. Dig some out with a pickaxe."
     }
   },
   "recipes": {
@@ -1177,6 +1187,148 @@
         "level": 45,
         "xp": 80,
         "tool": "jeweller"
+      }
+    ],
+    "throw": [
+      {
+        "id": "unfired_pot",
+        "inputs": [
+          {
+            "item": "clay",
+            "quantity": 1
+          }
+        ],
+        "output": "unfired_pot",
+        "level": 1,
+        "xp": 6
+      },
+      {
+        "id": "unfired_bowl",
+        "inputs": [
+          {
+            "item": "clay",
+            "quantity": 2
+          }
+        ],
+        "output": "unfired_bowl",
+        "level": 5,
+        "xp": 11
+      },
+      {
+        "id": "unfired_amphora",
+        "inputs": [
+          {
+            "item": "clay",
+            "quantity": 3
+          }
+        ],
+        "output": "unfired_amphora",
+        "level": 12,
+        "xp": 18
+      },
+      {
+        "id": "unfired_lamp",
+        "inputs": [
+          {
+            "item": "clay",
+            "quantity": 2
+          }
+        ],
+        "output": "unfired_lamp",
+        "level": 20,
+        "xp": 24
+      }
+    ],
+    "kiln": [
+      {
+        "id": "clay_pot",
+        "inputs": [
+          {
+            "item": "unfired_pot",
+            "quantity": 1
+          }
+        ],
+        "output": "clay_pot",
+        "level": 1,
+        "xp": 8
+      },
+      {
+        "id": "clay_bowl",
+        "inputs": [
+          {
+            "item": "unfired_bowl",
+            "quantity": 1
+          }
+        ],
+        "output": "clay_bowl",
+        "level": 5,
+        "xp": 13
+      },
+      {
+        "id": "amphora",
+        "inputs": [
+          {
+            "item": "unfired_amphora",
+            "quantity": 1
+          }
+        ],
+        "output": "amphora",
+        "level": 12,
+        "xp": 20
+      },
+      {
+        "id": "oil_lamp",
+        "inputs": [
+          {
+            "item": "unfired_lamp",
+            "quantity": 1
+          }
+        ],
+        "output": "oil_lamp",
+        "level": 20,
+        "xp": 27
+      },
+      {
+        "id": "glass_vial",
+        "inputs": [
+          {
+            "item": "sand",
+            "quantity": 2
+          }
+        ],
+        "output": "glass_vial",
+        "level": 25,
+        "xp": 35,
+        "tool": "blowpipe"
+      },
+      {
+        "id": "glass_bowl",
+        "inputs": [
+          {
+            "item": "sand",
+            "quantity": 4
+          }
+        ],
+        "output": "glass_bowl",
+        "level": 32,
+        "xp": 55,
+        "tool": "blowpipe"
+      },
+      {
+        "id": "firepot",
+        "inputs": [
+          {
+            "item": "clay_pot",
+            "quantity": 1
+          },
+          {
+            "item": "olives",
+            "quantity": 2
+          }
+        ],
+        "output": "firepot",
+        "level": 30,
+        "xp": 40
       }
     ]
   },

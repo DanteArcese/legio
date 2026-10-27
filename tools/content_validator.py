@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -23,7 +23,7 @@ CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "jewelcraft"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -31,14 +31,14 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest", "requires_unlock"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item"}
-MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable"}
+MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
     "kaykit": set(),
-    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard"},
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads"},
     "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs", "one_eye", "snakes", "green_skin"},
     "bird": {"ear_tufts", "woman_face"},
 }
@@ -80,6 +80,7 @@ def validate(content: dict) -> list[str]:
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
+    _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
     _check_pets(content.get("pets", {}), items, monsters, errors)
@@ -122,6 +123,14 @@ def _check_item(where, item_id, item, items, errors):
                 errors.append(f"{where}.remedy.skill: unknown skill {remedy.get('skill')!r}")
             _check_int(f"{where}.remedy", "flat", remedy.get("flat"), 0, errors, 20)
             _check_number(f"{where}.remedy", "percent", remedy.get("percent"), 0, 0.5, errors)
+    if "throwable" in item:
+        throwable = item["throwable"]
+        _check_keys(f"{where}.throwable", throwable, {"range", "damage", "sear_ticks"}, {"range", "damage", "sear_ticks"}, errors)
+        _check_number(f"{where}.throwable", "range", throwable.get("range"), 1, 15, errors)
+        _check_int(f"{where}.throwable", "sear_ticks", throwable.get("sear_ticks"), 1, errors)
+        damage = throwable.get("damage")
+        if not (isinstance(damage, list) and len(damage) == 2 and all(_is_int(d) and d >= 0 for d in damage) and damage[0] <= damage[1]):
+            errors.append(f"{where}.throwable.damage: expected [min, max]")
     if "pet" in item:
         look = item["pet"]
         _check_keys(f"{where}.pet", look, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)
@@ -212,7 +221,10 @@ def _check_boss(where, boss, attack_speed, errors):
 
 def _check_monster(where, monster_id, monster, items, drops, errors):
     _check_id(where, monster_id, errors)
-    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss"}, errors)
+    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss", "regenerate"}, errors)
+    if "regenerate" in monster:
+        _check_keys(f"{where}.regenerate", monster["regenerate"], {"amount"}, {"amount"}, errors)
+        _check_int(f"{where}.regenerate", "amount", monster["regenerate"].get("amount"), 1, errors, 10)
     if "boss" in monster:
         _check_boss(f"{where}.boss", monster["boss"], monster.get("attack_speed"), errors)
     _check_type(where, "name", monster.get("name"), str, errors)
@@ -312,6 +324,41 @@ def _check_arena(arena, items, monsters, shops, errors):
         _check_int(where, "hunter", contract.get("hunter"), 1, errors, 99)
         for key in ("count", "coins", "xp"):
             _check_int(where, key, contract.get(key), 1, errors)
+TASK_FIELDS = {"obtain": {"item"}, "kill": {"monster"}, "quest": {"quest"}, "level": {"skill", "level"}, "visit": {"area"}}
+
+
+def _check_tasks(tasks, items, monsters, quests, errors):
+    _check_keys("tasks", tasks, {"regions"}, {"regions"}, errors)
+    for region_id, region in tasks.get("regions", {}).items():
+        where = f"tasks.regions.{region_id}"
+        _check_id(where, region_id, errors)
+        _check_keys(where, region, {"name", "reward", "tasks"}, {"name", "reward", "tasks"}, errors)
+        _check_int(where, "reward", region.get("reward"), 1, errors)
+        seen = set()
+        for i, task in enumerate(region.get("tasks", [])):
+            task_where = f"{where}.tasks[{i}]"
+            kind = task.get("kind")
+            if kind not in TASK_FIELDS:
+                errors.append(f"{task_where}.kind: must be one of {sorted(TASK_FIELDS)}")
+                continue
+            _check_keys(task_where, task, {"id", "kind", "text"} | TASK_FIELDS[kind], {"id", "kind", "text"} | TASK_FIELDS[kind], errors)
+            if task.get("id") in seen:
+                errors.append(f"{task_where}.id: duplicate {task.get('id')!r}")
+            seen.add(task.get("id"))
+            if kind == "obtain" and task.get("item") not in items:
+                errors.append(f"{task_where}.item: unknown item {task.get('item')!r}")
+            if kind == "kill" and task.get("monster") not in monsters:
+                errors.append(f"{task_where}.monster: unknown monster {task.get('monster')!r}")
+            if kind == "quest" and task.get("quest") not in quests:
+                errors.append(f"{task_where}.quest: unknown quest {task.get('quest')!r}")
+            if kind == "level":
+                if task.get("skill") not in SKILLS:
+                    errors.append(f"{task_where}.skill: unknown skill {task.get('skill')!r}")
+                _check_int(task_where, "level", task.get("level"), 2, errors, 99)
+            if kind == "visit":
+                area = task.get("area")
+                if not (isinstance(area, list) and len(area) == 4 and all(isinstance(a, (int, float)) for a in area) and area[2] > 0 and area[3] > 0):
+                    errors.append(f"{task_where}.area: expected [x, z, width, depth]")
 
 
 def _check_slayer_rewards(rewards, errors):

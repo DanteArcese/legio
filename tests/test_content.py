@@ -303,3 +303,8 @@ def test_shop_buy_lists_must_name_real_items(content):
 def test_arena_contracts_must_name_real_monsters(content):
     errors = errors_after(content, lambda c: c["arena"]["contracts"]["boars"].update(monster="griffin"))
     assert any("arena.contracts.boars.monster: unknown monster 'griffin'" in e for e in errors)
+
+
+def test_tasks_must_reference_real_things(content):
+    errors = errors_after(content, lambda c: c["tasks"]["regions"]["castra_ferrea"]["tasks"][0].update(item="moon_rock"))
+    assert any("tasks.regions.castra_ferrea.tasks[0].item: unknown item 'moon_rock'" in e for e in errors)

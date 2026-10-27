@@ -29,6 +29,7 @@ const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Arena := preload("res://scripts/sim/arena.gd")
+const Tasks := preload("res://scripts/sim/tasks.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
@@ -62,6 +63,7 @@ var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
 var arena := Arena.new(self)
+var tasks := Tasks.new(self)
 var pets := Pets.new(self)
 var boss := Boss.new(self)
 var villa := Villa.new(self)
@@ -185,6 +187,8 @@ func give_item(id: int, item_id: String, quantity: int, source: String, events: 
 ## Counts an obtained item in the player's collection log; the first of
 ## each is announced.
 func record_collection(player: Combatant, item_id: String, quantity: int, events: Array) -> void:
+	if player.is_player():
+		tasks.on_obtain(player, item_id, events)
 	if not player.is_player() or not ContentDB.is_collectable(item_id):
 		return
 	var first: bool = not player.collection.has(item_id)
@@ -276,6 +280,7 @@ func step() -> Array[Dictionary]:
 	hunter.process(events)
 	farming.process(events)
 	items.decay_remedies(players)
+	tasks.process(players, events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -293,6 +298,8 @@ func award_xp(combatant: Combatant, skill: String, amount: float, events: Array)
 		elif skill == "pietas":
 			combatant.favour += 1.0
 		events.append({"type": "level_up", "id": combatant.id, "skill": skill, "level": new_level, "tick": tick})
+		if combatant.is_player():
+			tasks.on_level(combatant, skill, new_level, events)
 
 
 func message(player: Combatant, text: String, events: Array) -> void:
@@ -317,6 +324,7 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 	if killer and killer.is_player() and not victim.monster_id.is_empty():
 		_slayer_kill(killer, victim, events)
 		pets.on_kill(killer, victim.monster_id, events)
+		tasks.on_kill(killer, victim.monster_id, events)
 		quests.on_kill(killer, victim, events)
 	victim.last_attacker_id = -1
 	if not victim.drop_table.is_empty():

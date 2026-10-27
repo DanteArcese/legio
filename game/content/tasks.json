@@ -1,0 +1,299 @@
+{
+  "regions": {
+    "castra_ferrea": {
+      "name": "Castra Ferrea",
+      "reward": 500,
+      "tasks": [
+        {
+          "id": "copper",
+          "kind": "obtain",
+          "item": "copper_ore",
+          "text": "Mine some copper ore."
+        },
+        {
+          "id": "logs",
+          "kind": "obtain",
+          "item": "logs",
+          "text": "Chop some logs."
+        },
+        {
+          "id": "sardine",
+          "kind": "obtain",
+          "item": "cooked_sardine",
+          "text": "Catch and cook a sardine."
+        },
+        {
+          "id": "pugio",
+          "kind": "obtain",
+          "item": "bronze_pugio",
+          "text": "Smith a bronze pugio."
+        },
+        {
+          "id": "pot",
+          "kind": "obtain",
+          "item": "clay_pot",
+          "text": "Fire a clay pot in the kiln by the pond."
+        },
+        {
+          "id": "bread",
+          "kind": "obtain",
+          "item": "bread",
+          "text": "Lift a loaf from the baker's stall."
+        },
+        {
+          "id": "wolf",
+          "kind": "kill",
+          "monster": "wolf",
+          "text": "Kill a wolf."
+        },
+        {
+          "id": "tiro",
+          "kind": "quest",
+          "quest": "tiro",
+          "text": "Enlist in the auxilia: finish Tiro."
+        },
+        {
+          "id": "attack",
+          "kind": "level",
+          "skill": "attack",
+          "level": 10,
+          "text": "Reach Attack 10."
+        },
+        {
+          "id": "barrow",
+          "kind": "visit",
+          "area": [
+            138,
+            -40,
+            48,
+            48
+          ],
+          "text": "Go down into the barrow."
+        }
+      ]
+    },
+    "portus_salis": {
+      "name": "Portus Salis",
+      "reward": 1500,
+      "tasks": [
+        {
+          "id": "arrive",
+          "kind": "visit",
+          "area": [
+            -360,
+            -50,
+            120,
+            62
+          ],
+          "text": "Take the road to Portus Salis."
+        },
+        {
+          "id": "crab",
+          "kind": "kill",
+          "monster": "rock_crab",
+          "text": "Kill a rock crab on the beach."
+        },
+        {
+          "id": "tuna",
+          "kind": "obtain",
+          "item": "raw_tuna",
+          "text": "Harpoon a tuna from the pier."
+        },
+        {
+          "id": "garum",
+          "kind": "obtain",
+          "item": "garum",
+          "text": "Ferment garum."
+        },
+        {
+          "id": "harpy",
+          "kind": "kill",
+          "monster": "harpy",
+          "text": "Kill a harpy."
+        },
+        {
+          "id": "siren",
+          "kind": "kill",
+          "monster": "siren",
+          "text": "Kill a siren (bring earplugs)."
+        },
+        {
+          "id": "harpies",
+          "kind": "quest",
+          "quest": "harpies_at_the_harbour",
+          "text": "Finish Harpies at the Harbour."
+        },
+        {
+          "id": "seriphos",
+          "kind": "visit",
+          "area": [
+            -360,
+            260,
+            120,
+            120
+          ],
+          "text": "Sail to Seriphos."
+        }
+      ]
+    },
+    "frontier": {
+      "name": "Beyond the Limes",
+      "reward": 2500,
+      "tasks": [
+        {
+          "id": "cross",
+          "kind": "visit",
+          "area": [
+            -60,
+            -460,
+            120,
+            110
+          ],
+          "text": "Cross the Limes."
+        },
+        {
+          "id": "raider",
+          "kind": "kill",
+          "monster": "germanic_raider",
+          "text": "Kill a Germanic raider."
+        },
+        {
+          "id": "dire_wolf",
+          "kind": "kill",
+          "monster": "dire_wolf",
+          "text": "Kill a dire wolf."
+        },
+        {
+          "id": "gold",
+          "kind": "obtain",
+          "item": "gold_ore",
+          "text": "Mine gold under the ridge."
+        },
+        {
+          "id": "eagle",
+          "kind": "quest",
+          "quest": "the_lost_eagle",
+          "text": "Win back the eagle: finish The Lost Eagle."
+        },
+        {
+          "id": "hrodgar",
+          "kind": "kill",
+          "monster": "hrodgar",
+          "text": "Defeat Hrodgar the War-chief."
+        }
+      ]
+    },
+    "vipasca": {
+      "name": "Vipasca",
+      "reward": 3000,
+      "tasks": [
+        {
+          "id": "arrive",
+          "kind": "visit",
+          "area": [
+            -60,
+            340,
+            120,
+            120
+          ],
+          "text": "Take the road to Vipasca."
+        },
+        {
+          "id": "silver",
+          "kind": "obtain",
+          "item": "silver_bar",
+          "text": "Smelt a silver bar."
+        },
+        {
+          "id": "steel",
+          "kind": "obtain",
+          "item": "steel_bar",
+          "text": "Smelt Noric steel."
+        },
+        {
+          "id": "basilisk",
+          "kind": "kill",
+          "monster": "basilisk",
+          "text": "Kill a basilisk."
+        },
+        {
+          "id": "gallery",
+          "kind": "quest",
+          "quest": "the_silent_gallery",
+          "text": "Finish The Silent Gallery."
+        },
+        {
+          "id": "deep",
+          "kind": "visit",
+          "area": [
+            156,
+            362,
+            48,
+            78
+          ],
+          "text": "Go down into the deep gallery."
+        },
+        {
+          "id": "bulla",
+          "kind": "obtain",
+          "item": "gold_bulla",
+          "text": "Work a gold bulla."
+        },
+        {
+          "id": "regulus",
+          "kind": "kill",
+          "monster": "regulus",
+          "text": "Defeat Regulus, the basilisk king."
+        }
+      ]
+    },
+    "seriphos": {
+      "name": "Seriphos",
+      "reward": 4000,
+      "tasks": [
+        {
+          "id": "cyclops",
+          "kind": "kill",
+          "monster": "cyclops",
+          "text": "Kill a cyclops."
+        },
+        {
+          "id": "cheese",
+          "kind": "obtain",
+          "item": "cyclops_cheese",
+          "text": "Take a cyclops cheese."
+        },
+        {
+          "id": "flock",
+          "kind": "quest",
+          "quest": "the_shepherds_flock",
+          "text": "Finish The Shepherd's Flock."
+        },
+        {
+          "id": "gorgon",
+          "kind": "kill",
+          "monster": "gorgon",
+          "text": "Kill a gorgon."
+        },
+        {
+          "id": "glass",
+          "kind": "obtain",
+          "item": "glass_vial",
+          "text": "Blow a glass vial."
+        },
+        {
+          "id": "firepot",
+          "kind": "obtain",
+          "item": "firepot",
+          "text": "Fire a firepot."
+        },
+        {
+          "id": "hydra",
+          "kind": "kill",
+          "monster": "hydra",
+          "text": "Defeat the Hydra."
+        }
+      ]
+    }
+  }
+}

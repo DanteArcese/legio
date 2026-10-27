@@ -43,6 +43,8 @@ const HOLLOW := Rect2(-272, 338, 24, 24)
 const CAVE := Vector3(-258, 0, 360.5)
 ## A reedy marsh pool south of the hollow, where the Hydra lairs.
 const MARSH := Rect2(-268, 364, 20, 12)
+## A reed-choked pool below the olive grove where eels can be trapped.
+const EEL_POOL := Rect2(-348, 320, 10, 7)
 ## The broken ruins in the south-west where the gorgons nest.
 const RUINS := Rect2(-350, 342, 30, 26)
 
@@ -76,7 +78,8 @@ func _ready() -> void:
 	_build_temple()
 	_build_cave()
 	_build_ruins()
-	_build_marsh()
+	_build_pool(MARSH, 7311, 60)
+	_build_pool(EEL_POOL, 5120, 30)
 	if dresser:
 		_dress()
 
@@ -91,6 +94,7 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(HOLLOW, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(RUINS, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(MARSH, p)))
+	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(EEL_POOL, p)))
 	h = lerpf(h, 0.0, flat)
 	# Rocky hills rise inland, to the south.
 	h += smoothstep(330.0, 375.0, z) * (3.0 + _noise.get_noise_2d(x * 2.0, z * 2.0) * 2.0) * (1.0 - flat)
@@ -292,24 +296,24 @@ func _build_ruins() -> void:
 		_solid(Vector3(0.7, 1.9, 0.7), figure.position + Vector3(0, 0.95, 0))
 
 
-## The Hydra's marsh: shallow green water over the hollow's floor, ringed
-## with reeds.
-func _build_marsh() -> void:
+## Shallow green water ringed with reeds: the Hydra's marsh over the
+## hollow's floor, and the eel pool below the grove.
+func _build_pool(area: Rect2, reed_seed: int, reeds: int) -> void:
 	var water := MeshInstance3D.new()
 	var plane := PlaneMesh.new()
-	plane.size = MARSH.size
+	plane.size = area.size
 	var material := ShaderMaterial.new()
 	material.shader = preload("res://shaders/water.gdshader")
 	plane.material = material
 	water.mesh = plane
-	water.position = Vector3(MARSH.get_center().x, 0.05, MARSH.get_center().y)
+	water.position = Vector3(area.get_center().x, 0.05, area.get_center().y)
 	add_child(water)
 	var rng := RandomNumberGenerator.new()
-	rng.seed = 7311
+	rng.seed = reed_seed
 	var reed := Color(0.45, 0.55, 0.28)
-	for n in 60:
-		var p := Vector2(rng.randf_range(MARSH.position.x - 1.0, MARSH.end.x + 1.0), rng.randf_range(MARSH.position.y - 1.0, MARSH.end.y + 1.0))
-		if MARSH.grow(-2.0).has_point(p):
+	for n in reeds:
+		var p := Vector2(rng.randf_range(area.position.x - 1.0, area.end.x + 1.0), rng.randf_range(area.position.y - 1.0, area.end.y + 1.0))
+		if area.grow(-2.0).has_point(p):
 			continue
 		var stalk := _visual_box(Vector3(0.06, rng.randf_range(0.8, 1.6), 0.06), Vector3(p.x, 0.5, p.y), reed.darkened(rng.randf_range(0.0, 0.3)))
 		stalk.rotation = Vector3(rng.randf_range(-0.2, 0.2), 0, rng.randf_range(-0.2, 0.2))

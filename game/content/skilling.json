@@ -49,6 +49,16 @@
       "respawn_ticks": 50,
       "color": "#d8b13a",
       "examine": "A seam of gold glints in the rock. Nobody mines here for long."
+    },
+    "silver_rock": {
+      "name": "Silver rock",
+      "ore": "silver_ore",
+      "level": 30,
+      "xp": 40,
+      "difficulty": 0.3,
+      "respawn_ticks": 25,
+      "color": "#c9cdd2",
+      "examine": "Pale veins of silver run through the red rock."
     }
   },
   "recipes": {
@@ -105,6 +115,18 @@
         "output": "gold_bar",
         "level": 40,
         "xp": 23
+      },
+      {
+        "id": "silver_bar",
+        "inputs": [
+          {
+            "item": "silver_ore",
+            "quantity": 1
+          }
+        ],
+        "output": "silver_bar",
+        "level": 30,
+        "xp": 14
       }
     ],
     "smith": [

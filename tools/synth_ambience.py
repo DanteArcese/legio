@@ -339,6 +339,23 @@ def frontier(n, rng):
     )
 
 
+def cicadas(n: int, rng: random.Random) -> list[float]:
+    """A dry, shimmering buzz that swells and fades, like Spanish summer."""
+    buzz = bandpass(noise(n, rng), 4200, 6800)
+    pulse = [0.6 + 0.4 * math.sin(math.tau * 42.0 * i / RATE) for i in range(n)]
+    swell = slow_wobble(n, rng, 5.0, 0.7)
+    return normalise([b * p * w for b, p, w in zip(buzz, pulse, swell)], 1.0)
+
+
+def vipasca(n, rng):
+    picks = echo(scatter(n, rng, clink, 12, (0.05, 0.12)), [(0.19, 0.35), (0.41, 0.15)])
+    return layer(
+        (wind(n, rng, 420, 0.75), 0.3),
+        (cicadas(n, rng), 0.09),
+        (picks, 1.0),
+    )
+
+
 def swish(seconds: float, low: float, high: float, seed: int) -> list[float]:
     rng = random.Random(seed)
     n = int(seconds * RATE)
@@ -378,6 +395,7 @@ def main() -> None:
         "ambient_barrow": (barrow, 4),
         "ambient_coast": (coast, 5),
         "ambient_frontier": (frontier, 6),
+        "ambient_vipasca": (vipasca, 7),
     }
     for name, (build, seed) in loops.items():
         write_wav(out / f"{name}.wav", make_loop(build, seed), 0.7)

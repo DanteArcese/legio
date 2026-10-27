@@ -241,5 +241,30 @@
         "price": 30
       }
     ]
+  },
+  "procurator": {
+    "name": "Procurator metallorum",
+    "offers": [
+      {
+        "item": "bronze_pickaxe",
+        "price": 30
+      },
+      {
+        "item": "iron_pickaxe",
+        "price": 110
+      },
+      {
+        "item": "hammer",
+        "price": 10
+      },
+      {
+        "item": "bread",
+        "price": 4
+      },
+      {
+        "item": "cooked_sardine",
+        "price": 8
+      }
+    ]
   }
 }

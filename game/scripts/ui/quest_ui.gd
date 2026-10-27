@@ -8,6 +8,7 @@ extends CanvasLayer
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
+const Tasks := preload("res://scripts/sim/tasks.gd")
 
 @export var driver: Node
 @export var player: Node
@@ -20,6 +21,8 @@ var _lines: Array = []
 var _line_index := 0
 ## The quest log's text area; it scrolls beyond this.
 const LOG_HEIGHT := 330.0
+## How far a d-pad press scrolls the log.
+const LOG_SCROLL_STEP := 120.0
 var _log_panel: PanelContainer
 var _log_text: RichTextLabel
 
@@ -41,6 +44,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("quest_log"):
 		toggle_log()
+		get_viewport().set_input_as_handled()
+	# On a controller the d-pad scrolls the open log (it zooms otherwise).
+	elif is_log_open() and event is InputEventJoypadButton and (event.is_action_pressed("camera_zoom_in") or event.is_action_pressed("camera_zoom_out")):
+		var bar := _log_text.get_v_scroll_bar()
+		bar.value += LOG_SCROLL_STEP * (-1.0 if event.is_action_pressed("camera_zoom_in") else 1.0)
 		get_viewport().set_input_as_handled()
 
 
@@ -174,7 +182,21 @@ func _refresh_log() -> void:
 				var giver: String = ContentDB.npc(quest["giver"]).get("name", "someone")
 				text += "[color=#d08080][b]%s[/b][/color]\n    %s Speak to %s to begin.\n" % [quest["name"], quest["summary"], giver]
 		text += "\n"
+	text += _tasks_text(combatant)
 	_log_text.text = text
+
+
+## Region tasks under the quests: each region's count, and what's left.
+func _tasks_text(combatant: RefCounted) -> String:
+	var text := "[color=#9fc6e8][b]Region tasks[/b][/color]\n"
+	for region_id in Tasks.regions():
+		var region: Dictionary = Tasks.regions()[region_id]
+		var count := Tasks.progress(combatant, region_id)
+		text += "[b]%s[/b]  (%d / %d, %d denarii)\n" % [region["name"], count[0], count[1], region["reward"]]
+		for task in region["tasks"]:
+			var done: bool = combatant.tasks_done.has(Tasks.key(region_id, task["id"]))
+			text += ("    [color=#8fd18f]%s[/color]\n" if done else "    %s\n") % task["text"]
+	return text
 
 
 func _build_dialogue() -> void:

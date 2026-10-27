@@ -460,5 +460,37 @@
         "bare_legs"
       ]
     }
+  },
+  "gorgon": {
+    "name": "Gorgon",
+    "plural": "Gorgons",
+    "level": 70,
+    "stats": {
+      "attack": 62,
+      "strength": 58,
+      "defence": 60,
+      "vitality": 85
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 40,
+    "drops": "gorgon",
+    "slayer": {
+      "level": 60,
+      "ward_item": "mirror_shield",
+      "unwarded_effect": "gorgon_gaze"
+    },
+    "examine": "Snakes for hair and bronze for skin. Look at her reflection, never at her.",
+    "appearance": {
+      "model": "humanoid",
+      "color": "#4c5e3c",
+      "accent": "#a08a3a",
+      "size": 1.25,
+      "features": [
+        "snakes",
+        "green_skin",
+        "glowing_eyes"
+      ]
+    }
   }
 }

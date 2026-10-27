@@ -346,6 +346,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Seriphos: cyclopes (#173).** Four cyclopes (level 62) graze a grassy hollow cut into the island's north-east hills, reached by a path up from the temple, with their cave in its far side. They hit hard and slowly, and every fourth attack one heaves a boulder at a spot marked with an amber ring (the boss throw, with a `boulder` kind; any monster with a `boss` block can throw). They drop coins, steel, olives, sometimes a steel scutum, and cyclops cheese, which heals 14 (Polyphemus was a shepherd). Aulus (combat 55) and Ursa assign them.
 
+**Seriphos: gorgons (#174).** Four gorgons (level 70, Slayer 60) nest in broken marble ruins in the south-west of the island, among the stone figures of earlier visitors, caught with an arm flung up too late. Unwarded, the gaze always lands, drains Attack, Strength and Defence like a basilisk's, and the blow hits up to half again as hard. Any of three wards stops it: the mirror shield, the Crown of Regulus, or the gorgons' own rare drop, the Aegis (Athena's shield: Defence 20, the best shield, Defence 50 and Slayer 60 to wield). They also drop gorgon scales (Aulus buys them), steel and gold. Ursa assigns gorgons at Slayer 60.
+
 **World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
 
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market (all since added except the market).

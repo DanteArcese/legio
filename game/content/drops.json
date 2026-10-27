@@ -677,5 +677,48 @@
         "weight": 3
       }
     ]
+  },
+  "gorgon": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          120,
+          300
+        ],
+        "weight": 8
+      },
+      {
+        "item": "gorgon_scale",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "item": "steel_bar",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "gold_ore",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "aegis",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 3
+      }
+    ]
   }
 }

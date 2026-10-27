@@ -20,6 +20,8 @@ const CHASE_RANGE := 30.0
 const ENTRANCE_TICKS := 6
 ## The most a basilisk's gaze drains a level, as a share of it.
 const PETRIFY_MAX_DRAIN := 0.3
+## How much harder a gorgon hits an unwarded player.
+const GORGON_DAMAGE := 1.5
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.
@@ -104,7 +106,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	var chance := CombatMath.hit_chance(floori(roll[0] * boost), roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
 	var damage := 0
 	var lands: bool = sim.rng.randf() < chance
-	if effect in ["drain_vitality", "entrance", "petrify"] and target.is_player():
+	if effect in ["drain_vitality", "entrance", "petrify", "gorgon_gaze"] and target.is_player():
 		lands = true
 	# Silenced: this attack falls on nothing, and the curse is spent.
 	if attacker.curses.has("silenced"):
@@ -112,14 +114,18 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		attacker.curses.erase("silenced")
 		events.append({"type": "silenced_miss", "id": attacker.id, "tick": tick})
 	if lands and not (effect == "no_damage" and attacker.is_player()):
-		damage = mini(sim.rng.randi_range(1, floori(attacker.max_hit() * boost)), target.hp)
+		var max_damage := floori(attacker.max_hit() * boost)
+		# A gorgon's gaze holds an unwarded player still for the blow.
+		if effect == "gorgon_gaze" and target.is_player():
+			max_damage = floori(max_damage * GORGON_DAMAGE)
+		damage = mini(sim.rng.randi_range(1, max_damage), target.hp)
 	target.hp -= damage
 	# Kills by a summoned shade count as its caster's.
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
 	# A basilisk's gaze stiffens an unwarded player's limbs, a level at a time.
-	if effect == "petrify" and target.is_player():
+	if effect in ["petrify", "gorgon_gaze"] and target.is_player():
 		_petrify(target, events)
 	# A siren's song holds an unwarded player: they can't strike for a while.
 	if effect == "entrance" and target.is_player():
@@ -169,7 +175,7 @@ func _petrify(player: Combatant, events: Array) -> void:
 		else:
 			player.remedy_boosts[skill] = boost
 	if drained:
-		sim.message(player, "The basilisk's gaze turns your limbs to stone!", events)
+		sim.message(player, "The gaze turns your limbs to stone!", events)
 
 
 func award_combat_xp(attacker: Combatant, damage: int, events: Array) -> void:

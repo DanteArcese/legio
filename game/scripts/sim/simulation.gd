@@ -432,9 +432,11 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 		"buy_villa":
 			villa.buy(player, events)
 		"build":
-			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events)
+			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events, command.get("now", 0.0))
 		"remove_furniture":
 			villa.remove(player, command.get("hotspot", ""), events)
+		"collect_estate":
+			villa.collect(player, command.get("now", 0.0), events)
 		"take_contract":
 			mercatura.take(player, command.get("board", ""), command.get("contract", ""), events)
 		"abandon_contract":

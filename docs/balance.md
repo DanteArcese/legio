@@ -48,6 +48,10 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Cooking | sardines (range) | 34 | 56,920 |
 | Cooking | tuna (range) | 35 | 88,800 |
 | Cooking | tuna (range) | 65 | 142,300 |
+| Cooking | olive oil (villa press) | 25 | 54,000 |
+| Cooking | olive oil (villa press) | 50 | 54,000 |
+| Cooking | estate wine (villa press) | 35 | 80,010 |
+| Cooking | estate wine (villa press) | 60 | 80,010 |
 | Smithing | bronze pugio | 1 | 17,076 |
 | Smithing | bronze pugio | 10 | 17,076 |
 | Smithing | iron gladius | 19 | 67,350 |

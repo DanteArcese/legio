@@ -381,6 +381,10 @@
         "price": 6
       },
       {
+        "item": "vine_cutting",
+        "price": 25
+      },
+      {
         "item": "cooked_tuna",
         "price": 20
       },

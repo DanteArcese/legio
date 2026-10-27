@@ -19,7 +19,15 @@ const LABEL_HEIGHT := {"quadruped": 1.3, "humanoid": 2.4, "bird": 1.7, "kaykit":
 @onready var _entity: Node = $SimEntity
 
 var _model: Node3D
+var _radius := 0.35
+## Near enough to the player to be seen: only these animate and keep apart.
+var _near_player := true
 
+
+## Monsters ease apart from each other and the player rather than collide
+## (so crowds never trap the player): this fast, scaled by how deep the overlap is.
+const SEPARATION_SPEED := 3.0
+const PLAYER_RADIUS := 0.35
 
 ## Frames a cached waypoint lasts before the path is queried again.
 const PATH_REFRESH_FRAMES := 15
@@ -49,6 +57,8 @@ func _ready() -> void:
 	var size := float(look["size"])
 	var shape := CapsuleShape3D.new()
 	shape.radius = 0.35 * size
+	_radius = shape.radius
+	add_to_group("monster_bodies")
 	shape.height = maxf(BODY_HEIGHT[look["model"]] * size, shape.radius * 2.0)
 	$Collision.shape = shape
 	$Collision.position.y = shape.height / 2.0
@@ -83,8 +93,9 @@ func _physics_process(delta: float) -> void:
 			var waypoint := _waypoint_toward(combatant.move_target)
 			var step: Vector3 = (waypoint - global_position) * Vector3(1, 0, 1)
 			direction = step.normalized() if step.length() > 0.01 else Vector3.ZERO
-	velocity.x = direction.x * move_speed
-	velocity.z = direction.z * move_speed
+	var push := _separation() if _near_player and combatant and combatant.is_alive() else Vector3.ZERO
+	velocity.x = direction.x * move_speed + push.x * SEPARATION_SPEED
+	velocity.z = direction.z * move_speed + push.z * SEPARATION_SPEED
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	move_and_slide()
@@ -93,10 +104,41 @@ func _physics_process(delta: float) -> void:
 	if _animate_check <= 0 and _model.has_method("set_animating"):
 		_animate_check = ANIMATE_CHECK_FRAMES
 		var player := get_tree().get_first_node_in_group("player") as Node3D
-		_model.set_animating(player == null or player.global_position.distance_to(global_position) < ANIMATE_RANGE)
+		_near_player = player == null or player.global_position.distance_to(global_position) < ANIMATE_RANGE
+		_model.set_animating(_near_player)
 	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
 	if direction != Vector3.ZERO:
 		rotation.y = lerp_angle(rotation.y, atan2(-direction.x, -direction.z), minf(turn_speed * delta, 1.0))
+
+
+func radius() -> float:
+	return _radius
+
+
+## Which way, and how hard, to ease out of overlaps with other living
+## monsters and the player: 0 when clear, up to 1 per overlap when centred.
+func _separation() -> Vector3:
+	var push := Vector3.ZERO
+	for other in get_tree().get_nodes_in_group("monster_bodies"):
+		if other == self or not other.visible:
+			continue
+		push += _away_from(other.global_position, _radius + other.radius())
+	var player := get_tree().get_first_node_in_group("player") as Node3D
+	if player:
+		push += _away_from(player.global_position, _radius + PLAYER_RADIUS)
+	return push
+
+
+func _away_from(point: Vector3, clearance: float) -> Vector3:
+	var offset := (global_position - point) * Vector3(1, 0, 1)
+	var distance := offset.length()
+	if distance >= clearance:
+		return Vector3.ZERO
+	if distance < 0.01:
+		# Exactly on top: pick a direction from the instance so pairs split.
+		offset = Vector3(1, 0, 0).rotated(Vector3.UP, float(get_instance_id() % 628) / 100.0)
+		distance = 0.01
+	return offset / distance * (clearance - distance) / clearance
 
 
 ## The next navmesh waypoint toward target. Path queries are costly, so the

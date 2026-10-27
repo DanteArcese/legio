@@ -373,6 +373,7 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - You choose the mode when you create a character. It is stored in the save, and you can leave the mode later but never re-enter it.
 - Restrictions: you can't use the forum market, and you can't pick up items you didn't earn. In single-player, the restriction that matters is the market. You also can't buy materials from the trade contracts that Mercatura delivers.
 - **Architecture impact:** every item-acquisition path (shops, market, drops, rewards) goes through one place that checks the account mode. Content data marks shop stock that a Solitarius character can't buy.
+- **Built (#176): leaving.** A Solitarius can give the mode up from the pause menu ("Leave the Solitarius path", pressed twice to be sure); it's permanent. The new-character screen says plainly what each path means while there's no market yet.
 - Possible later: a "hardcore" variant with one life, and group modes in the MMO.
 
 ## Other decisions

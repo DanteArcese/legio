@@ -377,6 +377,11 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			else:
 				player.special_armed = not player.special_armed
 				events.append({"type": "special_armed", "id": player.id, "armed": player.special_armed, "tick": tick})
+		"leave_solitarius":
+			if player.account_mode == "solitarius":
+				player.account_mode = "standard"
+				message(player, "You give up the Solitarius path. From now on you may trade like anyone else.", events)
+				events.append({"type": "account_mode_changed", "id": player.id, "mode": "standard", "tick": tick})
 		"talk":
 			quests.talk(player, command.get("npc", ""), events)
 		"steal":

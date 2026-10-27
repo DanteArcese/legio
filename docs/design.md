@@ -70,7 +70,7 @@ Kept as a core skill and the center of progression.
 |---|---|
 | Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying. |
 | Woodcutting | Oak, pine, cedar, olive wood. |
-| Fishing | Anchovy and mackerel feed garum production; tuna and eels come later. |
+| Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.

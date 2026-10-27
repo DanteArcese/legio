@@ -1114,6 +1114,24 @@
     "examine": "A tunny steak, grilled over vine-wood.",
     "heals": 10
   },
+  "eel_pot": {
+    "name": "Eel pot",
+    "value": 40,
+    "examine": "A narrow wicker trap. Eels swim in and can't find the way out.",
+    "tool": "pot",
+    "tool_tier": 1
+  },
+  "raw_eel": {
+    "name": "Raw eel",
+    "value": 22,
+    "examine": "A long, slippery marsh eel. It's still wriggling."
+  },
+  "cooked_eel": {
+    "name": "Eel",
+    "value": 38,
+    "examine": "Eel roasted on a skewer, the Greek way.",
+    "heals": 9
+  },
   "harpy_feather": {
     "name": "Harpy feather",
     "value": 60,

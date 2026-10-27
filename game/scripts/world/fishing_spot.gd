@@ -6,7 +6,7 @@ extends StaticBody3D
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const RING_PERIOD := 1.8
 const RINGS := 3
-const VERBS := {"net": "Net", "rod": "Cast", "harpoon": "Harpoon"}
+const VERBS := {"net": "Net", "rod": "Cast", "harpoon": "Harpoon", "pot": "Trap"}
 
 @export var spot_type := "net_spot"
 

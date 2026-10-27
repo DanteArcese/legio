@@ -264,6 +264,12 @@
           "text": "Take a cyclops cheese."
         },
         {
+          "id": "eel",
+          "kind": "obtain",
+          "item": "cooked_eel",
+          "text": "Trap an eel in the grove pool and roast it."
+        },
+        {
           "id": "flock",
           "kind": "quest",
           "quest": "the_shepherds_flock",

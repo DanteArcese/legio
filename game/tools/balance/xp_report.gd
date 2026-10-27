@@ -19,6 +19,7 @@ var _rows: Array = []
 func _init() -> void:
 	_gather("Mining", "mining", "copper rock", [1, 30], "bronze_pickaxe", func(sim): sim.skilling.add_rock(1, "copper_rock", NEAR), "mine", {"rock": 1}, ["copper_ore"])
 	_gather("Mining", "mining", "iron rock", [15, 40, 70], "iron_pickaxe", func(sim): sim.skilling.add_rock(1, "iron_rock", NEAR), "mine", {"rock": 1}, ["iron_ore"])
+	_gather("Mining", "mining", "clay", [1, 20], "bronze_pickaxe", func(sim): sim.skilling.add_rock(1, "clay_rock", NEAR), "mine", {"rock": 1}, ["clay"])
 	_gather("Mining", "mining", "silver rock", [30, 50, 70], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "silver_rock", NEAR), "mine", {"rock": 1}, ["silver_ore"])
 	_gather("Mining", "mining", "coal rock", [30, 50, 70], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "coal_rock", NEAR), "mine", {"rock": 1}, ["coal"])
 	_gather("Mining", "mining", "gold rock", [40, 60, 80], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "gold_rock", NEAR), "mine", {"rock": 1}, ["gold_ore"])
@@ -38,6 +39,9 @@ func _init() -> void:
 	_make("Fletching", "fletching", "bronze arrows", [1, 15], "fletch", "bronze_arrow", "")
 	_make("Crafting", "crafting", "leather caps", [1, 15], "leatherwork", "leather_cap", "")
 	_make("Crafting", "crafting", "wolfskin jerkins", [22, 40], "leatherwork", "wolfskin_jerkin", "")
+	_make("Crafting", "crafting", "throwing pots", [1, 10], "throw", "unfired_pot", "potters_wheel")
+	_make("Crafting", "crafting", "firing amphorae", [12, 30], "kiln", "amphora", "kiln")
+	_make("Crafting", "crafting", "glass bowls", [32, 50], "kiln", "glass_bowl", "kiln")
 	_make("Medicina", "medicina", "mint tonics", [1, 20], "medicina", "mint_tonic", "")
 	_make("Engineering", "engineering", "planks (sawpit)", [1, 20], "saw", "plank", "sawpit")
 	_thieve("baker's stall", [1, 20], "steal", "bakers_stall", true)
@@ -74,7 +78,7 @@ func _make(skill_name: String, skill: String, method: String, levels: Array, kin
 		return
 	for level in levels:
 		var sim := _player_sim(skill, level)
-		for tool in ["hammer", "knife", "needle", "mortar_and_pestle"]:
+		for tool in ["hammer", "knife", "needle", "mortar_and_pestle", "blowpipe"]:
 			sim.give_item(PLAYER, tool, 1, "test", [])
 		if not station.is_empty():
 			sim.skilling.add_station(station, NEAR)

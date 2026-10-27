@@ -89,6 +89,8 @@ Kept as a core skill and the center of progression.
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |
 
 **Built (#97): leather first.** Boars always drop a hide; the tanning rack at the smithy turns hides into leather. With a needle and thread (from Aulus), leather is sewn anywhere (the inventory's Sew option) into a leather cap (1) and jerkin (7), and with wolf pelts into a wolfskin hood (15) and jerkin (22). All give ranged attack and more defence against arrows than blades: the ranger's armour line.
+
+**Built (#185): pottery and glass.** A potter's yard by the pond, outside the east gate: three clay deposits on the water's edge (Mining 1), a kick-wheel and a brick kiln. Throw clay on the wheel into pots (Crafting 1), bowls (5), amphorae (12) and oil lamps (20), then fire them in the kiln. The kiln also melts sand (sold by Nikias on Seriphos and the fishmonger at Portus Salis) into glass with a blowpipe (Nikias): vials (25) and bowls (32). Everything sells, so it's an early earner; the Tabularium has a page for it.
 | Fletching | Bows, arrows, javelin shafts, sling bullets (lead *glandes*). |
 | Medicina | Replaces Herblore. Remedies drawn from Dioscorides and Galen. |
 

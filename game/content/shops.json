@@ -287,6 +287,11 @@
       {
         "item": "garum",
         "price": 30
+      },
+      {
+        "item": "sand",
+        "price": 12,
+        "quantity": 10
       }
     ],
     "buys": {
@@ -374,6 +379,15 @@
       {
         "item": "cooked_tuna",
         "price": 20
+      },
+      {
+        "item": "sand",
+        "price": 10,
+        "quantity": 10
+      },
+      {
+        "item": "blowpipe",
+        "price": 30
       }
     ],
     "buys": {

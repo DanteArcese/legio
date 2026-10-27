@@ -1,6 +1,7 @@
 extends StaticBody3D
 ## A crafting station: furnace (smelting), anvil (smithing), range or
-## campfire (cooking), or tomb (inscribing).
+## campfire (cooking), tomb (inscribing), and the rest: tanning rack, sawpit,
+## garum vat, potter's wheel and kiln.
 
 const LOOKS := {
 	"furnace": ["Furnace", Color(0.45, 0.25, 0.2), Vector3(1.2, 1.4, 1.2), "Hot enough to smelt ore into bars."],
@@ -11,11 +12,14 @@ const LOOKS := {
 	"sawpit": ["Sawpit", Color(0.45, 0.33, 0.22), Vector3(2.0, 1.0, 0.8), "A log on trestles and a two-man saw. Saw logs into planks here."],
 	"garum_vat": ["Garum vat", Color(0.55, 0.5, 0.45), Vector3(1.4, 0.8, 1.4), "A stone vat of fish and salt, fermenting in the sun. The smell is something else."],
 	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
+	"potters_wheel": ["Potter's wheel", Color(0.5, 0.38, 0.26), Vector3(1.0, 0.9, 1.0), "A kick-wheel and a bench. Throw clay into pots here."],
+	"kiln": ["Kiln", Color(0.62, 0.38, 0.26), Vector3(1.4, 1.6, 1.4), "A beehive kiln of brick. Fire pots, and melt sand into glass with a blowpipe."],
 }
 ## Recipe kinds made at each station.
-const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum", "sawpit": "saw"}
+const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum", "sawpit": "saw",
+	"potters_wheel": "throw", "kiln": "kiln"}
 
-@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit", "potters_wheel", "kiln") var kind := "furnace"
 
 var _flame: MeshInstance3D
 var _light: OmniLight3D
@@ -60,6 +64,10 @@ func _ready() -> void:
 			_build_garum_vat()
 		"sawpit":
 			_build_sawpit()
+		"potters_wheel":
+			_build_potters_wheel()
+		"kiln":
+			_build_kiln()
 	var shape := CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	shape.shape.size = look[2]
@@ -95,6 +103,33 @@ func _add_model(model: String, size: float) -> void:
 	var instance: Node3D = load("res://assets/kenney/survival/%s.glb" % model).instantiate()
 	instance.scale = Vector3.ONE * size
 	add_child(instance)
+
+
+## A kick-wheel: a heavy flywheel below, the throwing head above, a bench.
+func _build_potters_wheel() -> void:
+	var wood := Color(0.5, 0.38, 0.26)
+	_add_cylinder(0.45, 0.12, Vector3(0, 0.12, 0), wood.darkened(0.2))
+	_add_cylinder(0.06, 0.7, Vector3(0, 0.45, 0), wood.darkened(0.35))
+	_add_cylinder(0.28, 0.08, Vector3(0, 0.8, 0), Color(0.6, 0.42, 0.3))
+	_add_cylinder(0.12, 0.18, Vector3(0, 0.93, 0), Color(0.66, 0.46, 0.34))
+	_add_box(Vector3(0.9, 0.08, 0.35), Vector3(0, 0.55, 0.6), wood)
+
+
+## A beehive kiln of red brick with a glowing firebox.
+func _build_kiln() -> void:
+	var brick := Color(0.62, 0.38, 0.26)
+	_add_cylinder(0.7, 0.9, Vector3(0, 0.45, 0), brick)
+	var dome := MeshInstance3D.new()
+	var sphere := SphereMesh.new()
+	sphere.radius = 0.7
+	sphere.height = 1.2
+	sphere.is_hemisphere = true
+	sphere.material = _material(brick.darkened(0.08))
+	dome.mesh = sphere
+	dome.position.y = 0.9
+	add_child(dome)
+	_add_box(Vector3(0.45, 0.35, 0.05), Vector3(0, 0.3, 0.71), Color(1.0, 0.45, 0.1), true)
+	_add_glow(Vector3(0, 0.4, 0.95), 0.0)
 
 
 ## A stone bloomery: a squat stack with a chimney and a glowing mouth.

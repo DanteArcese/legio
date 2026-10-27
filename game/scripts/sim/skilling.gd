@@ -27,9 +27,11 @@ const FISHING_TOOLS := {"net": "small net", "rod": "fishing rod", "harpoon": "ha
 const MAX_BURN_CHANCE := 0.5
 ## Where each kind of recipe is made. Fletching needs no station.
 const STATIONS_FOR_KIND := {"smelt": ["furnace"], "smith": ["anvil"], "cook": ["range", "fire"], "inscribe": ["tomb"], "fletch": [],
-	"tan": ["tanning_rack"], "leatherwork": [], "garum": ["garum_vat"], "medicina": [], "saw": ["sawpit"]}
+	"tan": ["tanning_rack"], "leatherwork": [], "garum": ["garum_vat"], "medicina": [], "saw": ["sawpit"],
+	"throw": ["potters_wheel"], "kiln": ["kiln"]}
 const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus", "fletch": "fletching",
-	"tan": "crafting", "leatherwork": "crafting", "garum": "cooking", "medicina": "medicina", "saw": "engineering"}
+	"tan": "crafting", "leatherwork": "crafting", "garum": "cooking", "medicina": "medicina", "saw": "engineering",
+	"throw": "crafting", "kiln": "crafting"}
 ## Recipe kinds made anywhere, from the inventory, and the verb for each.
 const HANDHELD_KINDS := {"fletch": "Fletch", "leatherwork": "Sew", "medicina": "Mix"}
 

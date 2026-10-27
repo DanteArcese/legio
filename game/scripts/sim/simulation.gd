@@ -28,6 +28,7 @@ const Athletics := preload("res://scripts/sim/athletics.gd")
 const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
+const Arena := preload("res://scripts/sim/arena.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
@@ -43,6 +44,8 @@ const SOLITARIUS_BLOCKED_SOURCES := ["market", "trade"]
 const COLLECTION_SOURCES := ["skilling", "thieving", "quest", "drop", "pet"]
 ## Every combatant regains 1 HP this often.
 const REGEN_INTERVAL := 100
+## Impetus players regain each REGEN_INTERVAL: full from empty in 5 minutes.
+const IMPETUS_PER_REGEN := 20
 
 var tick := 0
 var rng := RandomNumberGenerator.new()
@@ -58,6 +61,7 @@ var athletics := Athletics.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
+var arena := Arena.new(self)
 var pets := Pets.new(self)
 var boss := Boss.new(self)
 var villa := Villa.new(self)
@@ -326,6 +330,23 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 					record_collection(killer, entry["item"], entry["quantity"], events)
 
 
+## Takes a monster alive (an arena capture): it leaves the world and
+## respawns like a kill, but with no drops and no kill credit.
+func capture(victim: Combatant, events: Array) -> void:
+	victim.curses.clear()
+	victim.target_id = -1
+	victim.move_target = null
+	for combatant in _combatants.values():
+		if combatant.target_id == victim.id:
+			combatant.target_id = -1
+	victim.hp = 0
+	victim.last_attacker_id = -1
+	if victim.respawn_ticks >= 0:
+		victim.respawn_at_tick = tick + maxi(victim.respawn_ticks, 1)
+	events.append({"type": "death", "id": victim.id, "captured": true, "tick": tick})
+	boss.on_death(victim, events)
+
+
 static func flat_distance(a: Vector3, b: Vector3) -> float:
 	return Vector2(a.x, a.z).distance_to(Vector2(b.x, b.z))
 
@@ -369,6 +390,20 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			_slayer_task(player, command.get("venator", ""), events)
 		"slayer_reward":
 			_slayer_reward(player, command, events)
+		"take_arena":
+			arena.take(player, command.get("contract", ""), events)
+		"abandon_arena":
+			arena.abandon(player, events)
+		"capture":
+			arena.capture(player, command.get("target", -1), events)
+		"hand_in_arena":
+			arena.hand_in(player, events)
+		"special":
+			if player.equipment.weapon().get("special", {}).is_empty():
+				message(player, "This weapon has no special attack.", events)
+			else:
+				player.special_armed = not player.special_armed
+				events.append({"type": "special_armed", "id": player.id, "armed": player.special_armed, "tick": tick})
 		"leave_solitarius":
 			if player.account_mode == "solitarius":
 				player.account_mode = "standard"
@@ -528,3 +563,5 @@ func _regenerate() -> void:
 	for combatant in _combatants.values():
 		if combatant.is_alive() and combatant.hp < combatant.max_hp:
 			combatant.hp += 1
+		if combatant.is_player():
+			combatant.impetus = mini(combatant.impetus + IMPETUS_PER_REGEN, Combatant.MAX_IMPETUS)

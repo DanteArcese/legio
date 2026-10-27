@@ -166,6 +166,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var styles: Array = Skills.styles_for(_entity.combatant.combat_kind())
 		var next: String = styles[(styles.find(_entity.combatant.style) + 1) % styles.size()]
 		sim_driver.sim.queue_style(_entity.entity_id, next)
+	elif event.is_action_pressed("special_attack") and sim_driver:
+		sim_driver.sim.queue_item_action(_entity.entity_id, "special")
 	elif event.is_action_pressed("interact") and sim_driver:
 		interact()
 	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and sim_driver:
@@ -409,6 +411,28 @@ func travel(doorway: Node3D) -> void:
 func buy(shopkeeper: Node3D, item_id: String) -> void:
 	walk_and_do(shopkeeper.global_position, CLICK_USE_DISTANCE, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
+
+
+func take_arena(lanista: Node3D, contract_id: String) -> void:
+	walk_and_do(lanista.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "take_arena", {"contract": contract_id}))
+
+
+func hand_in_arena(lanista: Node3D) -> void:
+	walk_and_do(lanista.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "hand_in_arena"))
+
+
+func abandon_arena() -> void:
+	sim_driver.sim.queue_item_action(_entity.entity_id, "abandon_arena")
+
+
+## Walks up to a weakened beast and throws a net over it.
+func capture(monster: Node) -> void:
+	var body: Node3D = monster.body()
+	walk_and_do(body.global_position, 2.2, func():
+		sim_driver.sim.queue_stop(_entity.entity_id)
+		sim_driver.sim.queue_item_action(_entity.entity_id, "capture", {"target": monster.entity_id}))
 
 
 func sell(shopkeeper: Node3D, item_id: String) -> void:

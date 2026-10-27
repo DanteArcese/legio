@@ -88,6 +88,9 @@ func _refresh() -> void:
 	var task_text := "No Slayer contract"
 	if not c.slayer_task.is_empty():
 		task_text = "Contract: %d %s left" % [c.slayer_task["remaining"], Slayer.plural_name(c.slayer_task["monster"])]
+	if not c.arena_contract.is_empty():
+		var beast: String = ContentDB.data()["arena"]["contracts"][c.arena_contract["id"]]["monster"]
+		task_text += "   Arena: %s" % ("hand in to Marcia" if c.arena_contract["remaining"] == 0 else "net %d %s" % [c.arena_contract["remaining"], Slayer.plural_name(beast)])
 	if c.pollution > 0.0:
 		task_text += "   Pollution %d%s" % [ceili(c.pollution), " (polluted)" if c.pollution >= 30.0 else ""]
 	var title := Quests.title(c)
@@ -99,6 +102,9 @@ func _refresh() -> void:
 	if c.uses_ammo():
 		var ammo: String = c.equipment.worn["ammo"]
 		ammo_text = "     Ammo: %s" % ("none" if ammo.is_empty() else "%s x%d" % [ContentDB.item(ammo)["name"], c.equipment.ammo_count])
+	var special: Dictionary = c.equipment.weapon().get("special", {})
+	if not special.is_empty():
+		ammo_text += "   Impetus %d%s" % [c.impetus, "  [%s ready]" % special["name"] if c.special_armed else " (F / B)"]
 	_status.text = "%s   (Slayer points: %d)\nHP %d / %d     Style: %s (C / X)%s   Favour %d / %d\nCombat %d   Atk %s   Str %s   Def %s   Rng %s   Rit %s   Pie %d   Vit %d   Slay %d" % [
 		task_text, c.slayer_points, c.hp, c.max_hp, c.style.capitalize(), ammo_text, ceili(c.favour), s.level("pietas"), s.combat_level(),
 		_with_boost(c, "attack"), _with_boost(c, "strength"), _with_boost(c, "defence"), _with_boost(c, "ranged"), _with_boost(c, "ritus"),

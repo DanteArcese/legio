@@ -25,6 +25,9 @@ func run() -> void:
 			driver().sim.queue_item_action(PLAYER, "equip", {"slot": i})
 	await seconds(0.7)
 	me.bonuses["defence"] = 5000
+	# Regulus's venom ignores defence; enough health to walk past his chamber.
+	me.max_hp = 1000
+	me.hp = 1000
 	player().travel(mouth)
 	await _wait_until(func(): return player().global_position.x > 150.0, 20.0)
 	expect(player().global_position.x > 150.0, "down into the gallery")

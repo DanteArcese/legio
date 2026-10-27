@@ -46,6 +46,13 @@ const SOUNDS := {
 	"step_grass": ["footstep_grass_000", "footstep_grass_001", "footstep_grass_002", "footstep_grass_003", "footstep_grass_004"],
 	"step_stone": ["footstep_concrete_000", "footstep_concrete_001", "footstep_concrete_002", "footstep_concrete_003", "footstep_concrete_004"],
 	"click": ["click_001", "click_002"],
+	"throw": ["impactSoft_medium_000", "impactSoft_medium_001"],
+	"kiln": ["metalPot1", "metalPot2"],
+	"jewelcraft": ["metalClick"],
+	"fire": ["impactGlass_light_000", "impactGlass_light_001", "impactGlass_light_002"],
+	"special": ["impactBell_heavy_000"],
+	"net": ["cloth1", "cloth2"],
+	"task_done": ["jingles_PIZZI05"],
 }
 ## Per-sound loudness in dB, for sounds that come out of the packs too hot or too quiet.
 const GAIN_DB := {"step_grass": -10.0, "step_stone": -12.0, "click": -6.0, "level_up": -4.0,
@@ -179,6 +186,9 @@ func _on_sim_event(event: Dictionary) -> void:
 						play("cast", attacker.position)
 					"spear", "venom", "boulder":
 						pass
+					"fire":
+						if target:
+							play("fire", target.position)
 					_:
 						play("swing", attacker.position)
 			if target:
@@ -220,9 +230,22 @@ func _on_sim_event(event: Dictionary) -> void:
 		"slayer_complete":
 			if event["id"] == me:
 				play("contract_done")
-		"quest_complete":
+		"quest_complete", "region_tasks_done":
 			if event["id"] == me:
 				play("quest_done")
+		"task_done":
+			if event["id"] == me:
+				play("task_done")
+		"special":
+			if event["id"] == me:
+				play("special", player.global_position)
+		"captured":
+			var caught: RefCounted = sim.get_combatant(event["id"])
+			if event["by"] == me and caught:
+				play("net", caught.position)
+		"arena_complete":
+			if event["id"] == me:
+				play("coins", player.global_position)
 		"obstacle_started":
 			if event["id"] == me:
 				play("wash", player.global_position)

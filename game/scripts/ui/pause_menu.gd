@@ -9,7 +9,12 @@ extends CanvasLayer
 @export var sound: Node
 @export var skills_ui: Node
 
+const ControlsText := preload("res://scripts/input/controls_text.gd")
+
 var _panel: PanelContainer
+## The controls page, shown in place of the menu.
+var _controls: PanelContainer
+var _controls_back: Button
 var _graphics_button: Button
 var _roofs_button: Button
 ## Shown to Solitarius players; the first press asks, the second gives it up.
@@ -52,8 +57,10 @@ func _ready() -> void:
 			column.add_child(_volume_row(bus))
 	_leave_button = _button("", _leave_solitarius)
 	column.add_child(_leave_button)
+	column.add_child(_button("Controls", show_controls))
 	column.add_child(_button("Quit", func(): get_tree().quit()))
 	_panel.visible = false
+	_build_controls(style)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -65,7 +72,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Esc also closes the skills panel.
 	if skills_ui and skills_ui.is_open():
 		return
-	if is_open():
+	if is_controls_open():
+		_hide_controls()
+	elif is_open():
 		close()
 	else:
 		open()
@@ -81,6 +90,7 @@ func open() -> void:
 
 func close() -> void:
 	_panel.visible = false
+	_controls.visible = false
 	_leave_armed = false
 	get_tree().paused = false
 	var focused := get_viewport().gui_get_focus_owner()
@@ -89,7 +99,58 @@ func close() -> void:
 
 
 func is_open() -> bool:
-	return _panel.visible
+	return _panel.visible or _controls.visible
+
+
+func is_controls_open() -> bool:
+	return _controls.visible
+
+
+func show_controls() -> void:
+	_panel.visible = false
+	_controls.visible = true
+	_controls_back.grab_focus()
+
+
+func _hide_controls() -> void:
+	_controls.visible = false
+	_panel.visible = true
+	(_panel.get_child(0).get_child(1) as Button).grab_focus()
+
+
+## Every action, with its keyboard/mouse and controller binding.
+func _build_controls(style: StyleBox) -> void:
+	_controls = PanelContainer.new()
+	_controls.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	_controls.position -= Vector2(330, 300)
+	_controls.add_theme_stylebox_override("panel", style)
+	add_child(_controls)
+	var column := VBoxContainer.new()
+	column.add_theme_constant_override("separation", 10)
+	_controls.add_child(column)
+	var title := Label.new()
+	title.text = "Controls"
+	title.add_theme_font_size_override("font_size", 28)
+	column.add_child(title)
+	var grid := GridContainer.new()
+	grid.columns = 3
+	grid.add_theme_constant_override("h_separation", 24)
+	grid.add_theme_constant_override("v_separation", 4)
+	column.add_child(grid)
+	for heading in ["", "Keyboard and mouse", "Controller"]:
+		var label := Label.new()
+		label.text = heading
+		label.add_theme_color_override("font_color", Color(0.95, 0.8, 0.5))
+		grid.add_child(label)
+	for row in ControlsText.rows():
+		for cell in row:
+			var label := Label.new()
+			label.text = cell
+			label.add_theme_font_size_override("font_size", 16)
+			grid.add_child(label)
+	_controls_back = _button("Back", _hide_controls)
+	column.add_child(_controls_back)
+	_controls.visible = false
 
 
 func _refresh() -> void:

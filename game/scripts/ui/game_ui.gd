@@ -352,6 +352,8 @@ func _use_inventory_slot(index: int) -> void:
 		_act("eat", {"slot": index})
 	elif item.has("remedy"):
 		_act("drink", {"slot": index})
+	elif item.has("throwable"):
+		_act("throw", {"slot": index})
 	elif not _handheld_kind_for(slot["item"]).is_empty():
 		open_handheld(_handheld_kind_for(slot["item"]), slot["item"])
 	else:
@@ -373,6 +375,8 @@ func _inventory_options(index: int) -> Array:
 		options.append(["Eat", _act.bind("eat", {"slot": index})])
 	if item.has("remedy"):
 		options.append(["Drink", _act.bind("drink", {"slot": index})])
+	if item.has("throwable"):
+		options.append(["Throw at your target", _act.bind("throw", {"slot": index})])
 	if item.has("pet"):
 		options.append(["Let out", _act.bind("release_pet", {"slot": index})])
 	for kind in Skilling.HANDHELD_KINDS:

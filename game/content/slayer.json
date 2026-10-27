@@ -219,6 +219,16 @@
             35
           ],
           "slayer_level": 60
+        },
+        {
+          "monster": "hydra",
+          "weight": 1,
+          "amount": [
+            2,
+            4
+          ],
+          "slayer_level": 75,
+          "combat_level": 90
         }
       ]
     }

@@ -720,5 +720,52 @@
         "weight": 3
       }
     ]
+  },
+  "hydra": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          500,
+          1200
+        ]
+      }
+    ],
+    "rolls": 2,
+    "table": [
+      {
+        "item": "gold_bar",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "item": "gorgon_scale",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "steel_lorica",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "pearl",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "hydra_scale_lorica",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 5
+      }
+    ]
   }
 }

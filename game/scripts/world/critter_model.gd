@@ -3,7 +3,7 @@ extends Node3D
 ## style: soft capsule and sphere shapes, big heads, stubby legs, and big
 ## eyes. Kinds come from content "appearance": quadruped (rat, wolf, boar)
 ## and bird (strix, sirens, harpies), with optional features (ears, round_ears, long_snout,
-## tusks, bristles, tail, lizard, ear_tufts, woman_face).
+## tusks, bristles, tail, lizard, many_heads, ear_tufts, woman_face).
 ##
 ## Same API as KaykitCharacter: create(), animate(delta, speed), attack(),
 ## hurt(), die(), revive(), set_work().
@@ -142,6 +142,17 @@ func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 	else:
 		_part(snout, _sphere(0.05, NOSE), Vector3(0, 0.03, -snout_length / 2.0 - 0.06))
 	_add_eyes(_head, 0.27, 0.075)
+	if features.has("many_heads"):
+		# The Hydra: more heads on long necks, fanned up and out.
+		for k in 4:
+			var angle := (k - 1.5) * 0.55
+			var neck := Node3D.new()
+			neck.position = Vector3(sin(angle) * 0.2, 0.2, -0.35)
+			neck.rotation = Vector3(-0.9, angle, 0)
+			_body.add_child(neck)
+			_part(neck, _capsule(0.08, 0.6, main.darkened(0.05), false), Vector3(0, 0.3, 0))
+			var head := _part(neck, _sphere(0.17, main), Vector3(0, 0.62, -0.04))
+			_add_eyes(head, 0.17, 0.05)
 	if features.has("ears"):
 		for side in [-1, 1]:
 			_part(_head, _cone(0.08, 0.22, main.darkened(0.15)), Vector3(side * 0.14, 0.24, 0.02), Vector3(0, 0, side * -0.2))

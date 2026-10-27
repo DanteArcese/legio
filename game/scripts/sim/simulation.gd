@@ -369,6 +369,11 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			_slayer_task(player, command.get("venator", ""), events)
 		"slayer_reward":
 			_slayer_reward(player, command, events)
+		"leave_solitarius":
+			if player.account_mode == "solitarius":
+				player.account_mode = "standard"
+				message(player, "You give up the Solitarius path. From now on you may trade like anyone else.", events)
+				events.append({"type": "account_mode_changed", "id": player.id, "mode": "standard", "tick": tick})
 		"talk":
 			quests.talk(player, command.get("npc", ""), events)
 		"steal":

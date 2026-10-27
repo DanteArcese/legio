@@ -233,6 +233,7 @@ func _complete(player: Combatant, quest_id: String, events: Array) -> void:
 	for entry in rewards.get("items", []):
 		sim.give_item(player.id, entry["item"], entry["quantity"], "quest", events)
 	events.append({"type": "quest_complete", "id": player.id, "quest": quest_id, "tick": sim.tick})
+	sim.tasks.on_quest(player, quest_id, events)
 	sim.message(player, "Quest complete: %s!" % quest["name"], events)
 
 

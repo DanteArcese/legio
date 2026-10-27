@@ -287,6 +287,11 @@
       {
         "item": "garum",
         "price": 30
+      },
+      {
+        "item": "sand",
+        "price": 12,
+        "quantity": 10
       }
     ],
     "buys": {
@@ -383,6 +388,15 @@
         "item": "cyclops_cheese",
         "price": 60,
         "requires_quest": "the_shepherds_flock"
+      },
+      {
+        "item": "sand",
+        "price": 10,
+        "quantity": 10
+      },
+      {
+        "item": "blowpipe",
+        "price": 30
       }
     ],
     "buys": {

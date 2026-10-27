@@ -28,4 +28,5 @@ func run() -> void:
 		await seconds(0.25)
 	expect(count_events("special", {"id": PLAYER}) == 1, "the twin thrust lands on the dummy")
 	expect(me.impetus == 75, "spent 25 (%d left)" % me.impetus)
+	expect(main.get_node("Sound").played.get("special", 0) == 1, "with a sound")
 	await shot("thrust")

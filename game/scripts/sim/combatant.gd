@@ -95,6 +95,10 @@ var quests := {}
 var tag := ""
 ## "standard" or "solitarius" (self-sufficient: no market or trading).
 var account_mode := "standard"
+## Region tasks done, as "region/task" keys (see tasks.gd).
+var tasks_done: Array = []
+## Seared by fire until this tick: no regeneration (the hydra's) till then.
+var seared_until := 0
 
 ## Content id for monsters ("" for players and props). Used for drops.
 var monster_id := ""

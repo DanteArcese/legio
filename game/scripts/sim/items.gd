@@ -78,6 +78,10 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			player.next_attack_tick = maxi(player.next_attack_tick, sim.tick + EAT_DELAY)
 			events.append({"type": "ate", "id": player.id, "item": slot["item"], "healed": healed, "tick": sim.tick})
 			events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+		"throw":
+			if slot == null or not ContentDB.item(slot["item"]).has("throwable"):
+				return
+			_throw(player, slot_index, slot["item"], events)
 		"drink":
 			if slot == null or not ContentDB.item(slot["item"]).has("remedy"):
 				return
@@ -110,6 +114,32 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 				sim.message(player, "You need to be at a bank.", events)
 				return
 			_bank_command(player, command, slot, events)
+
+
+## Throws a firepot (or anything throwable) at the player's target: it
+## bursts for a little damage and sears the target, stopping any
+## regeneration (the hydra's) for a while.
+func _throw(player: Combatant, slot_index: int, item_id: String, events: Array) -> void:
+	var throwable: Dictionary = ContentDB.item(item_id)["throwable"]
+	var target: Combatant = sim.get_combatant(player.target_id)
+	if target == null or not target.is_alive():
+		sim.message(player, "Throw it at what? Attack something first.", events)
+		return
+	if sim.flat_distance(player.position, target.position) > float(throwable["range"]):
+		sim.message(player, "That's too far to throw.", events)
+		return
+	_remove_from_slot(player, slot_index, 1)
+	var damage := mini(sim.rng.randi_range(throwable["damage"][0], throwable["damage"][1]), target.hp)
+	target.hp -= damage
+	target.last_attacker_id = player.id
+	target.seared_until = sim.tick + int(throwable["sear_ticks"])
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+	events.append({"type": "hit", "attacker": player.id, "target": target.id, "damage": damage, "ranged": true, "kind": "fire", "tick": sim.tick})
+	sim.message(player, "The %s bursts into flame, searing the %s's wounds." % [ContentDB.item(item_id)["name"].to_lower(),
+		ContentDB.monster(target.monster_id).get("name", "target").to_lower()], events)
+	sim.combat.award_combat_xp(player, damage, events)
+	if not target.is_alive():
+		sim.kill(target, events)
 
 
 func _drink(player: Combatant, item_id: String, events: Array) -> void:

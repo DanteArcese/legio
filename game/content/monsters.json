@@ -492,5 +492,50 @@
         "glowing_eyes"
       ]
     }
+  },
+  "hydra": {
+    "name": "The Hydra",
+    "level": 98,
+    "stats": {
+      "attack": 80,
+      "strength": 74,
+      "defence": 72,
+      "vitality": 99
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 120,
+    "drops": "hydra",
+    "slayer": {
+      "level": 75
+    },
+    "boss": {
+      "throw_every": 3,
+      "throw_delay": 3,
+      "throw_radius": 1.8,
+      "throw_damage": [
+        14,
+        28
+      ],
+      "enrage_below": 0.3,
+      "enrage_speed": 3,
+      "throw_kind": "venom"
+    },
+    "regenerate": {
+      "amount": 2
+    },
+    "examine": "Nine heads, they say, though you count six. Cut one and two grow back. Fire is the only answer.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#3f6a4a",
+      "accent": "#9fbf6a",
+      "size": 2.8,
+      "features": [
+        "long_snout",
+        "tail",
+        "lizard",
+        "many_heads"
+      ]
+    }
   }
 }

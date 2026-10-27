@@ -29,7 +29,7 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest", "requires_unlock"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item"}
 MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
@@ -432,7 +432,19 @@ def _check_pietas(pietas, items, errors):
 
 
 def _check_shop(where, shop, items, errors):
-    _check_keys(where, shop, {"name", "offers", "requires_quest"}, {"name", "offers"}, errors)
+    _check_keys(where, shop, {"name", "offers", "requires_quest", "buys"}, {"name", "offers"}, errors)
+    if "buys" in shop:
+        buys = shop["buys"]
+        _check_keys(f"{where}.buys", buys, {"items", "rate"}, {"items", "rate"}, errors)
+        _check_number(f"{where}.buys", "rate", buys.get("rate"), 0.05, 1.0, errors)
+        wanted = buys.get("items")
+        if wanted != "*":
+            if not isinstance(wanted, list) or not wanted:
+                errors.append(f"{where}.buys.items: expected \"*\" or a list of items")
+            else:
+                for item_id in wanted:
+                    if item_id not in items:
+                        errors.append(f"{where}.buys.items: unknown item {item_id!r}")
     for i, offer in enumerate(shop.get("offers", [])):
         _check_keys(f"{where}.offers[{i}]", offer, {"item", "price", "quantity", "requires_quest"}, {"item", "price"}, errors)
         if offer.get("item") not in items:

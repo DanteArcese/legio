@@ -7,6 +7,7 @@ const Pietas := preload("res://scripts/sim/pietas.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
+const Items := preload("res://scripts/sim/items.gd")
 
 ## How far the controller menu looks for things.
 ## Menus longer than this fold a shopkeeper's wares into a Trade submenu.
@@ -70,9 +71,33 @@ static func options_for(player: Node3D, node: Node) -> Array:
 			options.append(["Trade (%d wares)" % wares.size(), player.show_options.bind(wares)])
 		else:
 			options.append_array(wares)
+		var sales := sales_for(player, node)
+		if not sales.is_empty():
+			options.append(["Sell (%d)" % sales.size(), player.show_options.bind(sales)])
 		if not examine.is_empty():
 			options.append(examine)
 	return options
+
+
+## A Sell entry for each kind of item in the pack this shopkeeper buys.
+static func sales_for(player: Node3D, node: Node) -> Array:
+	var shop_id: String = node.get_meta("shop_id", "")
+	var inventory: RefCounted = player.get_node("SimEntity").combatant.inventory
+	var seen := {}
+	var sales := []
+	for slot in inventory.slots:
+		if slot == null or seen.has(slot["item"]):
+			continue
+		seen[slot["item"]] = true
+		var price: int = Items.sell_price(shop_id, slot["item"])
+		if price == 0:
+			continue
+		var count: int = inventory.count(slot["item"])
+		var item_name: String = ContentDB.item(slot["item"])["name"].to_lower()
+		if count > 1:
+			item_name += " x%d" % count
+		sales.append(["Sell %s (%d denarii)" % [item_name, price * count], player.sell.bind(node, slot["item"])])
+	return sales
 
 
 ## Every Buy entry for a shopkeeper, whether listed directly or folded

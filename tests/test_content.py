@@ -293,3 +293,8 @@ def test_ward_items_must_exist(content):
 def test_slayer_streaks_list_longest_first(content):
     errors = errors_after(content, lambda c: c["slayer"]["rewards"]["streaks"].reverse())
     assert any("longest streak first" in e for e in errors)
+
+
+def test_shop_buy_lists_must_name_real_items(content):
+    errors = errors_after(content, lambda c: c["shops"]["aulus"]["buys"]["items"].append("unicorn_horn"))
+    assert any("shops.aulus.buys.items: unknown item 'unicorn_horn'" in e for e in errors)

@@ -97,6 +97,8 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			_pickup(player, command.get("pile", -1), command.get("item", ""), events)
 		"buy":
 			_buy(player, command.get("shop", ""), command.get("item", ""), events)
+		"sell":
+			_sell(player, command.get("shop", ""), command.get("item", ""), events)
 		"deposit", "deposit_all", "withdraw":
 			if not _near_bank(player):
 				sim.message(player, "You need to be at a bank.", events)
@@ -260,6 +262,42 @@ func _pickup(player: Combatant, pile_id: int, item_id: String, events: Array[Dic
 
 
 ## Buys from a shopkeeper with coins from the inventory.
+## What this shop pays for one of an item, or 0 if it won't buy it. Coins,
+## pets, worthless things and quest items can't be sold anywhere.
+static func sell_price(shop_id: String, item_id: String) -> int:
+	var buys: Dictionary = ContentDB.shop(shop_id).get("buys", {})
+	var item := ContentDB.item(item_id)
+	if buys.is_empty() or item.is_empty() or item_id == "coins" or item.has("pet") or item.get("quest_item", false):
+		return 0
+	if buys["items"] is Array and not buys["items"].has(item_id):
+		return 0
+	if item["value"] <= 0:
+		return 0
+	return maxi(1, floori(item["value"] * buys["rate"]))
+
+
+## Sells every one of an item the player carries to a shopkeeper.
+func _sell(player: Combatant, shop_id: String, item_id: String, events: Array[Dictionary]) -> void:
+	if not shopkeepers.has(shop_id) or sim.flat_distance(shopkeepers[shop_id], player.position) > SHOP_RANGE:
+		return
+	var shop := ContentDB.shop(shop_id)
+	if shop.has("requires_quest") and not player.quests.get(shop["requires_quest"], {}).get("done", false):
+		sim.message(player, "Only soldiers of the cohort may trade at these stores.", events)
+		return
+	var price := sell_price(shop_id, item_id)
+	var count: int = player.inventory.count(item_id)
+	if price == 0:
+		sim.message(player, "%s won't buy that." % shop["name"], events)
+		return
+	if count == 0:
+		return
+	player.inventory.remove(item_id, count)
+	sim.give_item(player.id, "coins", price * count, "shop", events)
+	var name: String = ContentDB.item(item_id)["name"].to_lower()
+	sim.message(player, "You sell %s for %d denarii." % [("a " + name) if count == 1 else "%d %s" % [count, name], price * count], events)
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+
+
 func _buy(player: Combatant, shop_id: String, item_id: String, events: Array[Dictionary]) -> void:
 	if not shopkeepers.has(shop_id) or sim.flat_distance(shopkeepers[shop_id], player.position) > SHOP_RANGE:
 		return
@@ -271,7 +309,7 @@ func _buy(player: Combatant, shop_id: String, item_id: String, events: Array[Dic
 	if offers.is_empty():
 		return
 	if offers[0].has("requires_quest") and not player.quests.get(offers[0]["requires_quest"], {}).get("done", false):
-		sim.message(player, "The quartermaster keeps that for proven soldiers.", events)
+		sim.message(player, "That isn't for sale to you yet.", events)
 		return
 	var price: int = offers[0]["price"]
 	var quantity: int = offers[0].get("quantity", 1)

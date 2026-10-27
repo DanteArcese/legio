@@ -18,7 +18,7 @@ func run() -> void:
 	var sacerdos: Node3D = _sacerdos()
 	expect(sacerdos != null, "found the sacerdos")
 	if sacerdos:
-		var buy: Array = WorldMenu.options_for(player(), sacerdos).filter(func(o): return o[0].begins_with("Buy beeswax"))
+		var buy: Array = WorldMenu.wares_for(player(), sacerdos).filter(func(o): return o[0].begins_with("Buy beeswax"))
 		expect(buy.size() == 1, "the sacerdos sells beeswax")
 		if buy.size() == 1:
 			buy[0][1].call()

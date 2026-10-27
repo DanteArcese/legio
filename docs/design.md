@@ -336,6 +336,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Vipasca quest (#163): The Silent Gallery.** The procurator metallorum (Mining 30, Smithing 30, Slayer 40) sends you to Foreman Masculus by the pit, who came up from the deep gallery stiff as plaster: basilisks, and the old trick of polished bronze. Kill four basilisks at the gallery mouth and bring the procurator five silver bars for the treasury's quota. Rewards: Mining and Smithing XP (3,000 each), Slayer XP (2,500), 2,000 denarii, and the procurator's stores open: steel pickaxes and coal. Quest steps can now say something as they're handed in (`say`), for NPCs who explain things along the way.
 
+**Selling (#165).** Shopkeepers buy as well as sell. A shop's `buys` lists the items it takes (or `"*"` for anything) and the share of value it pays. The Gaulish merchant in the forum buys anything at 40%; specialists pay more for their trade: Aulus 60% for pelts, hides, feathers and monster parts; the fishmonger 60% for fish; the procurator 60% for ores and bars; the quartermaster 50% for arms and armour. A shopkeeper's menu gets a Sell entry listing what they'd take from your pack, with prices; each entry sells all of that item. Coins, pets, worthless things and quest items (the legion's eagle) can't be sold.
+
 **World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
 
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market (all since added except the market).

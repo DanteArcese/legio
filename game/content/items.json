@@ -1108,7 +1108,8 @@
   "legion_eagle": {
     "name": "Legion eagle",
     "value": 5000,
-    "examine": "A cohort's eagle standard, tarnished green. Priceless to any legionary: you'd never leave it behind."
+    "examine": "A cohort's eagle standard, tarnished green. Priceless to any legionary: you'd never leave it behind.",
+    "quest_item": true
   },
   "mole": {
     "name": "Mole",

@@ -411,6 +411,11 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
 
 
+func sell(shopkeeper: Node3D, item_id: String) -> void:
+	walk_and_do(shopkeeper.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "sell", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
+
+
 func _arrive_through(doorway: Node3D) -> void:
 	if not doorway.warning.is_empty() and not doorway.warned:
 		doorway.warned = true

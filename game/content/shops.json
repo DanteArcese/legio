@@ -62,7 +62,25 @@
         "item": "box_trap",
         "price": 20
       }
-    ]
+    ],
+    "buys": {
+      "items": [
+        "basilisk_eye",
+        "boar_hide",
+        "boar_tusk",
+        "bones",
+        "dire_wolf_pelt",
+        "fox_pelt",
+        "hare_pelt",
+        "harpy_feather",
+        "larval_shroud",
+        "leather",
+        "lemur_ash",
+        "strix_feather",
+        "wolf_pelt"
+      ],
+      "rate": 0.6
+    }
   },
   "libitinarius": {
     "name": "Libitinarius",
@@ -177,7 +195,32 @@
         "price": 380,
         "requires_quest": "duplicarius"
       }
-    ]
+    ],
+    "buys": {
+      "items": [
+        "bronze_galea",
+        "bronze_gladius",
+        "bronze_lorica",
+        "bronze_pugio",
+        "bronze_scutum",
+        "framea",
+        "iron_galea",
+        "iron_gladius",
+        "iron_lorica",
+        "iron_pugio",
+        "iron_scutum",
+        "lorica_hamata",
+        "parma",
+        "spatha",
+        "steel_galea",
+        "steel_gladius",
+        "steel_lorica",
+        "steel_pugio",
+        "steel_scutum",
+        "mirror_shield"
+      ],
+      "rate": 0.5
+    }
   },
   "gallic_merchant": {
     "name": "Gaulish merchant",
@@ -210,7 +253,11 @@
         "price": 10,
         "quantity": 10
       }
-    ]
+    ],
+    "buys": {
+      "items": "*",
+      "rate": 0.4
+    }
   },
   "fishmonger": {
     "name": "Fishmonger",
@@ -240,7 +287,20 @@
         "item": "garum",
         "price": 30
       }
-    ]
+    ],
+    "buys": {
+      "items": [
+        "raw_anchovy",
+        "raw_mackerel",
+        "raw_sardine",
+        "raw_tuna",
+        "cooked_anchovy",
+        "cooked_mackerel",
+        "cooked_sardine",
+        "cooked_tuna"
+      ],
+      "rate": 0.6
+    }
   },
   "procurator": {
     "name": "Procurator metallorum",
@@ -275,6 +335,24 @@
         "price": 40,
         "requires_quest": "the_silent_gallery"
       }
-    ]
+    ],
+    "buys": {
+      "items": [
+        "bronze_bar",
+        "coal",
+        "copper_ore",
+        "galena",
+        "gold_bar",
+        "gold_ore",
+        "iron_bar",
+        "iron_ore",
+        "lead_sheet",
+        "silver_bar",
+        "silver_ore",
+        "steel_bar",
+        "tin_ore"
+      ],
+      "rate": 0.6
+    }
   }
 }

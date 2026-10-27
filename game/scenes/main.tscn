@@ -46,6 +46,7 @@
 [ext_resource type="Script" path="res://scripts/world/vipasca.gd" id="43_vipasca"]
 [ext_resource type="Script" path="res://scripts/world/deep_gallery.gd" id="44_deep_gallery"]
 [ext_resource type="Script" path="res://scripts/world/seriphos.gd" id="45_seriphos"]
+[ext_resource type="Script" path="res://scripts/ui/hints.gd" id="46_hints"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1813,3 +1814,8 @@ metadata/door_side = "+z"
 
 [node name="Collision" type="CollisionShape3D" parent="Seriphos/GreekHouseSouth"]
 shape = SubResource("GreekHouse_shape")
+
+[node name="Hints" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
+script = ExtResource("46_hints")
+driver = NodePath("../SimDriver")
+player = NodePath("../Player")

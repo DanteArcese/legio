@@ -354,6 +354,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Seriphos quest (#183): The Shepherd's Flock.** Melissa, a shepherd girl by the olive grove (Attack, Strength and Defence 45), has lost her father's flock to the cyclopes. Kill four in their hollow and bring her three cyclops cheeses (made from her father's ewes; she can taste the thyme). Rewards: 2,500 XP each in Attack, Strength and Defence, 1,200 denarii, five cheeses, and Nikias starts selling cyclops cheese.
 
+**First-time hints (#199).** A tip card under the minimap the first time something becomes useful: where the controls are (on starting), a weapon's special attack (on the first blow with one), region tasks (on the first one done), the Tabularium (on the first new item), banking (when the pack fills), and Slayer points (on the first contract). Each shows once per machine, remembered in `user://hints.cfg`.
+
 **World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
 
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market (all since added except the market).

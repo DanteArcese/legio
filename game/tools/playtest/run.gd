@@ -57,6 +57,9 @@ func _initialize() -> void:
 	var sound: Node = main.get_node_or_null("Sound")
 	if sound:
 		sound.persist = false
+	var hints: Node = main.get_node_or_null("Hints")
+	if hints:
+		hints.persist = false
 	root.add_child(main)
 
 	var script: GDScript = load("res://tools/playtest/scenarios/%s.gd" % scenario_name)

@@ -72,7 +72,7 @@ func run() -> void:
 		await press("interact")
 	expect(me.quests["tiro"]["done"], "Tiro complete")
 	expect(me.inventory.count("parma") == 1, "rewarded a parma")
-	var options: Array = WorldMenu.options_for(player(), optio).map(func(o): return o[0])
+	var options: Array = WorldMenu.wares_for(player(), optio).map(func(o): return o[0])
 	expect(options.any(func(label): return label.begins_with("Buy iron gladius")), "the quartermaster's stores are open (%s)" % [options])
 	await press("quest_log")
 	expect("complete" in quest_ui.log_text(), "the log shows Tiro complete")

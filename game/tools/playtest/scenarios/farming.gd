@@ -13,7 +13,7 @@ func run() -> void:
 	driver().sim.give_item(PLAYER, "coins", 100, "test", [])
 	var merchant: Node3D = main.get_node("Forum/Merchant")
 	for label in ["Buy trowel", "Buy mint seed"]:
-		var option: Array = WorldMenu.options_for(player(), merchant).filter(func(o): return o[0].begins_with(label))
+		var option: Array = WorldMenu.wares_for(player(), merchant).filter(func(o): return o[0].begins_with(label))
 		expect(option.size() == 1, "the merchant sells: %s" % label)
 		if option.size() == 1:
 			option[0][1].call()

@@ -88,6 +88,10 @@ func _ready() -> void:
 		sim.villa.add_hotspot(hotspot.hotspot_id, hotspot.hotspot_type, hotspot.global_position)
 	for surveyor in get_tree().get_nodes_in_group("surveyors"):
 		sim.villa.set_surveyor(surveyor.global_position)
+	for circus in get_tree().get_nodes_in_group("circus"):
+		sim.circus.set_track(circus.CENTER, circus.HALF, circus.RADIUS)
+	for agent in get_tree().get_nodes_in_group("circus_agents"):
+		sim.circus.set_agent(agent.global_position)
 	for board in get_tree().get_nodes_in_group("trade_boards"):
 		sim.mercatura.add_board(board.board_id, board.global_position)
 	for patch in get_tree().get_nodes_in_group("patches"):

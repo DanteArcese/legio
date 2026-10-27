@@ -1787,5 +1787,10 @@
       "defence": 60,
       "slayer": 70
     }
+  },
+  "victors_palm": {
+    "name": "Victor's palm",
+    "value": 50,
+    "examine": "A palm branch, given to the winning charioteer. The crowd's roar is worth more."
   }
 }

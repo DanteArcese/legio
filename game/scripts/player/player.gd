@@ -32,6 +32,8 @@ const CLICK_MASK := 1 | 4 | 8 | 16 | 32
 ## How close to walk to a clicked interactable before using it.
 const CLICK_USE_DISTANCE := 1.6
 const Athletics := preload("res://scripts/sim/athletics.gd")
+const Circus := preload("res://scripts/sim/circus.gd")
+const ChariotModel := preload("res://scripts/world/chariot_model.gd")
 ## Where the villa's waystone leads: the road into Portus Salis.
 const WAYSTONE_DESTINATION := Vector3(-300, 0, -44)
 ## Fishing spots sit out in the pond; the shore is as close as you get.
@@ -58,6 +60,8 @@ var _on_arrival := {}
 var _model: Node3D
 ## An obstacle crossing being played out: {"from", "to", "elapsed", "duration", "falls", "kind"}.
 var _crossing := {}
+## The chariot under the player during a race.
+var _chariot: Node3D
 ## The sim tick a stop was queued on: the target stays set until the next
 ## tick, and the player shouldn't walk back toward it meanwhile.
 var _stop_issued_at := -1
@@ -81,6 +85,21 @@ func _on_sim_event(event: Dictionary) -> void:
 		var end: Vector3 = done["end"] if event["success"] else done["start"]
 		global_position = Vector3(end.x, 1.0, end.z)
 		_crossing = {}
+		return
+	if event["type"] == "race_started":
+		destination = null
+		_on_arrival = {}
+		global_position = event["position"] + Vector3(0, 1, 0)
+		rotation.y = -PI / 2.0
+		if _chariot == null:
+			_chariot = ChariotModel.build(Color(0.75, 0.2, 0.18))
+			_chariot.position.y = -1.0
+			add_child(_chariot)
+		return
+	if event["type"] == "race_ended":
+		if _chariot:
+			_chariot.queue_free()
+			_chariot = null
 		return
 	if event["type"] != "obstacle_started":
 		return
@@ -413,6 +432,12 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
 
 
+## The factio agent enters you in a chariot race.
+func start_race(agent: Node3D) -> void:
+	walk_and_do(agent.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "start_race"))
+
+
 func take_arena(lanista: Node3D, contract_id: String) -> void:
 	walk_and_do(lanista.global_position, CLICK_USE_DISTANCE, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "take_arena", {"contract": contract_id}))
@@ -590,6 +615,10 @@ func _physics_process(delta: float) -> void:
 		speed *= 1.0 + Athletics.run_speed_bonus(_entity.combatant.skills.level("athletics"))
 	if running and _entity.combatant:
 		speed *= 1.0 + _entity.combatant.blessing_boosts.get("run_speed", 0.0)
+	# In a race the horses set the pace, held back until the start.
+	if _entity.combatant and Circus.is_racing(_entity.combatant):
+		var race: Dictionary = _entity.combatant.race
+		speed = 0.0 if sim_driver.sim.tick < race["start"] else Circus.chariot_speed(_entity.combatant.skills.level("athletics"))
 
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
@@ -605,7 +634,9 @@ func _physics_process(delta: float) -> void:
 	_model.set_work(work)
 	if _model is KaykitCharacter:
 		_model.hold_tool(KaykitCharacter.TOOLS.get(work, ""))
-	_model.animate(delta, Vector2(velocity.x, velocity.z).length())
+	# A charioteer stands braced in the car rather than running.
+	var racing: bool = _entity.combatant != null and Circus.is_racing(_entity.combatant)
+	_model.animate(delta, 0.0 if racing else Vector2(velocity.x, velocity.z).length())
 
 	var facing := direction
 	if face_target:

@@ -210,6 +210,15 @@
             20,
             35
           ]
+        },
+        {
+          "monster": "gorgon",
+          "weight": 4,
+          "amount": [
+            20,
+            35
+          ],
+          "slayer_level": 60
         }
       ]
     }

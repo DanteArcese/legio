@@ -1464,5 +1464,31 @@
     "value": 40,
     "examine": "A wheel of hard ewe's cheese from a cyclops's cave. Polyphemus made it better, they say.",
     "heals": 14
+  },
+  "gorgon_scale": {
+    "name": "Gorgon scale",
+    "value": 180,
+    "examine": "A bronze-green scale from a gorgon. It's warm, and it shouldn't be."
+  },
+  "aegis": {
+    "name": "Aegis",
+    "value": 4000,
+    "examine": "Athena's goatskin shield, set with a gorgon's face. What it shows, nothing wants to look at.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 20,
+        "ritus_defence": -4
+      },
+      "wards": [
+        "mirror_shield"
+      ]
+    },
+    "requirements": {
+      "defence": 50,
+      "slayer": 60
+    }
   }
 }

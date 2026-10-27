@@ -1106,6 +1106,22 @@ monster_id = "cyclops"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -252, 0, 358)
 monster_id = "cyclops"
 
+[node name="Gorgon1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -341, 0, 352)
+monster_id = "gorgon"
+
+[node name="Gorgon2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -331, 0, 357)
+monster_id = "gorgon"
+
+[node name="Gorgon3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -337, 0, 360)
+monster_id = "gorgon"
+
+[node name="Gorgon4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326, 0, 348)
+monster_id = "gorgon"
+
 [node name="Harpy1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -252, 0, -28)
 monster_id = "harpy"

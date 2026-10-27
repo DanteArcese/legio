@@ -72,6 +72,7 @@ func _ready() -> void:
 	_build_bounds()
 	_build_temple()
 	_build_cave()
+	_build_ruins()
 	if dresser:
 		_dress()
 
@@ -237,6 +238,53 @@ func _build_cave() -> void:
 	for spec in [[Vector3(-2.8, 1.6, 1.0), Vector3(1.6, 3.6, 2.2)], [Vector3(2.8, 1.6, 1.0), Vector3(1.6, 3.6, 2.2)], [Vector3(0, 3.8, 1.0), Vector3(7.2, 1.2, 2.4)]]:
 		_visual_box(spec[1], CAVE + spec[0], ROCK.darkened(0.1))
 		_solid(spec[1], CAVE + spec[0])
+
+
+## The gorgons' ruins: broken marble walls round a court, and the stone
+## figures of those who came here before you, caught mid-stride.
+func _build_ruins() -> void:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 6113
+	var corners := [RUINS.position, Vector2(RUINS.end.x, RUINS.position.y), RUINS.end, Vector2(RUINS.position.x, RUINS.end.y)]
+	for side in 4:
+		var a: Vector2 = corners[side]
+		var b: Vector2 = corners[(side + 1) % 4]
+		var segments := 6
+		for k in segments:
+			# Every few stretches the wall has fallen, leaving a way in.
+			if (k + side) % 3 == 1:
+				continue
+			var mid := a.lerp(b, (k + 0.5) / segments)
+			var length := a.distance_to(b) / segments
+			var height := rng.randf_range(0.8, 2.6)
+			var along_x := absf(b.x - a.x) > absf(b.y - a.y)
+			var size := Vector3(length, height, 0.7) if along_x else Vector3(0.7, height, length)
+			_visual_box(size, Vector3(mid.x, height / 2.0, mid.y), MARBLE.darkened(rng.randf_range(0.08, 0.2)))
+			_solid(size, Vector3(mid.x, height / 2.0, mid.y))
+	var stone := Color(0.7, 0.66, 0.58)
+	for spot in [Vector2(-344, 348), Vector2(-334, 352), Vector2(-327, 360), Vector2(-340, 363), Vector2(-330, 345), Vector2(-323, 352)]:
+		var figure := Node3D.new()
+		figure.position = Vector3(spot.x, 0, spot.y)
+		figure.rotation.y = rng.randf() * TAU
+		add_child(figure)
+		var body := _visual_box(Vector3(0.5, 0.65, 0.3), Vector3(0, 1.2, 0), stone)
+		remove_child(body)
+		figure.add_child(body)
+		var head := _cylinder(0.17, 0.32, stone)
+		remove_child(head)
+		figure.add_child(head)
+		head.position = Vector3(0, 1.7, 0)
+		for side in [-1.0, 1.0]:
+			var arm := _visual_box(Vector3(0.14, 0.55, 0.14), Vector3(side * 0.34, 1.25, 0), stone)
+			remove_child(arm)
+			figure.add_child(arm)
+			# One arm thrown up to shield the eyes, too late.
+			arm.rotation.x = -2.2 if side > 0.0 else 0.2
+			var leg := _visual_box(Vector3(0.17, 0.8, 0.17), Vector3(side * 0.13, 0.42, side * 0.12), stone)
+			remove_child(leg)
+			figure.add_child(leg)
+			leg.rotation.x = side * 0.35
+		_solid(Vector3(0.7, 1.9, 0.7), figure.position + Vector3(0, 0.95, 0))
 
 
 ## Olives in the grove, rocks on the hills, and boats at the pier.

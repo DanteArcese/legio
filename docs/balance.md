@@ -44,6 +44,9 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Fishing | harpoon spot (tuna) | 40 | 34,160 |
 | Fishing | harpoon spot (tuna) | 60 | 59,120 |
 | Fishing | harpoon spot (tuna) | 90 | 91,280 |
+| Fishing | eel pool | 30 | 28,500 |
+| Fishing | eel pool | 50 | 45,420 |
+| Fishing | eel pool | 80 | 68,460 |
 | Cooking | sardines (range) | 1 | 53,040 |
 | Cooking | sardines (range) | 34 | 56,920 |
 | Cooking | tuna (range) | 35 | 88,800 |

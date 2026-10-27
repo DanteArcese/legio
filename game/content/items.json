@@ -400,6 +400,71 @@
       "ammo_type": "sling_bullet"
     }
   },
+  "amentum": {
+    "name": "Amentum",
+    "value": 40,
+    "examine": "A leather throwing loop. Wound round a javelin's shaft, it spins the throw and nearly doubles the distance.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 10
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 5.0,
+      "ammo": "javelin",
+      "special": {
+        "name": "pilum volley",
+        "cost": 50,
+        "effect": "heavy"
+      }
+    }
+  },
+  "bronze_javelin": {
+    "name": "Bronze javelin",
+    "value": 6,
+    "examine": "A light verutum with a bronze head. Thrown, not shot.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 14
+      },
+      "ammo_type": "javelin"
+    }
+  },
+  "iron_javelin": {
+    "name": "Iron javelin",
+    "value": 12,
+    "examine": "An iron-headed verutum. It punches through hide.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 20
+      },
+      "ammo_type": "javelin"
+    },
+    "requirements": {
+      "ranged": 15
+    }
+  },
+  "steel_pilum": {
+    "name": "Steel pilum",
+    "value": 22,
+    "examine": "A legionary's pilum: a long steel shank that bends in a shield and won't come out.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 28
+      },
+      "ammo_type": "javelin"
+    },
+    "requirements": {
+      "ranged": 30
+    }
+  },
   "galena": {
     "name": "Galena",
     "value": 10,
@@ -1048,6 +1113,24 @@
     "value": 50,
     "examine": "A tunny steak, grilled over vine-wood.",
     "heals": 10
+  },
+  "eel_pot": {
+    "name": "Eel pot",
+    "value": 40,
+    "examine": "A narrow wicker trap. Eels swim in and can't find the way out.",
+    "tool": "pot",
+    "tool_tier": 1
+  },
+  "raw_eel": {
+    "name": "Raw eel",
+    "value": 22,
+    "examine": "A long, slippery marsh eel. It's still wriggling."
+  },
+  "cooked_eel": {
+    "name": "Eel",
+    "value": 38,
+    "examine": "Eel roasted on a skewer, the Greek way.",
+    "heals": 9
   },
   "harpy_feather": {
     "name": "Harpy feather",

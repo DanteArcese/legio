@@ -1,7 +1,8 @@
 extends Node3D
-## A boss's thrown spear: a red ring on the ground where it will land, and
-## the spear arcing down onto it, timed to land with the simulation. Purely
-## visual; the driver frees it when the throw lands.
+## A boss's throw: a ring on the ground where it will land, and the missile
+## arcing down onto it, timed to land with the simulation. A spear (red
+## ring) or a glob of venom (green ring). Purely visual; the driver frees
+## it when the throw lands.
 
 const SPEAR_LENGTH := 1.8
 const ARC_HEIGHT := 5.0
@@ -10,16 +11,22 @@ var _disc: MeshInstance3D
 var _age := 0.0
 
 
-static func spawn(parent: Node, from: Vector3, at: Vector3, radius: float, seconds: float) -> Node3D:
+const RING_COLORS := {"spear": Color(0.9, 0.12, 0.08, 0.5), "venom": Color(0.35, 0.85, 0.15, 0.5)}
+
+
+static func spawn(parent: Node, from: Vector3, at: Vector3, radius: float, seconds: float, kind := "spear") -> Node3D:
 	var marker := new()
 	parent.add_child(marker)
 	marker.global_position = at + Vector3(0, 0.06, 0)
-	marker._build(radius)
-	marker._throw(from + Vector3(0, 1.6, 0), seconds)
+	marker._build(radius, RING_COLORS.get(kind, RING_COLORS["spear"]))
+	if kind == "venom":
+		marker._spit(from + Vector3(0, 1.0, 0), seconds)
+	else:
+		marker._throw(from + Vector3(0, 1.6, 0), seconds)
 	return marker
 
 
-func _build(radius: float) -> void:
+func _build(radius: float, color: Color) -> void:
 	_disc = MeshInstance3D.new()
 	var disc := CylinderMesh.new()
 	disc.top_radius = radius
@@ -27,7 +34,7 @@ func _build(radius: float) -> void:
 	disc.height = 0.03
 	disc.radial_segments = 24
 	var material := StandardMaterial3D.new()
-	material.albedo_color = Color(0.9, 0.12, 0.08, 0.5)
+	material.albedo_color = color
 	material.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 	material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 	disc.material = material
@@ -52,6 +59,25 @@ func _throw(from: Vector3, seconds: float) -> void:
 		spear.global_position = at
 		if at.distance_to(ahead) > 0.001:
 			spear.look_at(ahead, Vector3.UP), 0.0, 1.0, maxf(seconds, 0.1))
+
+
+## A glob of venom lobbed in a high arc.
+func _spit(from: Vector3, seconds: float) -> void:
+	var glob := MeshInstance3D.new()
+	var sphere := SphereMesh.new()
+	sphere.radius = 0.22
+	sphere.height = 0.44
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.4, 0.9, 0.2)
+	material.emission_enabled = true
+	material.emission = Color(0.25, 0.6, 0.1)
+	sphere.material = material
+	glob.mesh = sphere
+	add_child(glob)
+	var to := global_position
+	var tween := glob.create_tween()
+	tween.tween_method(func(t: float):
+		glob.global_position = from.lerp(to, t) + Vector3(0, sin(t * PI) * ARC_HEIGHT, 0), 0.0, 1.0, maxf(seconds, 0.1))
 
 
 func _process(delta: float) -> void:

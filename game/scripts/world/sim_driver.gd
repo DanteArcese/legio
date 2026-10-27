@@ -216,7 +216,7 @@ func _mirror_ground(event: Dictionary) -> void:
 			var thrower: Node = _entities.get(event["id"])
 			var from: Vector3 = thrower.body().global_position if thrower else event["position"]
 			var seconds: float = (event["lands_at"] - event["tick"]) * clock.tick_length
-			_strikes[event["strike"]] = StrikeMarker.spawn(get_parent(), from, event["position"], event["radius"], seconds)
+			_strikes[event["strike"]] = StrikeMarker.spawn(get_parent(), from, event["position"], event["radius"], seconds, event.get("kind", "spear"))
 		"strike_land":
 			var marker: Node = _strikes.get(event["strike"])
 			if marker:

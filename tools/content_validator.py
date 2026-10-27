@@ -179,7 +179,9 @@ def _check_item(where, item_id, item, items, errors):
 
 
 def _check_boss(where, boss, attack_speed, errors):
-    _check_keys(where, boss, BOSS_KEYS, BOSS_KEYS, errors)
+    _check_keys(where, boss, BOSS_KEYS | {"throw_kind"}, BOSS_KEYS, errors)
+    if boss.get("throw_kind", "spear") not in ("spear", "venom"):
+        errors.append(f"{where}.throw_kind: must be spear or venom")
     _check_int(where, "throw_every", boss.get("throw_every"), 2, errors)
     _check_int(where, "throw_delay", boss.get("throw_delay"), 1, errors)
     _check_int(where, "enrage_speed", boss.get("enrage_speed"), 1, errors)

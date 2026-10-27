@@ -624,6 +624,20 @@
         "stop_burning": 55
       },
       {
+        "id": "cooked_eel",
+        "inputs": [
+          {
+            "item": "raw_eel",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_eel",
+        "level": 28,
+        "xp": 75,
+        "burnt": "burnt_food",
+        "stop_burning": 58
+      },
+      {
         "id": "cooked_tuna",
         "inputs": [
           {
@@ -1406,6 +1420,18 @@
           "fish": "raw_tuna",
           "level": 40,
           "xp": 80
+        }
+      ]
+    },
+    "eel_spot": {
+      "name": "Eel pool",
+      "tool": "pot",
+      "examine": "Dark water under the reeds. Something long and thin flicks past.",
+      "catches": [
+        {
+          "fish": "raw_eel",
+          "level": 30,
+          "xp": 60
         }
       ]
     }

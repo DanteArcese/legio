@@ -23,7 +23,8 @@ const LEGION_TEXTURES := {
 	"adventurers/Rogue": "res://assets/kaykit/adventurers/rogue_texture_legion.png",
 	"adventurers/Knight": "res://assets/kaykit/adventurers/knight_texture_legion.png",
 }
-const SHIELDS := {"bronze_scutum": "weapons/shield_square", "iron_scutum": "weapons/shield_square", "steel_scutum": "weapons/shield_square", "parma": "weapons/shield_round"}
+const SHIELDS := {"bronze_scutum": "weapons/shield_square", "iron_scutum": "weapons/shield_square", "steel_scutum": "weapons/shield_square", "parma": "weapons/shield_round",
+	"mirror_shield": "weapons/shield_round"}
 ## Meshes each outfit hides unless the matching headgear is worn.
 const HEADGEAR := {
 	"adventurers/Knight": ["Knight_Helmet", ["bronze_galea", "iron_galea", "steel_galea"]],

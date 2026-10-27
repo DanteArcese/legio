@@ -1046,6 +1046,22 @@ monster_id = "rock_crab"
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -266, 0, 7)
 monster_id = "rock_crab"
 
+[node name="Basilisk1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 432)
+monster_id = "basilisk"
+
+[node name="Basilisk2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 0, 435)
+monster_id = "basilisk"
+
+[node name="Basilisk3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 431)
+monster_id = "basilisk"
+
+[node name="Basilisk4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 438)
+monster_id = "basilisk"
+
 [node name="Harpy1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -252, 0, -28)
 monster_id = "harpy"

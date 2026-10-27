@@ -121,16 +121,17 @@ func _drink(player: Combatant, item_id: String, events: Array) -> void:
 	sim.message(player, "You drink the %s: +%d %s." % [name, amount, skill.capitalize()], events)
 
 
-## Remedy boosts wear off a level at a time.
+## Remedy boosts wear off a level at a time, and drains (negative boosts,
+## like a basilisk's gaze) recover the same way.
 func decay_remedies(players: Array) -> void:
 	for player: Combatant in players:
 		for skill in player.remedy_boosts.keys():
 			var boost: Dictionary = player.remedy_boosts[skill]
 			if sim.tick < boost["next_decay"]:
 				continue
-			boost["amount"] -= 1
+			boost["amount"] -= signi(boost["amount"])
 			boost["next_decay"] = sim.tick + REMEDY_DECAY_TICKS
-			if boost["amount"] <= 0:
+			if boost["amount"] == 0:
 				player.remedy_boosts.erase(skill)
 
 

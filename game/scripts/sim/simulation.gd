@@ -438,7 +438,11 @@ func _slayer_task(player: Combatant, venator_id: String, events: Array[Dictionar
 		return
 	task = Slayer.assign(venator_id, player.combat_level(), player.skills.level("slayer"), rng, player.slayer_blocked)
 	if task.is_empty():
-		message(player, "Come back when you can handle yourself.", events)
+		var needed: int = ContentDB.venator(venator_id)["combat_level"]
+		if player.combat_level() < needed:
+			message(player, "I only send hunters of combat level %d or more. Come back when you can handle yourself." % needed, events)
+		else:
+			message(player, "I've nothing for you. Unblock a creature or two.", events)
 		return
 	player.slayer_task = task
 	message(player, "Hunt %d %s." % [task["total"], Slayer.plural_name(task["monster"])], events)

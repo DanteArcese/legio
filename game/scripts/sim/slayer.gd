@@ -5,8 +5,11 @@ extends RefCounted
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
 
-## Tasks this venator can give a player at these levels, minus blocked monsters.
+## Tasks this venator can give a player at these levels, minus blocked
+## monsters. None below the venator's own combat level.
 static func eligible_tasks(venator: Dictionary, combat_level: int, slayer_level: int, blocked := []) -> Array:
+	if combat_level < venator["combat_level"]:
+		return []
 	return venator["tasks"].filter(func(task):
 		return combat_level >= task.get("combat_level", 1) \
 			and slayer_level >= task.get("slayer_level", 1) \

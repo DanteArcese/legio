@@ -97,6 +97,75 @@
           "combat_level": 35
         }
       ]
+    },
+    "ursa": {
+      "name": "Ursa the Venatrix",
+      "location": "frontier",
+      "combat_level": 50,
+      "points_per_task": 10,
+      "tasks": [
+        {
+          "monster": "dire_wolf",
+          "weight": 8,
+          "amount": [
+            30,
+            50
+          ]
+        },
+        {
+          "monster": "germanic_raider",
+          "weight": 8,
+          "amount": [
+            30,
+            50
+          ]
+        },
+        {
+          "monster": "siren",
+          "weight": 6,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 30
+        },
+        {
+          "monster": "harpy",
+          "weight": 5,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 20
+        },
+        {
+          "monster": "strix",
+          "weight": 4,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 10
+        },
+        {
+          "monster": "lemur",
+          "weight": 4,
+          "amount": [
+            35,
+            55
+          ]
+        },
+        {
+          "monster": "hrodgar",
+          "weight": 1,
+          "amount": [
+            3,
+            6
+          ],
+          "slayer_level": 50,
+          "combat_level": 75
+        }
+      ]
     }
   },
   "rewards": {

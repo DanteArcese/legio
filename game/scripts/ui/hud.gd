@@ -105,10 +105,12 @@ func _refresh() -> void:
 		s.level("pietas"), s.level("vitality"), s.level("slayer")]
 
 
-## A level with any remedy boost shown, e.g. "12+3".
+## A level with any remedy boost or drain shown, e.g. "12+3" or "12-2".
 static func _with_boost(c: RefCounted, skill: String) -> String:
 	var boost: int = c.remedy_boost(skill)
-	return "%d+%d" % [c.level(skill), boost] if boost > 0 else str(c.level(skill))
+	if boost == 0:
+		return str(c.level(skill))
+	return "%d%+d" % [c.level(skill), boost]
 
 
 ## Top-centre panel naming the current target with an HP bar.

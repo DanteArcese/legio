@@ -20,7 +20,7 @@ EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
 AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
-UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance"}
+UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify"}
 RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
@@ -36,7 +36,7 @@ COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
     "kaykit": set(),
-    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail"},
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard"},
     "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs"},
     "bird": {"ear_tufts", "woman_face"},
 }

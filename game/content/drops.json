@@ -539,5 +539,48 @@
         "weight": 4
       }
     ]
+  },
+  "basilisk": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          80,
+          200
+        ],
+        "weight": 8
+      },
+      {
+        "item": "steel_bar",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "coal",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "silver_ore",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "basilisk_eye",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 3
+      }
+    ]
   }
 }

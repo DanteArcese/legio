@@ -499,6 +499,23 @@
         "level": 32,
         "xp": 30,
         "tool": "hammer"
+      },
+      {
+        "id": "mirror_shield",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 3
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "mirror_shield",
+        "level": 30,
+        "xp": 70,
+        "tool": "hammer"
       }
     ],
     "cook": [

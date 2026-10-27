@@ -324,6 +324,10 @@
         "price": 10
       },
       {
+        "item": "jewellers_tools",
+        "price": 25
+      },
+      {
         "item": "bread",
         "price": 4
       },
@@ -381,6 +385,11 @@
         "price": 20
       },
       {
+        "item": "cyclops_cheese",
+        "price": 60,
+        "requires_quest": "the_shepherds_flock"
+      },
+      {
         "item": "sand",
         "price": 10,
         "quantity": 10
@@ -394,5 +403,14 @@
       "items": "*",
       "rate": 0.45
     }
+  },
+  "lanista": {
+    "name": "Lanista Marcia",
+    "offers": [
+      {
+        "item": "weighted_net",
+        "price": 15
+      }
+    ]
   }
 }

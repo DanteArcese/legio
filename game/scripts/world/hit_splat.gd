@@ -13,7 +13,10 @@ static func spawn(over: Node3D, damage: int) -> void:
 	splat.font_size = 64
 	splat.outline_size = 12
 	splat.modulate = Color(0.9, 0.15, 0.1) if damage > 0 else Color(0.25, 0.5, 0.95)
-	splat.position = Vector3(randf_range(-0.2, 0.2), 1.6, 0.0)
+	# Splats already showing (a twin thrust's two hits) push this one up and
+	# aside, so two numbers never read as one.
+	var stacked := over.get_children().filter(func(c): return c.get_script() == splat.get_script()).size()
+	splat.position = Vector3(randf_range(-0.2, 0.2) + stacked * 0.45, 1.6 + stacked * 0.4, 0.0)
 	over.add_child(splat)
 
 

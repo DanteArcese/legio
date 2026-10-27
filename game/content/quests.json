@@ -58,6 +58,14 @@
         "Mind the gallery. Mind your eyes.",
         "My knees haven't bent properly since the spring. Don't ask."
       ]
+    },
+    "melissa": {
+      "name": "Melissa the shepherd",
+      "examine": "A shepherd girl with a crook taller than she is, and no sheep.",
+      "idle": [
+        "Baa. That's all I've got left: the noise.",
+        "Father says the hollow's no place for a girl. It's no place for sheep either, now."
+      ]
     }
   },
   "quests": {
@@ -677,6 +685,81 @@
           }
         ],
         "unlocks": "The procurator sells steel pickaxes and coal"
+      }
+    },
+    "the_shepherds_flock": {
+      "name": "The Shepherd's Flock",
+      "summary": "The cyclopes have taken a shepherd's flock up to their hollow in the hills of Seriphos. Drive them off.",
+      "giver": "melissa",
+      "requirements": {
+        "skills": {
+          "attack": 45,
+          "strength": 45,
+          "defence": 45
+        }
+      },
+      "start": [
+        "You've got a sword. Good. I've got a crook, and that's not enough.",
+        "The cyclopes came down out of the hills at the new moon and took Father's whole flock. Forty ewes, up to that hollow past the temple, behind the rocks.",
+        "Father won't go. The last man who went came back without his boots, and without his feet in them. Please. Drive them off, and I'll make it worth your while."
+      ],
+      "steps": [
+        {
+          "kind": "kill",
+          "monster": "cyclops",
+          "count": 4,
+          "log": "Drive off the cyclopes: kill four in the hollow in the hills.",
+          "remind": [
+            "Up the path past the temple of Athena, into the hills. Four of them, and they throw rocks. Big ones."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "melissa",
+          "items": [
+            {
+              "item": "cyclops_cheese",
+              "quantity": 3
+            }
+          ],
+          "log": "Bring Melissa three cyclops cheeses: they made it from her father's ewes.",
+          "remind": [
+            "They'll have been milking our ewes, the thieves. Bring me some of their cheese, three wheels: it's ours by rights."
+          ],
+          "say": [
+            "That's Father's cheese. I'd know it anywhere: the ewes graze on thyme, and you can taste it.",
+            "Three wheels. I'll take them down to him. He'll cry. He's always crying. Now he'll be crying about something good."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "melissa",
+          "log": "Tell Melissa the hollow is clear.",
+          "remind": []
+        }
+      ],
+      "complete": [
+        "The flock's coming down! I can hear the bells from here.",
+        "Here: it's not much, but it's what we have. And I'll tell Nikias to keep your cheese for you. The cyclopes won't be making any more, so we will.",
+        "If you're ever hungry on Seriphos, you know where the good cheese is."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 2500,
+          "strength": 2500,
+          "defence": 2500
+        },
+        "items": [
+          {
+            "item": "coins",
+            "quantity": 1200
+          },
+          {
+            "item": "cyclops_cheese",
+            "quantity": 5
+          }
+        ],
+        "unlocks": "Nikias sells cyclops cheese"
       }
     }
   }

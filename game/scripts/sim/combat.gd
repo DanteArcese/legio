@@ -18,6 +18,8 @@ const CHASE_RANGE := 30.0
 ## How long a siren's song holds an unwarded player. Longer than her attack
 ## speed, so a player who keeps listening never gets a blow in.
 const ENTRANCE_TICKS := 6
+## The most a basilisk's gaze drains a level, as a share of it.
+const PETRIFY_MAX_DRAIN := 0.3
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.
@@ -102,7 +104,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	var chance := CombatMath.hit_chance(floori(roll[0] * boost), roll[1], target.effective_level("defence"), target.defence_bonus_against(kind))
 	var damage := 0
 	var lands: bool = sim.rng.randf() < chance
-	if effect in ["drain_vitality", "entrance"] and target.is_player():
+	if effect in ["drain_vitality", "entrance", "petrify"] and target.is_player():
 		lands = true
 	# Silenced: this attack falls on nothing, and the curse is spent.
 	if attacker.curses.has("silenced"):
@@ -116,6 +118,9 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
+	# A basilisk's gaze stiffens an unwarded player's limbs, a level at a time.
+	if effect == "petrify" and target.is_player():
+		_petrify(target, events)
 	# A siren's song holds an unwarded player: they can't strike for a while.
 	if effect == "entrance" and target.is_player():
 		if tick >= target.entranced_until:
@@ -145,6 +150,25 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
 	if not target.is_alive():
 		sim.kill(target, events)
+
+
+## Drains Attack, Strength and Defence by a level each (eating into any
+## remedy boost first), down to PETRIFY_MAX_DRAIN of the level. Drains
+## recover a level a minute, like remedies wear off.
+func _petrify(player: Combatant, events: Array) -> void:
+	var drained := false
+	for skill in ["attack", "strength", "defence"]:
+		var floor_amount := -ceili(player.level(skill) * PETRIFY_MAX_DRAIN)
+		var boost: Dictionary = player.remedy_boosts.get(skill, {"amount": 0, "next_decay": sim.tick + sim.items.REMEDY_DECAY_TICKS})
+		if boost["amount"] > floor_amount:
+			drained = drained or boost["amount"] >= 0
+			boost["amount"] -= 1
+		if boost["amount"] == 0:
+			player.remedy_boosts.erase(skill)
+		else:
+			player.remedy_boosts[skill] = boost
+	if drained:
+		sim.message(player, "The basilisk's gaze turns your limbs to stone!", events)
 
 
 func award_combat_xp(attacker: Combatant, damage: int, events: Array) -> void:

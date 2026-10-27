@@ -95,6 +95,16 @@
           ],
           "slayer_level": 30,
           "combat_level": 35
+        },
+        {
+          "monster": "basilisk",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 40,
+          "combat_level": 45
         }
       ]
     },
@@ -164,6 +174,15 @@
           ],
           "slayer_level": 50,
           "combat_level": 75
+        },
+        {
+          "monster": "basilisk",
+          "weight": 6,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 40
         }
       ]
     }

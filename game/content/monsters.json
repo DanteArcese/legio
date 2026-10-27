@@ -347,5 +347,37 @@
         "woman_face"
       ]
     }
+  },
+  "basilisk": {
+    "name": "Basilisk",
+    "plural": "Basilisks",
+    "level": 52,
+    "stats": {
+      "attack": 45,
+      "strength": 42,
+      "defence": 50,
+      "vitality": 55
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 40,
+    "drops": "basilisk",
+    "slayer": {
+      "level": 40,
+      "ward_item": "mirror_shield",
+      "unwarded_effect": "petrify"
+    },
+    "examine": "A crowned serpent-lizard from the mines' depths. Its gaze stiffens the limbs. Don't meet it.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#5d6b45",
+      "accent": "#c9b13a",
+      "size": 1.5,
+      "features": [
+        "long_snout",
+        "tail",
+        "lizard"
+      ]
+    }
   }
 }

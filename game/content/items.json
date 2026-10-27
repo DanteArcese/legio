@@ -1386,5 +1386,27 @@
     "requirements": {
       "ranged": 20
     }
+  },
+  "mirror_shield": {
+    "name": "Mirror shield",
+    "value": 120,
+    "examine": "A bronze shield polished like a mirror. Perseus would approve; the basilisk sees only itself.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 5,
+        "ritus_defence": -3
+      }
+    },
+    "requirements": {
+      "defence": 10
+    }
+  },
+  "basilisk_eye": {
+    "name": "Basilisk eye",
+    "value": 450,
+    "examine": "Dull and grey now. Still, you don't look at it for long."
   }
 }

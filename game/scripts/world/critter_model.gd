@@ -3,7 +3,7 @@ extends Node3D
 ## style: soft capsule and sphere shapes, big heads, stubby legs, and big
 ## eyes. Kinds come from content "appearance": quadruped (rat, wolf, boar)
 ## and bird (strix, sirens, harpies), with optional features (ears, round_ears, long_snout,
-## tusks, bristles, tail, ear_tufts, woman_face).
+## tusks, bristles, tail, lizard, ear_tufts, woman_face).
 ##
 ## Same API as KaykitCharacter: create(), animate(delta, speed), attack(),
 ## hurt(), die(), revive(), set_work().
@@ -154,14 +154,29 @@ func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 		_tail.position = Vector3(0, 0.05, 0.45)
 		_body.add_child(_tail)
 		var thin := features.has("round_ears") # rats get a long pink tail
-		var tail_mesh := _capsule(0.035 if thin else 0.09, 0.6 if thin else 0.45, PINK if thin else main.darkened(0.1), true)
-		_part(_tail, tail_mesh, Vector3(0, 0.05, 0.25), Vector3(0.35, 0, 0))
+		var length := 0.6 if thin else (0.95 if features.has("lizard") else 0.45)
+		var tail_mesh := _capsule(0.035 if thin else 0.09, length, PINK if thin else main.darkened(0.1), true)
+		_part(_tail, tail_mesh, Vector3(0, 0.05, 0.5 if features.has("lizard") else 0.25), Vector3(0.12 if features.has("lizard") else 0.35, 0, 0))
+	# Lizards (the basilisk) sprawl: a long, low body on short splayed legs,
+	# a ridge of spines, and a crown.
+	var lizard := features.has("lizard")
+	if lizard:
+		_body.scale = Vector3(1.05, 0.72, 1.3)
+		_body.position.y = 0.32
+		for i in 5:
+			_part(_body, _cone(0.06, 0.18, accent), Vector3(0, 0.27, -0.32 + i * 0.16))
+		for x in [-0.11, 0.0, 0.11]:
+			_part(_head, _cone(0.05, 0.2 if x == 0.0 else 0.15, accent), Vector3(x, 0.26, 0.0), Vector3(0, 0, -x * 2.0))
 	for i in 4:
+		var side := 1.0 if i % 2 == 0 else -1.0
 		var hip := Node3D.new()
-		hip.position = Vector3(0.16 if i % 2 == 0 else -0.16, 0.36, -0.3 if i < 2 else 0.3)
+		hip.position = Vector3(side * (0.26 if lizard else 0.16), 0.24 if lizard else 0.36, -0.3 if i < 2 else 0.3)
+		if lizard:
+			hip.rotation.z = side * 0.6
 		_rig.add_child(hip)
-		_part(hip, _capsule(0.08, 0.36, main.darkened(0.08), false), Vector3(0, -0.15, 0))
-		_part(hip, _sphere(0.085, main.darkened(0.25)), Vector3(0, -0.33, -0.02))
+		var leg := 0.22 if lizard else 0.36
+		_part(hip, _capsule(0.08, leg, main.darkened(0.08), false), Vector3(0, -leg * 0.42, 0))
+		_part(hip, _sphere(0.085, main.darkened(0.25)), Vector3(0, -leg * 0.92, -0.02))
 		_legs.append(hip)
 
 

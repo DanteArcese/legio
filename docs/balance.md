@@ -11,11 +11,20 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 
 | Skill | Method | Level | XP / hour |
 |---|---|---|---|
-| Mining | copper rock | 1 | 7,545 |
-| Mining | copper rock | 30 | 9,180 |
-| Mining | iron rock | 15 | 8,730 |
-| Mining | iron rock | 40 | 12,180 |
-| Mining | iron rock | 70 | 13,650 |
+| Mining | copper rock | 1 | 7,725 |
+| Mining | copper rock | 30 | 9,060 |
+| Mining | iron rock | 15 | 8,940 |
+| Mining | iron rock | 40 | 11,910 |
+| Mining | iron rock | 70 | 13,620 |
+| Mining | silver rock | 30 | 6,360 |
+| Mining | silver rock | 50 | 7,560 |
+| Mining | silver rock | 70 | 8,160 |
+| Mining | coal rock | 30 | 6,930 |
+| Mining | coal rock | 50 | 8,050 |
+| Mining | coal rock | 70 | 8,610 |
+| Mining | gold rock | 40 | 5,395 |
+| Mining | gold rock | 60 | 6,825 |
+| Mining | gold rock | 80 | 7,150 |
 | Woodcutting | tree | 1 | 3,388 |
 | Woodcutting | tree | 30 | 3,652 |
 | Woodcutting | oak | 15 | 18,200 |
@@ -41,6 +50,10 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Smithing | bronze pugio | 10 | 17,112 |
 | Smithing | iron gladius | 19 | 67,900 |
 | Smithing | iron gladius | 40 | 67,900 |
+| Smithing | steel gladius | 34 | 103,208 |
+| Smithing | steel gladius | 60 | 103,208 |
+| Engineering | oak planks (sawpit) | 20 | 25,668 |
+| Engineering | oak planks (sawpit) | 40 | 25,668 |
 | Fletching | arrow shafts | 1 | 8,556 |
 | Fletching | arrow shafts | 15 | 8,556 |
 | Fletching | bronze arrows | 1 | 28,240 |
@@ -51,20 +64,22 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Crafting | wolfskin jerkins | 40 | 101,530 |
 | Medicina | mint tonics | 1 | 27,160 |
 | Medicina | mint tonics | 20 | 27,160 |
-| Thieving | baker's stall | 1 | 10,448 |
-| Thieving | baker's stall | 20 | 10,576 |
+| Engineering | planks (sawpit) | 1 | 11,408 |
+| Engineering | planks (sawpit) | 20 | 11,408 |
+| Thieving | baker's stall | 1 | 10,400 |
+| Thieving | baker's stall | 20 | 10,544 |
 | Thieving | silversmith's stall | 25 | 16,912 |
-| Thieving | silversmith's stall | 50 | 17,416 |
-| Thieving | townsman | 1 | 16,497 |
-| Thieving | townsman | 20 | 20,367 |
-| Thieving | merchant | 18 | 38,388 |
-| Thieving | merchant | 40 | 59,388 |
+| Thieving | silversmith's stall | 50 | 17,472 |
+| Thieving | townsman | 1 | 16,452 |
+| Thieving | townsman | 20 | 20,457 |
+| Thieving | merchant | 18 | 41,748 |
+| Thieving | merchant | 40 | 58,548 |
 | Athletics | training course laps | 1 | 18,096 |
 | Athletics | training course laps | 40 | 20,536 |
-| Hunter | hare burrow (one trap) | 1 | 17,472 |
-| Hunter | hare burrow (one trap) | 30 | 20,992 |
-| Hunter | fox den (one trap) | 15 | 26,856 |
-| Hunter | fox den (one trap) | 45 | 43,272 |
+| Hunter | hare burrow (one trap) | 1 | 16,448 |
+| Hunter | hare burrow (one trap) | 30 | 21,248 |
+| Hunter | fox den (one trap) | 15 | 27,792 |
+| Hunter | fox den (one trap) | 45 | 42,552 |
 | Attack (accurate) | training dummy, bronze gladius | 1 | 4,772 |
 | Attack (accurate) | training dummy, iron gladius | 30 | 18,308 |
 | Attack (accurate) | training dummy, spatha | 60 | 32,080 |
@@ -79,6 +94,12 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 
 - **Pine difficulty 0.4 to 0.3.** At Woodcutting 30, pine gave 6,300 XP/h, a third of oak at 15 (18,200); now 17,500.
 - **Silversmith's stall restocks in 18 ticks, not 35.** At Thieving 25 it gave 9,100 XP/h, less than the baker's stall at level 1 (10,400); now 16,900.
+
+## Vipasca and Noric steel (#154)
+
+- Silver (Mining 30), coal (30) and gold (40) give less XP an hour than iron at the same level (6,000 to 8,600 against 12,000 to 13,600) because they respawn slowly (25, 20 and 50 ticks) and sell for more. Iron stays the fast training rock, as in OSRS; the pit has four silver, three coal and two iron rocks, so real rates are higher.
+- The steel pickaxe and axe (tier 3) are as fast as iron but land 10% more often.
+- Steel gladii (Smithing 34) give about 103,000 XP an hour from bars on hand, up from 68,000 for iron. Each bar takes an iron ore and two coal, so coal is the brake.
 
 ## Open questions for the balance pass
 

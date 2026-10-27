@@ -1249,5 +1249,142 @@
     "name": "Silver bar",
     "value": 80,
     "examine": "A small ingot of refined silver, stamped by the procurator."
+  },
+  "coal": {
+    "name": "Coal",
+    "value": 15,
+    "examine": "Black and brittle. Burned with iron ore, it makes Noric steel."
+  },
+  "steel_bar": {
+    "name": "Steel bar",
+    "value": 90,
+    "examine": "A bar of Noric steel, iron hardened in a coal fire. The legions' best."
+  },
+  "steel_pugio": {
+    "name": "Steel pugio",
+    "value": 70,
+    "examine": "A Noric steel dagger. Short, quick, and hard to blunt.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 12,
+        "strength": 9,
+        "defence": 0
+      },
+      "attack_speed": 3
+    },
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "steel_gladius": {
+    "name": "Steel gladius",
+    "value": 170,
+    "examine": "A gladius of Noric steel, the pride of the legions.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 20,
+        "strength": 18,
+        "defence": 0
+      },
+      "attack_speed": 4
+    },
+    "requirements": {
+      "attack": 20
+    }
+  },
+  "steel_galea": {
+    "name": "Steel galea",
+    "value": 100,
+    "examine": "A steel helmet with cheek guards.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 9,
+        "ritus_defence": -5
+      }
+    },
+    "requirements": {
+      "defence": 20
+    }
+  },
+  "steel_scutum": {
+    "name": "Steel scutum",
+    "value": 200,
+    "examine": "A curved shield rimmed and bossed with steel.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 17,
+        "ritus_defence": -8
+      }
+    },
+    "requirements": {
+      "defence": 20
+    }
+  },
+  "steel_lorica": {
+    "name": "Steel lorica",
+    "value": 270,
+    "examine": "Overlapping steel plates. Heavy, and almost nothing gets through.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 23,
+        "ritus_defence": -16
+      }
+    },
+    "requirements": {
+      "defence": 20
+    }
+  },
+  "steel_axe": {
+    "name": "Steel axe",
+    "value": 200,
+    "examine": "Noric steel bites through cedar.",
+    "tool": "axe",
+    "tool_tier": 3,
+    "requirements": {
+      "woodcutting": 30
+    }
+  },
+  "steel_pickaxe": {
+    "name": "Steel pickaxe",
+    "value": 220,
+    "examine": "Noric steel, for the hardest rock in Hispania.",
+    "tool": "pickaxe",
+    "tool_tier": 3,
+    "requirements": {
+      "mining": 30
+    }
+  },
+  "steel_arrowheads": {
+    "name": "Steel arrowheads",
+    "value": 7,
+    "examine": "Steel points, narrow enough to find the gap in mail.",
+    "stackable": true
+  },
+  "steel_arrow": {
+    "name": "Steel arrow",
+    "value": 11,
+    "examine": "A steel point. It goes through a shield.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 16
+      },
+      "ammo_type": "arrow"
+    },
+    "requirements": {
+      "ranged": 20
+    }
   }
 }

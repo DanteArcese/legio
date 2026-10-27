@@ -59,6 +59,16 @@
       "respawn_ticks": 25,
       "color": "#c9cdd2",
       "examine": "Pale veins of silver run through the red rock."
+    },
+    "coal_rock": {
+      "name": "Coal rock",
+      "ore": "coal",
+      "level": 30,
+      "xp": 35,
+      "difficulty": 0.25,
+      "respawn_ticks": 20,
+      "color": "#2e2b2a",
+      "examine": "A black seam of coal in the pit wall."
     }
   },
   "recipes": {
@@ -127,6 +137,22 @@
         "output": "silver_bar",
         "level": 30,
         "xp": 14
+      },
+      {
+        "id": "steel_bar",
+        "inputs": [
+          {
+            "item": "iron_ore",
+            "quantity": 1
+          },
+          {
+            "item": "coal",
+            "quantity": 2
+          }
+        ],
+        "output": "steel_bar",
+        "level": 30,
+        "xp": 18
       }
     ],
     "smith": [
@@ -355,6 +381,124 @@
         "xp": 90,
         "tool": "hammer",
         "requires_quest": "the_lost_eagle"
+      },
+      {
+        "id": "steel_pugio",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_pugio",
+        "level": 30,
+        "xp": 38,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_axe",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_axe",
+        "level": 31,
+        "xp": 38,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_galea",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_galea",
+        "level": 32,
+        "xp": 38,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_pickaxe",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "steel_pickaxe",
+        "level": 33,
+        "xp": 76,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_gladius",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "steel_gladius",
+        "level": 34,
+        "xp": 76,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_arrowheads",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_arrowheads",
+        "level": 35,
+        "xp": 38,
+        "tool": "hammer",
+        "quantity": 15
+      },
+      {
+        "id": "steel_scutum",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "steel_scutum",
+        "level": 36,
+        "xp": 76,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_lorica",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "steel_lorica",
+        "level": 38,
+        "xp": 114,
+        "tool": "hammer"
+      },
+      {
+        "id": "silver_fibula",
+        "inputs": [
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "silver_fibula",
+        "level": 32,
+        "xp": 30,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -666,6 +810,27 @@
         "level": 30,
         "xp": 75,
         "requires_quest": "harpies_at_the_harbour"
+      },
+      {
+        "id": "steel_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "feather",
+            "quantity": 15
+          },
+          {
+            "item": "steel_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "steel_arrow",
+        "quantity": 15,
+        "level": 30,
+        "xp": 75
       }
     ],
     "tan": [

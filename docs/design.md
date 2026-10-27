@@ -79,6 +79,8 @@ Kept as a core skill and the center of progression.
 | Skill | Roman flavor |
 |---|---|
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
+
+**Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
 | Cooking | Bread, garum, roasts, *posca*. Wine making could live here or under Farming. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
@@ -328,7 +330,7 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Frontier quest (#134): The Lost Eagle.** Centurion Varro holds the gate in the limes. Twenty years ago a cohort marched north and never came back, and Hrodgar keeps its eagle. Needs Attack, Strength and Defence 45 and *Duplicarius*. Scout the raiders' camp, kill four raiders, defeat Hrodgar to take back the eagle, and bring it to Varro. Rewards: combat, Slayer and Smithing XP, 2,500 denarii, the title "Bearer of the Eagle", and the gold torc recipe. The eagle is valued highly, so it is always among the items you keep on death.
 
-**Third region (#153): Vipasca, the silver mines.** A mining town in the dry hills of Hispania, named for the real one in Lusitania, far south of the fort (z around 400). The road leaves the fort's fields to the south-east. Ochre earth, dry grass and olive scrub; a paved town yard with a bank chest, a furnace and an anvil, two miners' houses, and the procurator metallorum (pickaxes, a hammer, food) at his office door. A track runs south through a cutting in the red spoil heaps into an open-cast pit, where a Roman drainage wheel turns slowly, with silver (Mining 30, smelted at Smithing 30), iron and galena. Past the pit, the track ends at the timber mouth of the deep gallery under a hill. Its ambience is a hot wind, cicadas, and the echo of picks.
+**Third region (#153): Vipasca, the silver mines.** A mining town in the dry hills of Hispania, named for the real one in Lusitania, far south of the fort (z around 400). The road leaves the fort's fields to the south-east. Ochre earth, dry grass and olive scrub; a paved town yard with a bank chest, a furnace and an anvil, two miners' houses, and the procurator metallorum (pickaxes, a hammer, food) at his office door. A track runs south through a cutting in the red spoil heaps into an open-cast pit, where a Roman drainage wheel turns slowly, with silver (Mining 30, smelted at Smithing 30), coal (Mining 30, for Noric steel), iron and galena. Past the pit, the track ends at the timber mouth of the deep gallery under a hill. Its ambience is a hot wind, cicadas, and the echo of picks.
 
 **World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
 

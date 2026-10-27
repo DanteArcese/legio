@@ -338,6 +338,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Selling (#165).** Shopkeepers buy as well as sell. A shop's `buys` lists the items it takes (or `"*"` for anything) and the share of value it pays. The Gaulish merchant in the forum buys anything at 40%; specialists pay more for their trade: Aulus 60% for pelts, hides, feathers and monster parts; the fishmonger 60% for fish; the procurator 60% for ores and bars; the quartermaster 50% for arms and armour. A shopkeeper's menu gets a Sell entry listing what they'd take from your pack, with prices; each entry sells all of that item. Coins, pets, worthless things and quest items (the legion's eagle) can't be sold.
 
+**The deep gallery (#167).** Once The Silent Gallery is done, the timber mouth at the end of Vipasca's track opens (before that a procurator's chain hangs across it; doorways can now require a quest). Steps lead down into a winding tunnel cut through red rock, built at startup on a 1 m grid: rough rock walls, timber frames every six metres, and torches. Two more basilisks lurk in the tunnel; a side alcove holds two silver and two gold rocks, away from the crowds in the pit; the tunnel ends in a round chamber. It lies in the underground band, so it gets cave lighting and dripping ambience.
+
 **World map (#139).** M (or the controller's Share button) opens a parchment map of every region where it lies, with roads and doorways drawn as dashed links, danger zones tinted red, and a marker for you. Regions are scene nodes in the `map_regions` group with `map_name`, `map_rect` and optional `map_color` metadata.
 
 **Out of scope for the slice:** quests, the villa, Mercatura, the danger zone, and the market (all since added except the market).

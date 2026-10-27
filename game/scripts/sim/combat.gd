@@ -153,12 +153,13 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 
 
 ## Drains Attack, Strength and Defence by a level each (eating into any
-## remedy boost first), down to PETRIFY_MAX_DRAIN of the level. Drains
+## remedy boost first), down to PETRIFY_MAX_DRAIN of the level and never
+## below level 1. Drains
 ## recover a level a minute, like remedies wear off.
 func _petrify(player: Combatant, events: Array) -> void:
 	var drained := false
 	for skill in ["attack", "strength", "defence"]:
-		var floor_amount := -ceili(player.level(skill) * PETRIFY_MAX_DRAIN)
+		var floor_amount := -mini(ceili(player.level(skill) * PETRIFY_MAX_DRAIN), player.level(skill) - 1)
 		var boost: Dictionary = player.remedy_boosts.get(skill, {"amount": 0, "next_decay": sim.tick + sim.items.REMEDY_DECAY_TICKS})
 		if boost["amount"] > floor_amount:
 			drained = drained or boost["amount"] >= 0

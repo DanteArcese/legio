@@ -44,6 +44,7 @@
 [ext_resource type="Script" path="res://scripts/world/villa_hotspot.gd" id="39_hotspot"]
 [ext_resource type="Script" path="res://scripts/ui/collection_ui.gd" id="41_collection_ui"]
 [ext_resource type="Script" path="res://scripts/world/vipasca.gd" id="43_vipasca"]
+[ext_resource type="Script" path="res://scripts/world/deep_gallery.gd" id="44_deep_gallery"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1062,6 +1063,14 @@ monster_id = "basilisk"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 438)
 monster_id = "basilisk"
 
+[node name="GalleryBasilisk1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168, 0, 387)
+monster_id = "basilisk"
+
+[node name="GalleryBasilisk2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 179, 0, 403)
+monster_id = "basilisk"
+
 [node name="Harpy1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -252, 0, -28)
 monster_id = "harpy"
@@ -1564,3 +1573,49 @@ rock_type = "coal_rock"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 415)
 script = ExtResource("10_rock")
 rock_type = "coal_rock"
+
+[node name="GalleryMouth" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 440.2)
+script = ExtResource("15_transition")
+title = "The deep gallery"
+examine_text = "Timber props and darkness. The old workings run deep under the hill."
+destination = Vector3(165, 0, 371)
+size = Vector3(2.6, 2.7, 0.3)
+requires_quest = "the_silent_gallery"
+locked_message = "A procurator's chain hangs across the mouth. \"Shut by order until the basilisks are dealt with.\" The procurator in town will know more."
+
+[node name="DeepGallery" type="StaticBody3D" parent="." groups=["map_regions"]]
+metadata/map_name = "The deep gallery"
+metadata/map_rect = Rect2(156, 362, 48, 78)
+metadata/map_color = Color(0.45, 0.3, 0.24, 1)
+script = ExtResource("44_deep_gallery")
+
+[node name="StairsUp" type="StaticBody3D" parent="DeepGallery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 165, 0, 367.6)
+script = ExtResource("15_transition")
+verb = "Climb"
+title = "Up to the pit"
+examine_text = "Worn steps, and daylight at the top."
+destination = Vector3(-20, 0, 437)
+size = Vector3(2.0, 2.2, 0.4)
+color = Color(0.38, 0.27, 0.17, 1)
+
+[node name="RichSilver1" type="StaticBody3D" parent="DeepGallery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 191, 0, 389)
+script = ExtResource("10_rock")
+rock_type = "silver_rock"
+
+[node name="RichSilver2" type="StaticBody3D" parent="DeepGallery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 196, 0, 390)
+script = ExtResource("10_rock")
+rock_type = "silver_rock"
+
+[node name="DeepGold1" type="StaticBody3D" parent="DeepGallery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 194, 0, 394)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"
+
+[node name="DeepGold2" type="StaticBody3D" parent="DeepGallery"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 190, 0, 393.5)
+script = ExtResource("10_rock")
+rock_type = "gold_rock"

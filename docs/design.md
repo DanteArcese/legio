@@ -44,6 +44,8 @@ A first pass at Roman-themed skills. Names are working names.
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods. The heavenly gods are Mars (strength), Minerva (defence), Diana (ranged), and Mercury (movement and run energy). The underworld gods (Dis Pater, Proserpina, Hecate) favour Ritus. XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. See [Curses and Pietas](#curses-and-pietas). |
 | Ritus | The third combat style: curse tablets. See [Ritus](#ritus). |
 
+**Built (#179): special attacks.** Players have *impetus* (0 to 100, refilling 20 a minute, saved). F (B on a controller) arms the wielded weapon's special; the next attack spends it if there's enough. Pugiones: *twin thrust* (25, two hits). Gladii: *legion's thrust* (50, half again as accurate and a fifth harder). The spatha: *cavalry sweep* (50, half again as hard, a little less accurate). The framea: *hurled framea* (50, twice as accurate). Bows: *volley* (50, two arrows). The sling: *heavy glans* (25, half again as hard). The HUD shows impetus and when a special is ready; two hits in one tick show two numbers, offset.
+
 ### Slayer
 
 Kept as a core skill and the center of progression.

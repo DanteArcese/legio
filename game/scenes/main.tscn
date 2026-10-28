@@ -761,6 +761,24 @@ script = ExtResource("39_hotspot")
 hotspot_id = "waystone"
 hotspot_type = "waystone"
 
+[node name="Hotspot_press_1" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, -6)
+script = ExtResource("39_hotspot")
+hotspot_id = "press_1"
+hotspot_type = "press"
+
+[node name="Hotspot_press_2" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 0)
+script = ExtResource("39_hotspot")
+hotspot_id = "press_2"
+hotspot_type = "press"
+
+[node name="Hotspot_office" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 342, 0, -6)
+script = ExtResource("39_hotspot")
+hotspot_id = "office"
+hotspot_type = "office"
+
 [node name="LandSurveyor" type="StaticBody3D" parent="Forum" groups=["surveyors", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1, 6.5)
 collision_layer = 8

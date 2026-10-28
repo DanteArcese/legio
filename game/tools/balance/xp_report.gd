@@ -32,6 +32,8 @@ func _init() -> void:
 	_gather("Fishing", "fishing", "eel pool", [30, 50, 80], "eel_pot", func(sim): sim.skilling.add_fishing_spot(1, "eel_spot", NEAR), "fish", {"spot": 1}, ["raw_eel"])
 	_make("Cooking", "cooking", "sardines (range)", [1, 34], "cook", "cooked_sardine", "range")
 	_make("Cooking", "cooking", "tuna (range)", [35, 65], "cook", "cooked_tuna", "range")
+	_make("Cooking", "cooking", "olive oil (villa press)", [25, 50], "press_oil", "olive_oil", "olive_press")
+	_make("Cooking", "cooking", "estate wine (villa press)", [35, 60], "press_wine", "estate_wine", "wine_press")
 	_make("Smithing", "smithing", "bronze pugio", [1, 10], "smith", "bronze_pugio", "anvil")
 	_make("Smithing", "smithing", "iron gladius", [19, 40], "smith", "iron_gladius", "anvil")
 	_make("Smithing", "smithing", "steel gladius", [34, 60], "smith", "steel_gladius", "anvil")

@@ -1398,6 +1398,34 @@
         "level": 30,
         "xp": 40
       }
+    ],
+    "press_oil": [
+      {
+        "id": "olive_oil",
+        "inputs": [
+          {
+            "item": "olives",
+            "quantity": 4
+          }
+        ],
+        "output": "olive_oil",
+        "level": 25,
+        "xp": 45
+      }
+    ],
+    "press_wine": [
+      {
+        "id": "estate_wine",
+        "inputs": [
+          {
+            "item": "grapes",
+            "quantity": 5
+          }
+        ],
+        "output": "estate_wine",
+        "level": 35,
+        "xp": 70
+      }
     ]
   },
   "trees": {

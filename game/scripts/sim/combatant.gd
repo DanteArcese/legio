@@ -82,6 +82,8 @@ var last_attacker_id := -1
 ## The villa: owned or not, and hotspot id -> furniture id.
 var villa_owned := false
 var villa_furniture := {}
+## Real time (seconds) the villa's steward last settled the books.
+var steward_since := 0.0
 ## Mercatura: the current trade contract ({} or {"id"}) and how many are done.
 var trade_contract := {}
 var contracts_done := 0

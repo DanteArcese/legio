@@ -273,6 +273,11 @@
         "item": "cabbage_seed",
         "price": 10,
         "quantity": 10
+      },
+      {
+        "item": "wheat_seed",
+        "price": 10,
+        "quantity": 10
       }
     ],
     "buys": {

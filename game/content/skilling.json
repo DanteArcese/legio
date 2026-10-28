@@ -718,6 +718,20 @@
         "xp": 100,
         "burnt": "burnt_food",
         "stop_burning": 65
+      },
+      {
+        "id": "bread",
+        "inputs": [
+          {
+            "item": "flour",
+            "quantity": 1
+          }
+        ],
+        "output": "bread",
+        "level": 10,
+        "xp": 30,
+        "burnt": "burnt_food",
+        "stop_burning": 40
       }
     ],
     "inscribe": [
@@ -1439,6 +1453,20 @@
         "output": "estate_wine",
         "level": 35,
         "xp": 70
+      }
+    ],
+    "mill": [
+      {
+        "id": "flour",
+        "inputs": [
+          {
+            "item": "wheat",
+            "quantity": 1
+          }
+        ],
+        "output": "flour",
+        "level": 8,
+        "xp": 12
       }
     ]
   },

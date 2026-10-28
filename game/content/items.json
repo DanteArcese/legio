@@ -1859,5 +1859,21 @@
     "value": 0,
     "examine": "Wrapped in a sack, eyes shut. You don't check.",
     "quest_item": true
+  },
+  "wheat_seed": {
+    "name": "Seed wheat",
+    "value": 1,
+    "examine": "A pouch of emmer wheat for sowing.",
+    "stackable": true
+  },
+  "wheat": {
+    "name": "Wheat",
+    "value": 4,
+    "examine": "A sheaf of ripe emmer wheat."
+  },
+  "flour": {
+    "name": "Flour",
+    "value": 6,
+    "examine": "A pot of coarse stone-ground flour."
   }
 }

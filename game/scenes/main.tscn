@@ -506,6 +506,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 30.0)
 script = ExtResource("35_patch")
 patch_type = "allotment"
 
+[node name="GrainField1" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 33)
+script = ExtResource("35_patch")
+patch_type = "grain_field"
+
+[node name="GrainField2" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 37)
+script = ExtResource("35_patch")
+patch_type = "grain_field"
+
+[node name="Quern" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 31)
+script = ExtResource("11_station")
+kind = "quern"
+
 [node name="PortusSalis" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
 metadata/map_name = "Portus Salis"
 metadata/map_rect = Rect2(-360, -50, 120, 62)

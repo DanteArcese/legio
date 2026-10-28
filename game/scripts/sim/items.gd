@@ -305,9 +305,13 @@ static func sell_price(shop_id: String, item_id: String) -> int:
 	var item := ContentDB.item(item_id)
 	if buys.is_empty() or item.is_empty() or item_id == "coins" or item.has("pet") or item.get("quest_item", false):
 		return 0
-	if buys["items"] is Array and not buys["items"].has(item_id):
-		return 0
 	if item["value"] <= 0:
+		return 0
+	# Regional demand: some goods fetch their own price here.
+	var prices: Dictionary = buys.get("prices", {})
+	if prices.has(item_id):
+		return maxi(1, floori(item["value"] * prices[item_id]))
+	if buys["items"] is Array and not buys["items"].has(item_id):
 		return 0
 	return maxi(1, floori(item["value"] * buys["rate"]))
 

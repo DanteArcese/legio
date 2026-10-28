@@ -47,6 +47,12 @@
           "text": "Kill a wolf."
         },
         {
+          "id": "bread_quest",
+          "kind": "quest",
+          "quest": "bread_for_the_garrison",
+          "text": "Help Sabina the baker feed the garrison."
+        },
+        {
           "id": "tiro",
           "kind": "quest",
           "quest": "tiro",

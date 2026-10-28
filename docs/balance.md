@@ -27,6 +27,9 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Mining | gold rock | 40 | 5,395 |
 | Mining | gold rock | 60 | 6,825 |
 | Mining | gold rock | 80 | 7,150 |
+| Mining | orichalcum vein | 55 | 7,310 |
+| Mining | orichalcum vein | 75 | 7,905 |
+| Mining | orichalcum vein | 95 | 8,075 |
 | Mining | marble outcrop | 45 | 7,215 |
 | Mining | marble outcrop | 65 | 8,385 |
 | Mining | marble outcrop | 85 | 8,775 |
@@ -64,6 +67,8 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Smithing | iron gladius | 40 | 67,350 |
 | Smithing | steel gladius | 34 | 102,372 |
 | Smithing | steel gladius | 60 | 102,372 |
+| Smithing | orichalcum gladius | 54 | 134,700 |
+| Smithing | orichalcum gladius | 80 | 134,700 |
 | Engineering | oak planks (sawpit) | 20 | 25,614 |
 | Engineering | oak planks (sawpit) | 40 | 25,614 |
 | Fletching | arrow shafts | 1 | 8,538 |

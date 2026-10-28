@@ -12,8 +12,8 @@ const ACTION_RANGE := 2.2
 const FISHING_RANGE := 3.0
 ## Ticks between mining and chopping attempts, by tool tier. Steel (3) is
 ## as fast as iron but lands more often (MINE_CHANCE_PER_TIER).
-const MINE_TICKS := {1: 4, 2: 3, 3: 3}
-const CHOP_TICKS := {1: 4, 2: 3, 3: 3}
+const MINE_TICKS := {1: 4, 2: 3, 3: 3, 4: 2}
+const CHOP_TICKS := {1: 4, 2: 3, 3: 3, 4: 2}
 const FISH_TICKS := 5
 const CRAFT_TICKS := 4
 ## Our own gathering formula: chance per attempt.

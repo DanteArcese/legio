@@ -75,7 +75,7 @@ Kept as a core skill and the center of progression.
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.
 
-**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10).
+**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10). *Bread for the Garrison* (#231), a starter quest from Sabina the baker beside her forum stall, walks a new player through it: five pots of flour, then three loaves, for Cooking and Farming XP, coins and seed wheat.
 | Hunter | Traps and nets. Live capture for the arena. |
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
@@ -87,6 +87,8 @@ Kept as a core skill and the center of progression.
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
+
+**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel.
 | Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
@@ -117,6 +119,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
 
+**Built (#239): shortcuts.** A course of its own with no lap bonus: each shortcut is a single crossing, usable from either side. The first is a ladder over the fort's west wall to the grove (Athletics 10), which saves the walk round the south-west corner.
+
 **Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
@@ -135,6 +139,8 @@ Mercatura works like a skill rather than a menu over the market:
 - **Links to other skills:** artisan products sell for more in the right region, so Mercatura rewards specialists.
 
 **Built (#120): trade contracts.** Trade boards at Portus Salis (cargoes wanted inland: garum and salt for the quartermaster, grilled tuna for the Gaulish merchant) and in the fort's forum (cargoes wanted at the coast: iron bars, oak logs, and linen for the fishmonger's shipwrights). Take one contract at a time, source the goods yourself (the fishmonger sells garum cheaply at the coast), and deliver to the named shopkeeper for coins and Mercatura XP. Higher levels unlock bigger contracts. The quest log tracks the current contract. Carts, wagons, ships, regional prices, and risk on the road come later.
+
+**Built (#237): regional prices.** Shops can want particular goods at their own price (`buys.prices`), above their usual rate and even when they don't otherwise trade in them. The Portus fishmonger pays well for olive oil, iron, oak and linen for the ships; the Gaulish merchant pays over the odds for estate wine (1.2× its value) and for garum; Nikias on Seriphos wants iron, steel and silver fibulae; and the procurator at Vipasca buys bread, meat and oil for the miners. Selling the same goods where they're wanted pays noticeably more than selling them anywhere.
 
 ## Replacing magic
 
@@ -209,6 +215,8 @@ Without teleports, travel becomes a progression system:
 
 - Selling items: sell to merchants, or use the forum market.
 - Enchanting: you consecrate jewelry at temples, using Pietas.
+
+**Built (#235): later offerings.** Higher-level offerings come from newer content: dire wolf pelts (30 XP), pressed olive oil (40) and estate wine (65) at the heavenly altars; harpy feathers (55), basilisk eyes (85) and gorgon scales (115) at the underworld altars. As always, the wrong altar gives half.
 
 ## Combat
 
@@ -359,6 +367,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **The deep gallery (#167).** Once The Silent Gallery is done, the timber mouth at the end of Vipasca's track opens (before that a procurator's chain hangs across it; doorways can now require a quest). Steps lead down into a winding tunnel cut through red rock, built at startup on a 1 m grid: rough rock walls, timber frames every six metres, and torches. Two more basilisks lurk in the tunnel; a side alcove holds two silver and two gold rocks, away from the crowds in the pit; the tunnel ends in a round chamber. It lies in the underground band, so it gets cave lighting and dripping ambience.
 
 **Vipasca boss (#168): Regulus, the basilisk king.** Level 88, Slayer 50, in the round chamber at the end of the deep gallery ("basilisk" is Greek for "little king"; *regulus* is the Latin). His gaze petrifies like any basilisk's, so bring a mirror shield. Every third attack he spits venom at where you stand instead: a green ring marks it and the glob lands 3 ticks later for 12 to 26 damage; step out. Below 30% he enrages and attacks every 3 ticks. He drops coins, steel, silver, gold and basilisk eyes, and rarely the Crown of Regulus (Defence 45, Slayer 50): a head piece that wards the basilisk gaze, freeing the shield hand. One kill in 120 brings a basilisk hatchling pet. Ursa gives Regulus contracts (three to six kills) at combat 80 and Slayer 55. Boss throws now have a kind (`throw_kind`: spear or venom) with its own marker and warning.
+
+**Seriphos boss (#243): Euryale, the gorgon queen.** Level 108, Slayer 70, in the middle of the gorgons' ruins. A mirror shield fools her sisters but not her: unwarded (anything short of the Aegis), her gaze lands every time for half again the damage and drains your combat stats. Every third attack she hurls venom at where you stand (a green ring; step out), and below 30% she enrages. She drops coins, gorgon scales, gold, pearls, now and then the Aegis itself, and rarely the *gorgoneion*, a gold gorgon-face amulet (Defence 55, Slayer 70) that wards her gaze in place of the Aegis. Ursa gives Euryale contracts (three to six kills) at combat 95 and Slayer 70.
 
 **Fourth region (#171): Seriphos.** A Greek island far over the sea from Portus Salis (Perseus's island in the myth, fitting for gorgons and mirror shields), reached by a ferry from the end of the harbour pier for 25 denarii each way (doorways can now charge a fare). A sandy north shore and a pier where the boats tie up; a white harbour town with a bank chest and Nikias the merchant (olives, figs, wine and tuna; he buys anything at 45%, a little better than the Gauls); an olive grove to the west; the ruined temple of Athena to the east, a marble platform with standing and fallen columns; and rocky hills rising inland. The coast's surf ambience carries over. Room is left in the hills for cyclopes and in the south-west for the gorgons' ruins.
 

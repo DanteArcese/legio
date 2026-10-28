@@ -78,3 +78,11 @@ func test_messages_use_the_right_article() -> void:
 	check_eq(Items._with_article("needle"), "a needle", "a")
 	check_eq(Items._with_article("iron axe"), "an iron axe", "an")
 	check_eq(Items._with_article("olives"), "some olives", "plural")
+
+
+func test_regional_demand_pays_its_own_price() -> void:
+	var wine: int = ContentDB.item("estate_wine")["value"]
+	check_eq(Items.sell_price("gallic_merchant", "estate_wine"), floori(wine * 1.2), "the Gauls pay over the odds for wine")
+	check(Items.sell_price("gallic_merchant", "estate_wine") > Items.sell_price("fishmonger", "estate_wine"), "better inland than at the harbour")
+	check(Items.sell_price("procurator", "bread") > 0, "the mines buy bread")
+	check(Items.sell_price("fishmonger", "olive_oil") > Items.sell_price("procurator", "olive_oil"), "oil is worth most at the harbour")

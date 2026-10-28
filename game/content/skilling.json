@@ -352,6 +352,60 @@
         "tool": "hammer"
       },
       {
+        "id": "bronze_javelin",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          },
+          {
+            "item": "logs",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_javelin",
+        "quantity": 5,
+        "level": 7,
+        "xp": 14,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_javelin",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_javelin",
+        "quantity": 5,
+        "level": 22,
+        "xp": 30,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_pilum",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_pilum",
+        "quantity": 5,
+        "level": 36,
+        "xp": 48,
+        "tool": "hammer"
+      },
+      {
         "id": "iron_axe",
         "inputs": [
           {
@@ -1343,6 +1397,34 @@
         "output": "firepot",
         "level": 30,
         "xp": 40
+      }
+    ],
+    "press_oil": [
+      {
+        "id": "olive_oil",
+        "inputs": [
+          {
+            "item": "olives",
+            "quantity": 4
+          }
+        ],
+        "output": "olive_oil",
+        "level": 25,
+        "xp": 45
+      }
+    ],
+    "press_wine": [
+      {
+        "id": "estate_wine",
+        "inputs": [
+          {
+            "item": "grapes",
+            "quantity": 5
+          }
+        ],
+        "output": "estate_wine",
+        "level": 35,
+        "xp": 70
       }
     ]
   },

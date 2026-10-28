@@ -7,6 +7,7 @@ const SaveGame := preload("res://scripts/sim/save_game.gd")
 const MODES := [
 	["standard", "Citizen-to-be", "The usual path. You'll be free to trade with others when there's someone to trade with."],
 	["solitarius", "Solitarius", "Self-sufficient. You'll never trade with other players or a market; shops and everything else work as usual.\nYou can give it up later from the pause menu, but never return to it."],
+	["hardcore", "Hardcore Solitarius", "A Solitarius with one life. Your first death makes you a plain Solitarius, for good."],
 ]
 
 @export var driver: Node
@@ -75,18 +76,21 @@ func _on_ticked(tick: int) -> void:
 func _show_mode_dialog() -> void:
 	get_tree().paused = true
 	_dialog = CanvasLayer.new()
+	# Above the HUD and the other overlays.
+	_dialog.layer = 50
 	_dialog.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_dialog)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_dialog.add_child(center)
 	var panel := PanelContainer.new()
-	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	panel.custom_minimum_size = Vector2(560, 0)
-	panel.position -= Vector2(280, 160)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.1, 0.09, 0.08, 0.97)
 	style.set_content_margin_all(20)
 	style.set_corner_radius_all(6)
 	panel.add_theme_stylebox_override("panel", style)
-	_dialog.add_child(panel)
+	center.add_child(panel)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 12)
 	panel.add_child(column)

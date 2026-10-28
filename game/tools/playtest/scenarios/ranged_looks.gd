@@ -1,6 +1,6 @@
 extends "res://tools/playtest/scenario.gd"
 ## Close-ups of the player holding each ranged weapon, mid-attack, for
-## reviewing the bow and sling with --render.
+## reviewing the bows, sling, and amentum with --render.
 
 const PLAYER := 1
 
@@ -15,7 +15,7 @@ func run() -> void:
 	rig._pitch = deg_to_rad(-18.0)
 	rig._apply_rotation()
 	rig.get_node("SpringArm3D").spring_length = 4.5
-	for item in ["hunting_bow", "composite_bow", "sling"]:
+	for item in ["hunting_bow", "composite_bow", "sling", "amentum"]:
 		driver().sim.give_item(PLAYER, item, 1, "test", [])
 		driver().sim.queue_item_action(PLAYER, "equip", {"slot": _slot_of(item)})
 		await seconds(0.8)
@@ -23,7 +23,7 @@ func run() -> void:
 		await shot(item)
 		player()._model.attack()
 		await seconds(0.35)
-		var expected: String = {"hunting_bow": "2H_Ranged_Shoot", "composite_bow": "2H_Ranged_Shoot", "sling": "Throw"}[item]
+		var expected: String = {"hunting_bow": "2H_Ranged_Shoot", "composite_bow": "2H_Ranged_Shoot", "sling": "Throw", "amentum": "Throw"}[item]
 		expect(player()._model.current_animation() == expected, "%s plays %s (got %s)" % [item, expected, player()._model.current_animation()])
 		await shot(item + "_attack")
 

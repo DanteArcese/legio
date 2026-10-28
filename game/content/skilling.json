@@ -735,6 +735,23 @@
         "level": 58,
         "xp": 150,
         "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_lituus",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_lituus",
+        "level": 57,
+        "xp": 100,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -1273,6 +1290,48 @@
         "xp": 80,
         "tool": "needle",
         "requires_unlock": "venators_helm"
+      },
+      {
+        "id": "augurs_robe",
+        "inputs": [
+          {
+            "item": "linen",
+            "quantity": 5
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 3
+          }
+        ],
+        "output": "augurs_robe",
+        "level": 40,
+        "xp": 160,
+        "tool": "needle"
+      },
+      {
+        "id": "augurs_hood",
+        "inputs": [
+          {
+            "item": "linen",
+            "quantity": 3
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 2
+          }
+        ],
+        "output": "augurs_hood",
+        "level": 40,
+        "xp": 110,
+        "tool": "needle"
       }
     ],
     "garum": [
@@ -1444,6 +1503,23 @@
         "output": "gold_bulla",
         "level": 45,
         "xp": 80,
+        "tool": "jeweller"
+      },
+      {
+        "id": "silver_lituus",
+        "inputs": [
+          {
+            "item": "silver_bar",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "silver_lituus",
+        "level": 35,
+        "xp": 110,
         "tool": "jeweller"
       }
     ],

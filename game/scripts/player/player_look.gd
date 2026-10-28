@@ -7,7 +7,7 @@ extends RefCounted
 
 const BODIES := {
 	"": "adventurers/Rogue", "bronze_lorica": "adventurers/Knight", "iron_lorica": "adventurers/Knight", "steel_lorica": "adventurers/Knight", "orichalcum_lorica": "adventurers/Knight", "lorica_hamata": "adventurers/Knight", "lorica_segmentata": "adventurers/Knight",
-	"ritual_robe": "adventurers/Mage", "leather_jerkin": "adventurers/Rogue", "wolfskin_jerkin": "adventurers/Barbarian",
+	"ritual_robe": "adventurers/Mage", "augurs_robe": "adventurers/Mage", "leather_jerkin": "adventurers/Rogue", "wolfskin_jerkin": "adventurers/Barbarian",
 }
 ## item -> [model, attack style]
 const WEAPONS := {
@@ -16,7 +16,7 @@ const WEAPONS := {
 	"steel_gladius": ["weapons/sword_1handed", "slash"], "orichalcum_gladius": ["weapons/sword_1handed", "slash"],
 	"spatha": ["weapons/sword_1handed", "slash"], "rudis": ["weapons/sword_1handed", "slash"], "framea": ["proc:spear", "stab"],
 	"hunting_bow": ["proc:bow", "bow"], "composite_bow": ["proc:bow_composite", "bow"],
-	"sling": ["proc:sling", "throw"], "amentum": ["proc:spear", "throw"], "lituus": ["weapons/staff", "ritus"],
+	"sling": ["proc:sling", "throw"], "amentum": ["proc:spear", "throw"], "lituus": ["weapons/staff", "ritus"], "silver_lituus": ["weapons/staff", "ritus"], "orichalcum_lituus": ["weapons/staff", "ritus"],
 }
 ## Palette textures baked with tools/bake_palette.gd (green and blue to red).
 const LEGION_TEXTURES := {
@@ -28,7 +28,7 @@ const SHIELDS := {"bronze_scutum": "weapons/shield_square", "iron_scutum": "weap
 ## Meshes each outfit hides unless the matching headgear is worn.
 const HEADGEAR := {
 	"adventurers/Knight": ["Knight_Helmet", ["bronze_galea", "iron_galea", "steel_galea", "orichalcum_galea"]],
-	"adventurers/Mage": ["Mage_Hat", ["ritual_hood"]],
+	"adventurers/Mage": ["Mage_Hat", ["ritual_hood", "augurs_hood"]],
 	"adventurers/Barbarian": ["Barbarian_Hat", ["wolfskin_hood", "venators_helm"]],
 }
 

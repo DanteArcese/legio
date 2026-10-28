@@ -21,6 +21,9 @@ var _equipment_buttons := {}
 var _bonus_label: Label
 var _bank_panel: PanelContainer
 var _bank_grid: GridContainer
+var _bank_search: LineEdit
+var _bank_sort: Button
+var _bank_sorted := false
 var _menu: PopupMenu
 var _message: Label
 var _menu_actions: Array[Callable] = []
@@ -30,6 +33,8 @@ var _blessing_buttons := {}
 
 
 func _ready() -> void:
+	# Above the HUD, minimap and tips, which would otherwise cover the panels.
+	layer = 2
 	_build_inventory()
 	_build_bank()
 	_build_blessings()
@@ -43,6 +48,9 @@ func _ready() -> void:
 	# Just above the HUD's status panel.
 	_message.position.y -= 215
 	_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Longer messages (gear stats) grow upward, clear of the HUD.
+	_message.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_message.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	_message.add_theme_font_size_override("font_size", 24)
 	_message.add_theme_constant_override("outline_size", 6)
 	_message.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -127,6 +135,7 @@ func toggle_inventory() -> void:
 
 
 func open_bank() -> void:
+	_bank_search.text = ""
 	_bank_panel.visible = true
 	_inventory_panel.visible = true
 	_refresh()
@@ -178,6 +187,43 @@ func close_bank() -> void:
 
 func is_bank_open() -> bool:
 	return _bank_panel.visible
+
+
+const BONUS_NAMES := {"attack": "Attack", "strength": "Strength", "defence": "Defence", "ranged_attack": "Ranged",
+	"ranged_strength": "Ranged str", "ritus_attack": "Ritus", "ritus_strength": "Ritus str",
+	"ranged_defence": "vs ranged", "ritus_defence": "vs Ritus"}
+
+
+## An item's examine text, with its bonuses, speed, reach and requirements
+## if it can be worn, and what's in that slot now.
+static func examine_text(item_id: String, worn: Dictionary) -> String:
+	var item := ContentDB.item(item_id)
+	var text: String = item["examine"]
+	if not item.has("equip"):
+		return text
+	var equip: Dictionary = item["equip"]
+	var parts := PackedStringArray()
+	for bonus in BONUS_NAMES:
+		var value: int = equip.get("bonuses", {}).get(bonus, 0)
+		if value != 0:
+			parts.append("%s %+d" % [BONUS_NAMES[bonus], value])
+	if equip.has("attack_speed"):
+		parts.append("speed %d" % equip["attack_speed"])
+	if equip.has("range"):
+		parts.append("reach %d m" % roundi(equip["range"]))
+	for skill in item.get("requirements", {}):
+		parts.append("needs %s %d" % [skill.capitalize(), item["requirements"][skill]])
+	if not parts.is_empty():
+		text += "\n" + ", ".join(parts)
+	var current: String = worn.get(equip["slot"], "")
+	if not current.is_empty() and current != item_id:
+		text += "\n(Wearing: %s)" % ContentDB.item(current)["name"]
+	return text
+
+
+func _worn() -> Dictionary:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	return combatant.equipment.worn if combatant and combatant.equipment else {}
 
 
 func show_message(text: String) -> void:
@@ -249,8 +295,24 @@ func _build_bank() -> void:
 	var column := VBoxContainer.new()
 	_bank_panel.add_child(column)
 	column.add_child(_heading("Bank  (B / Esc to close)"))
+	var tools := HBoxContainer.new()
+	column.add_child(tools)
+	_bank_search = LineEdit.new()
+	_bank_search.placeholder_text = "Search..."
+	_bank_search.clear_button_enabled = true
+	_bank_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_bank_search.text_changed.connect(func(_text): _refresh_bank_now())
+	tools.add_child(_bank_search)
+	_bank_sort = Button.new()
+	_bank_sort.text = "Sort: as deposited"
+	_bank_sort.pressed.connect(func():
+		_bank_sorted = not _bank_sorted
+		_bank_sort.text = "Sort: by name" if _bank_sorted else "Sort: as deposited"
+		_refresh_bank_now())
+	tools.add_child(_bank_sort)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(4 * (SLOT_SIZE.x + 4) + 16, 420)
+	# Short enough to end above the HUD at the bottom of the screen.
+	scroll.custom_minimum_size = Vector2(4 * (SLOT_SIZE.x + 4) + 16, 340)
 	column.add_child(scroll)
 	_bank_grid = GridContainer.new()
 	_bank_grid.columns = 4
@@ -310,15 +372,29 @@ func _refresh() -> void:
 		_refresh_bank(c)
 
 
+## The bank's slots to show: those whose item name contains the search
+## text (any case), in deposit order or by name.
+static func bank_view(slots: Array, search: String, by_name: bool) -> Array:
+	var needle := search.strip_edges().to_lower()
+	var shown := slots.filter(func(slot): return slot != null and (needle.is_empty() or needle in String(ContentDB.item(slot["item"])["name"]).to_lower()))
+	if by_name:
+		shown.sort_custom(func(a, b): return ContentDB.item(a["item"])["name"] < ContentDB.item(b["item"])["name"])
+	return shown
+
+
+func _refresh_bank_now() -> void:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	if combatant:
+		_refresh_bank(combatant)
+
+
 func _refresh_bank(c: RefCounted) -> void:
 	var focused := get_viewport().gui_get_focus_owner()
 	var focus_index := focused.get_index() if focused and focused.get_parent() == _bank_grid else -1
 	for child in _bank_grid.get_children():
 		_bank_grid.remove_child(child)
 		child.queue_free()
-	for slot in c.bank.slots:
-		if slot == null:
-			continue
+	for slot in bank_view(c.bank.slots, _bank_search.text, _bank_sorted):
 		var button := _slot_button()
 		button.text = _slot_text(slot)
 		button.pressed.connect(_act.bind("withdraw", {"item": slot["item"], "quantity": 1}))
@@ -383,7 +459,7 @@ func _inventory_options(index: int) -> Array:
 		if not _recipes_using(kind, slot["item"]).is_empty():
 			options.append([Skilling.HANDHELD_KINDS[kind], open_handheld.bind(kind, slot["item"])])
 	options.append(["Drop", _act.bind("drop", {"slot": index})])
-	options.append(["Examine", show_message.bind(item["examine"])])
+	options.append(["Examine", show_message.bind(examine_text(slot["item"], _worn()))])
 	return options
 
 
@@ -392,7 +468,7 @@ func _bank_options(item_id: String) -> Array:
 	for amount in [1, 5, 10]:
 		options.append(["Withdraw %d" % amount, _act.bind("withdraw", {"item": item_id, "quantity": amount})])
 	options.append(["Withdraw all", _act.bind("withdraw", {"item": item_id, "quantity": 1 << 30})])
-	options.append(["Examine", show_message.bind(ContentDB.item(item_id)["examine"])])
+	options.append(["Examine", show_message.bind(examine_text(item_id, _worn()))])
 	return options
 
 

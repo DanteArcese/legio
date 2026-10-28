@@ -2062,6 +2062,28 @@
       "slayer": 70
     }
   },
+  "rudis": {
+    "name": "Rudis",
+    "value": 800,
+    "examine": "The wooden sword of a gladiator who has won his freedom. Light, balanced, and it still hurts.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 24,
+        "strength": 20,
+        "defence": 2
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "crowd's favour",
+        "cost": 50,
+        "effect": "sure"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
   "yew_logs": {
     "name": "Yew logs",
     "value": 45,

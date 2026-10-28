@@ -96,6 +96,11 @@ func _on_sim_event(event: Dictionary) -> void:
 			_chariot.position.y = -1.0
 			add_child(_chariot)
 		return
+	if event["type"] in ["games_started", "games_ended"]:
+		destination = null
+		_on_arrival = {}
+		global_position = event["position"] + Vector3(0, 1, 0)
+		return
 	if event["type"] == "race_ended":
 		if _chariot:
 			_chariot.queue_free()
@@ -449,6 +454,12 @@ func buy(shopkeeper: Node3D, item_id: String) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
 
 
+## The editor sends you out onto the sand for the munera.
+func start_games(editor: Node3D) -> void:
+	walk_and_do(editor.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "start_games"))
+
+
 ## The factio agent enters you in a chariot race.
 func start_race(agent: Node3D) -> void:
 	walk_and_do(agent.global_position, CLICK_USE_DISTANCE + 0.6, func():
@@ -612,6 +623,9 @@ func _physics_process(delta: float) -> void:
 		_play_crossing(delta)
 		return
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	# Typing in a text box (the bank search) mustn't walk the player about.
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		input = Vector2.ZERO
 	var yaw := camera_rig.global_rotation.y if camera_rig else 0.0
 	var direction := MoveMath.camera_relative(input, yaw)
 	var face_target := false

@@ -48,6 +48,9 @@ func _ready() -> void:
 	# Just above the HUD's status panel.
 	_message.position.y -= 215
 	_message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Longer messages (gear stats) grow upward, clear of the HUD.
+	_message.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	_message.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
 	_message.add_theme_font_size_override("font_size", 24)
 	_message.add_theme_constant_override("outline_size", 6)
 	_message.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -184,6 +187,43 @@ func close_bank() -> void:
 
 func is_bank_open() -> bool:
 	return _bank_panel.visible
+
+
+const BONUS_NAMES := {"attack": "Attack", "strength": "Strength", "defence": "Defence", "ranged_attack": "Ranged",
+	"ranged_strength": "Ranged str", "ritus_attack": "Ritus", "ritus_strength": "Ritus str",
+	"ranged_defence": "vs ranged", "ritus_defence": "vs Ritus"}
+
+
+## An item's examine text, with its bonuses, speed, reach and requirements
+## if it can be worn, and what's in that slot now.
+static func examine_text(item_id: String, worn: Dictionary) -> String:
+	var item := ContentDB.item(item_id)
+	var text: String = item["examine"]
+	if not item.has("equip"):
+		return text
+	var equip: Dictionary = item["equip"]
+	var parts := PackedStringArray()
+	for bonus in BONUS_NAMES:
+		var value: int = equip.get("bonuses", {}).get(bonus, 0)
+		if value != 0:
+			parts.append("%s %+d" % [BONUS_NAMES[bonus], value])
+	if equip.has("attack_speed"):
+		parts.append("speed %d" % equip["attack_speed"])
+	if equip.has("range"):
+		parts.append("reach %d m" % roundi(equip["range"]))
+	for skill in item.get("requirements", {}):
+		parts.append("needs %s %d" % [skill.capitalize(), item["requirements"][skill]])
+	if not parts.is_empty():
+		text += "\n" + ", ".join(parts)
+	var current: String = worn.get(equip["slot"], "")
+	if not current.is_empty() and current != item_id:
+		text += "\n(Wearing: %s)" % ContentDB.item(current)["name"]
+	return text
+
+
+func _worn() -> Dictionary:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	return combatant.equipment.worn if combatant and combatant.equipment else {}
 
 
 func show_message(text: String) -> void:
@@ -419,7 +459,7 @@ func _inventory_options(index: int) -> Array:
 		if not _recipes_using(kind, slot["item"]).is_empty():
 			options.append([Skilling.HANDHELD_KINDS[kind], open_handheld.bind(kind, slot["item"])])
 	options.append(["Drop", _act.bind("drop", {"slot": index})])
-	options.append(["Examine", show_message.bind(item["examine"])])
+	options.append(["Examine", show_message.bind(examine_text(slot["item"], _worn()))])
 	return options
 
 
@@ -428,7 +468,7 @@ func _bank_options(item_id: String) -> Array:
 	for amount in [1, 5, 10]:
 		options.append(["Withdraw %d" % amount, _act.bind("withdraw", {"item": item_id, "quantity": amount})])
 	options.append(["Withdraw all", _act.bind("withdraw", {"item": item_id, "quantity": 1 << 30})])
-	options.append(["Examine", show_message.bind(ContentDB.item(item_id)["examine"])])
+	options.append(["Examine", show_message.bind(examine_text(item_id, _worn()))])
 	return options
 
 

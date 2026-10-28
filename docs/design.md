@@ -69,7 +69,7 @@ Kept as a core skill and the center of progression.
 | Skill | Roman flavor |
 |---|---|
 | Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying (Parian marble on Seriphos, 45). |
-| Woodcutting | Oak, pine, cedar, olive wood. |
+| Woodcutting | Oak, pine, and yew (*taxus*, beyond the Limes at 60), with cedar and olive wood later. |
 | Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
@@ -82,6 +82,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
 
+**Built (#275): dormice.** Three dormouse nests in Seriphos's olive grove (Hunter 40) catch fat edible dormice. Roasted with honey (Cooking 50), a honeyed dormouse heals 16: the best food yet, and a dish for a senator's table.
+
 ### Artisan
 
 | Skill | Roman flavor |
@@ -90,7 +92,7 @@ Kept as a core skill and the center of progression.
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
 
-**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel.
+**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel. The quest *The Mountain-Copper* (#264; The Silent Gallery, Mining 55, Smithing 50) introduces it: three ores for Foreman Masculus, then a bar for the procurator, for XP and the first orichalcum pickaxe made at Vipasca.
 | Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
@@ -122,6 +124,8 @@ Kept as a core skill and the center of progression.
 **Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
 
 **Built (#239): shortcuts.** A course of its own with no lap bonus: each shortcut is a single crossing, usable from either side. The first is a ladder over the fort's west wall to the grove (Athletics 10), which saves the walk round the south-west corner.
+
+**Built (#269): the beach run.** A second course along the sand east of Portus Salis's pier (Athletics 30): a drifted mast, an upturned hull, a rope over the inlet, and net racks. It's about twice the training course's XP an hour at its level.
 
 **Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
 
@@ -193,6 +197,8 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 **Tone: eerie folk ritual, not dark fantasy.**
 - Effects are subtle: the target shudders, stumbles, or falters under faint dark motes. There are no beams and no fireballs.
 - Curses invoke the powers the real tablets name: Dis Pater, Proserpina, Hecate, and the Manes. Item descriptions quote real tablet wording, such as "I bind his tongue, his hands, his feet."
+
+**Built (#277): Ritus gear tiers.** Beyond the plain lituus and the ritual robe and hood: a silver lituus (jewelled from two silver bars and an oak log, Crafting 35; Ritus 30), an orichalcum lituus (smithed from two orichalcum bars and an oak log, Smithing 57; Ritus 50), and an augur's robe and hood sewn from linen, silver and thread (Crafting 40; Ritus 40).
 
 ### Curses and Pietas
 
@@ -334,6 +340,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching. (Ranged was added in #36, Ritus in #45 and #46, and the gathering skills in #82, after the first build.)
 
 **Gathering (#82).** A grove west of the fort has common trees (fall after one log), oaks, and, at the edge of the wolf woods, pines; oaks and pines give several logs before they fall and regrow from the stump. The fort's pond has a net spot (sardines, then anchovies at 10) and a rod spot (mackerel at 20), with a campfire nearby for cooking. Fletching works anywhere with a knife: logs into arrow shafts, then shafts, feathers, and smithed arrowheads into arrows, and oak logs and a bowstring into a hunting bow. New players start with a bronze axe, a small net, and a knife.
+
+**Built (#257): yew.** Three ancient yews stand beside the path beyond the Limes (Woodcutting 60). Yew logs and a bowstring make a yew longbow (Fletching 60, Ranged 50): a tick slower than the composite bow, but more accurate and with 10 m of reach.
 
 **Monsters:**
 

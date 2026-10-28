@@ -303,7 +303,8 @@ func buy_villa(surveyor: Node3D) -> void:
 
 func build_furniture(hotspot: Node3D, furniture_id: String) -> void:
 	walk_and_do(hotspot.global_position, CLICK_USE_DISTANCE + 0.6, func():
-		sim_driver.sim.queue_item_action(_entity.entity_id, "build", {"hotspot": hotspot.hotspot_id, "furniture": furniture_id}))
+		sim_driver.sim.queue_item_action(_entity.entity_id, "build", {"hotspot": hotspot.hotspot_id, "furniture": furniture_id,
+			"now": Time.get_unix_time_from_system()}))
 
 
 func rest_at(hotspot: Node3D) -> void:
@@ -314,6 +315,12 @@ func rest_at(hotspot: Node3D) -> void:
 func remove_furniture(hotspot: Node3D) -> void:
 	walk_and_do(hotspot.global_position, CLICK_USE_DISTANCE + 0.6, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "remove_furniture", {"hotspot": hotspot.hotspot_id}))
+
+
+## The villa's steward hands over what the presses made, by real time.
+func collect_estate(steward: Node3D) -> void:
+	walk_and_do(steward.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "collect_estate", {"now": Time.get_unix_time_from_system()}))
 
 
 ## The villa's waystone: straight down the road to Portus Salis.

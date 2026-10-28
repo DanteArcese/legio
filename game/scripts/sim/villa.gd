@@ -2,7 +2,8 @@ extends RefCounted
 ## The villa: citizens buy one from the land surveyor, then build furniture
 ## at fixed hotspots with Engineering. Furniture is the real thing: a hearth
 ## is a cooking station, a strongbox is a bank, a lararium is an altar, a
-## garden bed is a farming patch.
+## garden bed is a farming patch. A hired steward runs the presses on real
+## time, even while the game is closed, for the owner to collect.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
@@ -14,6 +15,12 @@ const REST_TICKS := 3000
 const RESTED_XP_BONUS := 0.05
 ## Farming patch ids for garden beds, clear of the fixed patches.
 const PATCH_ID_BASE := 1000
+## The steward fills one amphora per press this often (real seconds), and
+## keeps at most a day's worth waiting.
+const STEWARD_SECONDS_PER_AMPHORA := 7200.0
+const STEWARD_MAX_SECONDS := 86400.0
+## What the steward makes with each press.
+const STEWARD_GOODS := {"olive_press": "olive_oil", "wine_press": "estate_wine"}
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.
@@ -94,7 +101,8 @@ func build_problem(player: Combatant, hotspot_id: String, furniture_id: String) 
 	return ""
 
 
-func build(player: Combatant, hotspot_id: String, furniture_id: String, events: Array) -> void:
+## now: real time in seconds, which starts a newly hired steward's books.
+func build(player: Combatant, hotspot_id: String, furniture_id: String, events: Array, now := 0.0) -> void:
 	if not hotspots.has(hotspot_id) or sim.flat_distance(hotspots[hotspot_id]["position"], player.position) > BUILD_RANGE:
 		return
 	var problem := build_problem(player, hotspot_id, furniture_id)
@@ -106,6 +114,8 @@ func build(player: Combatant, hotspot_id: String, furniture_id: String, events: 
 		player.inventory.remove(entry["item"], entry["quantity"])
 	player.villa_furniture[hotspot_id] = furniture_id
 	_provide(hotspot_id, furniture_id)
+	if furniture["provides"].has("steward"):
+		player.steward_since = now
 	sim.award_xp(player, "engineering", furniture["xp"], events)
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 	events.append(_built_event(player, hotspot_id))
@@ -135,6 +145,61 @@ func rest(player: Combatant, hotspot_id: String, events: Array) -> void:
 
 static func is_rested(player: Combatant, tick: int) -> bool:
 	return player.rested_until > tick
+
+
+## The goods the steward makes: one item per built press, in hotspot order.
+func steward_goods(player: Combatant) -> Array:
+	var goods := []
+	for hotspot_id in player.villa_furniture:
+		var station: String = ContentDB.furniture(player.villa_furniture[hotspot_id])["provides"].get("station", "")
+		if STEWARD_GOODS.has(station):
+			goods.append(STEWARD_GOODS[station])
+	return goods
+
+
+func has_steward(player: Combatant) -> bool:
+	return player.villa_furniture.values().any(func(f): return ContentDB.furniture(f)["provides"].has("steward"))
+
+
+## How many amphorae of each good are waiting at real time now.
+func steward_ready(player: Combatant, now: float) -> int:
+	if not has_steward(player):
+		return 0
+	var elapsed := clampf(now - player.steward_since, 0.0, STEWARD_MAX_SECONDS)
+	return floori(elapsed / STEWARD_SECONDS_PER_AMPHORA)
+
+
+## Hands over what the steward has made since the last visit. Time beyond
+## the day's cap is lost; part of an amphora carries over.
+func collect(player: Combatant, now: float, events: Array) -> void:
+	var office := _steward_hotspot(player)
+	if office.is_empty() or sim.flat_distance(hotspots[office]["position"], player.position) > BUILD_RANGE:
+		return
+	var goods := steward_goods(player)
+	if goods.is_empty():
+		sim.message(player, "\"Without a press, master, there's nothing for me to sell.\"", events)
+		return
+	var ready := steward_ready(player, now)
+	if ready == 0:
+		var wait := STEWARD_SECONDS_PER_AMPHORA - fmod(maxf(now - player.steward_since, 0.0), STEWARD_SECONDS_PER_AMPHORA)
+		sim.message(player, "\"Nothing sealed yet. Give it %d minutes or so.\"" % ceili(wait / 60.0), events)
+		return
+	if now - player.steward_since >= STEWARD_MAX_SECONDS:
+		player.steward_since = now
+	else:
+		player.steward_since += ready * STEWARD_SECONDS_PER_AMPHORA
+	var parts := []
+	for item_id in goods:
+		sim.give_item(player.id, item_id, ready, "villa", events)
+		parts.append("%d %s" % [ready, ContentDB.item(item_id)["name"].to_lower()])
+	sim.message(player, "Your steward hands over %s." % " and ".join(parts), events)
+
+
+func _steward_hotspot(player: Combatant) -> String:
+	for hotspot_id in player.villa_furniture:
+		if hotspots.has(hotspot_id) and ContentDB.furniture(player.villa_furniture[hotspot_id])["provides"].has("steward"):
+			return hotspot_id
+	return ""
 
 
 ## After loading a save: put back what the furniture provides.

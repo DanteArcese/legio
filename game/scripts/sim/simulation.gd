@@ -171,7 +171,7 @@ func ground_piles() -> Array:
 ## feet. Returns how many reached the inventory.
 func give_item(id: int, item_id: String, quantity: int, source: String, events: Array) -> int:
 	var player: Combatant = _combatants[id]
-	if player.account_mode == "solitarius" and source in SOLITARIUS_BLOCKED_SOURCES:
+	if player.is_solitarius() and source in SOLITARIUS_BLOCKED_SOURCES:
 		message(player, "As a Solitarius, you stand alone.", events)
 		return 0
 	if source in COLLECTION_SOURCES:
@@ -320,6 +320,10 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 		victim.respawn_at_tick = tick + maxi(victim.respawn_ticks, 1)
 	events.append({"type": "death", "id": victim.id, "tick": tick})
 	boss.on_death(victim, events)
+	if victim.account_mode == "hardcore":
+		victim.account_mode = "solitarius"
+		message(victim, "Your one life is spent. You walk on as a Solitarius.", events)
+		events.append({"type": "account_mode_changed", "id": victim.id, "mode": "solitarius", "tick": tick})
 	if victim.inventory:
 		graves.on_player_death(victim, events)
 	var killer: Combatant = _combatants.get(victim.last_attacker_id)
@@ -415,7 +419,7 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 				player.special_armed = not player.special_armed
 				events.append({"type": "special_armed", "id": player.id, "armed": player.special_armed, "tick": tick})
 		"leave_solitarius":
-			if player.account_mode == "solitarius":
+			if player.is_solitarius():
 				player.account_mode = "standard"
 				message(player, "You give up the Solitarius path. From now on you may trade like anyone else.", events)
 				events.append({"type": "account_mode_changed", "id": player.id, "mode": "standard", "tick": tick})
@@ -434,11 +438,13 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 		"buy_villa":
 			villa.buy(player, events)
 		"build":
-			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events)
+			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events, command.get("now", 0.0))
 		"remove_furniture":
 			villa.remove(player, command.get("hotspot", ""), events)
 		"rest":
 			villa.rest(player, command.get("hotspot", ""), events)
+		"collect_estate":
+			villa.collect(player, command.get("now", 0.0), events)
 		"take_contract":
 			mercatura.take(player, command.get("board", ""), command.get("contract", ""), events)
 		"abandon_contract":

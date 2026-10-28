@@ -23,7 +23,8 @@ CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft", "masonry"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft",
+                "press_oil", "press_wine", "masonry"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -802,8 +803,8 @@ def _check_mercatura(mercatura, items, shops, errors):
 
 
 FURNITURE_KEYS = {"name", "hotspot", "level", "xp", "materials", "provides"}
-PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace"}, "altar": {"heavenly", "underworld"}, "bank": {True},
-            "patch": None, "travel": {"portus_salis"}, "comfort": {True}}
+PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace", "olive_press", "wine_press"}, "altar": {"heavenly", "underworld"},
+            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}, "comfort": {True}}
 
 
 def _check_villa(villa, items, quests, farming, errors):

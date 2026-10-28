@@ -100,6 +100,8 @@ func _refresh() -> void:
 		task_text = "%s   %s" % [title, task_text]
 	if c.account_mode == "solitarius":
 		task_text = "[Solitarius]  " + task_text
+	elif c.account_mode == "hardcore":
+		task_text = "[Hardcore Solitarius]  " + task_text
 	var ammo_text := ""
 	if c.uses_ammo():
 		var ammo: String = c.equipment.worn["ammo"]

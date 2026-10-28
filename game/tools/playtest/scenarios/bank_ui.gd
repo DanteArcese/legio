@@ -1,7 +1,7 @@
 extends "res://tools/playtest/scenario.gd"
 ## Drives the bank and inventory UI with controller-style inputs: walk to
 ## the bank chest, interact, deposit with A, navigate with the D-pad,
-## withdraw, close with B, and open the inventory.
+## withdraw, search and sort, close with B, and open the inventory.
 
 const PLAYER := 1
 
@@ -30,6 +30,24 @@ func run() -> void:
 	driver().sim.queue_item_action(PLAYER, "withdraw", {"item": "bread", "quantity": 2})
 	await seconds(1.0)
 	expect(me.inventory.count("bread") == 2, "withdrew 2 bread")
+
+	ui._bank_search.text = "pug"
+	ui._bank_search.text_changed.emit("pug")
+	await seconds(0.2)
+	expect(ui._bank_grid.get_child_count() == 1, "searching \"pug\" shows just the pugio (%d)" % ui._bank_grid.get_child_count())
+	var start := player().global_position
+	ui._bank_search.grab_focus()
+	Input.action_press("move_forward")
+	await seconds(0.5)
+	Input.action_release("move_forward")
+	expect(player().global_position.distance_to(start) < 0.1, "typing in the search box doesn't walk")
+	await shot("bank_search")
+	ui._bank_search.text = ""
+	ui._bank_search.text_changed.emit("")
+	ui._bank_sort.pressed.emit()
+	await seconds(0.2)
+	expect(ui._bank_grid.get_child(0).text.begins_with("Bread"), "sorted by name, bread first (%s)" % ui._bank_grid.get_child(0).text)
+	ui._bank_grid.get_child(0).grab_focus()
 
 	await press("ui_cancel")
 	await seconds(0.2)

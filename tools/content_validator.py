@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -76,11 +76,13 @@ def validate(content: dict) -> list[str]:
             if "requires_unlock" in recipe and recipe["requires_unlock"] not in unlocks:
                 errors.append(f"skilling.recipes.{kind}[{i}].requires_unlock: unknown Slayer unlock {recipe['requires_unlock']!r}")
     _check_thieving(content.get("thieving", {}), items, errors)
+    _check_strongboxes(content.get("thieving", {}).get("strongboxes", {}), set(content.get("drops", {})), errors)
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
+    _check_circus(content.get("circus", {}), items, errors)
     _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
@@ -325,6 +327,36 @@ def _check_arena(arena, items, monsters, shops, errors):
         _check_int(where, "hunter", contract.get("hunter"), 1, errors, 99)
         for key in ("count", "coins", "xp"):
             _check_int(where, key, contract.get(key), 1, errors)
+CIRCUS_KEYS = {"name", "level", "fee", "laps", "speed", "speed_per_level", "countdown_ticks", "time_limit_ticks", "lap_xp",
+               "placing_xp", "prizes", "trophy", "rivals"}
+
+
+def _check_circus(circus, items, errors):
+    _check_keys("circus", circus, CIRCUS_KEYS, CIRCUS_KEYS, errors)
+    _check_type("circus", "name", circus.get("name"), str, errors)
+    _check_int("circus", "level", circus.get("level"), 1, errors, 99)
+    for key in ("fee", "laps", "countdown_ticks", "time_limit_ticks", "lap_xp"):
+        _check_int("circus", key, circus.get(key), 1, errors)
+    _check_number("circus", "speed", circus.get("speed"), 1.0, 30.0, errors)
+    _check_number("circus", "speed_per_level", circus.get("speed_per_level"), 0.0, 0.05, errors)
+    if circus.get("trophy") not in items:
+        errors.append(f"circus.trophy: unknown item {circus.get('trophy')!r}")
+    rivals = circus.get("rivals", [])
+    if not rivals:
+        errors.append("circus.rivals: at least one rival required")
+    for i, rival in enumerate(rivals):
+        where = f"circus.rivals[{i}]"
+        _check_keys(where, rival, {"name", "color", "speed"}, {"name", "color", "speed"}, errors)
+        _check_type(where, "name", rival.get("name"), str, errors)
+        if not (isinstance(rival.get("color"), str) and re.fullmatch(r"#[0-9a-fA-F]{6}", rival["color"])):
+            errors.append(f"{where}.color: expected #rrggbb")
+        _check_number(where, "speed", rival.get("speed"), 1.0, 30.0, errors)
+    for key in ("placing_xp", "prizes"):
+        values = circus.get(key)
+        if not (isinstance(values, list) and len(values) == len(rivals) + 1 and all(isinstance(v, int) and v >= 0 for v in values)):
+            errors.append(f"circus.{key}: expected one non-negative int per place ({len(rivals) + 1})")
+
+
 TASK_FIELDS = {"obtain": {"item"}, "kill": {"monster"}, "quest": {"quest"}, "level": {"skill", "level"}, "visit": {"area"}}
 
 
@@ -624,8 +656,28 @@ MARK_KEYS = {"name", "level", "xp", "coins", "stun_ticks", "damage", "examine"}
 STALL_MODELS = {"stall-red", "stall-green"}
 
 
+STRONGBOX_KEYS = {"name", "level", "xp", "crack_ticks", "trap_chance", "damage", "relock_ticks", "drop_table", "examine"}
+
+
+def _check_strongboxes(strongboxes, drop_tables, errors):
+    for box_id, box in strongboxes.items():
+        where = f"thieving.strongboxes.{box_id}"
+        _check_id(where, box_id, errors)
+        _check_keys(where, box, STRONGBOX_KEYS, STRONGBOX_KEYS, errors)
+        _check_int(where, "level", box.get("level"), 1, errors, 99)
+        _check_number(where, "xp", box.get("xp"), 0.1, 10000, errors)
+        _check_int(where, "crack_ticks", box.get("crack_ticks"), 1, errors, 50)
+        _check_int(where, "relock_ticks", box.get("relock_ticks"), 1, errors)
+        _check_number(where, "trap_chance", box.get("trap_chance"), 0, 1, errors)
+        pair = box.get("damage")
+        if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
+            errors.append(f"{where}.damage: expected [min, max] whole numbers")
+        if box.get("drop_table") not in drop_tables:
+            errors.append(f"{where}.drop_table: unknown drop table {box.get('drop_table')!r}")
+
+
 def _check_thieving(thieving, items, errors):
-    _check_keys("thieving", thieving, {"stalls", "marks"}, {"stalls", "marks"}, errors)
+    _check_keys("thieving", thieving, {"stalls", "marks", "strongboxes"}, {"stalls", "marks"}, errors)
     for stall_id, stall in thieving.get("stalls", {}).items():
         where = f"thieving.stalls.{stall_id}"
         _check_id(where, stall_id, errors)

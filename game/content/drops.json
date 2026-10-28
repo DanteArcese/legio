@@ -772,5 +772,90 @@
         "weight": 5
       }
     ]
+  },
+  "warehouse_strongbox": {
+    "always": [],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          40,
+          90
+        ],
+        "weight": 7
+      },
+      {
+        "item": "silver_fibula",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "salt",
+        "quantity": [
+          5,
+          10
+        ],
+        "weight": 2
+      },
+      {
+        "item": "pearl",
+        "quantity": 1,
+        "weight": 1
+      }
+    ]
+  },
+  "procurators_strongbox": {
+    "always": [],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          80,
+          160
+        ],
+        "weight": 7
+      },
+      {
+        "item": "silver_bar",
+        "quantity": 1,
+        "weight": 3
+      },
+      {
+        "item": "gold_bar",
+        "quantity": 1,
+        "weight": 1
+      }
+    ]
+  },
+  "merchants_strongbox": {
+    "always": [],
+    "rolls": 1,
+    "table": [
+      {
+        "item": "coins",
+        "quantity": [
+          120,
+          260
+        ],
+        "weight": 6
+      },
+      {
+        "item": "pearl",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "gold_bar",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "silver_pendant",
+        "quantity": 1,
+        "weight": 1
+      }
+    ]
   }
 }

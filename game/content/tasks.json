@@ -176,6 +176,12 @@
           "text": "Win back the eagle: finish The Lost Eagle."
         },
         {
+          "id": "sacramentum",
+          "kind": "quest",
+          "quest": "sacramentum",
+          "text": "Swear the sacramentum to Centurion Varro."
+        },
+        {
           "id": "hrodgar",
           "kind": "kill",
           "monster": "hrodgar",

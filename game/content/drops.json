@@ -909,5 +909,42 @@
         "weight": 5
       }
     ]
+  },
+  "goat": {
+    "always": [
+      {
+        "item": "raw_meat",
+        "quantity": 1
+      },
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 4
+      },
+      {
+        "item": "goat_hide",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          1,
+          6
+        ],
+        "weight": 3
+      },
+      {
+        "item": "mint_seed",
+        "quantity": 1,
+        "weight": 1
+      }
+    ]
   }
 }

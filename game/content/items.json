@@ -2194,5 +2194,10 @@
     "requirements": {
       "ritus": 40
     }
+  },
+  "goat_hide": {
+    "name": "Goat hide",
+    "value": 8,
+    "examine": "A shaggy goat hide. The tanning rack will make leather of it."
   }
 }

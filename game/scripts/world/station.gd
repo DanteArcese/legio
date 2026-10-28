@@ -14,12 +14,13 @@ const LOOKS := {
 	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
 	"potters_wheel": ["Potter's wheel", Color(0.5, 0.38, 0.26), Vector3(1.0, 0.9, 1.0), "A kick-wheel and a bench. Throw clay into pots here."],
 	"kiln": ["Kiln", Color(0.62, 0.38, 0.26), Vector3(1.4, 1.6, 1.4), "A beehive kiln of brick. Fire pots, and melt sand into glass with a blowpipe."],
+	"quern": ["Quern", Color(0.55, 0.53, 0.5), Vector3(1.0, 0.8, 1.0), "Two millstones on a stand. Grind wheat into flour here."],
 }
 ## Recipe kinds made at each station.
 const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum", "sawpit": "saw",
-	"potters_wheel": "throw", "kiln": "kiln"}
+	"potters_wheel": "throw", "kiln": "kiln", "quern": "mill"}
 
-@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit", "potters_wheel", "kiln") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit", "potters_wheel", "kiln", "quern") var kind := "furnace"
 
 var _flame: MeshInstance3D
 var _light: OmniLight3D
@@ -68,6 +69,8 @@ func _ready() -> void:
 			_build_potters_wheel()
 		"kiln":
 			_build_kiln()
+		"quern":
+			_build_quern()
 	var shape := CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	shape.shape.size = look[2]
@@ -190,6 +193,15 @@ func _build_garum_vat() -> void:
 		jar.mesh = capsule
 		jar.position = Vector3(1.0, 0.3, -0.45 + i * 0.4)
 		add_child(jar)
+
+
+## A rotary quern: two stone discs on a wooden stand, with a handle.
+func _build_quern() -> void:
+	var stone := Color(0.55, 0.53, 0.5)
+	_add_box(Vector3(1.0, 0.45, 1.0), Vector3(0, 0.22, 0), Color(0.45, 0.33, 0.22))
+	_add_cylinder(0.45, 0.16, Vector3(0, 0.53, 0), stone)
+	_add_cylinder(0.42, 0.14, Vector3(0, 0.68, 0), stone.lightened(0.1))
+	_add_cylinder(0.04, 0.35, Vector3(0.3, 0.9, 0), Color(0.4, 0.3, 0.2))
 
 
 ## Two posts and a crossbar with a hide stretched between them.

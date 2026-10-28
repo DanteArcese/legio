@@ -38,7 +38,7 @@
           "id": "bread",
           "kind": "obtain",
           "item": "bread",
-          "text": "Lift a loaf from the baker's stall."
+          "text": "Get a loaf of bread: lift one from the baker's stall, or bake your own."
         },
         {
           "id": "wolf",

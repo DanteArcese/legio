@@ -33,6 +33,11 @@
         "item": "fennel_seed",
         "quantity": 1,
         "weight": 1
+      },
+      {
+        "item": "wheat_seed",
+        "quantity": 2,
+        "weight": 1
       }
     ]
   },

@@ -74,6 +74,8 @@ Kept as a core skill and the center of progression.
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.
+
+**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10).
 | Hunter | Traps and nets. Live capture for the arena. |
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
@@ -85,7 +87,7 @@ Kept as a core skill and the center of progression.
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
-| Cooking | Bread, garum, roasts, *posca*. Wine making could live here or under Farming. |
+| Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |

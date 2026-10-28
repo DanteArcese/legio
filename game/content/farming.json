@@ -9,6 +9,11 @@
       "name": "Allotment",
       "kind": "vegetable",
       "examine": "A long strip of ploughed earth for vegetables."
+    },
+    "grain_field": {
+      "name": "Grain field",
+      "kind": "grain",
+      "examine": "A strip of ploughed field for sowing grain."
     }
   },
   "crops": {
@@ -123,6 +128,22 @@
       "stage_ticks": 100,
       "stages": 4,
       "color": "#6f9f4a"
+    },
+    "wheat": {
+      "name": "Wheat",
+      "kind": "grain",
+      "seed": "wheat_seed",
+      "level": 10,
+      "plant_xp": 10,
+      "harvest_xp": 14,
+      "produce": "wheat",
+      "yield": [
+        5,
+        9
+      ],
+      "stage_ticks": 110,
+      "stages": 4,
+      "color": "#d9b84a"
     }
   }
 }

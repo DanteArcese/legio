@@ -1264,23 +1264,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -336, 0, 357)
 monster_id = "euryale"
 
 [node name="Goat1" parent="Monsters" instance=ExtResource("7_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 14)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -17)
 monster_id = "goat"
 
 [node name="Goat2" parent="Monsters" instance=ExtResource("7_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, 16.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, -14.5)
 monster_id = "goat"
 
 [node name="Goat3" parent="Monsters" instance=ExtResource("7_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31, 0, 19.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, -21)
 monster_id = "goat"
 
 [node name="Goat4" parent="Monsters" instance=ExtResource("7_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 12.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -13)
 monster_id = "goat"
 
 [node name="Goat5" parent="Monsters" instance=ExtResource("7_monster")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 20.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, -19)
 monster_id = "goat"
 
 [node name="Hydra" parent="Monsters" instance=ExtResource("7_monster")]

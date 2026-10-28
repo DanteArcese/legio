@@ -1,5 +1,5 @@
 extends "res://tools/playtest/scenario.gd"
-## Wild goats: a new player walks out to the pasture east of the fort and
+## Wild goats: a new player walks out to the pasture north-east of the fort and
 ## kills a goat; goats don't start fights.
 
 const PLAYER := 1
@@ -8,7 +8,7 @@ const PLAYER := 1
 func run() -> void:
 	await seconds(0.5)
 	var me: RefCounted = driver().sim.get_combatant(PLAYER)
-	await route_to(Vector3(28, 0, 12), 1.0, 120.0)
+	await route_to(Vector3(30, 0, -12), 1.0, 120.0)
 	var goats := get_tree().get_nodes_in_group("sim_entities").filter(func(e): return e.monster_id == "goat")
 	expect(goats.size() == 5, "five goats in the pasture (%d)" % goats.size())
 	await seconds(3.0)

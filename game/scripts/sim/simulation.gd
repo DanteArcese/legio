@@ -30,6 +30,7 @@ const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Arena := preload("res://scripts/sim/arena.gd")
 const Circus := preload("res://scripts/sim/circus.gd")
+const Games := preload("res://scripts/sim/games.gd")
 const Tasks := preload("res://scripts/sim/tasks.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
@@ -61,6 +62,7 @@ var quests := Quests.new(self)
 var thieving := Thieving.new(self)
 var athletics := Athletics.new(self)
 var circus := Circus.new(self)
+var games := Games.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
@@ -217,7 +219,8 @@ func sorted_ids() -> Array:
 
 
 func set_position(id: int, position: Vector3) -> void:
-	_combatants[id].position = position
+	if _combatants.has(id):
+		_combatants[id].position = position
 
 
 ## Takes a combatant out of the simulation, clearing anyone's aim at it.
@@ -280,6 +283,7 @@ func step() -> Array[Dictionary]:
 	thieving.process(events, players)
 	athletics.process(players, events)
 	circus.process(players, events)
+	games.process(players, events)
 	hunter.process(events)
 	farming.process(events)
 	items.decay_remedies(players)
@@ -312,6 +316,9 @@ func message(player: Combatant, text: String, events: Array) -> void:
 
 
 func kill(victim: Combatant, events: Array[Dictionary]) -> void:
+	# The arena's attendants carry a fallen fighter out instead.
+	if games.on_fall(victim, events):
+		return
 	victim.curses.clear()
 	victim.remedy_boosts.clear()
 	victim.target_id = -1
@@ -419,6 +426,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			circus.start(player, events)
 		"leave_race":
 			circus.leave(player, events)
+		"start_games":
+			games.start(player, events)
 		"special":
 			if player.equipment.weapon().get("special", {}).is_empty():
 				message(player, "This weapon has no special attack.", events)

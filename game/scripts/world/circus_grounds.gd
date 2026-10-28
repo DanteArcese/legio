@@ -23,6 +23,8 @@ const RADIUS := 12.0
 const SAND_INNER := 6.5
 const SAND_OUTER := 17.5
 const SPINA_HALF := 26.0
+## The munera are fought on the sand past the east turning post.
+const ARENA := Vector3(356, 0, 160)
 
 const GRASS := Color(0.48, 0.6, 0.3)
 const GRASS_LIGHT := Color(0.55, 0.65, 0.34)

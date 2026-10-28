@@ -1152,6 +1152,75 @@
           }
         ]
       }
+    },
+    "the_mountain_copper": {
+      "name": "The Mountain-Copper",
+      "summary": "Red-gold veins have been found at the bottom of the Vipasca pit. The procurator wants to know if it's really orichalcum.",
+      "giver": "procurator",
+      "requirements": {
+        "quests": [
+          "the_silent_gallery"
+        ],
+        "skills": {
+          "mining": 55,
+          "smithing": 50
+        }
+      },
+      "start": [
+        "My diggers swear there's orichalcum in the pit floor. Orichalcum! Plato's metal, the roofs of Atlantis.",
+        "I've heard it before, and it was copper and wishful thinking. Masculus will know. Take him some of the ore, and if he's satisfied, smelt it.",
+        "If it's real, the governor will make me a rich man. I'll make you a slightly less rich one."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "foreman_masculus",
+          "items": [
+            {
+              "item": "orichalcum_ore",
+              "quantity": 3
+            }
+          ],
+          "log": "Mine three orichalcum ores from the red-gold veins at the bottom of the Vipasca pit, and show them to Foreman Masculus.",
+          "remind": [
+            "Three lumps of the red stuff, from the bottom of the pit. Then we'll talk."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "procurator",
+          "items": [
+            {
+              "item": "orichalcum_bar",
+              "quantity": 1
+            }
+          ],
+          "log": "Smelt an orichalcum bar (an ore and four coal, Smithing 50) and bring it to the procurator.",
+          "remind": [
+            "A bar. One proper bar, and the governor's courier leaves tonight."
+          ]
+        }
+      ],
+      "complete": [
+        "Look at it glow. The governor will weep.",
+        "Here: a pickaxe headed with it, the first ever made at Vipasca. Don't lose it in a hole."
+      ],
+      "rewards": {
+        "xp": {
+          "mining": 4000,
+          "smithing": 3000
+        },
+        "items": [
+          {
+            "item": "orichalcum_pickaxe",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 800
+          }
+        ]
+      }
     }
   }
 }

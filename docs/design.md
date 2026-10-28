@@ -208,6 +208,8 @@ Without teleports, travel becomes a progression system:
 - Selling items: sell to merchants, or use the forum market.
 - Enchanting: you consecrate jewelry at temples, using Pietas.
 
+**Built (#235): later offerings.** Higher-level offerings come from newer content: dire wolf pelts (30 XP), pressed olive oil (40) and estate wine (65) at the heavenly altars; harpy feathers (55), basilisk eyes (85) and gorgon scales (115) at the underworld altars. As always, the wrong altar gives half.
+
 ## Combat
 
 Decided: **OSRS-style tick combat**, adapted for free movement and controllers. Combat is decided by stats, gear, and decisions, not by reflexes such as dodge rolls with invincibility frames.

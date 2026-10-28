@@ -1,7 +1,8 @@
 extends StaticBody3D
 ## One obstacle of an Athletics course. Players start it from this node's
 ## position and finish at end_offset. Builds its own look: a log, a
-## palisade wall, a rope swing over a ditch, or a row of hurdles.
+## palisade wall, a rope swing over a ditch, a row of hurdles, or a ladder
+## up a wall (a shortcut).
 
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const WOOD := Color(0.45, 0.32, 0.2)
@@ -72,6 +73,18 @@ func _ready() -> void:
 			var ditch := _box(Vector3(2.6, 0.05, length * 0.6), Color(0.28, 0.22, 0.15))
 			ditch.position = Vector3(0, 0.03, length / 2.0)
 			visual.add_child(ditch)
+		"climb":
+			# A ladder leaning on the wall just ahead.
+			for x in [-0.35, 0.35]:
+				var rail := _cylinder(0.05, 3.6, WOOD)
+				rail.position = Vector3(x, 1.7, 0.9)
+				rail.rotation.x = -0.25
+				visual.add_child(rail)
+			for i in 7:
+				var rung := _cylinder(0.035, 0.7, WOOD.darkened(0.15))
+				rung.rotation.z = PI / 2.0
+				rung.position = Vector3(0, 0.35 + i * 0.48, 0.98 - i * 0.12)
+				visual.add_child(rung)
 		"hurdles":
 			for i in 3:
 				var z := length * (i + 1) / 4.0

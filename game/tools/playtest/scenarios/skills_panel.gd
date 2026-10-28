@@ -1,7 +1,8 @@
 extends "res://tools/playtest/scenario.gd"
 ## K opens the skills panel: every skill with its level, and the focused
 ## skill's XP to the next level. It follows XP as it comes in, the D-pad
-## moves between skills, and Esc closes it without opening the pause menu.
+## moves between skills, the XP tracker shows this session's gains and
+## rate, and Esc closes it without opening the pause menu.
 
 const PLAYER := 1
 
@@ -22,6 +23,11 @@ func run() -> void:
 
 	await press("ui_right")
 	expect(panel.detail_text().begins_with("Strength"), "D-pad right moves to Strength (%s)" % panel.detail_text())
+	panel._on_sim_event({"type": "xp", "id": PLAYER, "skill": "strength", "amount": 500.0, "tick": driver().sim.tick})
+	await seconds(1.0)
+	expect("This session: +500 XP" in panel.detail_text(), "the tracker counts the session's XP (%s)" % panel.detail_text())
+	expect("an hour" in panel.detail_text() and "next level in" in panel.detail_text(), "with a rate and a time to level")
+	expect(panel.xp_per_hour("strength") >= 500.0, "at least the gain itself an hour")
 	await shot("skills_panel")
 
 	await press("ui_cancel")

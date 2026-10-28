@@ -46,7 +46,10 @@ func body() -> Node3D:
 ## Creates this entity's combatant in the simulation.
 func register(sim: RefCounted) -> void:
 	spawn_position = body().global_position
-	if not monster_id.is_empty():
+	# The sim spawned this one itself (an arena monster): take it over.
+	if not monster_id.is_empty() and sim.get_combatant(entity_id) != null:
+		combatant = sim.get_combatant(entity_id)
+	elif not monster_id.is_empty():
 		combatant = sim.add_monster(entity_id, monster_id, spawn_position)
 	elif is_player:
 		combatant = sim.add_player(entity_id, spawn_position)

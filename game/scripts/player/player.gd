@@ -96,6 +96,11 @@ func _on_sim_event(event: Dictionary) -> void:
 			_chariot.position.y = -1.0
 			add_child(_chariot)
 		return
+	if event["type"] in ["games_started", "games_ended"]:
+		destination = null
+		_on_arrival = {}
+		global_position = event["position"] + Vector3(0, 1, 0)
+		return
 	if event["type"] == "race_ended":
 		if _chariot:
 			_chariot.queue_free()
@@ -447,6 +452,12 @@ func travel(doorway: Node3D) -> void:
 func buy(shopkeeper: Node3D, item_id: String) -> void:
 	walk_and_do(shopkeeper.global_position, CLICK_USE_DISTANCE, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "buy", {"shop": shopkeeper.get_meta("shop_id"), "item": item_id}))
+
+
+## The editor sends you out onto the sand for the munera.
+func start_games(editor: Node3D) -> void:
+	walk_and_do(editor.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "start_games"))
 
 
 ## The factio agent enters you in a chariot race.

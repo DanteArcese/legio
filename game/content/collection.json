@@ -15,6 +15,7 @@
     "regulus": {"name": "The basilisk king", "category": "Combat", "items": ["crown_of_regulus", "basilisk_eye", "steel_gladius"]},
     "hydra": {"name": "The Hydra", "category": "Combat", "items": ["hydra_scale_lorica", "gorgon_scale", "pearl"]},
     "euryale": {"name": "The gorgon queen", "category": "Combat", "items": ["gorgoneion", "aegis", "gorgon_scale"]},
+    "games": {"name": "Bread and circuses", "category": "Combat", "items": ["rudis", "victors_palm"]},
     "pottery": {"name": "The potter's craft", "category": "Skilling", "items": ["clay_pot", "clay_bowl", "amphora", "oil_lamp", "glass_vial", "glass_bowl"]},
     "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling"]}
   }

@@ -24,6 +24,16 @@
       "source": "monster",
       "monster": "regulus",
       "one_in": 120
+    },
+    "hydra_hatchling": {
+      "source": "monster",
+      "monster": "hydra",
+      "one_in": 120
+    },
+    "foal": {
+      "source": "skill",
+      "skill": "athletics",
+      "one_in": 1500
     }
   }
 }

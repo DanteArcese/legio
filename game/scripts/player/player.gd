@@ -96,7 +96,7 @@ func _on_sim_event(event: Dictionary) -> void:
 			_chariot.position.y = -1.0
 			add_child(_chariot)
 		return
-	if event["type"] in ["games_started", "games_ended"]:
+	if event["type"] in ["games_started", "games_ended", "teleported"]:
 		destination = null
 		_on_arrival = {}
 		global_position = event["position"] + Vector3(0, 1, 0)

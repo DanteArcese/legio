@@ -20,7 +20,7 @@ func _make_sim() -> Simulation:
 	player.skills.xp["engineering"] = player.skills.xp_for_level(45)
 	player.skills.xp["cooking"] = player.skills.xp_for_level(40)
 	player.skills.xp["farming"] = player.skills.xp_for_level(25)
-	for spec in [["press_1", "press"], ["press_2", "press"], ["office", "office"], ["garden_1", "garden"]]:
+	for spec in [["press_1", "press"], ["press_2", "press"], ["office", "office"], ["garden_1", "garden"], ["orchard_1", "orchard"]]:
 		sim.villa.add_hotspot(spec[0], spec[1], Vector3(0, 0, 1))
 	sim.give_item(PLAYER, "hammer", 1, "test", [])
 	return sim
@@ -118,3 +118,20 @@ func test_the_stewards_books_survive_a_save() -> void:
 func test_mercatura_wants_estate_goods() -> void:
 	var items: Array = ContentDB.data()["mercatura"]["contracts"].values().map(func(c): return c["item"])
 	check(items.has("olive_oil") and items.has("estate_wine"), "contracts for oil and wine")
+
+
+func test_an_olive_grove_grows_olives_for_the_press() -> void:
+	var sim := _make_sim()
+	var player: RefCounted = _player(sim)
+	player.skills.xp["farming"] = player.skills.xp_for_level(30)
+	_build(sim, "orchard_1", "olive_grove_bed")
+	var patch_id := Villa.patch_id(sim.villa.hotspots["orchard_1"])
+	sim.give_item(PLAYER, "trowel", 1, "test", [])
+	sim.give_item(PLAYER, "olive_sapling", 1, "test", [])
+	_do(sim, "farm", {"patch": patch_id, "seed": "olive_sapling"})
+	check_eq(sim.farming.patches[patch_id]["crop"], "olive", "planted an olive sapling")
+	var crop := ContentDB.crop("olive")
+	for i in crop["stage_ticks"] * crop["stages"] + 2:
+		sim.step()
+	_do(sim, "farm", {"patch": patch_id, "seed": ""})
+	check(player.inventory.count("olives") >= 12, "a harvest of olives (%d)" % player.inventory.count("olives"))

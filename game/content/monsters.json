@@ -24,6 +24,33 @@
       ]
     }
   },
+  "goat": {
+    "name": "Wild goat",
+    "plural": "Wild goats",
+    "level": 3,
+    "stats": {
+      "attack": 1,
+      "strength": 1,
+      "defence": 2,
+      "vitality": 6
+    },
+    "attack_speed": 5,
+    "aggressive": false,
+    "respawn_ticks": 20,
+    "drops": "goat",
+    "examine": "A shaggy hill goat that's wandered down to graze. It butts, but only if you start it.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#d8d2c4",
+      "accent": "#6a5a48",
+      "size": 0.8,
+      "features": [
+        "ears",
+        "tail",
+        "horns"
+      ]
+    }
+  },
   "wolf": {
     "name": "Wolf",
     "plural": "Wolves",

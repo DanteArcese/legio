@@ -4,6 +4,7 @@ extends "res://tests/test_case.gd"
 
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const Games := preload("res://scripts/sim/games.gd")
+const SaveGame := preload("res://scripts/sim/save_game.gd")
 
 const PLAYER := 1
 const ARENA := Vector3(350, 0, 160)
@@ -78,6 +79,7 @@ func test_waves_spawn_pay_and_end_with_the_rudis() -> void:
 	var paid: int = waves.reduce(func(total, w): return total + w["coins"], 0)
 	check_eq(_player(sim).inventory.count("coins") - coins_before, paid, "paid for every wave")
 	check(sim.get_combatant(first_id) == null, "no arena monsters left behind")
+	check_eq(_player(sim).games_best, waves.size(), "the best is every wave")
 
 
 func test_a_fall_in_the_arena_is_not_a_death() -> void:
@@ -101,3 +103,21 @@ func test_leaving_the_sands_forfeits() -> void:
 	var events := sim.step()
 	check(not Games.in_games(_player(sim)), "forfeited")
 	check(events.any(func(e): return e["type"] == "games_despawn"), "the wave is taken away")
+
+
+func test_the_best_wave_is_kept_and_saved() -> void:
+	var sim := _make_sim()
+	_enter(sim)
+	_clear_wave(sim)
+	for t in Games.data()["rest_ticks"] + 1:
+		sim.step()
+	_clear_wave(sim)
+	check_eq(_player(sim).games_best, 2, "two waves cleared")
+	_player(sim).hp = 0
+	var events: Array[Dictionary] = []
+	sim.kill(_player(sim), events)
+	check_eq(_player(sim).games_best, 2, "a fall keeps the record")
+	var data := SaveGame.from_json(SaveGame.to_json(SaveGame.capture(sim, PLAYER)))
+	var other := _make_sim()
+	SaveGame.restore(other, PLAYER, data)
+	check_eq(other.get_combatant(PLAYER).games_best, 2, "saved")

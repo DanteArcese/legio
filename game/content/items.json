@@ -1788,6 +1788,27 @@
       "slayer": 70
     }
   },
+  "vine_cutting": {
+    "name": "Vine cutting",
+    "value": 8,
+    "examine": "A rooted cane from a Greek vine. Plant it on a trellis."
+  },
+  "grapes": {
+    "name": "Grapes",
+    "value": 5,
+    "examine": "A heavy bunch of dark grapes, dusty with bloom.",
+    "heals": 3
+  },
+  "olive_oil": {
+    "name": "Olive oil",
+    "value": 35,
+    "examine": "A small amphora of green-gold oil, fresh from your own press."
+  },
+  "estate_wine": {
+    "name": "Estate wine",
+    "value": 48,
+    "examine": "An amphora of your villa's own red, sealed with pitch and stamped with your name."
+  },
   "wheat_seed": {
     "name": "Seed wheat",
     "value": 1,

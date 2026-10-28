@@ -157,7 +157,7 @@ func _refresh() -> void:
 	_graphics_button.text = "Graphics: %s" % settings.preset.capitalize()
 	_roofs_button.text = "Hide roofs: %s" % ("On" if settings.hide_roofs() else "Off")
 	var combatant := _combatant()
-	_leave_button.visible = combatant != null and combatant.account_mode == "solitarius" and not _left
+	_leave_button.visible = combatant != null and combatant.is_solitarius() and not _left
 	_leave_button.text = "Really give it up? Press again" if _leave_armed else "Leave the Solitarius path"
 
 

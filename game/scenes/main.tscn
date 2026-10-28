@@ -1263,6 +1263,26 @@ monster_id = "gorgon"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -336, 0, 357)
 monster_id = "euryale"
 
+[node name="Goat1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -17)
+monster_id = "goat"
+
+[node name="Goat2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, -14.5)
+monster_id = "goat"
+
+[node name="Goat3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, -21)
+monster_id = "goat"
+
+[node name="Goat4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -13)
+monster_id = "goat"
+
+[node name="Goat5" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, -19)
+monster_id = "goat"
+
 [node name="Hydra" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -258, 0, 370)
 monster_id = "hydra"
@@ -2107,3 +2127,30 @@ text = "Editor of the games
 (The munera)"
 font_size = 36
 
+[node name="BeachMast" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -295, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 0
+end_offset = Vector3(6, 0, 0)
+
+[node name="BeachHull" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -286, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 1
+end_offset = Vector3(3, 0, 0)
+
+[node name="BeachRope" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -280, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 2
+end_offset = Vector3(4, 0, 0)
+
+[node name="BeachNets" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -273, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 3
+end_offset = Vector3(6, 0, 0)

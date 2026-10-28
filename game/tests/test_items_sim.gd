@@ -198,3 +198,21 @@ func test_pickup_one_item_from_a_pile() -> void:
 	check_eq(_player(sim).inventory.count("coins"), 5, "took the coins")
 	check_eq(_player(sim).inventory.count("bread"), 0, "left the bread")
 	check_eq(sim.ground_piles().filter(func(p): return p["id"] == pile_id)[0]["items"], [{"item": "bread", "quantity": 1}], "bread still there")
+
+
+func test_drop_all_drops_every_slot_of_the_item() -> void:
+	var sim := _make_sim()
+	sim.give_item(PLAYER, "logs", 5, "test", [])
+	sim.give_item(PLAYER, "bread", 1, "test", [])
+	var player := _player(sim)
+	var first := -1
+	for i in player.inventory.size:
+		if player.inventory.slots[i] and player.inventory.slots[i]["item"] == "logs":
+			first = i
+			break
+	_act(sim, "drop_all", {"slot": first})
+	check_eq(player.inventory.count("logs"), 0, "every log dropped")
+	check_eq(player.inventory.count("bread"), 1, "the bread kept")
+	var piles: Array = sim.ground_piles()
+	check_eq(piles.size(), 1, "into one pile")
+	check_eq(piles[0]["items"].size() if piles else 0, 5, "all five logs in it")

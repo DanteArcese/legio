@@ -461,6 +461,9 @@ func _inventory_options(index: int) -> Array:
 		if not _recipes_using(kind, slot["item"]).is_empty():
 			options.append([Skilling.HANDHELD_KINDS[kind], open_handheld.bind(kind, slot["item"])])
 	options.append(["Drop", _act.bind("drop", {"slot": index})])
+	var copies: int = player.get_node("SimEntity").combatant.inventory.slots.filter(func(s): return s != null and s["item"] == slot["item"]).size()
+	if copies > 1:
+		options.append(["Drop all (%d)" % copies, _act.bind("drop_all", {"slot": index})])
 	options.append(["Examine", show_message.bind(examine_text(slot["item"], _worn()))])
 	return options
 

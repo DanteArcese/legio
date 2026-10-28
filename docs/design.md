@@ -69,7 +69,7 @@ Kept as a core skill and the center of progression.
 | Skill | Roman flavor |
 |---|---|
 | Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying (Parian marble on Seriphos, 45). |
-| Woodcutting | Oak, pine, cedar, olive wood. |
+| Woodcutting | Oak, pine, and yew (*taxus*, beyond the Limes at 60), with cedar and olive wood later. |
 | Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
@@ -124,6 +124,8 @@ Kept as a core skill and the center of progression.
 **Built (#239): shortcuts.** A course of its own with no lap bonus: each shortcut is a single crossing, usable from either side. The first is a ladder over the fort's west wall to the grove (Athletics 10), which saves the walk round the south-west corner.
 
 **Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
+
+**Built (#255): the munera.** The editor of the games at the circus's east end sends a fighter of combat 20 or more out onto the sand past the east turning post, for ten waves of beasts and raiders (wolves and boars, latrones, dire wolves, Germanic raiders, and finally a cyclops), with a short rest between each. Every wave cleared pays coins, rising to 400 for the last, and clearing all ten wins a *rudis*, the wooden sword of a freed gladiator, which is a good weapon in its own right (Attack 40). Falling in the arena isn't a death: the attendants carry you out, with no grave and nothing lost but the rest of the games. Running from the sand forfeits. The monsters come from the sim (reserved ids, no respawn and no drops), and the world builds and removes their bodies.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
 **Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.
@@ -332,6 +334,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching. (Ranged was added in #36, Ritus in #45 and #46, and the gathering skills in #82, after the first build.)
 
 **Gathering (#82).** A grove west of the fort has common trees (fall after one log), oaks, and, at the edge of the wolf woods, pines; oaks and pines give several logs before they fall and regrow from the stump. The fort's pond has a net spot (sardines, then anchovies at 10) and a rod spot (mackerel at 20), with a campfire nearby for cooking. Fletching works anywhere with a knife: logs into arrow shafts, then shafts, feathers, and smithed arrowheads into arrows, and oak logs and a bowstring into a hunting bow. New players start with a bronze axe, a small net, and a knife.
+
+**Built (#257): yew.** Three ancient yews stand beside the path beyond the Limes (Woodcutting 60). Yew logs and a bowstring make a yew longbow (Fletching 60, Ranged 50): a tick slower than the composite bow, but more accurate and with 10 m of reach.
 
 **Monsters:**
 

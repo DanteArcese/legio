@@ -1,0 +1,20 @@
+{
+  "name": "The munera",
+  "combat_level": 20,
+  "rest_ticks": 8,
+  "spawn_radius": 8.0,
+  "leave_radius": 22.0,
+  "trophy": "rudis",
+  "waves": [
+    {"monsters": ["wolf", "wolf"], "coins": 20},
+    {"monsters": ["wolf", "wild_boar", "wild_boar"], "coins": 35},
+    {"monsters": ["latro", "latro"], "coins": 50},
+    {"monsters": ["wild_boar", "latro", "latro"], "coins": 70},
+    {"monsters": ["dire_wolf", "dire_wolf"], "coins": 90},
+    {"monsters": ["latro", "latro", "dire_wolf"], "coins": 110},
+    {"monsters": ["germanic_raider", "germanic_raider"], "coins": 140},
+    {"monsters": ["dire_wolf", "germanic_raider", "germanic_raider"], "coins": 170},
+    {"monsters": ["germanic_raider", "germanic_raider", "germanic_raider"], "coins": 210},
+    {"monsters": ["cyclops"], "coins": 400}
+  ]
+}

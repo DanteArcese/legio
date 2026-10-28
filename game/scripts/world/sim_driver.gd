@@ -2,6 +2,7 @@ extends Node
 ## Runs the simulation on game ticks and relays its events to the scene.
 ## Press F3 to cycle tick lengths (debug only; the game uses 0.6 s).
 
+const MonsterScene := preload("res://scenes/monster.tscn")
 const Villa := preload("res://scripts/sim/villa.gd")
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
@@ -93,6 +94,10 @@ func _ready() -> void:
 		sim.circus.set_track(circus.CENTER, circus.HALF, circus.RADIUS)
 	for agent in get_tree().get_nodes_in_group("circus_agents"):
 		sim.circus.set_agent(agent.global_position)
+	for circus in get_tree().get_nodes_in_group("circus"):
+		sim.games.set_arena(circus.ARENA)
+	for editor in get_tree().get_nodes_in_group("games_editors"):
+		sim.games.set_editor(editor.global_position)
 	for board in get_tree().get_nodes_in_group("trade_boards"):
 		sim.mercatura.add_board(board.board_id, board.global_position)
 	for patch in get_tree().get_nodes_in_group("patches"):
@@ -138,6 +143,26 @@ func register(entity: Node) -> void:
 	_entities[entity.entity_id] = entity
 
 
+## Arena monsters come and go with the games: the sim spawns them and the
+## world gives them bodies, then takes the bodies away again.
+func _mirror_games(event: Dictionary) -> void:
+	match event["type"]:
+		"games_spawn":
+			for spec in event["monsters"]:
+				var body: Node3D = MonsterScene.instantiate()
+				body.monster_id = spec["monster"]
+				body.get_node("SimEntity").entity_id = spec["id"]
+				get_parent().add_child(body)
+				body.global_position = spec["position"] + Vector3(0, 0.1, 0)
+				register(body.get_node("SimEntity"))
+		"games_despawn":
+			for id in event["ids"]:
+				var entity: Node = _entities.get(id)
+				if entity:
+					_entities.erase(id)
+					entity.body().queue_free()
+
+
 func entity(id: int) -> Node:
 	return _entities.get(id)
 
@@ -166,6 +191,7 @@ func _physics_process(delta: float) -> void:
 			for entity in _entities.values():
 				entity.on_sim_event(event)
 			_mirror_ground(event)
+			_mirror_games(event)
 			sim_event.emit(event)
 		ticked.emit(sim.tick)
 
@@ -174,6 +200,7 @@ func _physics_process(delta: float) -> void:
 ## state restored from a save.
 func replay_event(event: Dictionary) -> void:
 	_mirror_ground(event)
+	_mirror_games(event)
 	sim_event.emit(event)
 
 

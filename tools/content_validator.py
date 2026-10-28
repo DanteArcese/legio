@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus", "games")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -83,6 +83,7 @@ def validate(content: dict) -> list[str]:
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
     _check_circus(content.get("circus", {}), items, errors)
+    _check_games(content.get("games", {}), items, set(content.get("monsters", {})), errors)
     _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
@@ -355,6 +356,31 @@ def _check_circus(circus, items, errors):
         values = circus.get(key)
         if not (isinstance(values, list) and len(values) == len(rivals) + 1 and all(isinstance(v, int) and v >= 0 for v in values)):
             errors.append(f"circus.{key}: expected one non-negative int per place ({len(rivals) + 1})")
+
+
+GAMES_KEYS = {"name", "combat_level", "rest_ticks", "spawn_radius", "leave_radius", "trophy", "waves"}
+
+
+def _check_games(games, items, monsters, errors):
+    _check_keys("games", games, GAMES_KEYS, GAMES_KEYS, errors)
+    _check_type("games", "name", games.get("name"), str, errors)
+    _check_int("games", "combat_level", games.get("combat_level"), 1, errors, 126)
+    _check_int("games", "rest_ticks", games.get("rest_ticks"), 1, errors)
+    _check_number("games", "spawn_radius", games.get("spawn_radius"), 1.0, 30.0, errors)
+    _check_number("games", "leave_radius", games.get("leave_radius"), 5.0, 60.0, errors)
+    if games.get("trophy") not in items:
+        errors.append(f"games.trophy: unknown item {games.get('trophy')!r}")
+    if not games.get("waves"):
+        errors.append("games.waves: at least one wave required")
+    for i, wave in enumerate(games.get("waves", [])):
+        where = f"games.waves[{i}]"
+        _check_keys(where, wave, {"monsters", "coins"}, {"monsters", "coins"}, errors)
+        _check_int(where, "coins", wave.get("coins"), 0, errors)
+        if not wave.get("monsters"):
+            errors.append(f"{where}.monsters: at least one monster required")
+        for monster in wave.get("monsters", []):
+            if monster not in monsters:
+                errors.append(f"{where}.monsters: unknown monster {monster!r}")
 
 
 TASK_FIELDS = {"obtain": {"item"}, "kill": {"monster"}, "quest": {"quest"}, "level": {"skill", "level"}, "visit": {"area"}}

@@ -151,11 +151,15 @@ func _refresh_log() -> void:
 	var rank := Quests.rank(combatant)
 	if not rank.is_empty():
 		text += "[i]Rank: %s[/i]\n\n" % rank
-	# Quests under way first, then ones to start, then finished ones.
-	var order := {"in_progress": 0, "not_started": 1, "done": 2}
+	# Quests under way first, then ones to start, then locked ones, then
+	# finished ones.
+	var order := {"in_progress": 0, "not_started": 1, "done": 3}
 	var listed := ContentDB.quest_ids()
 	var rank_of := func(quest_id: String) -> int:
-		return order[Quests.status(combatant, quest_id)] * 1000 + listed.find(quest_id)
+		var group: int = order[Quests.status(combatant, quest_id)]
+		if group == 1 and not Quests.unmet_requirements(combatant, quest_id).is_empty():
+			group = 2
+		return group * 1000 + listed.find(quest_id)
 	var quest_ids := listed.duplicate()
 	quest_ids.sort_custom(func(a, b): return rank_of.call(a) < rank_of.call(b))
 	for quest_id in quest_ids:
@@ -180,10 +184,21 @@ func _refresh_log() -> void:
 				text += "[color=#f0d070][b]%s[/b][/color]\n    %s%s\n" % [quest["name"], step["log"], progress]
 			_:
 				var giver: String = ContentDB.npc(quest["giver"]).get("name", "someone")
-				text += "[color=#d08080][b]%s[/b][/color]\n    %s Speak to %s to begin.\n" % [quest["name"], quest["summary"], giver]
+				var unmet := Quests.unmet_requirements(combatant, quest_id)
+				if unmet.is_empty():
+					text += "[color=#d08080][b]%s[/b][/color]\n    %s Speak to %s to begin.\n" % [quest["name"], quest["summary"], giver]
+				else:
+					text += "[color=#8a8078][b]%s[/b][/color]\n    %s [color=#a09888]Needs %s.[/color]\n" % [quest["name"], quest["summary"], _and_list(unmet)]
 		text += "\n"
 	text += _tasks_text(combatant)
 	_log_text.text = text
+
+
+## "a", "a and b", "a, b and c".
+static func _and_list(parts: Array) -> String:
+	if parts.size() < 2:
+		return "".join(parts)
+	return "%s and %s" % [", ".join(parts.slice(0, -1)), parts[-1]]
 
 
 ## Region tasks under the quests: each region's count, and what's left.

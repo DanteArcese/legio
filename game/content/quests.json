@@ -761,6 +761,189 @@
         ],
         "unlocks": "Nikias sells cyclops cheese"
       }
+    },
+    "sacramentum": {
+      "name": "Sacramentum",
+      "summary": "Swear the legionary's oath and join the legion: sacrifice to the gods, prove yourself on the limes, and turn out in a legionary's kit.",
+      "giver": "centurion_varro",
+      "requirements": {
+        "quests": [
+          "decurio"
+        ],
+        "skills": {
+          "attack": 40,
+          "strength": 40,
+          "defence": 40
+        }
+      },
+      "start": [
+        "A citizen, are you? Then the auxilia's done with you, and the legion might not be.",
+        "A legionary swears the sacramentum before the gods. Take wine and incense to the sacerdos in the fort, so it's done properly.",
+        "Then show me you can hold the limes, and come back dressed like a legionary, not a farmer with a sword."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "sacerdos",
+          "items": [
+            {
+              "item": "wine",
+              "quantity": 1
+            },
+            {
+              "item": "incense",
+              "quantity": 5
+            }
+          ],
+          "log": "Bring the sacerdos in Castra Ferrea a jug of wine and five measures of incense for the oath's sacrifice.",
+          "remind": [
+            "Wine for the libation and incense for the altar. The gods won't hear an oath sworn on an empty hand."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "germanic_raider",
+          "count": 8,
+          "log": "Prove yourself on the limes: kill eight Germanic raiders beyond the palisade.",
+          "remind": [
+            "Eight raiders. The gate's behind me, and they're out there."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "centurion_varro",
+          "items": [
+            {
+              "item": "steel_scutum",
+              "quantity": 1
+            },
+            {
+              "item": "steel_pilum",
+              "quantity": 10
+            }
+          ],
+          "log": "Report to Centurion Varro with a legionary's kit: a steel scutum and ten steel pila.",
+          "remind": [
+            "A scutum and ten pila. Steel. The smith knows the pattern, if you don't."
+          ]
+        }
+      ],
+      "complete": [
+        "Raise your hand. Repeat after me: to follow the emperor wherever he leads, never to desert the standards, never to shirk death for Rome.",
+        "Good. You're a legionary now, for twenty-five years or until we bury you.",
+        "Keep the scutum. And put this on: a lorica segmentata. The quartermaster will sell you another when you break that one."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 3000,
+          "strength": 3000,
+          "defence": 3000,
+          "ranged": 1500,
+          "pietas": 500
+        },
+        "items": [
+          {
+            "item": "steel_scutum",
+            "quantity": 1
+          },
+          {
+            "item": "lorica_segmentata",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 1500
+          }
+        ],
+        "rank": "Legionarius",
+        "unlocks": "The lorica segmentata from the quartermaster",
+        "title": "Miles legionis"
+      }
+    },
+    "optio": {
+      "name": "Optio",
+      "summary": "Patrols on Seriphos are coming back as statues. Find out why from the shepherdess, deal with the gorgons, and bring proof to Centurion Varro.",
+      "giver": "centurion_varro",
+      "requirements": {
+        "quests": [
+          "sacramentum"
+        ],
+        "skills": {
+          "attack": 60,
+          "strength": 60,
+          "defence": 60,
+          "slayer": 60
+        }
+      },
+      "start": [
+        "The governor sent a patrol to Seriphos. They came back. As statues, by the ferry, standing to attention.",
+        "There's a shepherdess on that island who sees everything that walks the hills. Start with her.",
+        "Bring me proof it's done, and I'll need an optio I can trust."
+      ],
+      "steps": [
+        {
+          "kind": "talk",
+          "npc": "melissa",
+          "log": "Ask Melissa on Seriphos what happened to the patrol.",
+          "remind": [
+            "The shepherdess on Seriphos. Go and ask her."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "gorgon",
+          "count": 3,
+          "grants": [
+            {
+              "item": "gorgon_head",
+              "quantity": 1
+            }
+          ],
+          "log": "Melissa says the patrol went into the ruins in the south-west. Kill three of the gorgons nesting there, and don't look them in the eye.",
+          "remind": [
+            "The ruins, in the south-west of the island. A mirror shield, if you've any sense."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "centurion_varro",
+          "items": [
+            {
+              "item": "gorgon_head",
+              "quantity": 1
+            }
+          ],
+          "log": "Bring the gorgon's head back to Centurion Varro on the limes. Keep the sack closed.",
+          "remind": [
+            "Don't open that here."
+          ]
+        }
+      ],
+      "complete": [
+        "Is that... no, don't show me. I believe you.",
+        "You've done the governor a service, and he remembers names. So do I. You're my optio now: my second, my stick, and my eyes.",
+        "Wear these. Phalerae, for valour. The men will see them before they see you."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 6000,
+          "strength": 6000,
+          "defence": 6000,
+          "slayer": 3000
+        },
+        "items": [
+          {
+            "item": "phalerae",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 3000
+          }
+        ],
+        "rank": "Optio",
+        "title": "Optio legionis"
+      }
     }
   }
 }

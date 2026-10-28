@@ -210,6 +210,11 @@
         "item": "spatha",
         "price": 380,
         "requires_quest": "duplicarius"
+      },
+      {
+        "item": "lorica_segmentata",
+        "price": 1800,
+        "requires_quest": "sacramentum"
       }
     ],
     "buys": {

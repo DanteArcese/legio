@@ -2127,6 +2127,18 @@ text = "Editor of the games
 (The munera)"
 font_size = 36
 
+[node name="Hotspot_orchard_1" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 9)
+script = ExtResource("39_hotspot")
+hotspot_id = "orchard_1"
+hotspot_type = "orchard"
+
+[node name="Hotspot_orchard_2" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 15)
+script = ExtResource("39_hotspot")
+hotspot_id = "orchard_2"
+hotspot_type = "orchard"
+
 [node name="BeachMast" type="StaticBody3D" parent="PortusSalis"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -295, 0, 9)
 script = ExtResource("33_obstacle")

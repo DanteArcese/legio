@@ -444,6 +444,10 @@
         "price": 25
       },
       {
+        "item": "olive_sapling",
+        "price": 45
+      },
+      {
         "item": "cooked_tuna",
         "price": 20
       },

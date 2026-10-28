@@ -2260,5 +2260,10 @@
         "tail"
       ]
     }
+  },
+  "olive_sapling": {
+    "name": "Olive sapling",
+    "value": 30,
+    "examine": "A young olive tree in a pot. It'll outlive you."
   }
 }

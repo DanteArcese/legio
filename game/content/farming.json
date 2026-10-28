@@ -19,6 +19,11 @@
       "name": "Grain field",
       "kind": "grain",
       "examine": "A strip of ploughed field for sowing grain."
+    },
+    "olive_grove": {
+      "name": "Olive grove",
+      "kind": "fruit_tree",
+      "examine": "Turned earth and stakes, laid out for a few olive trees."
     }
   },
   "crops": {
@@ -165,6 +170,22 @@
       "stage_ticks": 110,
       "stages": 4,
       "color": "#d9b84a"
+    },
+    "olive": {
+      "name": "Olive trees",
+      "kind": "fruit_tree",
+      "seed": "olive_sapling",
+      "level": 30,
+      "plant_xp": 60,
+      "harvest_xp": 18,
+      "produce": "olives",
+      "yield": [
+        12,
+        20
+      ],
+      "stage_ticks": 260,
+      "stages": 4,
+      "color": "#6b7a3a"
     }
   }
 }

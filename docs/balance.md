@@ -41,6 +41,9 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Woodcutting | pine | 30 | 17,516 |
 | Woodcutting | pine | 60 | 34,916 |
 | Woodcutting | pine | 90 | 41,354 |
+| Woodcutting | yew | 60 | 58,800 |
+| Woodcutting | yew | 80 | 73,325 |
+| Woodcutting | yew | 99 | 107,975 |
 | Fishing | net spot | 1 | 17,496 |
 | Fishing | net spot | 20 | 24,908 |
 | Fishing | net spot | 40 | 29,152 |
@@ -103,6 +106,8 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Hunter | hare burrow (one trap) | 30 | 21,248 |
 | Hunter | fox den (one trap) | 15 | 27,792 |
 | Hunter | fox den (one trap) | 45 | 42,552 |
+| Hunter | dormouse nest (one trap) | 40 | 34,800 |
+| Hunter | dormouse nest (one trap) | 70 | 69,360 |
 | Attack (accurate) | training dummy, bronze gladius | 1 | 4,772 |
 | Attack (accurate) | training dummy, iron gladius | 30 | 18,308 |
 | Attack (accurate) | training dummy, spatha | 60 | 32,080 |

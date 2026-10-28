@@ -69,7 +69,7 @@ Kept as a core skill and the center of progression.
 | Skill | Roman flavor |
 |---|---|
 | Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying (Parian marble on Seriphos, 45). |
-| Woodcutting | Oak, pine, cedar, olive wood. |
+| Woodcutting | Oak, pine, and yew (*taxus*, beyond the Limes at 60), with cedar and olive wood later. |
 | Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
@@ -82,6 +82,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
 
+**Built (#275): dormice.** Three dormouse nests in Seriphos's olive grove (Hunter 40) catch fat edible dormice. Roasted with honey (Cooking 50), a honeyed dormouse heals 16: the best food yet, and a dish for a senator's table.
+
 ### Artisan
 
 | Skill | Roman flavor |
@@ -90,7 +92,7 @@ Kept as a core skill and the center of progression.
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
 
-**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel.
+**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel. The quest *The Mountain-Copper* (#264; The Silent Gallery, Mining 55, Smithing 50) introduces it: three ores for Foreman Masculus, then a bar for the procurator, for XP and the first orichalcum pickaxe made at Vipasca.
 | Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
@@ -336,6 +338,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching. (Ranged was added in #36, Ritus in #45 and #46, and the gathering skills in #82, after the first build.)
 
 **Gathering (#82).** A grove west of the fort has common trees (fall after one log), oaks, and, at the edge of the wolf woods, pines; oaks and pines give several logs before they fall and regrow from the stump. The fort's pond has a net spot (sardines, then anchovies at 10) and a rod spot (mackerel at 20), with a campfire nearby for cooking. Fletching works anywhere with a knife: logs into arrow shafts, then shafts, feathers, and smithed arrowheads into arrows, and oak logs and a bowstring into a hunting bow. New players start with a bronze axe, a small net, and a knife.
+
+**Built (#257): yew.** Three ancient yews stand beside the path beyond the Limes (Woodcutting 60). Yew logs and a bowstring make a yew longbow (Fletching 60, Ranged 50): a tick slower than the composite bow, but more accurate and with 10 m of reach.
 
 **Monsters:**
 

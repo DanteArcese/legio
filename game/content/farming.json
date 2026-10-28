@@ -9,6 +9,11 @@
       "name": "Allotment",
       "kind": "vegetable",
       "examine": "A long strip of ploughed earth for vegetables."
+    },
+    "vine_trellis": {
+      "name": "Vine trellis",
+      "kind": "vine",
+      "examine": "Posts and cross-poles waiting for a vine to climb them."
     }
   },
   "crops": {
@@ -123,6 +128,22 @@
       "stage_ticks": 100,
       "stages": 4,
       "color": "#6f9f4a"
+    },
+    "grapes": {
+      "name": "Vine",
+      "kind": "vine",
+      "seed": "vine_cutting",
+      "level": 20,
+      "plant_xp": 30,
+      "harvest_xp": 26,
+      "produce": "grapes",
+      "yield": [
+        5,
+        8
+      ],
+      "stage_ticks": 180,
+      "stages": 4,
+      "color": "#5a2d5e"
     }
   }
 }

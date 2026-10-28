@@ -23,7 +23,8 @@ CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft",
+                "press_oil", "press_wine"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -75,6 +76,7 @@ def validate(content: dict) -> list[str]:
             if "requires_unlock" in recipe and recipe["requires_unlock"] not in unlocks:
                 errors.append(f"skilling.recipes.{kind}[{i}].requires_unlock: unknown Slayer unlock {recipe['requires_unlock']!r}")
     _check_thieving(content.get("thieving", {}), items, errors)
+    _check_strongboxes(content.get("thieving", {}).get("strongboxes", {}), set(content.get("drops", {})), errors)
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
@@ -654,8 +656,28 @@ MARK_KEYS = {"name", "level", "xp", "coins", "stun_ticks", "damage", "examine"}
 STALL_MODELS = {"stall-red", "stall-green"}
 
 
+STRONGBOX_KEYS = {"name", "level", "xp", "crack_ticks", "trap_chance", "damage", "relock_ticks", "drop_table", "examine"}
+
+
+def _check_strongboxes(strongboxes, drop_tables, errors):
+    for box_id, box in strongboxes.items():
+        where = f"thieving.strongboxes.{box_id}"
+        _check_id(where, box_id, errors)
+        _check_keys(where, box, STRONGBOX_KEYS, STRONGBOX_KEYS, errors)
+        _check_int(where, "level", box.get("level"), 1, errors, 99)
+        _check_number(where, "xp", box.get("xp"), 0.1, 10000, errors)
+        _check_int(where, "crack_ticks", box.get("crack_ticks"), 1, errors, 50)
+        _check_int(where, "relock_ticks", box.get("relock_ticks"), 1, errors)
+        _check_number(where, "trap_chance", box.get("trap_chance"), 0, 1, errors)
+        pair = box.get("damage")
+        if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
+            errors.append(f"{where}.damage: expected [min, max] whole numbers")
+        if box.get("drop_table") not in drop_tables:
+            errors.append(f"{where}.drop_table: unknown drop table {box.get('drop_table')!r}")
+
+
 def _check_thieving(thieving, items, errors):
-    _check_keys("thieving", thieving, {"stalls", "marks"}, {"stalls", "marks"}, errors)
+    _check_keys("thieving", thieving, {"stalls", "marks", "strongboxes"}, {"stalls", "marks"}, errors)
     for stall_id, stall in thieving.get("stalls", {}).items():
         where = f"thieving.stalls.{stall_id}"
         _check_id(where, stall_id, errors)
@@ -833,8 +855,8 @@ def _check_mercatura(mercatura, items, shops, errors):
 
 
 FURNITURE_KEYS = {"name", "hotspot", "level", "xp", "materials", "provides"}
-PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace"}, "altar": {"heavenly", "underworld"}, "bank": {True},
-            "patch": None, "travel": {"portus_salis"}}
+PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace", "olive_press", "wine_press"}, "altar": {"heavenly", "underworld"},
+            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}}
 
 
 def _check_villa(villa, items, quests, farming, errors):

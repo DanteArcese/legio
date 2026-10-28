@@ -44,7 +44,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "circus_agents", "villa_hotspots", "shopkeepers", "pets"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "strongboxes", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "circus_agents", "stewards", "villa_hotspots", "shopkeepers", "pets"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -162,6 +162,9 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			var rules: Dictionary = Circus.data()
 			return [["Race a chariot (Athletics %d, %d denarii)" % [rules["level"], rules["fee"]], player.start_race.bind(node)],
 				["Examine " + node.get_meta("display_name", "agent"), player.examine.bind(node.get_meta("examine", ""))]]
+		"stewards":
+			return [["Collect from the steward", player.collect_estate.bind(node)],
+				["Examine steward", player.examine.bind(node.get_meta("examine", ""))]]
 		"villa_hotspots":
 			var combatant: RefCounted = player.get_node("SimEntity").combatant
 			var options := []
@@ -206,6 +209,9 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 				["Examine " + node.display_name().to_lower(), player.examine.bind(node.examine_text())]]
 		"obstacles":
 			return [[node.verb() + " " + node.display_name().to_lower(), player.cross.bind(node)]]
+		"strongboxes":
+			return [["Crack " + node.display_name(), player.crack.bind(node)],
+				["Examine " + node.display_name().to_lower(), player.examine.bind(node.examine_text())]]
 		"stalls":
 			return [["Steal from " + node.display_name(), player.steal.bind(node)],
 				["Examine " + node.display_name(), player.examine.bind(node.examine_text())]]
@@ -262,7 +268,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "circus_agents", "villa_hotspots", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "strongboxes", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "circus_agents", "stewards", "villa_hotspots", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue

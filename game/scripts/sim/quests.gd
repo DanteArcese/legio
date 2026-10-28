@@ -50,14 +50,22 @@ static func current_step(player: Combatant, quest_id: String) -> Dictionary:
 
 ## Why the player can't start this quest yet, or "".
 static func unmet_requirement(player: Combatant, quest_id: String) -> String:
+	var unmet := unmet_requirements(player, quest_id)
+	return "" if unmet.is_empty() else unmet[0]
+
+
+## Everything the player still needs to start this quest: skills first,
+## e.g. ["Defence 5", "the quest Tiro"].
+static func unmet_requirements(player: Combatant, quest_id: String) -> Array:
+	var out := []
 	var requirements: Dictionary = ContentDB.quest(quest_id).get("requirements", {})
 	for skill in requirements.get("skills", {}):
 		if player.skills.level(skill) < requirements["skills"][skill]:
-			return "%s %d" % [skill.capitalize(), requirements["skills"][skill]]
+			out.append("%s %d" % [skill.capitalize(), requirements["skills"][skill]])
 	for needed in requirements.get("quests", []):
 		if not is_done(player, needed):
-			return "the quest %s" % ContentDB.quest(needed)["name"]
-	return ""
+			out.append("the quest %s" % ContentDB.quest(needed)["name"])
+	return out
 
 
 ## What to show over an NPC: "?" when the player has something to report or

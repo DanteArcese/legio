@@ -307,6 +307,11 @@
         "item": "sand",
         "price": 12,
         "quantity": 10
+      },
+      {
+        "item": "lockpick",
+        "price": 45,
+        "quantity": 5
       }
     ],
     "buys": {
@@ -394,6 +399,10 @@
       {
         "item": "wine",
         "price": 6
+      },
+      {
+        "item": "vine_cutting",
+        "price": 25
       },
       {
         "item": "cooked_tuna",

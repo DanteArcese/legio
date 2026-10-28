@@ -1,5 +1,5 @@
 extends "res://tests/test_case.gd"
-## Thieving: market stalls and pickpocketing.
+## Thieving: market stalls, pickpocketing, and strongboxes.
 
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const Thieving := preload("res://scripts/sim/thieving.gd")
@@ -119,3 +119,63 @@ func test_better_thieves_get_caught_less() -> void:
 	check(Thieving.caught_chance(50, stall) < Thieving.caught_chance(12, stall), "level helps")
 	var mark := ContentDB.mark("merchant")
 	check(Thieving.pickpocket_chance(60, mark) > Thieving.pickpocket_chance(18, mark), "level helps pickpocketing")
+
+
+func _box_sim(level := 60) -> Simulation:
+	var sim := _make_sim()
+	sim.thieving.add_strongbox(1, "warehouse_strongbox", Vector3(61, 0, 1))
+	_player(sim).skills.xp["thieving"] = _player(sim).skills.xp_for_level(level)
+	_player(sim).max_hp = 50
+	_player(sim).hp = 50
+	return sim
+
+
+func _crack(sim: Simulation) -> Array:
+	sim.queue_item_action(PLAYER, "crack", {"strongbox": 1})
+	return _run(sim, Thieving.strongbox_data("warehouse_strongbox")["crack_ticks"] + 2)
+
+
+func test_a_strongbox_needs_a_lockpick_and_the_level() -> void:
+	var sim := _box_sim()
+	var events := _crack(sim)
+	check(events.any(func(e): return e["type"] == "message" and "lockpick" in e["text"]), "needs a pick")
+	sim = _box_sim(10)
+	sim.give_item(PLAYER, "lockpick", 5, "test", [])
+	events = _crack(sim)
+	check(events.any(func(e): return e["type"] == "message" and "Thieving 30" in e["text"]), "needs Thieving 30")
+
+
+func test_cracking_takes_time_then_pays_out_and_empties_the_box() -> void:
+	var sim := _box_sim(99)
+	sim.give_item(PLAYER, "lockpick", 20, "test", [])
+	var emptied := false
+	for attempt in 20:
+		sim.queue_item_action(PLAYER, "crack", {"strongbox": 1})
+		var started := sim.step()
+		check(not started.any(func(e): return e["type"] == "strongbox_emptied"), "not cracked on the first tick")
+		var events := _run(sim, 8)
+		if events.any(func(e): return e["type"] == "strongbox_emptied"):
+			emptied = true
+			break
+	check(emptied, "cracked it")
+	check(_player(sim).skills.xp["thieving"] > _player(sim).skills.xp_for_level(99), "thieving xp")
+	check(sim.thieving.strongboxes[1]["empty_until"] > sim.tick, "empty for a while")
+	var again := _crack(sim)
+	check(again.any(func(e): return e["type"] == "message" and "emptied" in e["text"]), "nothing left to take")
+
+
+func test_a_sprung_trap_hurts_and_can_snap_the_pick() -> void:
+	var trapped := 0
+	var snapped := 0
+	for seed in 30:
+		var sim := _box_sim(30)
+		sim.rng.seed = seed
+		sim.give_item(PLAYER, "lockpick", 5, "test", [])
+		var events := _crack(sim)
+		if events.any(func(e): return e["type"] == "hit" and e["target"] == PLAYER):
+			trapped += 1
+			check(_player(sim).hp < 50 and _player(sim).hp >= 1, "hurt, never killed")
+			if _player(sim).inventory.count("lockpick") == 4:
+				snapped += 1
+	check(trapped > 0 and trapped < 30, "traps spring sometimes (%d / 30)" % trapped)
+	check(snapped > 0 and snapped <= trapped, "picks snap sometimes (%d)" % snapped)

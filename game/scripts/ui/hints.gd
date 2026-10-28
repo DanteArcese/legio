@@ -12,7 +12,13 @@ const TEXT := {
 	"tabularium": "Tip: the Tabularium (L / right trigger) records the notable things you've found.",
 	"bank": "Tip: your pack is full. Bank chests keep everything, and your bank is shared across the province.",
 	"slayer": "Tip: the HUD tracks your contract. Slayer points buy cancels, blocks and unlocks from the venator's menu.",
+	"eat": "Tip: you're badly hurt. Click food in your inventory (I / Back) to eat it, or walk away: most beasts won't follow far.",
+	"death": "Tip: you kept your 3 most valuable items. The rest wait in your grave for about 15 minutes; go back for them, or pay the libitinarius in the fort to fetch them.",
+	"danger": "Tip: monster levels are coloured by how dangerous they are to you: green is easy, yellow an even fight, orange and red will likely kill you.",
 }
+const LevelColors := preload("res://scripts/ui/level_colors.gd")
+## Below this share of health, the eating tip shows.
+const HURT_FRACTION := 0.4
 
 @export var driver: Node
 @export var player: Node3D
@@ -79,6 +85,15 @@ func _on_sim_event(event: Dictionary) -> void:
 		"hit":
 			if event["attacker"] == me and combatant and not combatant.equipment.weapon().get("special", {}).is_empty():
 				hint("special")
+			if event["target"] == me and combatant and combatant.is_alive() and combatant.hp <= combatant.max_hp * HURT_FRACTION:
+				hint("eat")
+			if event["attacker"] == me and combatant and combatant.skills:
+				var target: RefCounted = driver.sim.get_combatant(event["target"])
+				if target and not target.monster_id.is_empty() and LevelColors.color_for(target.display_level, combatant.skills.combat_level()) in [LevelColors.ABOVE, LevelColors.FAR_ABOVE]:
+					hint("danger")
+		"death":
+			if event["id"] == me:
+				hint("death")
 		"task_done":
 			if event["id"] == me:
 				hint("tasks")

@@ -15,6 +15,14 @@
           ]
         },
         {
+          "monster": "goat",
+          "weight": 6,
+          "amount": [
+            10,
+            20
+          ]
+        },
+        {
           "monster": "wolf",
           "weight": 8,
           "amount": [

@@ -147,6 +147,11 @@
         "item": "beeswax",
         "price": 25,
         "quantity": 10
+      },
+      {
+        "item": "return_tablet_fort",
+        "price": 30,
+        "quantity": 5
       }
     ]
   },
@@ -327,6 +332,11 @@
       {
         "item": "lockpick",
         "price": 45,
+        "quantity": 5
+      },
+      {
+        "item": "return_tablet_portus",
+        "price": 40,
         "quantity": 5
       }
     ],

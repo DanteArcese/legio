@@ -126,8 +126,8 @@ func _play_crossing(delta: float) -> void:
 		along = t if t < 0.5 else 1.0 - t
 	var at := from.lerp(to, along)
 	var lift := 0.0
-	if _crossing["kind"] in ["wall", "rope"]:
-		lift = sin(along * PI) * (1.6 if _crossing["kind"] == "wall" else 1.2)
+	if _crossing["kind"] in ["wall", "rope", "climb"]:
+		lift = sin(along * PI) * (1.2 if _crossing["kind"] == "rope" else (3.2 if _crossing["kind"] == "climb" else 1.6))
 	elif _crossing["kind"] == "hurdles":
 		lift = absf(sin(along * PI * 3.0)) * 0.6
 	global_position = Vector3(at.x, global_position.y if lift == 0.0 else 1.0 + lift, at.z)

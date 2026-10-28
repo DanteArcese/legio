@@ -73,6 +73,8 @@ var skill_action := {}
 var obstacle := {}
 ## A chariot race under way: {"start", "lap", "sector", "finishes"}, or {}.
 var race := {}
+## The munera under way: {"wave", "alive", "spawned", "rest_until", "earned"}, or {}.
+var games := {}
 var course_next := 0
 var laps := 0
 ## Stunned (by a failed pickpocket) until this tick: no attacks, thefts, or walking.

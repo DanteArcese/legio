@@ -873,6 +873,24 @@
         "xp": 30,
         "burnt": "burnt_food",
         "stop_burning": 40
+      },
+      {
+        "id": "honeyed_dormouse",
+        "inputs": [
+          {
+            "item": "dormouse",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "honeyed_dormouse",
+        "level": 50,
+        "xp": 140,
+        "burnt": "burnt_food",
+        "stop_burning": 80
       }
     ],
     "inscribe": [
@@ -1116,6 +1134,23 @@
         "quantity": 15,
         "level": 45,
         "xp": 105
+      },
+      {
+        "id": "yew_longbow",
+        "inputs": [
+          {
+            "item": "yew_logs",
+            "quantity": 1
+          },
+          {
+            "item": "bowstring",
+            "quantity": 1
+          }
+        ],
+        "output": "yew_longbow",
+        "level": 60,
+        "xp": 120,
+        "tool": "knife"
       }
     ],
     "tan": [
@@ -1693,6 +1728,17 @@
       "respawn_ticks": 40,
       "model": "tree_pineTallA",
       "examine": "A tall pine, heavy with resin."
+    },
+    "yew_tree": {
+      "name": "Yew",
+      "log": "yew_logs",
+      "level": 60,
+      "xp": 175,
+      "difficulty": 0.25,
+      "fell_chance": 0.1,
+      "respawn_ticks": 80,
+      "model": "tree_fat",
+      "examine": "An ancient yew, dark and slow-growing. Taxus: the bowyer's wood, and the tree of the dead."
     }
   },
   "fishing_spots": {

@@ -264,6 +264,12 @@
           "text": "Work a gold bulla."
         },
         {
+          "id": "orichalcum",
+          "kind": "quest",
+          "quest": "the_mountain_copper",
+          "text": "Prove the mountain-copper is real."
+        },
+        {
           "id": "regulus",
           "kind": "kill",
           "monster": "regulus",

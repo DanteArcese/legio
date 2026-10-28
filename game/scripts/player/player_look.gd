@@ -14,7 +14,7 @@ const WEAPONS := {
 	"bronze_pugio": ["weapons/dagger", "stab"], "iron_pugio": ["weapons/dagger", "stab"], "steel_pugio": ["weapons/dagger", "stab"], "orichalcum_pugio": ["weapons/dagger", "stab"],
 	"bronze_gladius": ["weapons/sword_1handed", "slash"], "iron_gladius": ["weapons/sword_1handed", "slash"],
 	"steel_gladius": ["weapons/sword_1handed", "slash"], "orichalcum_gladius": ["weapons/sword_1handed", "slash"],
-	"spatha": ["weapons/sword_1handed", "slash"], "framea": ["proc:spear", "stab"],
+	"spatha": ["weapons/sword_1handed", "slash"], "rudis": ["weapons/sword_1handed", "slash"], "framea": ["proc:spear", "stab"],
 	"hunting_bow": ["proc:bow", "bow"], "composite_bow": ["proc:bow_composite", "bow"],
 	"sling": ["proc:sling", "throw"], "amentum": ["proc:spear", "throw"], "lituus": ["weapons/staff", "ritus"],
 }

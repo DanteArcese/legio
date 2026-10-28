@@ -2027,3 +2027,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 8)
 script = ExtResource("33_obstacle")
 course = "shortcuts"
 end_offset = Vector3(3.6, 0, 0)
+
+[node name="Editor" type="StaticBody3D" parent="Circus" groups=["games_editors", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 362, 1, 179.5)
+collision_layer = 8
+metadata/display_name = "Editor of the games"
+metadata/examine = "A rich man paying for the games to win votes. He'd like you to die entertainingly, but he'll settle for winning."
+
+[node name="Collision" type="CollisionShape3D" parent="Circus/Editor"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Circus/Editor"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+hide_meshes = Array[String](["Mage_Hat"])
+
+[node name="Label" type="Label3D" parent="Circus/Editor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Editor of the games
+(The munera)"
+font_size = 36
+

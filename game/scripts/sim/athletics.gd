@@ -2,7 +2,8 @@ extends RefCounted
 ## Athletics: running an obstacle course. Each obstacle is a short timed
 ## crossing from its start to its end. Whether it goes well is rolled when
 ## the player starts, so the client can show a clean crossing or a fall.
-## Clearing every obstacle of a course in order earns a lap bonus.
+## Clearing every obstacle of a course in order earns a lap bonus. Shortcuts
+## are a course with no lap bonus: each one is just a crossing.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
@@ -92,6 +93,8 @@ func process(players: Array, events: Array) -> void:
 ## Obstacles cleared in order count toward a lap; any other order starts over.
 func _lap_progress(player: Combatant, obstacle: Dictionary, events: Array) -> void:
 	var course := ContentDB.course(obstacle["course"])
+	if course["lap_xp"] <= 0:
+		return
 	if obstacle["index"] != player.course_next:
 		player.course_next = 1 if obstacle["index"] == 0 else 0
 		return

@@ -119,6 +119,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
 
+**Built (#239): shortcuts.** A course of its own with no lap bonus: each shortcut is a single crossing, usable from either side. The first is a ladder over the fort's west wall to the grove (Athletics 10), which saves the walk round the south-west corner.
+
 **Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 

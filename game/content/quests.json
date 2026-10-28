@@ -73,6 +73,13 @@
       "idle": [
         "Mind the stall. Bread doesn't grow on trees, you know. It grows in fields."
       ]
+    },
+    "smith_tertius": {
+      "name": "Tertius the smith",
+      "examine": "The fort's smith: arms like hams, eyebrows singed off years ago.",
+      "idle": [
+        "Hot iron waits for no one. Neither do I."
+      ]
     }
   },
   "quests": {
@@ -1009,6 +1016,139 @@
           {
             "item": "wheat_seed",
             "quantity": 10
+          }
+        ]
+      }
+    },
+    "the_smiths_apprentice": {
+      "name": "The Smith's Apprentice",
+      "summary": "The fort's smith needs a pair of hands. Mine copper and tin, smelt bronze, and forge your first blade.",
+      "giver": "smith_tertius",
+      "requirements": {},
+      "start": [
+        "You've got a pickaxe and a hammer and no idea what to do with either. I can fix that.",
+        "Copper and tin from the quarry, east of the fort by the road. Five of each.",
+        "Then we'll see if you can work a furnace without losing your eyebrows. I didn't."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "smith_tertius",
+          "items": [
+            {
+              "item": "copper_ore",
+              "quantity": 5
+            },
+            {
+              "item": "tin_ore",
+              "quantity": 5
+            }
+          ],
+          "log": "Mine five copper ore and five tin ore at the quarry east of the fort, and bring them to Tertius at the smithy.",
+          "remind": [
+            "Five copper, five tin. The quarry's just east of the fort, by the road."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "smith_tertius",
+          "items": [
+            {
+              "item": "bronze_bar",
+              "quantity": 2
+            }
+          ],
+          "log": "Smelt two bronze bars at the furnace (a copper ore and a tin ore each) and show them to Tertius.",
+          "remind": [
+            "The furnace, by the anvil. One copper and one tin make a bar of bronze."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "smith_tertius",
+          "items": [
+            {
+              "item": "bronze_gladius",
+              "quantity": 1
+            }
+          ],
+          "log": "Forge a bronze gladius at the anvil (Smithing 5) and bring it to Tertius.",
+          "remind": [
+            "A gladius. Hammer, anvil, bronze. Smithing 5, so practise on daggers if you must."
+          ]
+        }
+      ],
+      "complete": [
+        "Not bad. It'll hold an edge, and that's all a blade has to do.",
+        "Keep the gladius, and take this scutum I had lying about. A smith's apprentice shouldn't go out naked."
+      ],
+      "rewards": {
+        "xp": {
+          "mining": 350,
+          "smithing": 600
+        },
+        "items": [
+          {
+            "item": "bronze_gladius",
+            "quantity": 1
+          },
+          {
+            "item": "bronze_scutum",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 100
+          }
+        ]
+      }
+    },
+    "gifts_for_the_gods": {
+      "name": "Gifts for the Gods",
+      "summary": "The sacerdos wants offerings for the Capitoline altar: bones from the beasts you've slain, and a wolf's pelt.",
+      "giver": "sacerdos",
+      "requirements": {},
+      "start": [
+        "The gods watch every fight, child. It's only polite to thank them for the ones you win.",
+        "Bring me five bones from what you've killed, and the pelt of a wolf from the woods. I'll show you what to do with them.",
+        "And after that, you can offer them yourself, at any altar. The gods aren't fussy, only greedy."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "sacerdos",
+          "items": [
+            {
+              "item": "bones",
+              "quantity": 5
+            },
+            {
+              "item": "wolf_pelt",
+              "quantity": 1
+            }
+          ],
+          "log": "Bring the sacerdos five bones (rats, wolves and boars drop them) and a wolf pelt from the woods.",
+          "remind": [
+            "Five bones and a wolf pelt. The rats in the granary are a good start; the wolves are a good finish."
+          ]
+        }
+      ],
+      "complete": [
+        "There. Smell that? That's Jupiter being pleased.",
+        "Take this incense. Offer it at the altar here, or bones at any altar, and you'll grow in the gods' favour. Blessings come with it."
+      ],
+      "rewards": {
+        "xp": {
+          "pietas": 450
+        },
+        "items": [
+          {
+            "item": "incense",
+            "quantity": 10
+          },
+          {
+            "item": "coins",
+            "quantity": 60
           }
         ]
       }

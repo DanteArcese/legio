@@ -2227,5 +2227,38 @@
         -8
       ]
     }
+  },
+  "hydra_hatchling": {
+    "name": "Hydra hatchling",
+    "value": 0,
+    "examine": "Five heads, one appetite. They argue over who gets to bite you first.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#3e5a3a",
+      "accent": "#8aa060",
+      "size": 0.4,
+      "features": [
+        "long_snout",
+        "tail",
+        "lizard",
+        "many_heads"
+      ]
+    }
+  },
+  "foal": {
+    "name": "Foal",
+    "value": 0,
+    "examine": "A gangly circus foal with a Reds ribbon in its mane. It wants to race everything.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#8a5a36",
+      "accent": "#3a2a1e",
+      "size": 0.55,
+      "features": [
+        "ears",
+        "long_snout",
+        "tail"
+      ]
+    }
   }
 }

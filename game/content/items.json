@@ -1875,5 +1875,23 @@
     "name": "Flour",
     "value": 6,
     "examine": "A pot of coarse stone-ground flour."
+  },
+  "marble_block": {
+    "name": "Marble block",
+    "value": 40,
+    "examine": "A block of Parian marble, white enough to glow."
+  },
+  "tesserae": {
+    "name": "Tesserae",
+    "value": 2,
+    "examine": "Little cubes of cut marble for laying a mosaic.",
+    "stackable": true
+  },
+  "chisel": {
+    "name": "Mason's chisel",
+    "value": 30,
+    "examine": "A claw chisel and a mallet for working stone.",
+    "tool": "chisel",
+    "tool_tier": 1
   }
 }

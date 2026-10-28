@@ -326,6 +326,11 @@ func build_furniture(hotspot: Node3D, furniture_id: String) -> void:
 			"now": Time.get_unix_time_from_system()}))
 
 
+func rest_at(hotspot: Node3D) -> void:
+	walk_and_do(hotspot.global_position, CLICK_USE_DISTANCE + 0.6, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "rest", {"hotspot": hotspot.hotspot_id}))
+
+
 func remove_furniture(hotspot: Node3D) -> void:
 	walk_and_do(hotspot.global_position, CLICK_USE_DISTANCE + 0.6, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "remove_furniture", {"hotspot": hotspot.hotspot_id}))

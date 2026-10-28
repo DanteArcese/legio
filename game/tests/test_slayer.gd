@@ -45,7 +45,7 @@ func _kill(sim: Simulation, monster_id: String, id: int) -> Array:
 func test_fresh_player_only_gets_low_level_tasks() -> void:
 	var tasks := Slayer.eligible_tasks(ContentDB.venator("aulus"), 3, 1)
 	var monsters := tasks.map(func(t): return t["monster"])
-	check_eq(monsters, ["rat", "wolf", "wild_boar"], "eligible at combat 3")
+	check_eq(monsters, ["rat", "goat", "wolf", "wild_boar"], "eligible at combat 3")
 
 
 func test_strix_needs_slayer_10_and_combat_18() -> void:

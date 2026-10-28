@@ -1130,6 +1130,18 @@
         "output": "leather",
         "level": 1,
         "xp": 5
+      },
+      {
+        "id": "goat_leather",
+        "inputs": [
+          {
+            "item": "goat_hide",
+            "quantity": 1
+          }
+        ],
+        "output": "leather",
+        "level": 1,
+        "xp": 4
       }
     ],
     "leatherwork": [

@@ -419,7 +419,7 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - **Start:** an open frontier town with an **optional** tutorial. New players get a guided starter questline that they can skip at any time.
 
 - **Tick length:** 0.6 s, for now. The F3 toggle stays as a debug tool for comparison.
-- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats and the training dummy first.
+- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats, the training dummy, and (#261) the wild goats grazing east of the fort: level 3, passive, and soft enough for a combat-2 character, with hides for leather.
 
 ## Open questions
 

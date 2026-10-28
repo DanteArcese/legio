@@ -138,6 +138,8 @@ func _wave_cleared(player: Combatant, events: Array) -> void:
 		sim.give_item(player.id, "coins", wave["coins"], "skilling", events)
 		games["earned"] += wave["coins"]
 	events.append({"type": "games_wave_cleared", "id": player.id, "wave": games["wave"], "tick": sim.tick})
+	if games["wave"] > player.games_best:
+		player.games_best = games["wave"]
 	if games["wave"] >= data()["waves"].size():
 		sim.give_item(player.id, data()["trophy"], 1, "skilling", events)
 		_end(player, events, "The last beast falls. The editor raises his hand, and an attendant brings you the rudis: freedom, and the crowd's love. (%d denarii in all)" % games["earned"])

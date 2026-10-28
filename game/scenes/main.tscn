@@ -367,7 +367,7 @@ outline_size = 8
 [node name="Forum" type="Node3D" parent="."]
 
 [node name="BakerSabina" type="StaticBody3D" parent="Forum" groups=["quest_npcs", "navigation_source"]]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -8, 1, -6.5)
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3.6, 1, -6.5)
 collision_layer = 8
 metadata/npc_id = "baker_sabina"
 metadata/display_name = "Sabina the baker"

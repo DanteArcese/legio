@@ -1875,5 +1875,170 @@
     "name": "Flour",
     "value": 6,
     "examine": "A pot of coarse stone-ground flour."
+  },
+  "marble_block": {
+    "name": "Marble block",
+    "value": 40,
+    "examine": "A block of Parian marble, white enough to glow."
+  },
+  "tesserae": {
+    "name": "Tesserae",
+    "value": 2,
+    "examine": "Little cubes of cut marble for laying a mosaic.",
+    "stackable": true
+  },
+  "chisel": {
+    "name": "Mason's chisel",
+    "value": 30,
+    "examine": "A claw chisel and a mallet for working stone.",
+    "tool": "chisel",
+    "tool_tier": 1
+  },
+  "orichalcum_ore": {
+    "name": "Orichalcum ore",
+    "value": 60,
+    "examine": "Ore with a red-gold sheen. Plato says Atlantis was roofed with it."
+  },
+  "orichalcum_bar": {
+    "name": "Orichalcum bar",
+    "value": 200,
+    "examine": "A bar of orichalcum, the mountain-copper. It glows like a coal in daylight."
+  },
+  "orichalcum_pugio": {
+    "name": "Orichalcum pugio",
+    "value": 160,
+    "examine": "A dagger of red-gold orichalcum, keen as the day it was forged.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 17,
+        "strength": 13,
+        "defence": 0
+      },
+      "attack_speed": 3,
+      "special": {
+        "name": "twin thrust",
+        "cost": 25,
+        "effect": "twin"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "orichalcum_gladius": {
+    "name": "Orichalcum gladius",
+    "value": 380,
+    "examine": "A gladius of orichalcum. It rings like a bell when it bites.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 28,
+        "strength": 25,
+        "defence": 0
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "legion's thrust",
+        "cost": 50,
+        "effect": "strong"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "orichalcum_galea": {
+    "name": "Orichalcum galea",
+    "value": 220,
+    "examine": "An orichalcum helmet with a horsehair crest.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 13,
+        "ritus_defence": -7
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "orichalcum_scutum": {
+    "name": "Orichalcum scutum",
+    "value": 440,
+    "examine": "A curved scutum faced with orichalcum plate.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 24,
+        "ritus_defence": -11
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "orichalcum_lorica": {
+    "name": "Orichalcum lorica",
+    "value": 620,
+    "examine": "Scales of orichalcum on a leather backing. It glows red at sunset.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 32,
+        "ritus_defence": -20
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "orichalcum_pickaxe": {
+    "name": "Orichalcum pickaxe",
+    "value": 480,
+    "examine": "An orichalcum-headed pickaxe. It bites rock like cheese.",
+    "tool": "pickaxe",
+    "tool_tier": 4,
+    "requirements": {
+      "mining": 41
+    }
+  },
+  "orichalcum_axe": {
+    "name": "Orichalcum axe",
+    "value": 440,
+    "examine": "An orichalcum felling axe.",
+    "tool": "axe",
+    "tool_tier": 4,
+    "requirements": {
+      "woodcutting": 41
+    }
+  },
+  "orichalcum_arrowheads": {
+    "name": "Orichalcum arrowheads",
+    "value": 14,
+    "examine": "Barbed orichalcum arrowheads.",
+    "stackable": true
+  },
+  "orichalcum_arrow": {
+    "name": "Orichalcum arrow",
+    "value": 22,
+    "examine": "An arrow with an orichalcum head. It flies true.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 22
+      },
+      "ammo_type": "arrow"
+    },
+    "requirements": {
+      "ranged": 40
+    }
   }
 }

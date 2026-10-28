@@ -52,6 +52,7 @@ const SOUNDS := {
 	"press_oil": ["impactWood_light_000", "impactWood_light_001"],
 	"press_wine": ["impactWood_light_000", "impactWood_light_001"],
 	"jewelcraft": ["metalClick"],
+	"masonry": ["metalClick"],
 	"fire": ["impactGlass_light_000", "impactGlass_light_001", "impactGlass_light_002"],
 	"special": ["impactBell_heavy_000"],
 	"net": ["cloth1", "cloth2"],

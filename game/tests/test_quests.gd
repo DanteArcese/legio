@@ -555,3 +555,23 @@ func test_unmet_requirements_lists_everything_missing() -> void:
 	check(unmet.has("the quest Tiro"), "needs Tiro first")
 	check_eq(Quests.unmet_requirement(player, "miles"), unmet[0], "the single reason is the first")
 	check(Quests.unmet_requirements(player, "tiro").is_empty(), "Tiro is open to anyone")
+
+
+func test_bread_for_the_garrison() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("baker_sabina", Vector3(1, 0, 0))
+	var talk := func() -> Array:
+		sim.queue_item_action(PLAYER, "talk", {"npc": "baker_sabina"})
+		return _run(sim, 1)
+	talk.call()
+	check_eq(Quests.status(player, "bread_for_the_garrison"), "in_progress", "open to a new player")
+	sim.give_item(PLAYER, "flour", 5, "test", [])
+	talk.call()
+	check_eq(player.quests["bread_for_the_garrison"]["step"], 1, "flour delivered")
+	var loaves: int = player.inventory.count("bread")
+	sim.give_item(PLAYER, "bread", 3, "test", [])
+	talk.call()
+	check(Quests.is_done(player, "bread_for_the_garrison"), "done")
+	check_eq(player.inventory.count("bread"), loaves, "the three loaves handed over")
+	check_eq(player.inventory.count("wheat_seed"), 10, "seed for next year")

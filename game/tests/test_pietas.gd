@@ -116,3 +116,16 @@ func test_levelling_up_adds_a_point_of_favour() -> void:
 	_run(sim, 20)
 	check(_player(sim).skills.level("pietas") >= 2, "levelled up")
 	check_eq(_player(sim).favour, float(_player(sim).skills.level("pietas")), "favour grew with the level")
+
+
+func test_rarer_offerings_for_higher_levels() -> void:
+	var sim := _make_sim(1)
+	sim.pietas.add_altar("underworld", Vector3(1, 0, 0))
+	sim.give_item(PLAYER, "gorgon_scale", 1, "test", [])
+	_act(sim, "offer", {"item": "gorgon_scale"})
+	_run(sim, 5)
+	check_eq(_player(sim).skills.xp["pietas"], 115.0, "a gorgon scale for the underworld gods")
+	sim.give_item(PLAYER, "estate_wine", 1, "test", [])
+	_act(sim, "offer", {"item": "estate_wine"})
+	_run(sim, 5)
+	check_eq(_player(sim).skills.xp["pietas"], 115.0 + 32.5, "estate wine is for the heavenly gods: half here")

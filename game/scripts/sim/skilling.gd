@@ -12,8 +12,8 @@ const ACTION_RANGE := 2.2
 const FISHING_RANGE := 3.0
 ## Ticks between mining and chopping attempts, by tool tier. Steel (3) is
 ## as fast as iron but lands more often (MINE_CHANCE_PER_TIER).
-const MINE_TICKS := {1: 4, 2: 3, 3: 3}
-const CHOP_TICKS := {1: 4, 2: 3, 3: 3}
+const MINE_TICKS := {1: 4, 2: 3, 3: 3, 4: 2}
+const CHOP_TICKS := {1: 4, 2: 3, 3: 3, 4: 2}
 const FISH_TICKS := 5
 const CRAFT_TICKS := 4
 ## Our own gathering formula: chance per attempt.
@@ -28,12 +28,12 @@ const MAX_BURN_CHANCE := 0.5
 ## Where each kind of recipe is made. Fletching needs no station.
 const STATIONS_FOR_KIND := {"smelt": ["furnace"], "smith": ["anvil"], "cook": ["range", "fire"], "inscribe": ["tomb"], "fletch": [],
 	"tan": ["tanning_rack"], "leatherwork": [], "garum": ["garum_vat"], "medicina": [], "saw": ["sawpit"],
-	"throw": ["potters_wheel"], "kiln": ["kiln"], "jewelcraft": [], "press_oil": ["olive_press"], "press_wine": ["wine_press"], "mill": ["quern"]}
+	"throw": ["potters_wheel"], "kiln": ["kiln"], "jewelcraft": [], "press_oil": ["olive_press"], "press_wine": ["wine_press"], "mill": ["quern"], "masonry": []}
 const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus", "fletch": "fletching",
 	"tan": "crafting", "leatherwork": "crafting", "garum": "cooking", "medicina": "medicina", "saw": "engineering",
-	"throw": "crafting", "kiln": "crafting", "jewelcraft": "crafting", "press_oil": "cooking", "press_wine": "cooking", "mill": "cooking"}
+	"throw": "crafting", "kiln": "crafting", "jewelcraft": "crafting", "press_oil": "cooking", "press_wine": "cooking", "mill": "cooking", "masonry": "crafting"}
 ## Recipe kinds made anywhere, from the inventory, and the verb for each.
-const HANDHELD_KINDS := {"fletch": "Fletch", "leatherwork": "Sew", "medicina": "Mix", "jewelcraft": "Work"}
+const HANDHELD_KINDS := {"fletch": "Fletch", "leatherwork": "Sew", "medicina": "Mix", "jewelcraft": "Work", "masonry": "Carve"}
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.

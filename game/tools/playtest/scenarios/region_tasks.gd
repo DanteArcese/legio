@@ -2,6 +2,7 @@ extends "res://tools/playtest/scenario.gd"
 ## Region tasks in the quest log: chopping logs ticks one off, and the log
 ## lists every region's tasks under the quests.
 
+const Tasks := preload("res://scripts/sim/tasks.gd")
 const PLAYER := 1
 
 
@@ -16,7 +17,8 @@ func run() -> void:
 	await seconds(0.3)
 	var text: String = quest_ui.log_text()
 	expect("Region tasks" in text, "the log has a tasks section")
-	expect("Castra Ferrea  (1 / 10" in text, "with the count (%s)" % text.substr(text.find("Castra Ferrea  ("), 30))
+	var total: int = Tasks.regions()["castra_ferrea"]["tasks"].size()
+	expect(("Castra Ferrea  (1 / %d" % total) in text, "with the count (%s)" % text.substr(text.find("Castra Ferrea  ("), 30))
 	quest_ui._log_text.scroll_to_line(quest_ui._log_text.get_line_count() - 30)
 	await seconds(0.2)
 	await shot("tasks")

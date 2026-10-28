@@ -210,6 +210,11 @@
         "item": "spatha",
         "price": 380,
         "requires_quest": "duplicarius"
+      },
+      {
+        "item": "lorica_segmentata",
+        "price": 1800,
+        "requires_quest": "sacramentum"
       }
     ],
     "buys": {
@@ -268,6 +273,11 @@
         "item": "cabbage_seed",
         "price": 10,
         "quantity": 10
+      },
+      {
+        "item": "wheat_seed",
+        "price": 10,
+        "quantity": 10
       }
     ],
     "buys": {
@@ -307,6 +317,11 @@
         "item": "sand",
         "price": 12,
         "quantity": 10
+      },
+      {
+        "item": "lockpick",
+        "price": 45,
+        "quantity": 5
       }
     ],
     "buys": {

@@ -71,5 +71,49 @@
       ],
       "examine": "A Gaulish merchant with rings on every finger."
     }
+  },
+  "strongboxes": {
+    "warehouse_strongbox": {
+      "name": "Warehouse strongbox",
+      "level": 30,
+      "xp": 85,
+      "crack_ticks": 4,
+      "trap_chance": 0.35,
+      "damage": [
+        2,
+        5
+      ],
+      "relock_ticks": 90,
+      "drop_table": "warehouse_strongbox",
+      "examine": "A shipping agent's iron-bound box, chained to the floor."
+    },
+    "procurators_strongbox": {
+      "name": "Procurator's strongbox",
+      "level": 42,
+      "xp": 135,
+      "crack_ticks": 5,
+      "trap_chance": 0.4,
+      "damage": [
+        3,
+        7
+      ],
+      "relock_ticks": 120,
+      "drop_table": "procurators_strongbox",
+      "examine": "The mine's pay chest. The procurator trusts the lock more than his clerks."
+    },
+    "merchants_strongbox": {
+      "name": "Merchant's strongbox",
+      "level": 55,
+      "xp": 200,
+      "crack_ticks": 6,
+      "trap_chance": 0.45,
+      "damage": [
+        4,
+        9
+      ],
+      "relock_ticks": 150,
+      "drop_table": "merchants_strongbox",
+      "examine": "Nikias's own coffer, with a lock from Corinth and a needle in it."
+    }
   }
 }

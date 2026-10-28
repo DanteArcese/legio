@@ -17,6 +17,7 @@ var _controls: PanelContainer
 var _controls_back: Button
 var _graphics_button: Button
 var _roofs_button: Button
+var _display_button: Button
 ## Shown to Solitarius players; the first press asks, the second gives it up.
 var _leave_button: Button
 var _leave_armed := false
@@ -52,6 +53,10 @@ func _ready() -> void:
 		settings.set_hide_roofs(not settings.hide_roofs())
 		_refresh())
 	column.add_child(_roofs_button)
+	_display_button = _button("", func():
+		settings.set_fullscreen(not settings.fullscreen)
+		_refresh())
+	column.add_child(_display_button)
 	if sound:
 		for bus in sound.BUSES:
 			column.add_child(_volume_row(bus))
@@ -156,6 +161,7 @@ func _build_controls(style: StyleBox) -> void:
 func _refresh() -> void:
 	_graphics_button.text = "Graphics: %s" % settings.preset.capitalize()
 	_roofs_button.text = "Hide roofs: %s" % ("On" if settings.hide_roofs() else "Off")
+	_display_button.text = "Display: %s (F11)" % ("Fullscreen" if settings.fullscreen else "Windowed")
 	var combatant := _combatant()
 	_leave_button.visible = combatant != null and combatant.is_solitarius() and not _left
 	_leave_button.text = "Really give it up? Press again" if _leave_armed else "Leave the Solitarius path"

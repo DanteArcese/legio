@@ -3,6 +3,7 @@ extends Node
 ## Monsters take their stats from content via monster_id; other entities
 ## (the player, the training dummy) are configured with the exports below.
 
+const LevelColors := preload("res://scripts/ui/level_colors.gd")
 const HitSplat := preload("res://scripts/world/hit_splat.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 
@@ -119,9 +120,25 @@ func rescue_if_fallen() -> void:
 		place_on_ground(spawn_position)
 
 
+## The local player's combatant, found once and shared by every entity.
+static var _player_entity: WeakRef
+
+
+func _player_combatant() -> RefCounted:
+	var entity: Node = _player_entity.get_ref() if _player_entity else null
+	if entity == null and is_inside_tree():
+		var player := get_tree().get_first_node_in_group("player")
+		entity = player.get_node_or_null("SimEntity") if player else null
+		_player_entity = weakref(entity) if entity else null
+	return entity.combatant if entity else null
+
+
 func _update_label() -> void:
 	if hp_label and combatant:
 		var title := ""
 		if not monster_id.is_empty():
 			title = "%s (level %d)\n" % [display_name(), combatant.display_level]
+			var me := _player_combatant()
+			if me and me.skills:
+				hp_label.modulate = LevelColors.color_for(combatant.display_level, me.skills.combat_level())
 		hp_label.text = "%s%d / %d" % [title, combatant.hp, combatant.max_hp]

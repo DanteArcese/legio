@@ -75,7 +75,7 @@ Kept as a core skill and the center of progression.
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.
 
-**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10).
+**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10). *Bread for the Garrison* (#231), a starter quest from Sabina the baker beside her forum stall, walks a new player through it: five pots of flour, then three loaves, for Cooking and Farming XP, coins and seed wheat.
 | Hunter | Traps and nets. Live capture for the arena. |
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
@@ -87,6 +87,8 @@ Kept as a core skill and the center of progression.
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
+
+**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel.
 | Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
@@ -137,6 +139,8 @@ Mercatura works like a skill rather than a menu over the market:
 - **Links to other skills:** artisan products sell for more in the right region, so Mercatura rewards specialists.
 
 **Built (#120): trade contracts.** Trade boards at Portus Salis (cargoes wanted inland: garum and salt for the quartermaster, grilled tuna for the Gaulish merchant) and in the fort's forum (cargoes wanted at the coast: iron bars, oak logs, and linen for the fishmonger's shipwrights). Take one contract at a time, source the goods yourself (the fishmonger sells garum cheaply at the coast), and deliver to the named shopkeeper for coins and Mercatura XP. Higher levels unlock bigger contracts. The quest log tracks the current contract. Carts, wagons, ships, regional prices, and risk on the road come later.
+
+**Built (#237): regional prices.** Shops can want particular goods at their own price (`buys.prices`), above their usual rate and even when they don't otherwise trade in them. The Portus fishmonger pays well for olive oil, iron, oak and linen for the ships; the Gaulish merchant pays over the odds for estate wine (1.2× its value) and for garum; Nikias on Seriphos wants iron, steel and silver fibulae; and the procurator at Vipasca buys bread, meat and oil for the miners. Selling the same goods where they're wanted pays noticeably more than selling them anywhere.
 
 ## Replacing magic
 
@@ -211,6 +215,8 @@ Without teleports, travel becomes a progression system:
 
 - Selling items: sell to merchants, or use the forum market.
 - Enchanting: you consecrate jewelry at temples, using Pietas.
+
+**Built (#235): later offerings.** Higher-level offerings come from newer content: dire wolf pelts (30 XP), pressed olive oil (40) and estate wine (65) at the heavenly altars; harpy feathers (55), basilisk eyes (85) and gorgon scales (115) at the underworld altars. As always, the wrong altar gives half.
 
 ## Combat
 

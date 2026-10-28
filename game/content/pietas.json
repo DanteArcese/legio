@@ -139,6 +139,30 @@
     "strix_feather": {
       "xp": 40,
       "altar": "underworld"
+    },
+    "dire_wolf_pelt": {
+      "xp": 30,
+      "altar": "heavenly"
+    },
+    "olive_oil": {
+      "xp": 40,
+      "altar": "heavenly"
+    },
+    "estate_wine": {
+      "xp": 65,
+      "altar": "heavenly"
+    },
+    "harpy_feather": {
+      "xp": 55,
+      "altar": "underworld"
+    },
+    "basilisk_eye": {
+      "xp": 85,
+      "altar": "underworld"
+    },
+    "gorgon_scale": {
+      "xp": 115,
+      "altar": "underworld"
     }
   },
   "altars": {

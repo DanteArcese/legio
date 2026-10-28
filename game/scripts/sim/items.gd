@@ -93,6 +93,17 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			player.inventory.take_slot(slot_index)
 			add_ground_pile(player.position, [slot], events)
 			events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+		"drop_all":
+			# Every slot of the item in the slot, into one pile.
+			if slot == null:
+				return
+			var dropped := []
+			for i in player.inventory.size:
+				var other: Variant = player.inventory.slots[i]
+				if other != null and other["item"] == slot["item"]:
+					dropped.append(player.inventory.take_slot(i))
+			add_ground_pile(player.position, dropped, events)
+			events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 		"release_pet":
 			sim.pets.release(player, slot_index, events)
 		"pickup_pet":

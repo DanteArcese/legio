@@ -55,7 +55,8 @@ func _init() -> void:
 	_thieve("silversmith's stall", [25, 50], "steal", "silversmiths_stall", true)
 	_thieve("townsman", [1, 20], "pickpocket", "townsman", false)
 	_thieve("merchant", [18, 40], "pickpocket", "merchant", false)
-	_athletics([1, 40])
+	_athletics("fort_course", "training course laps", [1, 40])
+	_athletics("beach_course", "beach run laps", [30, 60])
 	_hunter("hare burrow", [1, 30], "hare_burrow")
 	_hunter("fox den", [15, 45], "fox_den")
 	_hunter("dormouse nest", [40, 70], "dormouse_nest")
@@ -123,12 +124,12 @@ func _thieve(method: String, levels: Array, action: String, target: String, stal
 		_rows.append(["Thieving", method, level, xp])
 
 
-func _athletics(levels: Array) -> void:
-	var count: int = ContentDB.course("fort_course")["obstacles"].size()
+func _athletics(course: String, method: String, levels: Array) -> void:
+	var count: int = ContentDB.course(course)["obstacles"].size()
 	for level in levels:
 		var sim := _player_sim("athletics", level)
 		for i in count:
-			sim.athletics.add_obstacle(i + 1, "fort_course", i, Vector3(i * 10, 0, 0), Vector3(i * 10 + 4, 0, 0))
+			sim.athletics.add_obstacle(i + 1, course, i, Vector3(i * 10, 0, 0), Vector3(i * 10 + 4, 0, 0))
 		var next := [0]
 		var xp := _hour(sim, "athletics", func(player: RefCounted):
 			player.hp = player.max_hp
@@ -138,7 +139,7 @@ func _athletics(levels: Array) -> void:
 			next[0] = player.course_next
 			sim.set_position(PLAYER, Vector3(next[0] * 10, 0, 0))
 			sim.queue_item_action(PLAYER, "obstacle", {"obstacle": next[0] + 1}))
-		_rows.append(["Athletics", "training course laps", level, xp])
+		_rows.append(["Athletics", method, level, xp])
 
 
 func _hunter(method: String, levels: Array, spot: String) -> void:

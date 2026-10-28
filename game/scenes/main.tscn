@@ -1940,6 +1940,21 @@ transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -341.5, 0, 323.5)
 script = ExtResource("28_spot")
 spot_type = "eel_spot"
 
+[node name="DormouseNest1" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -349, 0, 296)
+script = ExtResource("34_burrow")
+spot_type = "dormouse_nest"
+
+[node name="DormouseNest2" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -338, 0, 303)
+script = ExtResource("34_burrow")
+spot_type = "dormouse_nest"
+
+[node name="DormouseNest3" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -346, 0, 311)
+script = ExtResource("34_burrow")
+spot_type = "dormouse_nest"
+
 [node name="GreekHouseWest" type="StaticBody3D" parent="Seriphos" groups=["houses", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -314, 1.75, 292)
 collision_layer = 16

@@ -33,6 +33,19 @@
         }
       ],
       "examine": "A sandy hole under the roots, ringed with feathers and small bones."
+    },
+    "dormouse_nest": {
+      "name": "Dormouse nest",
+      "level": 40,
+      "xp": 120,
+      "catch_chance": 0.2,
+      "loot": [
+        {
+          "item": "dormouse",
+          "quantity": 1
+        }
+      ],
+      "examine": "A hollow at the foot of an old olive, stuffed with leaves. Something fat is asleep in there."
     }
   }
 }

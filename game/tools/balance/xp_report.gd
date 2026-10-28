@@ -58,6 +58,7 @@ func _init() -> void:
 	_athletics([1, 40])
 	_hunter("hare burrow", [1, 30], "hare_burrow")
 	_hunter("fox den", [15, 45], "fox_den")
+	_hunter("dormouse nest", [40, 70], "dormouse_nest")
 	_melee([1, 30, 60])
 	print(_table())
 	quit()
@@ -146,7 +147,7 @@ func _hunter(method: String, levels: Array, spot: String) -> void:
 		sim.hunter.add_spot(1, spot, NEAR)
 		sim.give_item(PLAYER, "box_trap", 1, "test", [])
 		var xp := _hour(sim, "hunter", func(player: RefCounted):
-			for item_id in ["raw_meat", "hare_pelt", "fox_pelt"]:
+			for item_id in ["raw_meat", "hare_pelt", "fox_pelt", "dormouse"]:
 				player.inventory.remove(item_id, player.inventory.count(item_id))
 			var trap: Dictionary = sim.hunter.spots[1]["trap"]
 			if trap.is_empty() or trap["state"] == "caught":

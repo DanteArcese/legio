@@ -1,6 +1,7 @@
 extends "res://tools/playtest/scenario.gd"
 ## Esc / Start opens the pause menu, which pauses the game; the graphics
-## preset cycles Low -> Medium -> High; Hide roofs toggles; Resume unpauses.
+## preset cycles Low -> Medium -> High; Hide roofs toggles; Display switches
+## to fullscreen and back; Resume unpauses.
 
 func run() -> void:
 	await seconds(0.3)
@@ -25,6 +26,14 @@ func run() -> void:
 	await press("ui_accept")
 	await _frames(3)
 	expect(settings.hide_roofs(), "Hide roofs on")
+	await press("ui_down")
+	await press("ui_accept")
+	await _frames(3)
+	expect(settings.fullscreen, "Display -> Fullscreen")
+	await press("ui_accept")
+	await _frames(3)
+	expect(not settings.fullscreen, "Display -> Windowed")
+	await press("ui_up")
 	await press("ui_up")
 	await press("ui_up")
 	await press("ui_accept")

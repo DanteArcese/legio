@@ -1,8 +1,8 @@
 extends Node
 ## Look and graphics presets. The base look (tonemapping, colour grading,
 ## fog) is the same everywhere; presets trade ambient occlusion, glow,
-## shadow quality, and anti-aliasing for speed. Choices are saved to
-## user://settings.cfg.
+## shadow quality, and anti-aliasing for speed. Fullscreen (F11 or the pause
+## menu) is kept here too. Choices are saved to user://settings.cfg.
 
 const PRESETS := ["low", "medium", "high"]
 const DEFAULT_PRESET := "medium"
@@ -17,6 +17,7 @@ signal changed
 @export var persist := true
 
 var preset := DEFAULT_PRESET
+var fullscreen := false
 
 
 func _ready() -> void:
@@ -26,7 +27,31 @@ func _ready() -> void:
 		preset = config.get_value("graphics", "preset", DEFAULT_PRESET)
 		if occlusion_fader:
 			occlusion_fader.set_hide_roofs(config.get_value("view", "hide_roofs", false))
+		fullscreen = config.get_value("view", "fullscreen", false)
 	apply_preset(preset if preset in PRESETS else DEFAULT_PRESET)
+	_apply_fullscreen()
+
+
+## F11 is a plain key, like F3: controllers use the pause menu's button.
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_F11:
+		set_fullscreen(not fullscreen)
+		get_viewport().set_input_as_handled()
+
+
+func set_fullscreen(value: bool) -> void:
+	fullscreen = value
+	_apply_fullscreen()
+	save()
+
+
+func _apply_fullscreen() -> void:
+	# Headless runs (tests, CI) have no window to resize.
+	if DisplayServer.get_name() == "headless":
+		return
+	var mode := DisplayServer.WINDOW_MODE_FULLSCREEN if fullscreen else DisplayServer.WINDOW_MODE_WINDOWED
+	if DisplayServer.window_get_mode() != mode:
+		DisplayServer.window_set_mode(mode)
 
 
 func cycle_preset() -> void:
@@ -88,6 +113,7 @@ func save() -> void:
 	config.load(SETTINGS_PATH)
 	config.set_value("graphics", "preset", preset)
 	config.set_value("view", "hide_roofs", hide_roofs())
+	config.set_value("view", "fullscreen", fullscreen)
 	config.save(SETTINGS_PATH)
 
 

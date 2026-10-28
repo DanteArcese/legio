@@ -53,6 +53,18 @@
           "text": "Help Sabina the baker feed the garrison."
         },
         {
+          "id": "smith_quest",
+          "kind": "quest",
+          "quest": "the_smiths_apprentice",
+          "text": "Forge your first blade for Tertius the smith."
+        },
+        {
+          "id": "gods_quest",
+          "kind": "quest",
+          "quest": "gifts_for_the_gods",
+          "text": "Bring the sacerdos gifts for the gods."
+        },
+        {
           "id": "tiro",
           "kind": "quest",
           "quest": "tiro",

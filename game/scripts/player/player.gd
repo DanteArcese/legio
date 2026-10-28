@@ -612,6 +612,9 @@ func _physics_process(delta: float) -> void:
 		_play_crossing(delta)
 		return
 	var input := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	# Typing in a text box (the bank search) mustn't walk the player about.
+	if get_viewport().gui_get_focus_owner() is LineEdit:
+		input = Vector2.ZERO
 	var yaw := camera_rig.global_rotation.y if camera_rig else 0.0
 	var direction := MoveMath.camera_relative(input, yaw)
 	var face_target := false

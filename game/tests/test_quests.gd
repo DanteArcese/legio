@@ -488,3 +488,70 @@ func test_the_shepherds_flock() -> void:
 	_run(sim, 1)
 	check(Quests.is_done(player, "the_shepherds_flock"), "complete")
 	check_eq(player.inventory.count("cyclops_cheese"), 5, "paid in cheese")
+
+
+func _kill_for_player(sim: Simulation, id: int, monster: String) -> void:
+	var target := sim.add_monster(id, monster, Vector3(0, 0, 1))
+	target.last_attacker_id = PLAYER
+	target.hp = 0
+	sim.kill(target, [])
+
+
+func test_sacramentum_and_optio() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("centurion_varro", Vector3(1, 0, 0))
+	sim.quests.add_npc("sacerdos", Vector3(-1, 0, 0))
+	sim.quests.add_npc("melissa", Vector3(0, 0, -1))
+	for quest_id in ["decurio", "the_lost_eagle"]:
+		player.quests[quest_id] = {"step": 0, "progress": 0, "done": true}
+	for skill in ["attack", "strength", "defence"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(40)
+	var talk := func(npc: String) -> Array:
+		sim.queue_item_action(PLAYER, "talk", {"npc": npc})
+		return _run(sim, 1)
+	talk.call("centurion_varro")
+	check_eq(Quests.status(player, "sacramentum"), "in_progress", "Varro swears in a citizen")
+	sim.give_item(PLAYER, "wine", 1, "test", [])
+	sim.give_item(PLAYER, "incense", 5, "test", [])
+	talk.call("sacerdos")
+	check_eq(player.quests["sacramentum"]["step"], 1, "the sacrifice made")
+	check_eq(player.inventory.count("incense"), 0, "incense burned")
+	for i in 8:
+		_kill_for_player(sim, RAT + i, "germanic_raider")
+	check_eq(player.quests["sacramentum"]["step"], 2, "eight raiders")
+	sim.give_item(PLAYER, "steel_scutum", 1, "test", [])
+	sim.give_item(PLAYER, "steel_pilum", 10, "test", [])
+	talk.call("centurion_varro")
+	check(Quests.is_done(player, "sacramentum"), "sworn in")
+	check_eq(Quests.rank(player), "Legionarius", "a legionary")
+	check_eq(Quests.title(player), "Miles legionis", "the title")
+	check_eq(player.inventory.count("lorica_segmentata"), 1, "a lorica segmentata")
+	check_eq(player.inventory.count("steel_scutum"), 1, "the scutum back")
+
+	var lines := _dialogue(talk.call("centurion_varro"))
+	check(lines.size() > 0 and "Slayer 60" in " ".join(lines) or Quests.unmet_requirement(player, "optio") != "", "Optio is locked for now")
+	for skill in ["attack", "strength", "defence", "slayer"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(60)
+	talk.call("centurion_varro")
+	check_eq(Quests.status(player, "optio"), "in_progress", "Optio started")
+	talk.call("melissa")
+	check_eq(player.quests["optio"]["step"], 1, "Melissa points at the ruins")
+	for i in 3:
+		_kill_for_player(sim, RAT + 20 + i, "gorgon")
+	check_eq(player.inventory.count("gorgon_head"), 1, "the head, in a sack")
+	talk.call("centurion_varro")
+	check(Quests.is_done(player, "optio"), "an optio")
+	check_eq(Quests.rank(player), "Optio", "the rank")
+	check_eq(player.inventory.count("phalerae"), 1, "phalerae for valour")
+	check_eq(player.inventory.count("gorgon_head"), 0, "the head handed over")
+
+
+func test_unmet_requirements_lists_everything_missing() -> void:
+	var sim := _make_sim()
+	var player: RefCounted = _player(sim)
+	var unmet := Quests.unmet_requirements(player, "miles")
+	check(unmet.has("Defence 5"), "needs Defence 5 (%s)" % [unmet])
+	check(unmet.has("the quest Tiro"), "needs Tiro first")
+	check_eq(Quests.unmet_requirement(player, "miles"), unmet[0], "the single reason is the first")
+	check(Quests.unmet_requirements(player, "tiro").is_empty(), "Tiro is open to anyone")

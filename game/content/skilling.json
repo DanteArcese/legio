@@ -406,6 +406,20 @@
         "tool": "hammer"
       },
       {
+        "id": "lockpick",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "lockpick",
+        "quantity": 5,
+        "level": 16,
+        "xp": 25,
+        "tool": "hammer"
+      },
+      {
         "id": "iron_axe",
         "inputs": [
           {
@@ -704,6 +718,20 @@
         "xp": 100,
         "burnt": "burnt_food",
         "stop_burning": 65
+      },
+      {
+        "id": "bread",
+        "inputs": [
+          {
+            "item": "flour",
+            "quantity": 1
+          }
+        ],
+        "output": "bread",
+        "level": 10,
+        "xp": 30,
+        "burnt": "burnt_food",
+        "stop_burning": 40
       }
     ],
     "inscribe": [
@@ -1397,6 +1425,48 @@
         "output": "firepot",
         "level": 30,
         "xp": 40
+      }
+    ],
+    "press_oil": [
+      {
+        "id": "olive_oil",
+        "inputs": [
+          {
+            "item": "olives",
+            "quantity": 4
+          }
+        ],
+        "output": "olive_oil",
+        "level": 25,
+        "xp": 45
+      }
+    ],
+    "press_wine": [
+      {
+        "id": "estate_wine",
+        "inputs": [
+          {
+            "item": "grapes",
+            "quantity": 5
+          }
+        ],
+        "output": "estate_wine",
+        "level": 35,
+        "xp": 70
+      }
+    ],
+    "mill": [
+      {
+        "id": "flour",
+        "inputs": [
+          {
+            "item": "wheat",
+            "quantity": 1
+          }
+        ],
+        "output": "flour",
+        "level": 8,
+        "xp": 12
       }
     ]
   },

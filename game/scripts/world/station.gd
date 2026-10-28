@@ -1,7 +1,7 @@
 extends StaticBody3D
 ## A crafting station: furnace (smelting), anvil (smithing), range or
 ## campfire (cooking), tomb (inscribing), and the rest: tanning rack, sawpit,
-## garum vat, potter's wheel and kiln.
+## garum vat, potter's wheel, kiln, and the villa's olive and wine presses.
 
 const LOOKS := {
 	"furnace": ["Furnace", Color(0.45, 0.25, 0.2), Vector3(1.2, 1.4, 1.2), "Hot enough to smelt ore into bars."],
@@ -14,12 +14,15 @@ const LOOKS := {
 	"tomb": ["Old tomb", Color(0.42, 0.42, 0.4), Vector3(1.0, 1.1, 2.0), "Curses buried here reach the Manes. Inscribe tablets with a stylus."],
 	"potters_wheel": ["Potter's wheel", Color(0.5, 0.38, 0.26), Vector3(1.0, 0.9, 1.0), "A kick-wheel and a bench. Throw clay into pots here."],
 	"kiln": ["Kiln", Color(0.62, 0.38, 0.26), Vector3(1.4, 1.6, 1.4), "A beehive kiln of brick. Fire pots, and melt sand into glass with a blowpipe."],
+	"olive_press": ["Olive press", Color(0.48, 0.36, 0.24), Vector3(1.6, 1.8, 1.6), "A stone basin under a screw and beam. Four olives make an amphora of oil."],
+	"wine_press": ["Wine press", Color(0.45, 0.3, 0.24), Vector3(1.6, 1.8, 1.6), "A treading floor and a beam press. Five bunches of grapes fill an amphora."],
+	"quern": ["Quern", Color(0.55, 0.53, 0.5), Vector3(1.0, 0.8, 1.0), "Two millstones on a stand. Grind wheat into flour here."],
 }
 ## Recipe kinds made at each station.
 const KINDS := {"furnace": "smelt", "anvil": "smith", "range": "cook", "fire": "cook", "tomb": "inscribe", "tanning_rack": "tan", "garum_vat": "garum", "sawpit": "saw",
-	"potters_wheel": "throw", "kiln": "kiln"}
+	"potters_wheel": "throw", "kiln": "kiln", "olive_press": "press_oil", "wine_press": "press_wine", "quern": "mill"}
 
-@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit", "potters_wheel", "kiln") var kind := "furnace"
+@export_enum("furnace", "anvil", "range", "tomb", "fire", "tanning_rack", "garum_vat", "sawpit", "potters_wheel", "kiln", "olive_press", "wine_press", "quern") var kind := "furnace"
 
 var _flame: MeshInstance3D
 var _light: OmniLight3D
@@ -68,6 +71,10 @@ func _ready() -> void:
 			_build_potters_wheel()
 		"kiln":
 			_build_kiln()
+		"olive_press", "wine_press":
+			_build_press()
+		"quern":
+			_build_quern()
 	var shape := CollisionShape3D.new()
 	shape.shape = BoxShape3D.new()
 	shape.shape.size = look[2]
@@ -190,6 +197,28 @@ func _build_garum_vat() -> void:
 		jar.mesh = capsule
 		jar.position = Vector3(1.0, 0.3, -0.45 + i * 0.4)
 		add_child(jar)
+
+
+## A round stone basin (stained purple for wine) under a screw press: two
+## uprights, a crossbeam, and the screw.
+func _build_press() -> void:
+	var wood := Color(0.45, 0.32, 0.2)
+	var basin := Color(0.6, 0.56, 0.5) if kind == "olive_press" else Color(0.5, 0.38, 0.42)
+	_add_cylinder(0.75, 0.5, Vector3(0, 0.25, 0), basin)
+	_add_cylinder(0.55, 0.12, Vector3(0, 0.56, 0), wood)
+	for x in [-0.7, 0.7]:
+		_add_box(Vector3(0.14, 1.8, 0.14), Vector3(x, 0.9, 0), wood)
+	_add_box(Vector3(1.6, 0.16, 0.18), Vector3(0, 1.7, 0), wood)
+	_add_cylinder(0.07, 1.0, Vector3(0, 1.15, 0), Color(0.36, 0.26, 0.16))
+
+
+## A rotary quern: two stone discs on a wooden stand, with a handle.
+func _build_quern() -> void:
+	var stone := Color(0.55, 0.53, 0.5)
+	_add_box(Vector3(1.0, 0.45, 1.0), Vector3(0, 0.22, 0), Color(0.45, 0.33, 0.22))
+	_add_cylinder(0.45, 0.16, Vector3(0, 0.53, 0), stone)
+	_add_cylinder(0.42, 0.14, Vector3(0, 0.68, 0), stone.lightened(0.1))
+	_add_cylinder(0.04, 0.35, Vector3(0.3, 0.9, 0), Color(0.4, 0.3, 0.2))
 
 
 ## Two posts and a crossbar with a hide stretched between them.

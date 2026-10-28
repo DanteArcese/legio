@@ -102,4 +102,10 @@ func show_crop(crop_id: String, crop_stage: int, is_ready: bool) -> void:
 
 
 func _size() -> Vector2:
-	return Vector2(2.4, 1.8) if patch_type == "herb_patch" else Vector2(4.0, 1.8)
+	match patch_type:
+		"herb_patch":
+			return Vector2(2.4, 1.8)
+		"grain_field":
+			# Narrow enough to reach the middle from either long side.
+			return Vector2(4.6, 2.0)
+	return Vector2(4.0, 1.8)

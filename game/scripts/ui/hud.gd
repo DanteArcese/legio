@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## Player HUD: hitpoints, combat style and levels, XP drops, and level-up banners.
 
+const LevelColors := preload("res://scripts/ui/level_colors.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
@@ -159,6 +160,8 @@ func _refresh_target(c: RefCounted) -> void:
 	var entity: Node = driver.entity(target.id)
 	var name: String = entity.display_name() if entity else "?"
 	_target_name.text = "%s (level %d)" % [name, target.combat_level()] if not target.monster_id.is_empty() else name
+	var color := LevelColors.color_for(target.combat_level(), c.skills.combat_level()) if not target.monster_id.is_empty() else Color.WHITE
+	_target_name.add_theme_color_override("font_color", color)
 	var afflictions := PackedStringArray()
 	if target.is_bound(driver.sim.tick):
 		afflictions.append("bound")

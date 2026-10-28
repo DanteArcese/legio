@@ -2123,6 +2123,78 @@
     "examine": "Glis roasted with honey and poppy seed. A dish for a senator's table.",
     "heals": 16
   },
+  "silver_lituus": {
+    "name": "Silver lituus",
+    "value": 320,
+    "examine": "An augur's staff capped in worked silver. The Manes answer it more readily.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ritus_attack": 14,
+        "ritus_strength": 2
+      },
+      "attack_speed": 4,
+      "style": "ritus",
+      "range": 6.5,
+      "ammo": "tablet"
+    },
+    "requirements": {
+      "ritus": 30
+    }
+  },
+  "orichalcum_lituus": {
+    "name": "Orichalcum lituus",
+    "value": 900,
+    "examine": "A lituus of red-gold orichalcum. It hums faintly near graves.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ritus_attack": 22,
+        "ritus_strength": 4
+      },
+      "attack_speed": 4,
+      "style": "ritus",
+      "range": 7.0,
+      "ammo": "tablet"
+    },
+    "requirements": {
+      "ritus": 50
+    }
+  },
+  "augurs_robe": {
+    "name": "Augur's robe",
+    "value": 420,
+    "examine": "A white robe bordered in purple, sewn with silver thread. The gods notice it.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "defence": 4,
+        "ritus_attack": 9,
+        "ritus_defence": 12,
+        "ranged_defence": -5
+      }
+    },
+    "requirements": {
+      "ritus": 40
+    }
+  },
+  "augurs_hood": {
+    "name": "Augur's hood",
+    "value": 220,
+    "examine": "A fold of the robe drawn over the head, as an augur does when reading the sky.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "defence": 2,
+        "ritus_attack": 5,
+        "ritus_defence": 6,
+        "ranged_defence": -3
+      }
+    },
+    "requirements": {
+      "ritus": 40
+    }
+  },
   "goat_hide": {
     "name": "Goat hide",
     "value": 8,

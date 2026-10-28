@@ -99,6 +99,8 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Thieving | merchant | 40 | 58,548 |
 | Athletics | training course laps | 1 | 18,096 |
 | Athletics | training course laps | 40 | 20,536 |
+| Athletics | beach run laps | 30 | 37,556 |
+| Athletics | beach run laps | 60 | 61,920 |
 | Hunter | hare burrow (one trap) | 1 | 16,448 |
 | Hunter | hare burrow (one trap) | 30 | 21,248 |
 | Hunter | fox den (one trap) | 15 | 27,792 |

@@ -10,6 +10,10 @@ func run() -> void:
 	await seconds(0.3)
 	var me: RefCounted = driver().sim.get_combatant(PLAYER)
 	var mouth: Node3D = main.get_node("Vipasca/GalleryMouth")
+	# Sturdy from the start: the basilisks at the mouth are aggressive.
+	me.max_hp = 1000
+	me.hp = 1000
+	me.bonuses["defence"] = 5000
 	player().destination = null
 	player().global_position = mouth.global_position + Vector3(0, 1, -2.0)
 	await seconds(1.0)

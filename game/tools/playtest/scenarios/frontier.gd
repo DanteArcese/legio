@@ -38,9 +38,16 @@ func run() -> void:
 	expect(main.get_node("Sound").zone == "frontier", "wind and wolves beyond the Limes (%s)" % main.get_node("Sound").zone)
 	await shot("beyond")
 
+	# Dire wolves and raiders roam the road; don't let one end the walk early.
+	me.max_hp = 500
+	me.hp = 500
+	me.bonuses["defence"] = 5000
+	me.auto_retaliate = false
 	for waypoint in [Vector3(0, 0, -372), Vector3(-14, 0, -400), Vector3(-26, 0, -428)]:
 		await walk_to(waypoint, 0.8, 60.0)
 	var rock: Node3D = main.get_node("Frontier/Gold1")
+	driver().sim.queue_stop(PLAYER)
+	await seconds(0.3)
 	player().mine(rock)
 	await _wait_until(func(): return me.inventory.count("gold_ore") > 0, 90.0)
 	expect(me.inventory.count("gold_ore") > 0, "mined gold by the ridge")
@@ -54,6 +61,7 @@ func run() -> void:
 	var killer: RefCounted = sim.add_combatant(900)
 	killer.bonuses = {"attack": 5000, "strength": 5000, "defence": 0}
 	killer.position = me.position + Vector3(1, 0, 0)
+	me.bonuses["defence"] = 0
 	me.hp = 1
 	sim.queue_attack(900, PLAYER)
 	await _wait_until(func(): return count_events("death", {"id": PLAYER}) > 0, 20.0)

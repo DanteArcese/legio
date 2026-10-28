@@ -857,5 +857,57 @@
         "weight": 1
       }
     ]
+  },
+  "euryale": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          600,
+          1400
+        ]
+      }
+    ],
+    "rolls": 2,
+    "table": [
+      {
+        "item": "gorgon_scale",
+        "quantity": 1,
+        "weight": 6
+      },
+      {
+        "item": "gold_bar",
+        "quantity": 1,
+        "weight": 5
+      },
+      {
+        "item": "pearl",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "steel_bar",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "aegis",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": "gorgoneion",
+        "quantity": 1,
+        "weight": 1
+      },
+      {
+        "item": null,
+        "weight": 5
+      }
+    ]
   }
 }

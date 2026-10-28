@@ -1893,5 +1893,26 @@
     "examine": "A claw chisel and a mallet for working stone.",
     "tool": "chisel",
     "tool_tier": 1
+  },
+  "gorgoneion": {
+    "name": "Gorgoneion",
+    "value": 3000,
+    "examine": "A gorgon's face in gold, snakes and all. Euryale's sisters see one of their own, and look away.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 5,
+        "strength": 7,
+        "defence": 6,
+        "ritus_defence": -2
+      },
+      "wards": [
+        "aegis"
+      ]
+    },
+    "requirements": {
+      "defence": 55,
+      "slayer": 70
+    }
   }
 }

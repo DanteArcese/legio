@@ -82,6 +82,10 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			if slot == null or not ContentDB.item(slot["item"]).has("throwable"):
 				return
 			_throw(player, slot_index, slot["item"], events)
+		"read":
+			if slot == null or not ContentDB.item(slot["item"]).has("teleport"):
+				return
+			_read_tablet(player, slot_index, slot["item"], events)
 		"drink":
 			if slot == null or not ContentDB.item(slot["item"]).has("remedy"):
 				return
@@ -119,6 +123,24 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 ## Throws a firepot (or anything throwable) at the player's target: it
 ## bursts for a little damage and sears the target, stopping any
 ## regeneration (the hydra's) for a while.
+## A return tablet: used up, and you're carried to its place. Not in the
+## arena or mid-race, where leaving has its own rules.
+func _read_tablet(player: Combatant, slot_index: int, item_id: String, events: Array) -> void:
+	if not player.games.is_empty() or not player.race.is_empty():
+		sim.message(player, "Not now. Finish what you've started first.", events)
+		return
+	var teleport: Dictionary = ContentDB.item(item_id)["teleport"]
+	_remove_from_slot(player, slot_index, 1)
+	var at := Vector3(teleport["position"][0], teleport["position"][1], teleport["position"][2])
+	player.target_id = -1
+	player.move_target = null
+	player.skill_action = {}
+	player.position = at
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+	events.append({"type": "teleported", "id": player.id, "position": at, "tick": sim.tick})
+	sim.message(player, "You read the tablet aloud. The world turns, and you're in %s." % teleport["place"], events)
+
+
 func _throw(player: Combatant, slot_index: int, item_id: String, events: Array) -> void:
 	var throwable: Dictionary = ContentDB.item(item_id)["throwable"]
 	var target: Combatant = sim.get_combatant(player.target_id)

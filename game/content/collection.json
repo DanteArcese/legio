@@ -7,7 +7,7 @@
     "seeds": {"name": "Seeds", "category": "Combat", "items": ["mint_seed", "fennel_seed", "bean_seed", "sage_seed", "wormwood_seed", "poppy_seed"]},
     "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna", "raw_eel"]},
     "harvest": {"name": "The harvest", "category": "Skilling", "items": ["mint", "fennel", "sage", "wormwood", "poppy", "cabbage", "broad_beans"]},
-    "hunter": {"name": "Hunter", "category": "Skilling", "items": ["hare_pelt", "fox_pelt"]},
+    "hunter": {"name": "Hunter", "category": "Skilling", "items": ["hare_pelt", "fox_pelt", "dormouse"]},
     "thieving": {"name": "Light fingers", "category": "Skilling", "items": ["bread", "linen", "silver_fibula"]},
     "quests": {"name": "Rewards of service", "category": "Quests", "items": ["parma", "lorica_hamata", "spatha", "diploma", "harpy_arrow"]},
     "frontier": {"name": "Beyond the Limes", "category": "Frontier", "items": ["dire_wolf_pelt", "gold_ore", "framea", "gold_torc", "warchiefs_helm"]},
@@ -17,6 +17,6 @@
     "euryale": {"name": "The gorgon queen", "category": "Combat", "items": ["gorgoneion", "aegis", "gorgon_scale"]},
     "games": {"name": "Bread and circuses", "category": "Combat", "items": ["rudis", "victors_palm"]},
     "pottery": {"name": "The potter's craft", "category": "Skilling", "items": ["clay_pot", "clay_bowl", "amphora", "oil_lamp", "glass_vial", "glass_bowl"]},
-    "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling"]}
+    "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling", "hydra_hatchling", "foal"]}
   }
 }

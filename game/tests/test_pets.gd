@@ -100,3 +100,25 @@ func test_hrodgar_can_leave_a_wolf_cub() -> void:
 		if player.pet == "wolf_cub":
 			break
 	check_eq(player.pet, "wolf_cub", "a wolf cub follows the player")
+
+
+func test_the_hydra_and_athletics_have_pets() -> void:
+	var sim := _make_sim(6)
+	var player: RefCounted = sim.get_combatant(PLAYER)
+	for i in 3000:
+		var hydra := sim.add_monster(500 + i, "hydra", Vector3(1, 0, 0))
+		hydra.last_attacker_id = PLAYER
+		hydra.hp = 0
+		var events: Array[Dictionary] = []
+		sim.kill(hydra, events)
+		sim.remove_combatant(500 + i)
+		if player.pet == "hydra_hatchling":
+			break
+	check_eq(player.pet, "hydra_hatchling", "a Hydra hatchling")
+	var other := _make_sim(7)
+	var runner: RefCounted = other.get_combatant(PLAYER)
+	for i in 40000:
+		other.award_xp(runner, "athletics", 1.0, [])
+		if runner.pet == "foal":
+			break
+	check_eq(runner.pet, "foal", "a foal for an athlete")

@@ -2061,5 +2061,33 @@
       "defence": 55,
       "slayer": 70
     }
+  },
+  "yew_logs": {
+    "name": "Yew logs",
+    "value": 45,
+    "examine": "Dense, springy yew. Bowyers pay well for it."
+  },
+  "yew_longbow": {
+    "name": "Yew longbow",
+    "value": 900,
+    "examine": "A tall bow of a single yew stave. Slow to draw, and it reaches a long way.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 30
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 10.0,
+      "ammo": "arrow",
+      "special": {
+        "name": "volley",
+        "cost": 50,
+        "effect": "volley"
+      }
+    },
+    "requirements": {
+      "ranged": 50
+    }
   }
 }

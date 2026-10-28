@@ -69,7 +69,7 @@ Kept as a core skill and the center of progression.
 | Skill | Roman flavor |
 |---|---|
 | Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying (Parian marble on Seriphos, 45). |
-| Woodcutting | Oak, pine, cedar, olive wood. |
+| Woodcutting | Oak, pine, and yew (*taxus*, beyond the Limes at 60), with cedar and olive wood later. |
 | Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 

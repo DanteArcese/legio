@@ -66,6 +66,13 @@
         "Baa. That's all I've got left: the noise.",
         "Father says the hollow's no place for a girl. It's no place for sheep either, now."
       ]
+    },
+    "baker_sabina": {
+      "name": "Sabina the baker",
+      "examine": "The fort's baker, floured to the elbows. She feeds six hundred men a day.",
+      "idle": [
+        "Mind the stall. Bread doesn't grow on trees, you know. It grows in fields."
+      ]
     }
   },
   "quests": {
@@ -943,6 +950,67 @@
         ],
         "rank": "Optio",
         "title": "Optio legionis"
+      }
+    },
+    "bread_for_the_garrison": {
+      "name": "Bread for the Garrison",
+      "summary": "The fort's baker is short of flour with a cohort to feed. Grind some at the quern by the fields, then bake her a few loaves.",
+      "giver": "baker_sabina",
+      "requirements": {},
+      "start": [
+        "Six hundred soldiers, and the mill cart's stuck in the mud on the Vipasca road. They'll eat their own boots by Saturnalia.",
+        "There's a quern out by the fields, past the south gate. Grind me five pots of flour, would you? The Gaulish merchant sells seed wheat if you'd rather grow your own.",
+        "And then I'll show you what to do with it."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "baker_sabina",
+          "items": [
+            {
+              "item": "flour",
+              "quantity": 5
+            }
+          ],
+          "log": "Grind five pots of flour at the quern by the fields south of the fort (wheat from the grain fields, or from the Gaulish merchant's seed), and bring them to Sabina.",
+          "remind": [
+            "Five pots of flour. The quern's by the fields, south of the fort."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "baker_sabina",
+          "items": [
+            {
+              "item": "bread",
+              "quantity": 3
+            }
+          ],
+          "log": "Bake three loaves of bread from flour on a range or a campfire, and bring them to Sabina.",
+          "remind": [
+            "Flour on the fire, not in it. Three loaves, and don't eat them on the way."
+          ]
+        }
+      ],
+      "complete": [
+        "Not bad. A bit flat. The men won't notice.",
+        "Here: something for your trouble, and some seed for next year. Every soldier should know where his bread comes from."
+      ],
+      "rewards": {
+        "xp": {
+          "cooking": 450,
+          "farming": 300
+        },
+        "items": [
+          {
+            "item": "coins",
+            "quantity": 150
+          },
+          {
+            "item": "wheat_seed",
+            "quantity": 10
+          }
+        ]
       }
     }
   }

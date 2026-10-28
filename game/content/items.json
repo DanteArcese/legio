@@ -2061,5 +2061,55 @@
       "defence": 55,
       "slayer": 70
     }
+  },
+  "rudis": {
+    "name": "Rudis",
+    "value": 800,
+    "examine": "The wooden sword of a gladiator who has won his freedom. Light, balanced, and it still hurts.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 24,
+        "strength": 20,
+        "defence": 2
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "crowd's favour",
+        "cost": 50,
+        "effect": "sure"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "yew_logs": {
+    "name": "Yew logs",
+    "value": 45,
+    "examine": "Dense, springy yew. Bowyers pay well for it."
+  },
+  "yew_longbow": {
+    "name": "Yew longbow",
+    "value": 900,
+    "examine": "A tall bow of a single yew stave. Slow to draw, and it reaches a long way.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 30
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 10.0,
+      "ammo": "arrow",
+      "special": {
+        "name": "volley",
+        "cost": 50,
+        "effect": "volley"
+      }
+    },
+    "requirements": {
+      "ranged": 50
+    }
   }
 }

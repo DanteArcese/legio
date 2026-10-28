@@ -253,6 +253,12 @@ func _on_sim_event(event: Dictionary) -> void:
 		"race_started", "race_lap":
 			if event["id"] == me:
 				play("special")
+		"games_spawn":
+			if event["id"] == me:
+				play("special")
+		"games_wave_cleared":
+			if event["id"] == me:
+				play("task_done")
 		"race_finished":
 			if event["id"] == me:
 				play("task_done")

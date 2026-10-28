@@ -94,6 +94,9 @@ func _refresh() -> void:
 		task_text += "   Arena: %s" % ("hand in to Marcia" if c.arena_contract["remaining"] == 0 else "net %d %s" % [c.arena_contract["remaining"], Slayer.plural_name(beast)])
 	if c.rested_until > driver.sim.tick:
 		task_text += "   Rested (%d min)" % ceili((c.rested_until - driver.sim.tick) * 0.6 / 60.0)
+	if not c.games.is_empty():
+		var waves: int = driver.sim.games.data()["waves"].size()
+		task_text += "   Munera: wave %d / %d%s" % [maxi(c.games["wave"], 1), waves, ", %d left" % c.games["alive"].size() if not c.games["alive"].is_empty() else " (resting)"]
 	if not c.race.is_empty():
 		var laps: int = driver.sim.circus.data()["laps"]
 		var place: int = driver.sim.circus.live_place(c)

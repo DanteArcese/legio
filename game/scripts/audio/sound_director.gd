@@ -248,6 +248,12 @@ func _on_sim_event(event: Dictionary) -> void:
 		"arena_complete":
 			if event["id"] == me:
 				play("coins", player.global_position)
+		"race_started", "race_lap":
+			if event["id"] == me:
+				play("special")
+		"race_finished":
+			if event["id"] == me:
+				play("task_done")
 		"obstacle_started":
 			if event["id"] == me:
 				play("wash", player.global_position)

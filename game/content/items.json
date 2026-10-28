@@ -1814,5 +1814,10 @@
     "value": 6,
     "examine": "A bent iron pick and a tension wire. Not for honest work.",
     "stackable": true
+  },
+  "victors_palm": {
+    "name": "Victor's palm",
+    "value": 50,
+    "examine": "A palm branch, given to the winning charioteer. The crowd's roar is worth more."
   }
 }

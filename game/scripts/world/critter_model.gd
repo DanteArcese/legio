@@ -2,7 +2,7 @@ extends Node3D
 ## Animals built in code to match the KayKit characters' chunky, rounded
 ## style: soft capsule and sphere shapes, big heads, stubby legs, and big
 ## eyes. Kinds come from content "appearance": quadruped (rat, wolf, boar)
-## and bird (strix, sirens, harpies), with optional features (ears, round_ears, long_snout,
+## and bird (strix, sirens, harpies), with optional features (ears, round_ears, horns, long_snout,
 ## tusks, bristles, tail, lizard, many_heads, ear_tufts, woman_face).
 ##
 ## Same API as KaykitCharacter: create(), animate(delta, speed), attack(),
@@ -156,6 +156,10 @@ func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 	if features.has("ears"):
 		for side in [-1, 1]:
 			_part(_head, _cone(0.08, 0.22, main.darkened(0.15)), Vector3(side * 0.14, 0.24, 0.02), Vector3(0, 0, side * -0.2))
+	if features.has("horns"):
+		# A goat's pair of horns, swept back.
+		for side in [-1, 1]:
+			_part(_head, _cone(0.045, 0.26, accent), Vector3(side * 0.09, 0.27, 0.06), Vector3(0.7, 0, side * -0.15))
 	if features.has("round_ears"):
 		for side in [-1, 1]:
 			var ear := _part(_head, _cylinder(0.11, 0.04, main), Vector3(side * 0.18, 0.2, 0.04), Vector3(0, 0, side * 0.5))

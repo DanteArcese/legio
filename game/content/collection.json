@@ -11,7 +11,7 @@
     "thieving": {"name": "Light fingers", "category": "Skilling", "items": ["bread", "linen", "silver_fibula"]},
     "quests": {"name": "Rewards of service", "category": "Quests", "items": ["parma", "lorica_hamata", "spatha", "diploma", "harpy_arrow"]},
     "frontier": {"name": "Beyond the Limes", "category": "Frontier", "items": ["dire_wolf_pelt", "gold_ore", "framea", "gold_torc", "warchiefs_helm"]},
-    "vipasca": {"name": "The silver mines", "category": "Skilling", "items": ["silver_ore", "coal", "silver_bar", "steel_bar"]},
+    "vipasca": {"name": "The silver mines", "category": "Skilling", "items": ["silver_ore", "coal", "silver_bar", "steel_bar", "orichalcum_ore", "orichalcum_bar"]},
     "regulus": {"name": "The basilisk king", "category": "Combat", "items": ["crown_of_regulus", "basilisk_eye", "steel_gladius"]},
     "hydra": {"name": "The Hydra", "category": "Combat", "items": ["hydra_scale_lorica", "gorgon_scale", "pearl"]},
     "pottery": {"name": "The potter's craft", "category": "Skilling", "items": ["clay_pot", "clay_bowl", "amphora", "oil_lamp", "glass_vial", "glass_bowl"]},

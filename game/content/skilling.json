@@ -89,6 +89,16 @@
       "respawn_ticks": 40,
       "color": "#ece8e0",
       "examine": "Parian marble, the whitest in the world, breaking through the turf."
+    },
+    "orichalcum_rock": {
+      "name": "Orichalcum vein",
+      "ore": "orichalcum_ore",
+      "level": 55,
+      "xp": 85,
+      "difficulty": 0.45,
+      "respawn_ticks": 60,
+      "color": "#c9803e",
+      "examine": "A seam of red-gold orichalcum, deep in the pit floor."
     }
   },
   "recipes": {
@@ -173,6 +183,22 @@
         "output": "steel_bar",
         "level": 30,
         "xp": 18
+      },
+      {
+        "id": "orichalcum_bar",
+        "inputs": [
+          {
+            "item": "orichalcum_ore",
+            "quantity": 1
+          },
+          {
+            "item": "coal",
+            "quantity": 4
+          }
+        ],
+        "output": "orichalcum_bar",
+        "level": 50,
+        "xp": 30
       }
     ],
     "smith": [
@@ -604,6 +630,111 @@
         "level": 30,
         "xp": 70,
         "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_pugio",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_pugio",
+        "level": 50,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_axe",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_axe",
+        "level": 51,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_galea",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_galea",
+        "level": 52,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_pickaxe",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "orichalcum_pickaxe",
+        "level": 53,
+        "xp": 100,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_gladius",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "orichalcum_gladius",
+        "level": 54,
+        "xp": 100,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_arrowheads",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_arrowheads",
+        "level": 55,
+        "xp": 50,
+        "tool": "hammer",
+        "quantity": 15
+      },
+      {
+        "id": "orichalcum_scutum",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "orichalcum_scutum",
+        "level": 56,
+        "xp": 100,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_lorica",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "orichalcum_lorica",
+        "level": 58,
+        "xp": 150,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -964,6 +1095,27 @@
         "quantity": 15,
         "level": 30,
         "xp": 75
+      },
+      {
+        "id": "orichalcum_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "feather",
+            "quantity": 15
+          },
+          {
+            "item": "orichalcum_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "orichalcum_arrow",
+        "quantity": 15,
+        "level": 45,
+        "xp": 105
       }
     ],
     "tan": [

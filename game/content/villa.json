@@ -25,6 +25,14 @@
     "waystone": {
       "name": "Road stone",
       "examine": "The villa's gate onto the provincial road network."
+    },
+    "press": {
+      "name": "Press-house floor",
+      "examine": "A flagged floor with a drain and a stone basin, built to take a press."
+    },
+    "office": {
+      "name": "Steward's office",
+      "examine": "A quiet room off the courtyard with a window on the estate."
     }
   },
   "furniture": {
@@ -193,6 +201,82 @@
       ],
       "provides": {
         "travel": "portus_salis"
+      }
+    },
+    "vine_trellis": {
+      "name": "Vine trellis",
+      "hotspot": "garden",
+      "level": 15,
+      "xp": 90,
+      "materials": [
+        {
+          "item": "plank",
+          "quantity": 6
+        },
+        {
+          "item": "bronze_nails",
+          "quantity": 10
+        }
+      ],
+      "provides": {
+        "patch": "vine_trellis"
+      }
+    },
+    "olive_press": {
+      "name": "Olive press",
+      "hotspot": "press",
+      "level": 30,
+      "xp": 320,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 6
+        },
+        {
+          "item": "iron_bar",
+          "quantity": 2
+        }
+      ],
+      "provides": {
+        "station": "olive_press"
+      }
+    },
+    "wine_press": {
+      "name": "Wine press",
+      "hotspot": "press",
+      "level": 38,
+      "xp": 420,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 8
+        },
+        {
+          "item": "iron_bar",
+          "quantity": 3
+        }
+      ],
+      "provides": {
+        "station": "wine_press"
+      }
+    },
+    "steward_desk": {
+      "name": "Steward's desk",
+      "hotspot": "office",
+      "level": 25,
+      "xp": 240,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 4
+        },
+        {
+          "item": "coins",
+          "quantity": 1000
+        }
+      ],
+      "provides": {
+        "steward": true
       }
     }
   }

@@ -103,6 +103,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#129): the villa.** Citizens (Decurio done) buy a villa from the land surveyor in the forum for 5000 denarii. A private road east of the fort leads to the villa grounds (a walled estate far east, past the barrow), closed to anyone without one. Logs are sawn into planks at the sawpit by the smithy (Engineering). Seven hotspots around the courtyard take furniture built from planks, nails, and iron with a hammer, and each piece is the real thing: the hearth holds a campfire (1) or a clay oven (20); the workshop a tanning rack (5) or an anvil (25); the shrine a lararium (10) to pray at; the strongroom a strongbox (30) that opens your bank; two garden beds take herb (1) or vegetable (8) beds that grow like any patch; and the road stone takes a waystone (40) that sends you straight to Portus Salis. Furniture can be removed and rebuilt, and the villa and everything in it are saved.
 
+**Built (#210): the estate.** Two press-house floors on the west lawn take an olive press (Engineering 30) or a wine press (38), working stations where four olives press into an amphora of olive oil (Cooking 25) and five bunches of grapes into estate wine (35). Garden beds can also take a vine trellis (15), planted with vine cuttings from Nikias (Farming 20) and harvested for grapes. A steward's desk in the office (25; 4 oak planks and 1,000 denarii to hire him) puts a freedman steward in charge: he fills an amphora per press every two hours of real time, even with the game closed, and keeps at most a day's worth for you to collect. Oil and wine sell for little in shops, but Mercatura contracts want them: oil for the harbour lamps (Mercatura 20) and wine for the Gauls (30).
+
 ### Support
 
 | Skill | Roman flavor |
@@ -388,7 +390,8 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - Restrictions: you can't use the forum market, and you can't pick up items you didn't earn. In single-player, the restriction that matters is the market. You also can't buy materials from the trade contracts that Mercatura delivers.
 - **Architecture impact:** every item-acquisition path (shops, market, drops, rewards) goes through one place that checks the account mode. Content data marks shop stock that a Solitarius character can't buy.
 - **Built (#176): leaving.** A Solitarius can give the mode up from the pause menu ("Leave the Solitarius path", pressed twice to be sure); it's permanent. The new-character screen says plainly what each path means while there's no market yet.
-- Possible later: a "hardcore" variant with one life, and group modes in the MMO.
+- **Built (#209): Hardcore Solitarius.** A third choice on the new-character screen: a Solitarius with one life. The first death, anywhere, makes it a plain Solitarius for good (with a message), and the HUD shows which one you are. A hardcore character can also leave for the standard path from the pause menu.
+- Possible later: group modes in the MMO.
 
 ## Other decisions
 

@@ -27,6 +27,9 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Mining | gold rock | 40 | 5,395 |
 | Mining | gold rock | 60 | 6,825 |
 | Mining | gold rock | 80 | 7,150 |
+| Mining | marble outcrop | 45 | 7,215 |
+| Mining | marble outcrop | 65 | 8,385 |
+| Mining | marble outcrop | 85 | 8,775 |
 | Woodcutting | tree | 1 | 3,388 |
 | Woodcutting | tree | 30 | 3,652 |
 | Woodcutting | oak | 15 | 18,200 |

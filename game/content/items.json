@@ -1814,5 +1814,84 @@
     "value": 6,
     "examine": "A bent iron pick and a tension wire. Not for honest work.",
     "stackable": true
+  },
+  "victors_palm": {
+    "name": "Victor's palm",
+    "value": 50,
+    "examine": "A palm branch, given to the winning charioteer. The crowd's roar is worth more."
+  },
+  "lorica_segmentata": {
+    "name": "Lorica segmentata",
+    "value": 1400,
+    "examine": "Bands of steel laced over leather: the legion's own armour. It takes a squire to buckle and a legionary to wear.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 2,
+        "defence": 30,
+        "ranged_defence": 6,
+        "ritus_defence": -14
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "phalerae": {
+    "name": "Phalerae",
+    "value": 1600,
+    "examine": "Silver discs won for valour, worn on a harness over the armour.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 6,
+        "strength": 6,
+        "defence": 4
+      }
+    },
+    "requirements": {
+      "defence": 50
+    }
+  },
+  "gorgon_head": {
+    "name": "Gorgon's head",
+    "value": 0,
+    "examine": "Wrapped in a sack, eyes shut. You don't check.",
+    "quest_item": true
+  },
+  "wheat_seed": {
+    "name": "Seed wheat",
+    "value": 1,
+    "examine": "A pouch of emmer wheat for sowing.",
+    "stackable": true
+  },
+  "wheat": {
+    "name": "Wheat",
+    "value": 4,
+    "examine": "A sheaf of ripe emmer wheat."
+  },
+  "flour": {
+    "name": "Flour",
+    "value": 6,
+    "examine": "A pot of coarse stone-ground flour."
+  },
+  "marble_block": {
+    "name": "Marble block",
+    "value": 40,
+    "examine": "A block of Parian marble, white enough to glow."
+  },
+  "tesserae": {
+    "name": "Tesserae",
+    "value": 2,
+    "examine": "Little cubes of cut marble for laying a mosaic.",
+    "stackable": true
+  },
+  "chisel": {
+    "name": "Mason's chisel",
+    "value": 30,
+    "examine": "A claw chisel and a mallet for working stone.",
+    "tool": "chisel",
+    "tool_tier": 1
   }
 }

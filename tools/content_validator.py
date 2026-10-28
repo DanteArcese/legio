@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -24,7 +24,7 @@ CURSES = {"binding", "withering", "silencing", "manes"}
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
 RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft",
-                "press_oil", "press_wine"}
+                "press_oil", "press_wine", "mill", "masonry"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -82,6 +82,7 @@ def validate(content: dict) -> list[str]:
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
+    _check_circus(content.get("circus", {}), items, errors)
     _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
@@ -326,6 +327,36 @@ def _check_arena(arena, items, monsters, shops, errors):
         _check_int(where, "hunter", contract.get("hunter"), 1, errors, 99)
         for key in ("count", "coins", "xp"):
             _check_int(where, key, contract.get(key), 1, errors)
+CIRCUS_KEYS = {"name", "level", "fee", "laps", "speed", "speed_per_level", "countdown_ticks", "time_limit_ticks", "lap_xp",
+               "placing_xp", "prizes", "trophy", "rivals"}
+
+
+def _check_circus(circus, items, errors):
+    _check_keys("circus", circus, CIRCUS_KEYS, CIRCUS_KEYS, errors)
+    _check_type("circus", "name", circus.get("name"), str, errors)
+    _check_int("circus", "level", circus.get("level"), 1, errors, 99)
+    for key in ("fee", "laps", "countdown_ticks", "time_limit_ticks", "lap_xp"):
+        _check_int("circus", key, circus.get(key), 1, errors)
+    _check_number("circus", "speed", circus.get("speed"), 1.0, 30.0, errors)
+    _check_number("circus", "speed_per_level", circus.get("speed_per_level"), 0.0, 0.05, errors)
+    if circus.get("trophy") not in items:
+        errors.append(f"circus.trophy: unknown item {circus.get('trophy')!r}")
+    rivals = circus.get("rivals", [])
+    if not rivals:
+        errors.append("circus.rivals: at least one rival required")
+    for i, rival in enumerate(rivals):
+        where = f"circus.rivals[{i}]"
+        _check_keys(where, rival, {"name", "color", "speed"}, {"name", "color", "speed"}, errors)
+        _check_type(where, "name", rival.get("name"), str, errors)
+        if not (isinstance(rival.get("color"), str) and re.fullmatch(r"#[0-9a-fA-F]{6}", rival["color"])):
+            errors.append(f"{where}.color: expected #rrggbb")
+        _check_number(where, "speed", rival.get("speed"), 1.0, 30.0, errors)
+    for key in ("placing_xp", "prizes"):
+        values = circus.get(key)
+        if not (isinstance(values, list) and len(values) == len(rivals) + 1 and all(isinstance(v, int) and v >= 0 for v in values)):
+            errors.append(f"circus.{key}: expected one non-negative int per place ({len(rivals) + 1})")
+
+
 TASK_FIELDS = {"obtain": {"item"}, "kill": {"monster"}, "quest": {"quest"}, "level": {"skill", "level"}, "visit": {"area"}}
 
 
@@ -825,7 +856,7 @@ def _check_mercatura(mercatura, items, shops, errors):
 
 FURNITURE_KEYS = {"name", "hotspot", "level", "xp", "materials", "provides"}
 PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace", "olive_press", "wine_press"}, "altar": {"heavenly", "underworld"},
-            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}}
+            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}, "comfort": {True}}
 
 
 def _check_villa(villa, items, quests, farming, errors):

@@ -29,6 +29,7 @@ const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Arena := preload("res://scripts/sim/arena.gd")
+const Circus := preload("res://scripts/sim/circus.gd")
 const Tasks := preload("res://scripts/sim/tasks.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
@@ -59,6 +60,7 @@ var pietas := Pietas.new(self)
 var quests := Quests.new(self)
 var thieving := Thieving.new(self)
 var athletics := Athletics.new(self)
+var circus := Circus.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
@@ -277,6 +279,7 @@ func step() -> Array[Dictionary]:
 	quests.process(players, events)
 	thieving.process(events, players)
 	athletics.process(players, events)
+	circus.process(players, events)
 	hunter.process(events)
 	farming.process(events)
 	items.decay_remedies(players)
@@ -287,6 +290,8 @@ func step() -> Array[Dictionary]:
 
 
 func award_xp(combatant: Combatant, skill: String, amount: float, events: Array) -> void:
+	if Villa.is_rested(combatant, tick):
+		amount *= 1.0 + Villa.RESTED_XP_BONUS
 	var new_level: int = combatant.skills.add_xp(skill, amount)
 	events.append({"type": "xp", "id": combatant.id, "skill": skill, "amount": amount, "tick": tick})
 	if combatant.is_player():
@@ -410,6 +415,10 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			arena.capture(player, command.get("target", -1), events)
 		"hand_in_arena":
 			arena.hand_in(player, events)
+		"start_race":
+			circus.start(player, events)
+		"leave_race":
+			circus.leave(player, events)
 		"special":
 			if player.equipment.weapon().get("special", {}).is_empty():
 				message(player, "This weapon has no special attack.", events)
@@ -441,6 +450,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events, command.get("now", 0.0))
 		"remove_furniture":
 			villa.remove(player, command.get("hotspot", ""), events)
+		"rest":
+			villa.rest(player, command.get("hotspot", ""), events)
 		"collect_estate":
 			villa.collect(player, command.get("now", 0.0), events)
 		"take_contract":

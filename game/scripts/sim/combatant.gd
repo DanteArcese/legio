@@ -71,6 +71,8 @@ var skill_action := {}
 ## Athletics: the obstacle being crossed ({} for none: {"id", "until", "falls"}),
 ## the next obstacle in order for a lap, and laps run.
 var obstacle := {}
+## A chariot race under way: {"start", "lap", "sector", "finishes"}, or {}.
+var race := {}
 var course_next := 0
 var laps := 0
 ## Stunned (by a failed pickpocket) until this tick: no attacks, thefts, or walking.
@@ -81,6 +83,8 @@ var thieving_ready_at := -1
 var last_attacker_id := -1
 ## The villa: owned or not, and hotspot id -> furniture id.
 var villa_owned := false
+## Rested on the villa's mosaic: a small XP bonus until this tick.
+var rested_until := -1
 var villa_furniture := {}
 ## Real time (seconds) the villa's steward last settled the books.
 var steward_since := 0.0

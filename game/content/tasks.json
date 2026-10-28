@@ -38,7 +38,7 @@
           "id": "bread",
           "kind": "obtain",
           "item": "bread",
-          "text": "Lift a loaf from the baker's stall."
+          "text": "Get a loaf of bread: lift one from the baker's stall, or bake your own."
         },
         {
           "id": "wolf",
@@ -174,6 +174,12 @@
           "kind": "quest",
           "quest": "the_lost_eagle",
           "text": "Win back the eagle: finish The Lost Eagle."
+        },
+        {
+          "id": "sacramentum",
+          "kind": "quest",
+          "quest": "sacramentum",
+          "text": "Swear the sacramentum to Centurion Varro."
         },
         {
           "id": "hrodgar",

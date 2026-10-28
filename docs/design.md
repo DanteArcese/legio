@@ -68,12 +68,14 @@ Kept as a core skill and the center of progression.
 
 | Skill | Roman flavor |
 |---|---|
-| Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying. |
+| Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying (Parian marble on Seriphos, 45). |
 | Woodcutting | Oak, pine, cedar, olive wood. |
 | Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.
+
+**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10).
 | Hunter | Traps and nets. Live capture for the arena. |
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
@@ -85,7 +87,7 @@ Kept as a core skill and the center of progression.
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
-| Cooking | Bread, garum, roasts, *posca*. Wine making could live here or under Farming. |
+| Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |
@@ -105,6 +107,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#210): the estate.** Two press-house floors on the west lawn take an olive press (Engineering 30) or a wine press (38), working stations where four olives press into an amphora of olive oil (Cooking 25) and five bunches of grapes into estate wine (35). Garden beds can also take a vine trellis (15), planted with vine cuttings from Nikias (Farming 20) and harvested for grapes. A steward's desk in the office (25; 4 oak planks and 1,000 denarii to hire him) puts a freedman steward in charge: he fills an amphora per press every two hours of real time, even with the game closed, and keeps at most a day's worth for you to collect. Oil and wine sell for little in shops, but Mercatura contracts want them: oil for the harbour lamps (Mercatura 20) and wine for the Gauls (30).
 
+**Built (#219): marble and mosaics.** A small quarry in the hills south of Seriphos's town has outcrops of Parian marble (Mining 45). With a mason's chisel (Nikias sells one), a marble block carves into 25 tesserae anywhere (Crafting 40, the inventory's Carve option). The villa courtyard's centre takes a mosaic floor (Engineering 45; 150 tesserae and 2 oak planks), a rosette in a meander border. Resting on it leaves you rested: +5% XP in every skill for 30 minutes of play, shown on the HUD and kept in the save.
+
 ### Support
 
 | Skill | Roman flavor |
@@ -112,6 +116,8 @@ Kept as a core skill and the center of progression.
 | Athletics | Replaces Agility. Obstacle courses, plus chariot-racing laps in the circus. |
 
 **Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
+
+**Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
 **Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.
@@ -291,7 +297,9 @@ Decided: **both.**
 
 The first rank is **Tiro**, given by Optio Gaius by the forum. He hands out a sling, lead, a lituus, and binding tablets; the recruit strikes the training dummy with a blade, a sling, and a curse, clears three granary rats, and reports back for combat XP, a *parma* (round auxiliary shield), the rank, and the quartermaster's iron stores.
 
-The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). The third is **Duplicarius** (#102; needs Miles, Attack 15, and Thieving 5): silver is going missing from the strongroom. Ask the Gaulish merchant in the forum (also a pickpocket mark), kill the latro on the south-west road (the step grants the stolen pay chest), and hand it to the optio. The reward is XP, a *spatha* (cavalry long sword, Attack 20), the rank, and spathae from the quartermaster. The last is **Decurio** (#108; needs Duplicarius, Defence 25, and Slayer 15): a *larva* has woken in the barrow's depths. The sacerdos teaches the rite of the Lemuria and gives nine black beans; with them in your pack (a ward that works when carried, `ward_carried`), you can hurt the Larva, a level-40 boss in the deepest chamber that drops a *larval shroud* (Ritus neck item) now and then. Without the beans your blows pass through it. Reporting back ends the auxilia career: the rank of decurio, honourable discharge, a bronze diploma, and **citizenship**. The HUD shows quest titles (`rewards.title`), ending with *Civis Romanus*. The legions, the capital, and the villa are for citizens and come later.
+The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). The third is **Duplicarius** (#102; needs Miles, Attack 15, and Thieving 5): silver is going missing from the strongroom. Ask the Gaulish merchant in the forum (also a pickpocket mark), kill the latro on the south-west road (the step grants the stolen pay chest), and hand it to the optio. The reward is XP, a *spatha* (cavalry long sword, Attack 20), the rank, and spathae from the quartermaster. The last is **Decurio** (#108; needs Duplicarius, Defence 25, and Slayer 15): a *larva* has woken in the barrow's depths. The sacerdos teaches the rite of the Lemuria and gives nine black beans; with them in your pack (a ward that works when carried, `ward_carried`), you can hurt the Larva, a level-40 boss in the deepest chamber that drops a *larval shroud* (Ritus neck item) now and then. Without the beans your blows pass through it. Reporting back ends the auxilia career: the rank of decurio, honourable discharge, a bronze diploma, and **citizenship**. The HUD shows quest titles (`rewards.title`), ending with *Civis Romanus*. The capital is for citizens and comes later.
+
+**Built (#223): the legion.** A citizen can join the legion through Centurion Varro on the limes. *Sacramentum* (Decurio done; Attack, Strength and Defence 40) has you bring wine and five incense to the sacerdos for the oath's sacrifice, kill eight Germanic raiders, and report in a legionary's kit (a steel scutum and ten steel pila). The reward is XP, a *lorica segmentata* (Defence 40, the best body armour; the quartermaster sells more), the rank of *legionarius*, and the title *Miles legionis*. *Optio* (combat stats and Slayer 60) sends you to Seriphos, where a patrol came back as statues: Melissa points you to the ruins, and three gorgons later you bring Varro a gorgon's head in a sack. The reward is XP, *phalerae* (a neck piece for valour, Defence 50), and the rank of *optio*.
 
 ## IP guardrails
 

@@ -160,7 +160,9 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 		"waystones":
 			return [["Travel to Portus Salis", player.use_waystone.bind(node)]]
 		"games_editors":
-			return [["Fight in the munera (combat %d)" % Games.data()["combat_level"], player.start_games.bind(node)],
+			var best: int = player.get_node("SimEntity").combatant.games_best
+			var record := ", your best: wave %d" % best if best > 0 else ""
+			return [["Fight in the munera (combat %d%s)" % [Games.data()["combat_level"], record], player.start_games.bind(node)],
 				["Examine " + node.get_meta("display_name", "editor"), player.examine.bind(node.get_meta("examine", ""))]]
 		"circus_agents":
 			var rules: Dictionary = Circus.data()

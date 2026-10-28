@@ -82,6 +82,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
 
+**Built (#275): dormice.** Three dormouse nests in Seriphos's olive grove (Hunter 40) catch fat edible dormice. Roasted with honey (Cooking 50), a honeyed dormouse heals 16: the best food yet, and a dish for a senator's table.
+
 ### Artisan
 
 | Skill | Roman flavor |

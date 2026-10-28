@@ -873,6 +873,24 @@
         "xp": 30,
         "burnt": "burnt_food",
         "stop_burning": 40
+      },
+      {
+        "id": "honeyed_dormouse",
+        "inputs": [
+          {
+            "item": "dormouse",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "honeyed_dormouse",
+        "level": 50,
+        "xp": 140,
+        "burnt": "burnt_food",
+        "stop_burning": 80
       }
     ],
     "inscribe": [

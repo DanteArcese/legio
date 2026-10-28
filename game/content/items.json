@@ -2112,6 +2112,17 @@
       "ranged": 50
     }
   },
+  "dormouse": {
+    "name": "Dormouse",
+    "value": 20,
+    "examine": "A plump edible dormouse, fattened on olives. Romans keep them in jars for the table."
+  },
+  "honeyed_dormouse": {
+    "name": "Honeyed dormouse",
+    "value": 60,
+    "examine": "Glis roasted with honey and poppy seed. A dish for a senator's table.",
+    "heals": 16
+  },
   "return_tablet_fort": {
     "name": "Tablet of return (Castra Ferrea)",
     "value": 15,

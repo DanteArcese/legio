@@ -125,6 +125,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#239): shortcuts.** A course of its own with no lap bonus: each shortcut is a single crossing, usable from either side. The first is a ladder over the fort's west wall to the grove (Athletics 10), which saves the walk round the south-west corner.
 
+**Built (#269): the beach run.** A second course along the sand east of Portus Salis's pier (Athletics 30): a drifted mast, an upturned hull, a rope over the inlet, and net racks. It's about twice the training course's XP an hour at its level.
+
 **Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
 
 **Built (#255): the munera.** The editor of the games at the circus's east end sends a fighter of combat 20 or more out onto the sand past the east turning post, for ten waves of beasts and raiders (wolves and boars, latrones, dire wolves, Germanic raiders, and finally a cyclops), with a short rest between each. Every wave cleared pays coins, rising to 400 for the last, and clearing all ten wins a *rudis*, the wooden sword of a freed gladiator, which is a good weapon in its own right (Attack 40). Falling in the arena isn't a death: the attendants carry you out, with no grave and nothing lost but the rest of the games. Running from the sand forfeits. The monsters come from the sim (reserved ids, no respawn and no drops), and the world builds and removes their bodies.
@@ -195,6 +197,8 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 **Tone: eerie folk ritual, not dark fantasy.**
 - Effects are subtle: the target shudders, stumbles, or falters under faint dark motes. There are no beams and no fireballs.
 - Curses invoke the powers the real tablets name: Dis Pater, Proserpina, Hecate, and the Manes. Item descriptions quote real tablet wording, such as "I bind his tongue, his hands, his feet."
+
+**Built (#277): Ritus gear tiers.** Beyond the plain lituus and the ritual robe and hood: a silver lituus (jewelled from two silver bars and an oak log, Crafting 35; Ritus 30), an orichalcum lituus (smithed from two orichalcum bars and an oak log, Smithing 57; Ritus 50), and an augur's robe and hood sewn from linen, silver and thread (Crafting 40; Ritus 40).
 
 ### Curses and Pietas
 
@@ -427,7 +431,7 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - **Start:** an open frontier town with an **optional** tutorial. New players get a guided starter questline that they can skip at any time.
 
 - **Tick length:** 0.6 s, for now. The F3 toggle stays as a debug tool for comparison.
-- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats and the training dummy first.
+- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats, the training dummy, and (#261) the wild goats grazing north-east of the fort: level 3, passive, and soft enough for a combat-2 character, with hides for leather.
 
 ## Open questions
 

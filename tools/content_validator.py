@@ -39,7 +39,7 @@ COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
     "kaykit": set(),
-    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads"},
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads", "horns"},
     "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs", "one_eye", "snakes", "green_skin"},
     "bird": {"ear_tufts", "woman_face"},
 }

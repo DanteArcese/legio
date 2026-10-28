@@ -290,6 +290,8 @@ func step() -> Array[Dictionary]:
 
 
 func award_xp(combatant: Combatant, skill: String, amount: float, events: Array) -> void:
+	if Villa.is_rested(combatant, tick):
+		amount *= 1.0 + Villa.RESTED_XP_BONUS
 	var new_level: int = combatant.skills.add_xp(skill, amount)
 	events.append({"type": "xp", "id": combatant.id, "skill": skill, "amount": amount, "tick": tick})
 	if combatant.is_player():
@@ -448,6 +450,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events, command.get("now", 0.0))
 		"remove_furniture":
 			villa.remove(player, command.get("hotspot", ""), events)
+		"rest":
+			villa.rest(player, command.get("hotspot", ""), events)
 		"collect_estate":
 			villa.collect(player, command.get("now", 0.0), events)
 		"take_contract":

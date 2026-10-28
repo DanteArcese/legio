@@ -175,6 +175,8 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 					options.append(["Build %s (Engineering %d: %s)" % [furniture["name"].to_lower(), furniture["level"], materials],
 						player.build_furniture.bind(node, furniture_id)])
 			else:
+				if ContentDB.furniture(node.furniture)["provides"].has("comfort"):
+					options.append(["Rest on the %s" % ContentDB.furniture(node.furniture)["name"].to_lower(), player.rest_at.bind(node)])
 				options.append(["Remove the %s" % ContentDB.furniture(node.furniture)["name"].to_lower(), player.remove_furniture.bind(node)])
 			options.append(["Examine " + node.display_name().to_lower(), player.examine.bind(node.examine_text())])
 			return options

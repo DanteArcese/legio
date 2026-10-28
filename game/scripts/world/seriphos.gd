@@ -45,6 +45,8 @@ const CAVE := Vector3(-258, 0, 360.5)
 const MARSH := Rect2(-268, 364, 20, 12)
 ## A reed-choked pool below the olive grove where eels can be trapped.
 const EEL_POOL := Rect2(-348, 320, 10, 7)
+## A little marble quarry in the hills south of the town.
+const QUARRY := Rect2(-312, 326, 10, 8)
 ## The broken ruins in the south-west where the gorgons nest.
 const RUINS := Rect2(-350, 342, 30, 26)
 
@@ -94,6 +96,7 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(HOLLOW, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(RUINS, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(MARSH, p)))
+	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(QUARRY, p)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(EEL_POOL, p)))
 	h = lerpf(h, 0.0, flat)
 	# Rocky hills rise inland, to the south.
@@ -117,7 +120,7 @@ func color_at(x: float, z: float, height: float) -> Color:
 		return PAVING
 	if _path_distance(p) < 1.8:
 		return PATH
-	if height > 3.0:
+	if height > 3.0 or QUARRY.has_point(p):
 		return ROCK
 	return GRASS.lerp(GRASS_LIGHT, _noise.get_noise_2d(x * 4.0, z * 4.0) * 0.5 + 0.5)
 

@@ -83,6 +83,8 @@ var thieving_ready_at := -1
 var last_attacker_id := -1
 ## The villa: owned or not, and hotspot id -> furniture id.
 var villa_owned := false
+## Rested on the villa's mosaic: a small XP bonus until this tick.
+var rested_until := -1
 var villa_furniture := {}
 ## Real time (seconds) the villa's steward last settled the books.
 var steward_since := 0.0

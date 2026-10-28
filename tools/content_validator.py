@@ -547,7 +547,11 @@ def _check_shop(where, shop, items, errors):
     _check_keys(where, shop, {"name", "offers", "requires_quest", "buys"}, {"name", "offers"}, errors)
     if "buys" in shop:
         buys = shop["buys"]
-        _check_keys(f"{where}.buys", buys, {"items", "rate"}, {"items", "rate"}, errors)
+        _check_keys(f"{where}.buys", buys, {"items", "rate", "prices"}, {"items", "rate"}, errors)
+        for item_id, rate in buys.get("prices", {}).items():
+            if item_id not in items:
+                errors.append(f"{where}.buys.prices: unknown item {item_id!r}")
+            _check_number(f"{where}.buys.prices", item_id, rate, 0.05, 2.0, errors)
         _check_number(f"{where}.buys", "rate", buys.get("rate"), 0.05, 1.0, errors)
         wanted = buys.get("items")
         if wanted != "*":

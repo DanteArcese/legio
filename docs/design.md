@@ -138,6 +138,8 @@ Mercatura works like a skill rather than a menu over the market:
 
 **Built (#120): trade contracts.** Trade boards at Portus Salis (cargoes wanted inland: garum and salt for the quartermaster, grilled tuna for the Gaulish merchant) and in the fort's forum (cargoes wanted at the coast: iron bars, oak logs, and linen for the fishmonger's shipwrights). Take one contract at a time, source the goods yourself (the fishmonger sells garum cheaply at the coast), and deliver to the named shopkeeper for coins and Mercatura XP. Higher levels unlock bigger contracts. The quest log tracks the current contract. Carts, wagons, ships, regional prices, and risk on the road come later.
 
+**Built (#237): regional prices.** Shops can want particular goods at their own price (`buys.prices`), above their usual rate and even when they don't otherwise trade in them. The Portus fishmonger pays well for olive oil, iron, oak and linen for the ships; the Gaulish merchant pays over the odds for estate wine (1.2× its value) and for garum; Nikias on Seriphos wants iron, steel and silver fibulae; and the procurator at Vipasca buys bread, meat and oil for the miners. Selling the same goods where they're wanted pays noticeably more than selling them anywhere.
+
 ## Replacing magic
 
 OSRS magic does three jobs: a third combat style, teleportation, and utility spells such as alchemy and enchanting. Each needs a replacement.

@@ -282,7 +282,13 @@
     ],
     "buys": {
       "items": "*",
-      "rate": 0.4
+      "rate": 0.4,
+      "prices": {
+        "estate_wine": 1.2,
+        "garum": 1.0,
+        "cooked_tuna": 0.9,
+        "pearl": 0.9
+      }
     }
   },
   "fishmonger": {
@@ -335,7 +341,14 @@
         "cooked_sardine",
         "cooked_tuna"
       ],
-      "rate": 0.6
+      "rate": 0.6,
+      "prices": {
+        "olive_oil": 1.1,
+        "estate_wine": 0.9,
+        "iron_bar": 0.9,
+        "oak_logs": 0.8,
+        "linen": 0.9
+      }
     }
   },
   "procurator": {
@@ -392,7 +405,13 @@
         "steel_bar",
         "tin_ore"
       ],
-      "rate": 0.6
+      "rate": 0.6,
+      "prices": {
+        "bread": 1.0,
+        "cooked_meat": 1.0,
+        "olive_oil": 0.9,
+        "cooked_mackerel": 0.9
+      }
     }
   },
   "greek_merchant": {
@@ -443,7 +462,13 @@
     ],
     "buys": {
       "items": "*",
-      "rate": 0.45
+      "rate": 0.45,
+      "prices": {
+        "iron_bar": 0.9,
+        "steel_bar": 0.9,
+        "silver_fibula": 1.0,
+        "bread": 0.9
+      }
     }
   },
   "lanista": {

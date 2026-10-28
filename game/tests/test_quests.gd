@@ -606,3 +606,25 @@ func test_the_smiths_apprentice_and_gifts_for_the_gods() -> void:
 	check(Quests.is_done(player, "gifts_for_the_gods"), "gifts given")
 	check(player.skills.xp["pietas"] >= 450.0, "Pietas xp")
 	check_eq(player.inventory.count("incense"), 10, "incense to offer")
+
+
+func test_the_mountain_copper() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("procurator", Vector3(1, 0, 0))
+	sim.quests.add_npc("foreman_masculus", Vector3(-1, 0, 0))
+	player.quests["the_silent_gallery"] = {"step": 0, "progress": 0, "done": true}
+	player.skills.xp["mining"] = player.skills.xp_for_level(55)
+	player.skills.xp["smithing"] = player.skills.xp_for_level(50)
+	var talk := func(npc: String) -> void:
+		sim.queue_item_action(PLAYER, "talk", {"npc": npc})
+		_run(sim, 1)
+	talk.call("procurator")
+	check_eq(Quests.status(player, "the_mountain_copper"), "in_progress", "started")
+	sim.give_item(PLAYER, "orichalcum_ore", 3, "test", [])
+	talk.call("foreman_masculus")
+	check_eq(player.quests["the_mountain_copper"]["step"], 1, "Masculus is satisfied")
+	sim.give_item(PLAYER, "orichalcum_bar", 1, "test", [])
+	talk.call("procurator")
+	check(Quests.is_done(player, "the_mountain_copper"), "done")
+	check_eq(player.inventory.count("orichalcum_pickaxe"), 1, "an orichalcum pickaxe")

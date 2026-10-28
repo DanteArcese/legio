@@ -28,6 +28,7 @@ func _init() -> void:
 	_gather("Woodcutting", "woodcutting", "tree", [1, 30], "bronze_axe", func(sim): sim.skilling.add_tree(1, "tree", NEAR), "chop", {"tree": 1}, ["logs"])
 	_gather("Woodcutting", "woodcutting", "oak", [15, 40, 70], "iron_axe", func(sim): sim.skilling.add_tree(1, "oak_tree", NEAR), "chop", {"tree": 1}, ["oak_logs"])
 	_gather("Woodcutting", "woodcutting", "pine", [30, 60, 90], "iron_axe", func(sim): sim.skilling.add_tree(1, "pine_tree", NEAR), "chop", {"tree": 1}, ["pine_logs"])
+	_gather("Woodcutting", "woodcutting", "yew", [60, 80, 99], "steel_axe", func(sim): sim.skilling.add_tree(1, "yew_tree", NEAR), "chop", {"tree": 1}, ["yew_logs"])
 	_gather("Fishing", "fishing", "net spot", [1, 20, 40], "small_net", func(sim): sim.skilling.add_fishing_spot(1, "net_spot", NEAR), "fish", {"spot": 1}, ["raw_sardine", "raw_anchovy"])
 	_gather("Fishing", "fishing", "rod spot (mackerel)", [20, 40, 70], "fishing_rod", func(sim): sim.skilling.add_fishing_spot(1, "rod_spot", NEAR), "fish", {"spot": 1}, ["raw_mackerel"])
 	_gather("Fishing", "fishing", "harpoon spot (tuna)", [40, 60, 90], "harpoon", func(sim): sim.skilling.add_fishing_spot(1, "harpoon_spot", NEAR), "fish", {"spot": 1}, ["raw_tuna"])
@@ -58,6 +59,7 @@ func _init() -> void:
 	_athletics("beach_course", "beach run laps", [30, 60])
 	_hunter("hare burrow", [1, 30], "hare_burrow")
 	_hunter("fox den", [15, 45], "fox_den")
+	_hunter("dormouse nest", [40, 70], "dormouse_nest")
 	_melee([1, 30, 60])
 	print(_table())
 	quit()
@@ -146,7 +148,7 @@ func _hunter(method: String, levels: Array, spot: String) -> void:
 		sim.hunter.add_spot(1, spot, NEAR)
 		sim.give_item(PLAYER, "box_trap", 1, "test", [])
 		var xp := _hour(sim, "hunter", func(player: RefCounted):
-			for item_id in ["raw_meat", "hare_pelt", "fox_pelt"]:
+			for item_id in ["raw_meat", "hare_pelt", "fox_pelt", "dormouse"]:
 				player.inventory.remove(item_id, player.inventory.count(item_id))
 			var trap: Dictionary = sim.hunter.spots[1]["trap"]
 			if trap.is_empty() or trap["state"] == "caught":

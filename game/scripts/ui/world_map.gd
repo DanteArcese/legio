@@ -5,6 +5,8 @@ extends CanvasLayer
 ## map_name and map_rect (an XZ Rect2) metadata, and optionally map_color,
 ## so new ones add themselves.
 
+const Quests := preload("res://scripts/sim/quests.gd")
+const QUEST_MARK := Color(0.85, 0.6, 0.05)
 const PANEL_SIZE := Vector2(900, 620)
 const MARGIN := 40.0
 const PARCHMENT := Color(0.86, 0.8, 0.66)
@@ -114,9 +116,17 @@ func _draw_map() -> void:
 		var at := to_map * (rect.position + Vector2(rect.size.x / 2.0, 0)) + Vector2(0, -6)
 		var width := font.get_string_size(region["name"], HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
 		_canvas.draw_string(font, at - Vector2(width / 2.0, 0), region["name"], HORIZONTAL_ALIGNMENT_LEFT, -1, 16, INK)
+	# Quest markers, as over the NPCs' heads: ! to start, ? to hand in.
+	var combatant: RefCounted = player.get_node("SimEntity").combatant if player and player.has_node("SimEntity") else null
+	if combatant:
+		for npc in get_tree().get_nodes_in_group("quest_npcs"):
+			var marker := Quests.marker_for(combatant, npc.get_meta("npc_id"))
+			if not marker.is_empty():
+				var at := to_map * Vector2(npc.global_position.x, npc.global_position.z)
+				_canvas.draw_string(font, at + Vector2(-4, 6), marker, HORIZONTAL_ALIGNMENT_LEFT, -1, 22, QUEST_MARK)
 	if player:
 		var here := to_map * Vector2(player.global_position.x, player.global_position.z)
 		var pulse := 5.0 + sin(Time.get_ticks_msec() / 150.0) * 1.5
 		_canvas.draw_circle(here, pulse + 2.0, Color.WHITE)
 		_canvas.draw_circle(here, pulse, PLAYER_MARK)
-	_canvas.draw_string(font, Vector2(14, PANEL_SIZE.y - 12), "World map  (M)    You are in: %s" % region_at(player.global_position) if player else "World map", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, INK)
+	_canvas.draw_string(font, Vector2(14, PANEL_SIZE.y - 12), "World map  (M)    You are in: %s    ! a quest to start   ? a quest to hand in" % region_at(player.global_position) if player else "World map", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, INK)

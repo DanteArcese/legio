@@ -735,6 +735,23 @@
         "level": 58,
         "xp": 150,
         "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_lituus",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_lituus",
+        "level": 57,
+        "xp": 100,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -873,6 +890,24 @@
         "xp": 30,
         "burnt": "burnt_food",
         "stop_burning": 40
+      },
+      {
+        "id": "honeyed_dormouse",
+        "inputs": [
+          {
+            "item": "dormouse",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "honeyed_dormouse",
+        "level": 50,
+        "xp": 140,
+        "burnt": "burnt_food",
+        "stop_burning": 80
       }
     ],
     "inscribe": [
@@ -1116,6 +1151,23 @@
         "quantity": 15,
         "level": 45,
         "xp": 105
+      },
+      {
+        "id": "yew_longbow",
+        "inputs": [
+          {
+            "item": "yew_logs",
+            "quantity": 1
+          },
+          {
+            "item": "bowstring",
+            "quantity": 1
+          }
+        ],
+        "output": "yew_longbow",
+        "level": 60,
+        "xp": 120,
+        "tool": "knife"
       }
     ],
     "tan": [
@@ -1273,6 +1325,48 @@
         "xp": 80,
         "tool": "needle",
         "requires_unlock": "venators_helm"
+      },
+      {
+        "id": "augurs_robe",
+        "inputs": [
+          {
+            "item": "linen",
+            "quantity": 5
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 3
+          }
+        ],
+        "output": "augurs_robe",
+        "level": 40,
+        "xp": 160,
+        "tool": "needle"
+      },
+      {
+        "id": "augurs_hood",
+        "inputs": [
+          {
+            "item": "linen",
+            "quantity": 3
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 2
+          }
+        ],
+        "output": "augurs_hood",
+        "level": 40,
+        "xp": 110,
+        "tool": "needle"
       }
     ],
     "garum": [
@@ -1444,6 +1538,23 @@
         "output": "gold_bulla",
         "level": 45,
         "xp": 80,
+        "tool": "jeweller"
+      },
+      {
+        "id": "silver_lituus",
+        "inputs": [
+          {
+            "item": "silver_bar",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "silver_lituus",
+        "level": 35,
+        "xp": 110,
         "tool": "jeweller"
       }
     ],
@@ -1681,6 +1792,17 @@
       "respawn_ticks": 40,
       "model": "tree_pineTallA",
       "examine": "A tall pine, heavy with resin."
+    },
+    "yew_tree": {
+      "name": "Yew",
+      "log": "yew_logs",
+      "level": 60,
+      "xp": 175,
+      "difficulty": 0.25,
+      "fell_chance": 0.1,
+      "respawn_ticks": 80,
+      "model": "tree_fat",
+      "examine": "An ancient yew, dark and slow-growing. Taxus: the bowyer's wood, and the tree of the dead."
     }
   },
   "fishing_spots": {

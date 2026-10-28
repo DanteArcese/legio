@@ -453,6 +453,8 @@ func _inventory_options(index: int) -> Array:
 		options.append(["Drink", _act.bind("drink", {"slot": index})])
 	if item.has("throwable"):
 		options.append(["Throw at your target", _act.bind("throw", {"slot": index})])
+	if item.has("teleport"):
+		options.append(["Read (to %s)" % item["teleport"]["place"], _act.bind("read", {"slot": index})])
 	if item.has("pet"):
 		options.append(["Let out", _act.bind("release_pet", {"slot": index})])
 	for kind in Skilling.HANDHELD_KINDS:

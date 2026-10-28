@@ -2200,6 +2200,34 @@
     "value": 8,
     "examine": "A shaggy goat hide. The tanning rack will make leather of it."
   },
+  "return_tablet_fort": {
+    "name": "Tablet of return (Castra Ferrea)",
+    "value": 15,
+    "examine": "A lead tablet asking the Lares of Castra Ferrea to bring you home. Read it and they will.",
+    "stackable": true,
+    "teleport": {
+      "place": "Castra Ferrea",
+      "position": [
+        2,
+        0,
+        3
+      ]
+    }
+  },
+  "return_tablet_portus": {
+    "name": "Tablet of return (Portus Salis)",
+    "value": 20,
+    "examine": "A lead tablet addressed to the harbour's Lares, sealed with a little salt.",
+    "stackable": true,
+    "teleport": {
+      "place": "Portus Salis",
+      "position": [
+        -300,
+        0,
+        -8
+      ]
+    }
+  },
   "hydra_hatchling": {
     "name": "Hydra hatchling",
     "value": 0,

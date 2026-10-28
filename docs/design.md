@@ -103,6 +103,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#129): the villa.** Citizens (Decurio done) buy a villa from the land surveyor in the forum for 5000 denarii. A private road east of the fort leads to the villa grounds (a walled estate far east, past the barrow), closed to anyone without one. Logs are sawn into planks at the sawpit by the smithy (Engineering). Seven hotspots around the courtyard take furniture built from planks, nails, and iron with a hammer, and each piece is the real thing: the hearth holds a campfire (1) or a clay oven (20); the workshop a tanning rack (5) or an anvil (25); the shrine a lararium (10) to pray at; the strongroom a strongbox (30) that opens your bank; two garden beds take herb (1) or vegetable (8) beds that grow like any patch; and the road stone takes a waystone (40) that sends you straight to Portus Salis. Furniture can be removed and rebuilt, and the villa and everything in it are saved.
 
+**Built (#210): the estate.** Two press-house floors on the west lawn take an olive press (Engineering 30) or a wine press (38), working stations where four olives press into an amphora of olive oil (Cooking 25) and five bunches of grapes into estate wine (35). Garden beds can also take a vine trellis (15), planted with vine cuttings from Nikias (Farming 20) and harvested for grapes. A steward's desk in the office (25; 4 oak planks and 1,000 denarii to hire him) puts a freedman steward in charge: he fills an amphora per press every two hours of real time, even with the game closed, and keeps at most a day's worth for you to collect. Oil and wine sell for little in shops, but Mercatura contracts want them: oil for the harbour lamps (Mercatura 20) and wine for the Gauls (30).
+
 ### Support
 
 | Skill | Roman flavor |
@@ -110,9 +112,13 @@ Kept as a core skill and the center of progression.
 | Athletics | Replaces Agility. Obstacle courses, plus chariot-racing laps in the circus. |
 
 **Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
+
+**Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
 **Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.
+
+**Built (#218): strongboxes.** Three strongboxes to crack with a lockpick (smithed five to an iron bar at Smithing 16, or bought from the Portus fishmonger, who asks no questions): a shipping agent's box in Portus Salis (Thieving 30), the Vipasca pay chest by the procurator (42), and Nikias's coffer on Seriphos (55). Working a lock takes a few ticks; a sprung needle trap hurts (never fatally) and snaps the pick half the time, and a cracked box pays out coins, silver, gold or pearls from its own table and stays empty for a while.
 | Mercatura | Trade contracts between provinces. See [Mercatura](#mercatura). A later addition, not part of the first vertical slice. |
 
 ### Mercatura

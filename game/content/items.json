@@ -1788,6 +1788,38 @@
       "slayer": 70
     }
   },
+  "vine_cutting": {
+    "name": "Vine cutting",
+    "value": 8,
+    "examine": "A rooted cane from a Greek vine. Plant it on a trellis."
+  },
+  "grapes": {
+    "name": "Grapes",
+    "value": 5,
+    "examine": "A heavy bunch of dark grapes, dusty with bloom.",
+    "heals": 3
+  },
+  "olive_oil": {
+    "name": "Olive oil",
+    "value": 35,
+    "examine": "A small amphora of green-gold oil, fresh from your own press."
+  },
+  "estate_wine": {
+    "name": "Estate wine",
+    "value": 48,
+    "examine": "An amphora of your villa's own red, sealed with pitch and stamped with your name."
+  },
+  "lockpick": {
+    "name": "Lockpick",
+    "value": 6,
+    "examine": "A bent iron pick and a tension wire. Not for honest work.",
+    "stackable": true
+  },
+  "victors_palm": {
+    "name": "Victor's palm",
+    "value": 50,
+    "examine": "A palm branch, given to the winning charioteer. The crowd's roar is worth more."
+  },
   "lorica_segmentata": {
     "name": "Lorica segmentata",
     "value": 1400,

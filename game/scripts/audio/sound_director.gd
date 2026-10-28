@@ -48,6 +48,8 @@ const SOUNDS := {
 	"click": ["click_001", "click_002"],
 	"throw": ["impactSoft_medium_000", "impactSoft_medium_001"],
 	"kiln": ["metalPot1", "metalPot2"],
+	"press_oil": ["impactWood_light_000", "impactWood_light_001"],
+	"press_wine": ["impactWood_light_000", "impactWood_light_001"],
 	"jewelcraft": ["metalClick"],
 	"fire": ["impactGlass_light_000", "impactGlass_light_001", "impactGlass_light_002"],
 	"special": ["impactBell_heavy_000"],
@@ -246,6 +248,12 @@ func _on_sim_event(event: Dictionary) -> void:
 		"arena_complete":
 			if event["id"] == me:
 				play("coins", player.global_position)
+		"race_started", "race_lap":
+			if event["id"] == me:
+				play("special")
+		"race_finished":
+			if event["id"] == me:
+				play("task_done")
 		"obstacle_started":
 			if event["id"] == me:
 				play("wash", player.global_position)

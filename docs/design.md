@@ -115,6 +115,8 @@ Kept as a core skill and the center of progression.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
 **Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.
+
+**Built (#218): strongboxes.** Three strongboxes to crack with a lockpick (smithed five to an iron bar at Smithing 16, or bought from the Portus fishmonger, who asks no questions): a shipping agent's box in Portus Salis (Thieving 30), the Vipasca pay chest by the procurator (42), and Nikias's coffer on Seriphos (55). Working a lock takes a few ticks; a sprung needle trap hurts (never fatally) and snaps the pick half the time, and a cracked box pays out coins, silver, gold or pearls from its own table and stays empty for a while.
 | Mercatura | Trade contracts between provinces. See [Mercatura](#mercatura). A later addition, not part of the first vertical slice. |
 
 ### Mercatura

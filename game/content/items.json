@@ -1808,5 +1808,11 @@
     "name": "Estate wine",
     "value": 48,
     "examine": "An amphora of your villa's own red, sealed with pitch and stamped with your name."
+  },
+  "lockpick": {
+    "name": "Lockpick",
+    "value": 6,
+    "examine": "A bent iron pick and a tension wire. Not for honest work.",
+    "stackable": true
   }
 }

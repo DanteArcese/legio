@@ -47,6 +47,7 @@
 [ext_resource type="Script" path="res://scripts/world/deep_gallery.gd" id="44_deep_gallery"]
 [ext_resource type="Script" path="res://scripts/world/seriphos.gd" id="45_seriphos"]
 [ext_resource type="Script" path="res://scripts/ui/hints.gd" id="46_hints"]
+[ext_resource type="Script" path="res://scripts/world/strongbox_node.gd" id="48_strongbox"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1871,3 +1872,18 @@ shape = SubResource("GreekHouse_shape")
 script = ExtResource("46_hints")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
+
+[node name="WarehouseStrongbox" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -290.5, 0, -6.5)
+script = ExtResource("48_strongbox")
+box_type = "warehouse_strongbox"
+
+[node name="PayChest" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, 363.5)
+script = ExtResource("48_strongbox")
+box_type = "procurators_strongbox"
+
+[node name="NikiasStrongbox" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -288.5, 0, 285.5)
+script = ExtResource("48_strongbox")
+box_type = "merchants_strongbox"

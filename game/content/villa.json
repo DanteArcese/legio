@@ -37,6 +37,10 @@
     "atrium": {
       "name": "Courtyard floor",
       "examine": "Bare paving in the middle of the courtyard. It deserves better."
+    },
+    "orchard": {
+      "name": "Orchard plot",
+      "examine": "A sunny plot by the west wall, good for trees."
     }
   },
   "furniture": {
@@ -300,6 +304,25 @@
       ],
       "provides": {
         "comfort": true
+      }
+    },
+    "olive_grove_bed": {
+      "name": "Olive grove",
+      "hotspot": "orchard",
+      "level": 20,
+      "xp": 150,
+      "materials": [
+        {
+          "item": "plank",
+          "quantity": 4
+        },
+        {
+          "item": "bronze_nails",
+          "quantity": 10
+        }
+      ],
+      "provides": {
+        "patch": "olive_grove"
       }
     }
   }

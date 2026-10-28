@@ -32,7 +32,7 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest", "requires_unlock"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable", "teleport"}
 MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
@@ -135,6 +135,13 @@ def _check_item(where, item_id, item, items, errors):
         damage = throwable.get("damage")
         if not (isinstance(damage, list) and len(damage) == 2 and all(_is_int(d) and d >= 0 for d in damage) and damage[0] <= damage[1]):
             errors.append(f"{where}.throwable.damage: expected [min, max]")
+    if "teleport" in item:
+        teleport = item["teleport"]
+        _check_keys(f"{where}.teleport", teleport, {"place", "position"}, {"place", "position"}, errors)
+        _check_type(f"{where}.teleport", "place", teleport.get("place"), str, errors)
+        position = teleport.get("position")
+        if not (isinstance(position, list) and len(position) == 3 and all(isinstance(v, (int, float)) for v in position)):
+            errors.append(f"{where}.teleport.position: expected [x, y, z]")
     if "pet" in item:
         look = item["pet"]
         _check_keys(f"{where}.pet", look, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)

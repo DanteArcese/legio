@@ -221,6 +221,8 @@ Without teleports, travel becomes a progression system:
 - **Horses and carts** for overland travel, and **ships** for sea routes between provinces.
 - Rare consumables, such as a blessed token from a temple, return you to a shrine.
 
+**Built (#281): return tablets.** Single-use lead tablets that ask a town's Lares to bring you home: Castra Ferrea's from the sacerdos (5 for 30 denarii), Portus Salis's from the fishmonger (5 for 40). Read one from the inventory to be carried to the town's forum or harbour at once. They don't work in the munera or mid-race.
+
 ### Utility
 
 - Selling items: sell to merchants, or use the forum market.

@@ -30,6 +30,9 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Mining | orichalcum vein | 55 | 7,310 |
 | Mining | orichalcum vein | 75 | 7,905 |
 | Mining | orichalcum vein | 95 | 8,075 |
+| Mining | marble outcrop | 45 | 7,215 |
+| Mining | marble outcrop | 65 | 8,385 |
+| Mining | marble outcrop | 85 | 8,775 |
 | Woodcutting | tree | 1 | 3,388 |
 | Woodcutting | tree | 30 | 3,652 |
 | Woodcutting | oak | 15 | 18,200 |

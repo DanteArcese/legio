@@ -24,6 +24,7 @@ func _init() -> void:
 	_gather("Mining", "mining", "coal rock", [30, 50, 70], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "coal_rock", NEAR), "mine", {"rock": 1}, ["coal"])
 	_gather("Mining", "mining", "gold rock", [40, 60, 80], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "gold_rock", NEAR), "mine", {"rock": 1}, ["gold_ore"])
 	_gather("Mining", "mining", "orichalcum vein", [55, 75, 95], "orichalcum_pickaxe", func(sim): sim.skilling.add_rock(1, "orichalcum_rock", NEAR), "mine", {"rock": 1}, ["orichalcum_ore"])
+	_gather("Mining", "mining", "marble outcrop", [45, 65, 85], "steel_pickaxe", func(sim): sim.skilling.add_rock(1, "marble_rock", NEAR), "mine", {"rock": 1}, ["marble_block"])
 	_gather("Woodcutting", "woodcutting", "tree", [1, 30], "bronze_axe", func(sim): sim.skilling.add_tree(1, "tree", NEAR), "chop", {"tree": 1}, ["logs"])
 	_gather("Woodcutting", "woodcutting", "oak", [15, 40, 70], "iron_axe", func(sim): sim.skilling.add_tree(1, "oak_tree", NEAR), "chop", {"tree": 1}, ["oak_logs"])
 	_gather("Woodcutting", "woodcutting", "pine", [30, 60, 90], "iron_axe", func(sim): sim.skilling.add_tree(1, "pine_tree", NEAR), "chop", {"tree": 1}, ["pine_logs"])

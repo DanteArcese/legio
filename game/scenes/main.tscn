@@ -1904,6 +1904,27 @@ script = ExtResource("46_hints")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 
+[node name="Hotspot_atrium" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 320, 0, 4)
+script = ExtResource("39_hotspot")
+hotspot_id = "atrium"
+hotspot_type = "atrium"
+
+[node name="Marble1" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -309, 0, 329)
+script = ExtResource("10_rock")
+rock_type = "marble_rock"
+
+[node name="Marble2" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -305, 0, 331.5)
+script = ExtResource("10_rock")
+rock_type = "marble_rock"
+
+[node name="Marble3" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -308, 0, 333)
+script = ExtResource("10_rock")
+rock_type = "marble_rock"
+
 [node name="RoadToCircus" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.5, 0, 21)
 script = ExtResource("15_transition")

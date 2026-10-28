@@ -80,6 +80,16 @@
       "color": "#8c8478",
       "examine": "Soft grey clay at the water's edge. Dig some out with a pickaxe."
     },
+    "marble_rock": {
+      "name": "Marble outcrop",
+      "ore": "marble_block",
+      "level": 45,
+      "xp": 65,
+      "difficulty": 0.35,
+      "respawn_ticks": 40,
+      "color": "#ece8e0",
+      "examine": "Parian marble, the whitest in the world, breaking through the turf."
+    },
     "orichalcum_rock": {
       "name": "Orichalcum vein",
       "ore": "orichalcum_ore",
@@ -1619,6 +1629,22 @@
         "output": "flour",
         "level": 8,
         "xp": 12
+      }
+    ],
+    "masonry": [
+      {
+        "id": "tesserae",
+        "inputs": [
+          {
+            "item": "marble_block",
+            "quantity": 1
+          }
+        ],
+        "output": "tesserae",
+        "quantity": 25,
+        "level": 40,
+        "xp": 55,
+        "tool": "chisel"
       }
     ]
   },

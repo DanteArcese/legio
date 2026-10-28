@@ -91,6 +91,8 @@ func _refresh() -> void:
 	if not c.arena_contract.is_empty():
 		var beast: String = ContentDB.data()["arena"]["contracts"][c.arena_contract["id"]]["monster"]
 		task_text += "   Arena: %s" % ("hand in to Marcia" if c.arena_contract["remaining"] == 0 else "net %d %s" % [c.arena_contract["remaining"], Slayer.plural_name(beast)])
+	if c.rested_until > driver.sim.tick:
+		task_text += "   Rested (%d min)" % ceili((c.rested_until - driver.sim.tick) * 0.6 / 60.0)
 	if not c.race.is_empty():
 		var laps: int = driver.sim.circus.data()["laps"]
 		var place: int = driver.sim.circus.live_place(c)

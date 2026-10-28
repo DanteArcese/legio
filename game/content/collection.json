@@ -17,6 +17,6 @@
     "euryale": {"name": "The gorgon queen", "category": "Combat", "items": ["gorgoneion", "aegis", "gorgon_scale"]},
     "games": {"name": "Bread and circuses", "category": "Combat", "items": ["rudis", "victors_palm"]},
     "pottery": {"name": "The potter's craft", "category": "Skilling", "items": ["clay_pot", "clay_bowl", "amphora", "oil_lamp", "glass_vial", "glass_bowl"]},
-    "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling"]}
+    "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling", "hydra_hatchling", "foal"]}
   }
 }

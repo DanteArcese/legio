@@ -21,6 +21,9 @@ var _equipment_buttons := {}
 var _bonus_label: Label
 var _bank_panel: PanelContainer
 var _bank_grid: GridContainer
+var _bank_search: LineEdit
+var _bank_sort: Button
+var _bank_sorted := false
 var _menu: PopupMenu
 var _message: Label
 var _menu_actions: Array[Callable] = []
@@ -30,6 +33,8 @@ var _blessing_buttons := {}
 
 
 func _ready() -> void:
+	# Above the HUD, minimap and tips, which would otherwise cover the panels.
+	layer = 2
 	_build_inventory()
 	_build_bank()
 	_build_blessings()
@@ -127,6 +132,7 @@ func toggle_inventory() -> void:
 
 
 func open_bank() -> void:
+	_bank_search.text = ""
 	_bank_panel.visible = true
 	_inventory_panel.visible = true
 	_refresh()
@@ -249,8 +255,24 @@ func _build_bank() -> void:
 	var column := VBoxContainer.new()
 	_bank_panel.add_child(column)
 	column.add_child(_heading("Bank  (B / Esc to close)"))
+	var tools := HBoxContainer.new()
+	column.add_child(tools)
+	_bank_search = LineEdit.new()
+	_bank_search.placeholder_text = "Search..."
+	_bank_search.clear_button_enabled = true
+	_bank_search.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_bank_search.text_changed.connect(func(_text): _refresh_bank_now())
+	tools.add_child(_bank_search)
+	_bank_sort = Button.new()
+	_bank_sort.text = "Sort: as deposited"
+	_bank_sort.pressed.connect(func():
+		_bank_sorted = not _bank_sorted
+		_bank_sort.text = "Sort: by name" if _bank_sorted else "Sort: as deposited"
+		_refresh_bank_now())
+	tools.add_child(_bank_sort)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(4 * (SLOT_SIZE.x + 4) + 16, 420)
+	# Short enough to end above the HUD at the bottom of the screen.
+	scroll.custom_minimum_size = Vector2(4 * (SLOT_SIZE.x + 4) + 16, 340)
 	column.add_child(scroll)
 	_bank_grid = GridContainer.new()
 	_bank_grid.columns = 4
@@ -310,15 +332,29 @@ func _refresh() -> void:
 		_refresh_bank(c)
 
 
+## The bank's slots to show: those whose item name contains the search
+## text (any case), in deposit order or by name.
+static func bank_view(slots: Array, search: String, by_name: bool) -> Array:
+	var needle := search.strip_edges().to_lower()
+	var shown := slots.filter(func(slot): return slot != null and (needle.is_empty() or needle in String(ContentDB.item(slot["item"])["name"]).to_lower()))
+	if by_name:
+		shown.sort_custom(func(a, b): return ContentDB.item(a["item"])["name"] < ContentDB.item(b["item"])["name"])
+	return shown
+
+
+func _refresh_bank_now() -> void:
+	var combatant: RefCounted = player.get_node("SimEntity").combatant
+	if combatant:
+		_refresh_bank(combatant)
+
+
 func _refresh_bank(c: RefCounted) -> void:
 	var focused := get_viewport().gui_get_focus_owner()
 	var focus_index := focused.get_index() if focused and focused.get_parent() == _bank_grid else -1
 	for child in _bank_grid.get_children():
 		_bank_grid.remove_child(child)
 		child.queue_free()
-	for slot in c.bank.slots:
-		if slot == null:
-			continue
+	for slot in bank_view(c.bank.slots, _bank_search.text, _bank_sorted):
 		var button := _slot_button()
 		button.text = _slot_text(slot)
 		button.pressed.connect(_act.bind("withdraw", {"item": slot["item"], "quantity": 1}))

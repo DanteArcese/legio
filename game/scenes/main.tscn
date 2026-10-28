@@ -858,6 +858,31 @@ requires_villa = true
 
 [node name="Smithy" type="Node3D" parent="."]
 
+[node name="SmithTertius" type="StaticBody3D" parent="Smithy" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4, 1, -7.4)
+collision_layer = 8
+metadata/npc_id = "smith_tertius"
+metadata/display_name = "Tertius the smith"
+metadata/examine = "The fort's smith: arms like hams, eyebrows singed off years ago."
+
+[node name="Mesh" type="MeshInstance3D" parent="Smithy/SmithTertius"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Smithy/SmithTertius"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Smithy/SmithTertius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Barbarian"
+hide_meshes = Array[String](["Barbarian_Hat"])
+
+[node name="Label" type="Label3D" parent="Smithy/SmithTertius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Tertius the smith"
+font_size = 32
+outline_size = 8
+
 [node name="Furnace" type="StaticBody3D" parent="Smithy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -9.2)
 script = ExtResource("11_station")

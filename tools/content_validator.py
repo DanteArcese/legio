@@ -703,7 +703,7 @@ def _check_thieving(thieving, items, errors):
 
 
 OBSTACLE_KEYS = {"name", "verb", "kind", "level", "xp", "ticks", "fail_chance", "damage"}
-OBSTACLE_KINDS = {"log", "wall", "rope", "hurdles"}
+OBSTACLE_KINDS = {"log", "wall", "rope", "hurdles", "climb"}
 
 
 def _check_athletics(athletics, errors):

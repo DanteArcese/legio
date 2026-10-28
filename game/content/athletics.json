@@ -57,6 +57,25 @@
           ]
         }
       ]
+    },
+    "shortcuts": {
+      "name": "Shortcuts",
+      "lap_xp": 0,
+      "obstacles": [
+        {
+          "name": "West wall",
+          "verb": "Climb over",
+          "kind": "climb",
+          "level": 10,
+          "xp": 8,
+          "ticks": 4,
+          "fail_chance": 0.15,
+          "damage": [
+            1,
+            2
+          ]
+        }
+      ]
     }
   }
 }

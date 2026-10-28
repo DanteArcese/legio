@@ -33,6 +33,10 @@
     "office": {
       "name": "Steward's office",
       "examine": "A quiet room off the courtyard with a window on the estate."
+    },
+    "atrium": {
+      "name": "Courtyard floor",
+      "examine": "Bare paving in the middle of the courtyard. It deserves better."
     }
   },
   "furniture": {
@@ -277,6 +281,25 @@
       ],
       "provides": {
         "steward": true
+      }
+    },
+    "mosaic_floor": {
+      "name": "Mosaic floor",
+      "hotspot": "atrium",
+      "level": 45,
+      "xp": 520,
+      "materials": [
+        {
+          "item": "tesserae",
+          "quantity": 150
+        },
+        {
+          "item": "oak_plank",
+          "quantity": 2
+        }
+      ],
+      "provides": {
+        "comfort": true
       }
     }
   }

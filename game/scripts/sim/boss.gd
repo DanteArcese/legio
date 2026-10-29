@@ -3,6 +3,11 @@ extends RefCounted
 ## every few attacks the boss throws at where its target stands instead of
 ## striking, marking the spot; the throw lands a few ticks later on anyone
 ## still inside. Below a fraction of its health it enrages and attacks faster.
+##
+## Bosses with "stances" fight in turns: a few attacks of one kind (melee,
+## ranged or Ritus, at its own reach), then the next stance, announced by its
+## tell right after the last attack of the old one, so the player has an
+## attack's time to switch protection.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
@@ -25,6 +30,8 @@ var _next_strike_id := 1
 var _attacks := {}
 var _enraged := {}
 var _regen_warned := {}
+## boss id -> {"index", "left", "reach"}: its stance and attacks left in it.
+var _stances := {}
 
 
 func _init(p_sim: RefCounted) -> void:
@@ -41,6 +48,9 @@ func try_throw(boss: Combatant, target: Combatant, events: Array[Dictionary]) ->
 	var spec := data(boss.monster_id)
 	if spec.is_empty():
 		return false
+	if spec.has("stances") and not _stances.has(boss.id):
+		_stances[boss.id] = {"index": 0, "left": 0, "reach": boss.reach}
+		_enter_stance(boss, target, events)
 	_attacks[boss.id] = _attacks.get(boss.id, 0) + 1
 	if _attacks[boss.id] % int(spec["throw_every"]) != 0:
 		return false
@@ -57,6 +67,45 @@ func try_throw(boss: Combatant, target: Combatant, events: Array[Dictionary]) ->
 	return true
 
 
+## After a boss's (non-throw) attack: counts down its stance, and moves it to
+## the next once spent, telling its foe.
+func after_attack(boss: Combatant, target: Combatant, events: Array[Dictionary]) -> void:
+	if not _stances.has(boss.id):
+		return
+	var state: Dictionary = _stances[boss.id]
+	state["left"] -= 1
+	if state["left"] <= 0:
+		state["index"] = (state["index"] + 1) % data(boss.monster_id)["stances"].size()
+		_enter_stance(boss, target, events)
+
+
+## The stance a boss is in now, or {} for none.
+func stance(boss: Combatant) -> Dictionary:
+	if not _stances.has(boss.id):
+		return {}
+	return data(boss.monster_id)["stances"][_stances[boss.id]["index"]]
+
+
+func _enter_stance(boss: Combatant, target: Combatant, events: Array[Dictionary]) -> void:
+	var state: Dictionary = _stances[boss.id]
+	var spec: Dictionary = data(boss.monster_id)["stances"][state["index"]]
+	state["left"] = int(spec["attacks"])
+	boss.attack_kind = spec["kind"]
+	boss.reach = float(spec.get("reach", state["reach"]))
+	events.append({"type": "boss_stance", "id": boss.id, "kind": spec["kind"], "tick": sim.tick})
+	if target and target.is_player():
+		sim.message(target, spec["tell"].replace("{name}", ContentDB.monster(boss.monster_id)["name"]), events)
+
+
+## Back to the first stance and the boss's own reach and kind of blow.
+func _reset_stance(boss: Combatant) -> void:
+	if not _stances.has(boss.id):
+		return
+	boss.reach = _stances[boss.id]["reach"]
+	boss.attack_kind = ContentDB.monster(boss.monster_id).get("attack_kind", "melee")
+	_stances.erase(boss.id)
+
+
 ## Lands throws that are due, and enrages bosses that are low on health.
 func process(events: Array[Dictionary]) -> void:
 	var tick: int = sim.tick
@@ -69,6 +118,9 @@ func process(events: Array[Dictionary]) -> void:
 		var spec := data(combatant.monster_id)
 		if spec.is_empty():
 			continue
+		# Out of the fight and healed (or respawned): start again from the top.
+		if combatant.target_id == -1 and combatant.hp == combatant.max_hp:
+			_reset_stance(combatant)
 		var base: int = ContentDB.monster(combatant.monster_id)["attack_speed"]
 		var low: bool = combatant.is_alive() and combatant.hp < combatant.max_hp * float(spec["enrage_below"])
 		if low and not _enraged.get(combatant.id, false):

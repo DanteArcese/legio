@@ -310,7 +310,7 @@ func _shoot(event: Dictionary) -> void:
 		return
 	var weapon: Dictionary = attacker.combatant.equipment.weapon() if attacker.combatant.equipment else {}
 	var up := Vector3(0, 0.4, 0)
-	Projectile.spawn(get_parent(), attacker.body().global_position + up, target.body().global_position + up, weapon.get("ammo", "arrow"))
+	Projectile.spawn(get_parent(), attacker.body().global_position + up, target.body().global_position + up, event.get("ammo", weapon.get("ammo", "arrow")))
 
 
 func _unhandled_input(event: InputEvent) -> void:

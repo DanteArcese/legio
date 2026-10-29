@@ -2265,5 +2265,11 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "pepper": {
+    "name": "Pepper",
+    "value": 60,
+    "stackable": true,
+    "examine": "Black pepper from India. A pound of it would buy a slave, if anyone still asked."
   }
 }

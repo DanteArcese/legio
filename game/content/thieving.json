@@ -38,6 +38,32 @@
       "caught_chance": 0.35,
       "model": "stall-red",
       "examine": "Brooches and rings, under the silversmith's eye."
+    },
+    "spice_stall": {
+      "name": "Spice stall",
+      "level": 60,
+      "xp": 120,
+      "loot": {
+        "item": "pepper",
+        "quantity": 1
+      },
+      "restock_ticks": 20,
+      "caught_chance": 0.4,
+      "model": "stall-green",
+      "examine": "Pepper from India, by the spoonful. It costs more than the silver it's weighed against."
+    },
+    "jewellers_stall": {
+      "name": "Jeweller's stall",
+      "level": 75,
+      "xp": 190,
+      "loot": {
+        "item": "pearl",
+        "quantity": 1
+      },
+      "restock_ticks": 28,
+      "caught_chance": 0.45,
+      "model": "stall-red",
+      "examine": "Pearls from the Red Sea and gold from Dacia, under the jeweller's nose."
     }
   },
   "marks": {
@@ -70,6 +96,36 @@
         3
       ],
       "examine": "A Gaulish merchant with rings on every finger."
+    },
+    "gambler": {
+      "name": "Gambler",
+      "level": 60,
+      "xp": 95,
+      "coins": [
+        30,
+        90
+      ],
+      "stun_ticks": 6,
+      "damage": [
+        3,
+        6
+      ],
+      "examine": "A dice player from the Subura's taverns, flush tonight. It won't last."
+    },
+    "senator": {
+      "name": "Senator",
+      "level": 75,
+      "xp": 160,
+      "coins": [
+        80,
+        200
+      ],
+      "stun_ticks": 7,
+      "damage": [
+        4,
+        8
+      ],
+      "examine": "A senator on his way to the curia, with a slave carrying his purse. The purse is the easy part."
     }
   },
   "strongboxes": {
@@ -114,6 +170,34 @@
       "relock_ticks": 150,
       "drop_table": "merchants_strongbox",
       "examine": "Nikias's own coffer, with a lock from Corinth and a needle in it."
+    },
+    "insula_strongbox": {
+      "name": "Insula strongbox",
+      "level": 65,
+      "xp": 260,
+      "crack_ticks": 6,
+      "trap_chance": 0.45,
+      "damage": [
+        5,
+        10
+      ],
+      "relock_ticks": 150,
+      "drop_table": "insula_strongbox",
+      "examine": "The landlord's rent box, at the foot of the stairs. Five storeys of tenants have paid into it."
+    },
+    "senators_strongbox": {
+      "name": "Senator's strongbox",
+      "level": 85,
+      "xp": 420,
+      "crack_ticks": 7,
+      "trap_chance": 0.5,
+      "damage": [
+        6,
+        12
+      ],
+      "relock_ticks": 200,
+      "drop_table": "senators_strongbox",
+      "examine": "A senator's arca, bronze over oak, chained to the atrium floor. There's a dog painted on the threshold: cave canem."
     }
   }
 }

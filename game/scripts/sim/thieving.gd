@@ -95,8 +95,7 @@ func steal(player: Combatant, stall_id: int, events: Array) -> void:
 	if sim.rng.randf() < caught_chance(level, data):
 		sim.message(player, "\"Thief!\" The stallholder grabs your wrist.", events)
 		events.append({"type": "caught", "id": player.id, "tick": sim.tick})
-		if Pietas.in_town(player.position):
-			sim.pietas.town_watch(player, events, "A vigil hauls you off the stall: \"Hands to yourself, or it's a fine next time.\"", "theft")
+		_law(player, events, "A vigil hauls you off the stall: \"Hands to yourself, or it's a fine next time.\"")
 		return
 	var loot: Dictionary = data["loot"]
 	sim.give_item(player.id, loot["item"], loot["quantity"], "thieving", events)
@@ -132,6 +131,8 @@ func pickpocket(player: Combatant, mark_id: int, events: Array) -> void:
 	events.append({"type": "hit", "attacker": -1, "target": player.id, "damage": damage, "ranged": false, "kind": "melee", "tick": sim.tick})
 	events.append({"type": "stunned", "id": player.id, "until": player.stunned_until, "tick": sim.tick})
 	sim.message(player, "The %s catches your hand and cuffs you. You're stunned!" % data["name"].to_lower(), events)
+	if Pietas.in_rome(player.position):
+		_law(player, events, "")
 
 
 ## Starts working the lock; the attempt resolves after the box's crack_ticks.
@@ -201,3 +202,13 @@ func _finish_crack(player: Combatant, box_id: int, events: Array) -> void:
 
 func _ready(player: Combatant) -> bool:
 	return sim.tick >= player.thieving_ready_at and not is_stunned(player, sim.tick)
+
+
+## Caught in a town: the vigiles in Castra Ferrea, the urban cohorts in Rome.
+## Anywhere else nobody comes.
+func _law(player: Combatant, events: Array, warning: String) -> void:
+	if Pietas.in_town(player.position):
+		sim.pietas.town_watch(player, events, warning, "theft")
+	elif Pietas.in_rome(player.position):
+		sim.pietas.town_watch(player, events, "A soldier of the urban cohorts drags you into the street: \"Thieves get one warning in Rome. Then the fine, then the quarries.\"",
+			"theft", "urban cohorts", Pietas.ROME_FINE)

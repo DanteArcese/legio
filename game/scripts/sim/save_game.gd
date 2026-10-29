@@ -45,6 +45,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
 		"games_best": player.games_best,
+		"loadouts": player.loadouts,
 		"trade_contract": player.trade_contract.duplicate(),
 		"arena": {"contract": player.arena_contract.duplicate(), "done": player.arena_contracts_done},
 		"villa": {"owned": player.villa_owned, "furniture": player.villa_furniture.duplicate(), "steward_since": player.steward_since,
@@ -107,6 +108,9 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 		player.arena_contract["remaining"] = int(player.arena_contract["remaining"])
 	player.arena_contracts_done = int(arena.get("done", 0))
 	player.games_best = int(data.get("games_best", 0))
+	var loadouts: Array = data.get("loadouts", [])
+	for i in mini(loadouts.size(), player.LOADOUT_COUNT):
+		player.loadouts[i] = loadouts[i] if loadouts[i] is Dictionary else {}
 	var villa: Dictionary = data.get("villa", {})
 	player.villa_owned = bool(villa.get("owned", false))
 	player.villa_furniture = villa.get("furniture", {}).duplicate()

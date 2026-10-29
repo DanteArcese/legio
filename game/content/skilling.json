@@ -99,6 +99,16 @@
       "respawn_ticks": 60,
       "color": "#c9803e",
       "examine": "A seam of red-gold orichalcum, deep in the pit floor."
+    },
+    "meteoric_rock": {
+      "name": "Meteoric iron",
+      "ore": "meteoric_ore",
+      "level": 70,
+      "xp": 140,
+      "difficulty": 0.55,
+      "respawn_ticks": 90,
+      "color": "#3a3a40",
+      "examine": "A black lump of star-iron in the crater's floor, still faintly warm."
     }
   },
   "recipes": {
@@ -199,6 +209,22 @@
         "output": "orichalcum_bar",
         "level": 50,
         "xp": 30
+      },
+      {
+        "id": "meteoric_bar",
+        "inputs": [
+          {
+            "item": "meteoric_ore",
+            "quantity": 1
+          },
+          {
+            "item": "coal",
+            "quantity": 6
+          }
+        ],
+        "output": "meteoric_bar",
+        "level": 70,
+        "xp": 50
       }
     ],
     "smith": [
@@ -752,6 +778,111 @@
         "level": 57,
         "xp": 100,
         "tool": "hammer"
+      },
+      {
+        "id": "meteoric_pugio",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "meteoric_pugio",
+        "level": 72,
+        "xp": 90,
+        "tool": "hammer"
+      },
+      {
+        "id": "meteoric_axe",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "meteoric_axe",
+        "level": 73,
+        "xp": 90,
+        "tool": "hammer"
+      },
+      {
+        "id": "meteoric_galea",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "meteoric_galea",
+        "level": 75,
+        "xp": 95,
+        "tool": "hammer"
+      },
+      {
+        "id": "meteoric_pickaxe",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "meteoric_pickaxe",
+        "level": 76,
+        "xp": 95,
+        "tool": "hammer"
+      },
+      {
+        "id": "meteoric_gladius",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "meteoric_gladius",
+        "level": 80,
+        "xp": 190,
+        "tool": "hammer"
+      },
+      {
+        "id": "meteoric_arrowheads",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "meteoric_arrowheads",
+        "level": 82,
+        "xp": 95,
+        "tool": "hammer",
+        "quantity": 15
+      },
+      {
+        "id": "meteoric_scutum",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "meteoric_scutum",
+        "level": 84,
+        "xp": 200,
+        "tool": "hammer"
+      },
+      {
+        "id": "meteoric_lorica",
+        "inputs": [
+          {
+            "item": "meteoric_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "meteoric_lorica",
+        "level": 88,
+        "xp": 300,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -1168,6 +1299,27 @@
         "level": 60,
         "xp": 120,
         "tool": "knife"
+      },
+      {
+        "id": "meteoric_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "feather",
+            "quantity": 15
+          },
+          {
+            "item": "meteoric_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "meteoric_arrow",
+        "quantity": 15,
+        "level": 70,
+        "xp": 160
       }
     ],
     "tan": [

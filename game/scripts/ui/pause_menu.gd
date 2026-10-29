@@ -1,13 +1,15 @@
 extends CanvasLayer
 ## Esc / Start: pauses the game and offers Resume, the graphics preset,
 ## Hide roofs, volume sliders, leaving the Solitarius path (for those on
-## it), and Quit. Fully controller-navigable
+## it), leaving a note (F8), and Quit. Fully controller-navigable
 ## (left and right adjust a focused slider).
 
 @export var settings: Node
 @export var game_ui: Node
 @export var sound: Node
 @export var skills_ui: Node
+## The F8 note box, also opened from here for controller players.
+@export var feedback: Node
 
 const ControlsText := preload("res://scripts/input/controls_text.gd")
 
@@ -62,6 +64,10 @@ func _ready() -> void:
 			column.add_child(_volume_row(bus))
 	_leave_button = _button("", _leave_solitarius)
 	column.add_child(_leave_button)
+	if feedback:
+		column.add_child(_button("Leave a note (F8)", func():
+			close()
+			feedback.open()))
 	column.add_child(_button("Controls", show_controls))
 	column.add_child(_button("Quit", func(): get_tree().quit()))
 	_panel.visible = false

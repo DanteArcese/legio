@@ -77,7 +77,7 @@ Kept as a core skill and the center of progression.
 
 **Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10). *Bread for the Garrison* (#231), a starter quest from Sabina the baker beside her forum stall, walks a new player through it: five pots of flour, then three loaves, for Cooking and Farming XP, coins and seed wheat.
 
-**Built (#249): more starter quests.** *The Smith's Apprentice*, from Tertius the smith by the anvil, walks a new player through Mining and Smithing: five copper and five tin, two bronze bars, then a bronze gladius (Smithing 5). The reward is XP, the gladius back, and a bronze scutum. *Gifts for the Gods*, from the sacerdos, asks for five bones and a wolf pelt, and teaches offering: Pietas XP and ten incense to offer at the altar.
+**Built (#249): more starter quests.** *The Smith's Apprentice*, from Tertius the smith by the anvil, walks a new player through Mining and Smithing: five copper and five tin, two bronze bars, then a bronze pugio. The reward is XP, a bronze gladius, and a bronze scutum. *Gifts for the Gods*, from the sacerdos, asks for five bones and a goat hide (goats always drop both), and teaches offering: Pietas XP and ten incense to offer at the altar. After the first-hour pass (#289), the smith's last step is a pugio (level 1) rather than a gladius (Smithing 5, which hid about twenty bars of practice); the reward still includes a gladius.
 | Hunter | Traps and nets. Live capture for the arena. |
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
@@ -433,7 +433,7 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - **Start:** an open frontier town with an **optional** tutorial. New players get a guided starter questline that they can skip at any time.
 
 - **Tick length:** 0.6 s, for now. The F3 toggle stays as a debug tool for comparison.
-- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats, the training dummy, and (#261) the wild goats grazing north-east of the fort: level 3, passive, and soft enough for a combat-2 character, with hides for leather.
+- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. Aulus doesn't send anyone after wolves below combat 6 or boars below 9 (#289). New players train on rats, the training dummy, and (#261) the wild goats grazing north-east of the fort: level 3, passive, and soft enough for a combat-2 character, with hides for leather.
 
 ## Open questions
 

@@ -1068,19 +1068,19 @@
           "npc": "smith_tertius",
           "items": [
             {
-              "item": "bronze_gladius",
+              "item": "bronze_pugio",
               "quantity": 1
             }
           ],
-          "log": "Forge a bronze gladius at the anvil (Smithing 5) and bring it to Tertius.",
+          "log": "Forge a bronze pugio at the anvil (a bar, with your hammer) and bring it to Tertius.",
           "remind": [
-            "A gladius. Hammer, anvil, bronze. Smithing 5, so practise on daggers if you must."
+            "A pugio. Hammer, anvil, one bar of bronze. Every legionary's first blade, and every smith's."
           ]
         }
       ],
       "complete": [
         "Not bad. It'll hold an edge, and that's all a blade has to do.",
-        "Keep the gladius, and take this scutum I had lying about. A smith's apprentice shouldn't go out naked."
+        "Here: a gladius I finished this morning, and a scutum I had lying about. You'll make your own at Smithing 5. A smith's apprentice shouldn't go out naked."
       ],
       "rewards": {
         "xp": {
@@ -1105,12 +1105,12 @@
     },
     "gifts_for_the_gods": {
       "name": "Gifts for the Gods",
-      "summary": "The sacerdos wants offerings for the Capitoline altar: bones from the beasts you've slain, and a wolf's pelt.",
+      "summary": "The sacerdos wants offerings for the Capitoline altar: bones from the beasts you've slain, and a goat's hide.",
       "giver": "sacerdos",
       "requirements": {},
       "start": [
         "The gods watch every fight, child. It's only polite to thank them for the ones you win.",
-        "Bring me five bones from what you've killed, and the pelt of a wolf from the woods. I'll show you what to do with them.",
+        "Bring me five bones from what you've killed, and the hide of one of the wild goats north-east of the fort. I'll show you what to do with them.",
         "And after that, you can offer them yourself, at any altar. The gods aren't fussy, only greedy."
       ],
       "steps": [
@@ -1123,13 +1123,13 @@
               "quantity": 5
             },
             {
-              "item": "wolf_pelt",
+              "item": "goat_hide",
               "quantity": 1
             }
           ],
-          "log": "Bring the sacerdos five bones (rats, wolves and boars drop them) and a wolf pelt from the woods.",
+          "log": "Bring the sacerdos five bones (rats and goats drop them) and a goat hide from the pasture north-east of the fort.",
           "remind": [
-            "Five bones and a wolf pelt. The rats in the granary are a good start; the wolves are a good finish."
+            "Five bones and a goat hide. The goats graze north-east of the fort, and they won't fight back much."
           ]
         }
       ],

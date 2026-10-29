@@ -27,6 +27,12 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Mining | gold rock | 40 | 5,395 |
 | Mining | gold rock | 60 | 6,825 |
 | Mining | gold rock | 80 | 7,150 |
+| Mining | orichalcum vein | 55 | 7,310 |
+| Mining | orichalcum vein | 75 | 7,905 |
+| Mining | orichalcum vein | 95 | 8,075 |
+| Mining | marble outcrop | 45 | 7,215 |
+| Mining | marble outcrop | 65 | 8,385 |
+| Mining | marble outcrop | 85 | 8,775 |
 | Woodcutting | tree | 1 | 3,388 |
 | Woodcutting | tree | 30 | 3,652 |
 | Woodcutting | oak | 15 | 18,200 |
@@ -35,6 +41,9 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Woodcutting | pine | 30 | 17,516 |
 | Woodcutting | pine | 60 | 34,916 |
 | Woodcutting | pine | 90 | 41,354 |
+| Woodcutting | yew | 60 | 58,800 |
+| Woodcutting | yew | 80 | 73,325 |
+| Woodcutting | yew | 99 | 107,975 |
 | Fishing | net spot | 1 | 17,496 |
 | Fishing | net spot | 20 | 24,908 |
 | Fishing | net spot | 40 | 29,152 |
@@ -44,16 +53,25 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Fishing | harpoon spot (tuna) | 40 | 34,160 |
 | Fishing | harpoon spot (tuna) | 60 | 59,120 |
 | Fishing | harpoon spot (tuna) | 90 | 91,280 |
+| Fishing | eel pool | 30 | 28,500 |
+| Fishing | eel pool | 50 | 45,420 |
+| Fishing | eel pool | 80 | 68,460 |
 | Cooking | sardines (range) | 1 | 53,040 |
 | Cooking | sardines (range) | 34 | 56,920 |
 | Cooking | tuna (range) | 35 | 88,800 |
 | Cooking | tuna (range) | 65 | 142,300 |
+| Cooking | olive oil (villa press) | 25 | 54,000 |
+| Cooking | olive oil (villa press) | 50 | 54,000 |
+| Cooking | estate wine (villa press) | 35 | 80,010 |
+| Cooking | estate wine (villa press) | 60 | 80,010 |
 | Smithing | bronze pugio | 1 | 17,076 |
 | Smithing | bronze pugio | 10 | 17,076 |
 | Smithing | iron gladius | 19 | 67,350 |
 | Smithing | iron gladius | 40 | 67,350 |
 | Smithing | steel gladius | 34 | 102,372 |
 | Smithing | steel gladius | 60 | 102,372 |
+| Smithing | orichalcum gladius | 54 | 134,700 |
+| Smithing | orichalcum gladius | 80 | 134,700 |
 | Engineering | oak planks (sawpit) | 20 | 25,614 |
 | Engineering | oak planks (sawpit) | 40 | 25,614 |
 | Fletching | arrow shafts | 1 | 8,538 |
@@ -84,10 +102,14 @@ godot --headless --path game --script res://tools/balance/xp_report.gd
 | Thieving | merchant | 40 | 58,548 |
 | Athletics | training course laps | 1 | 18,096 |
 | Athletics | training course laps | 40 | 20,536 |
+| Athletics | beach run laps | 30 | 37,556 |
+| Athletics | beach run laps | 60 | 61,920 |
 | Hunter | hare burrow (one trap) | 1 | 16,448 |
 | Hunter | hare burrow (one trap) | 30 | 21,248 |
 | Hunter | fox den (one trap) | 15 | 27,792 |
 | Hunter | fox den (one trap) | 45 | 42,552 |
+| Hunter | dormouse nest (one trap) | 40 | 34,800 |
+| Hunter | dormouse nest (one trap) | 70 | 69,360 |
 | Attack (accurate) | training dummy, bronze gladius | 1 | 4,772 |
 | Attack (accurate) | training dummy, iron gladius | 30 | 18,308 |
 | Attack (accurate) | training dummy, spatha | 60 | 32,080 |

@@ -4,12 +4,13 @@ extends Node
 ## steps follow their movement, every button clicks, and ambient loops
 ## crossfade by area and time of day.
 ##
-## Volumes live on three buses (Master, Effects, Ambient) and are saved to
+## Volumes live on four buses (Master, Effects, Ambient, and Music, which
+## music_director.gd plays on) and are saved to
 ## user://settings.cfg alongside the graphics settings.
 
 const SETTINGS_PATH := "user://settings.cfg"
-const BUSES := ["Master", "Effects", "Ambient"]
-const DEFAULT_VOLUMES := {"Master": 0.8, "Effects": 0.8, "Ambient": 0.6}
+const BUSES := ["Master", "Effects", "Ambient", "Music"]
+const DEFAULT_VOLUMES := {"Master": 0.8, "Effects": 0.8, "Ambient": 0.6, "Music": 0.5}
 const KENNEY := "res://assets/kenney/audio/%s.ogg"
 const SYNTH := "res://assets/audio/synth/%s.wav"
 ## Each sound name maps to variants; one is picked at random per play.
@@ -48,7 +49,11 @@ const SOUNDS := {
 	"click": ["click_001", "click_002"],
 	"throw": ["impactSoft_medium_000", "impactSoft_medium_001"],
 	"kiln": ["metalPot1", "metalPot2"],
+	"mill": ["impactSoft_medium_000", "impactSoft_medium_001"],
+	"press_oil": ["impactWood_light_000", "impactWood_light_001"],
+	"press_wine": ["impactWood_light_000", "impactWood_light_001"],
 	"jewelcraft": ["metalClick"],
+	"masonry": ["metalClick"],
 	"fire": ["impactGlass_light_000", "impactGlass_light_001", "impactGlass_light_002"],
 	"special": ["impactBell_heavy_000"],
 	"net": ["cloth1", "cloth2"],
@@ -246,6 +251,18 @@ func _on_sim_event(event: Dictionary) -> void:
 		"arena_complete":
 			if event["id"] == me:
 				play("coins", player.global_position)
+		"race_started", "race_lap":
+			if event["id"] == me:
+				play("special")
+		"games_spawn":
+			if event["id"] == me:
+				play("special")
+		"games_wave_cleared":
+			if event["id"] == me:
+				play("task_done")
+		"race_finished":
+			if event["id"] == me:
+				play("task_done")
 		"obstacle_started":
 			if event["id"] == me:
 				play("wash", player.global_position)
@@ -350,8 +367,12 @@ func _click() -> void:
 	play("click")
 
 
+## Slings and javelins whirl rather than twang.
 func _is_sling(combatant: RefCounted) -> bool:
-	return combatant.equipment != null and "sling" in String(combatant.equipment.worn.get("weapon", ""))
+	if combatant.equipment == null:
+		return false
+	var weapon := String(combatant.equipment.worn.get("weapon", ""))
+	return "sling" in weapon or weapon == "amentum"
 
 
 func _stream(variant: String) -> AudioStream:

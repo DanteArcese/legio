@@ -15,6 +15,14 @@
           ]
         },
         {
+          "monster": "goat",
+          "weight": 6,
+          "amount": [
+            10,
+            20
+          ]
+        },
+        {
           "monster": "wolf",
           "weight": 8,
           "amount": [
@@ -229,6 +237,16 @@
           ],
           "slayer_level": 75,
           "combat_level": 90
+        },
+        {
+          "monster": "euryale",
+          "weight": 1,
+          "amount": [
+            3,
+            6
+          ],
+          "slayer_level": 70,
+          "combat_level": 95
         }
       ]
     }

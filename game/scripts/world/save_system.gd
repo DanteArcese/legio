@@ -1,12 +1,16 @@
 extends Node
 ## Loads the player's save on start, autosaves on a timer and on quit, and
-## asks a new player to choose an account mode.
+## asks a new player to choose an account mode. Saves are written to a temp
+## file and swapped in, keeping the previous one as a backup; a save that
+## won't load falls back to the backup, and is set aside rather than
+## overwritten if neither will.
 
 const SaveGame := preload("res://scripts/sim/save_game.gd")
 
 const MODES := [
 	["standard", "Citizen-to-be", "The usual path. You'll be free to trade with others when there's someone to trade with."],
 	["solitarius", "Solitarius", "Self-sufficient. You'll never trade with other players or a market; shops and everything else work as usual.\nYou can give it up later from the pause menu, but never return to it."],
+	["hardcore", "Hardcore Solitarius", "A Solitarius with one life. Your first death makes you a plain Solitarius, for good."],
 ]
 
 @export var driver: Node
@@ -22,9 +26,7 @@ var _dialog: CanvasLayer
 func _ready() -> void:
 	if not enabled:
 		return
-	if FileAccess.file_exists(save_path) and load_game():
-		pass
-	else:
+	if not load_or_recover():
 		_show_mode_dialog()
 	driver.ticked.connect(_on_ticked)
 
@@ -36,16 +38,57 @@ func _notification(what: int) -> void:
 
 func save_game() -> void:
 	var data := SaveGame.capture(driver.sim, player_entity.entity_id, int(Time.get_unix_time_from_system()))
-	var file := FileAccess.open(save_path, FileAccess.WRITE)
-	if file:
-		file.store_string(SaveGame.to_json(data))
+	write_atomically(save_path, SaveGame.to_json(data))
 
 
-func load_game() -> bool:
-	var data := SaveGame.from_json(FileAccess.get_file_as_string(save_path))
+## Loads the save, or its backup if the save won't load (setting the broken
+## one aside). False when there's nothing to load: a new character.
+func load_or_recover() -> bool:
+	var loaded := FileAccess.file_exists(save_path) and load_game(save_path)
+	if not loaded and FileAccess.file_exists(save_path):
+		_set_aside(save_path)
+	if not loaded and FileAccess.file_exists(backup_path()):
+		loaded = load_game(backup_path())
+	return loaded
+
+
+func backup_path() -> String:
+	return save_path + ".bak"
+
+
+## Writes text to a temp file, then swaps it in for path, keeping what was
+## there as path.bak. A crash mid-write leaves the old save untouched.
+static func write_atomically(path: String, text: String) -> bool:
+	var temp := path + ".tmp"
+	var file := FileAccess.open(temp, FileAccess.WRITE)
+	if file == null:
+		return false
+	file.store_string(text)
+	file.close()
+	var absolute := ProjectSettings.globalize_path(path)
+	if FileAccess.file_exists(path):
+		var backup := absolute + ".bak"
+		if FileAccess.file_exists(path + ".bak"):
+			DirAccess.remove_absolute(backup)
+		DirAccess.rename_absolute(absolute, backup)
+	return DirAccess.rename_absolute(ProjectSettings.globalize_path(temp), absolute) == OK
+
+
+## Moves an unreadable save out of the way so a fresh start can't overwrite it.
+static func _set_aside(path: String) -> void:
+	var absolute := ProjectSettings.globalize_path(path)
+	var aside := "%s.broken-%d" % [absolute, int(Time.get_unix_time_from_system())]
+	DirAccess.rename_absolute(absolute, aside)
+	push_warning("Save at %s could not be loaded; kept it as %s." % [path, aside])
+
+
+func load_game(path := "") -> bool:
+	if path.is_empty():
+		path = save_path
+	var data := SaveGame.from_json(FileAccess.get_file_as_string(path))
 	var id: int = player_entity.entity_id
-	if not SaveGame.restore(driver.sim, id, data, int(Time.get_unix_time_from_system())):
-		push_warning("Save at %s could not be loaded; starting fresh." % save_path)
+	if data.is_empty() or not SaveGame.restore(driver.sim, id, data, int(Time.get_unix_time_from_system())):
+		push_warning("Save at %s could not be loaded." % path)
 		return false
 	var combatant: RefCounted = player_entity.combatant
 	player_entity.body().global_position = combatant.position + Vector3(0, 0.1, 0)
@@ -75,18 +118,21 @@ func _on_ticked(tick: int) -> void:
 func _show_mode_dialog() -> void:
 	get_tree().paused = true
 	_dialog = CanvasLayer.new()
+	# Above the HUD and the other overlays.
+	_dialog.layer = 50
 	_dialog.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_dialog)
+	var center := CenterContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_dialog.add_child(center)
 	var panel := PanelContainer.new()
-	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	panel.custom_minimum_size = Vector2(560, 0)
-	panel.position -= Vector2(280, 160)
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color(0.1, 0.09, 0.08, 0.97)
 	style.set_content_margin_all(20)
 	style.set_corner_radius_all(6)
 	panel.add_theme_stylebox_override("panel", style)
-	_dialog.add_child(panel)
+	center.add_child(panel)
 	var column := VBoxContainer.new()
 	column.add_theme_constant_override("separation", 12)
 	panel.add_child(column)

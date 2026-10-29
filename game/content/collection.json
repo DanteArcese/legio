@@ -5,16 +5,18 @@
     "barrow": {"name": "Barrow of the Lemures", "category": "Combat", "items": ["lemur_ash", "iron_pugio", "composite_bow", "iron_bar"]},
     "slayer": {"name": "Slayer creatures", "category": "Slayer", "items": ["strix_feather", "iron_gladius", "iron_scutum", "larval_shroud", "harpy_feather", "iron_arrowheads", "pearl", "basilisk_eye", "gorgon_scale", "aegis"]},
     "seeds": {"name": "Seeds", "category": "Combat", "items": ["mint_seed", "fennel_seed", "bean_seed", "sage_seed", "wormwood_seed", "poppy_seed"]},
-    "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna"]},
+    "fishing": {"name": "Fishing", "category": "Skilling", "items": ["raw_sardine", "raw_anchovy", "raw_mackerel", "raw_tuna", "raw_eel"]},
     "harvest": {"name": "The harvest", "category": "Skilling", "items": ["mint", "fennel", "sage", "wormwood", "poppy", "cabbage", "broad_beans"]},
-    "hunter": {"name": "Hunter", "category": "Skilling", "items": ["hare_pelt", "fox_pelt"]},
+    "hunter": {"name": "Hunter", "category": "Skilling", "items": ["hare_pelt", "fox_pelt", "dormouse"]},
     "thieving": {"name": "Light fingers", "category": "Skilling", "items": ["bread", "linen", "silver_fibula"]},
     "quests": {"name": "Rewards of service", "category": "Quests", "items": ["parma", "lorica_hamata", "spatha", "diploma", "harpy_arrow"]},
     "frontier": {"name": "Beyond the Limes", "category": "Frontier", "items": ["dire_wolf_pelt", "gold_ore", "framea", "gold_torc", "warchiefs_helm"]},
-    "vipasca": {"name": "The silver mines", "category": "Skilling", "items": ["silver_ore", "coal", "silver_bar", "steel_bar"]},
+    "vipasca": {"name": "The silver mines", "category": "Skilling", "items": ["silver_ore", "coal", "silver_bar", "steel_bar", "orichalcum_ore", "orichalcum_bar"]},
     "regulus": {"name": "The basilisk king", "category": "Combat", "items": ["crown_of_regulus", "basilisk_eye", "steel_gladius"]},
     "hydra": {"name": "The Hydra", "category": "Combat", "items": ["hydra_scale_lorica", "gorgon_scale", "pearl"]},
+    "euryale": {"name": "The gorgon queen", "category": "Combat", "items": ["gorgoneion", "aegis", "gorgon_scale"]},
+    "games": {"name": "Bread and circuses", "category": "Combat", "items": ["rudis", "victors_palm"]},
     "pottery": {"name": "The potter's craft", "category": "Skilling", "items": ["clay_pot", "clay_bowl", "amphora", "oil_lamp", "glass_vial", "glass_bowl"]},
-    "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling"]}
+    "pets": {"name": "Pets", "category": "Other", "items": ["mole", "magpie", "leveret", "wolf_cub", "basilisk_hatchling", "hydra_hatchling", "foal"]}
   }
 }

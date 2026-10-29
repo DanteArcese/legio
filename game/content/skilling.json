@@ -79,6 +79,26 @@
       "respawn_ticks": 3,
       "color": "#8c8478",
       "examine": "Soft grey clay at the water's edge. Dig some out with a pickaxe."
+    },
+    "marble_rock": {
+      "name": "Marble outcrop",
+      "ore": "marble_block",
+      "level": 45,
+      "xp": 65,
+      "difficulty": 0.35,
+      "respawn_ticks": 40,
+      "color": "#ece8e0",
+      "examine": "Parian marble, the whitest in the world, breaking through the turf."
+    },
+    "orichalcum_rock": {
+      "name": "Orichalcum vein",
+      "ore": "orichalcum_ore",
+      "level": 55,
+      "xp": 85,
+      "difficulty": 0.45,
+      "respawn_ticks": 60,
+      "color": "#c9803e",
+      "examine": "A seam of red-gold orichalcum, deep in the pit floor."
     }
   },
   "recipes": {
@@ -163,6 +183,22 @@
         "output": "steel_bar",
         "level": 30,
         "xp": 18
+      },
+      {
+        "id": "orichalcum_bar",
+        "inputs": [
+          {
+            "item": "orichalcum_ore",
+            "quantity": 1
+          },
+          {
+            "item": "coal",
+            "quantity": 4
+          }
+        ],
+        "output": "orichalcum_bar",
+        "level": 50,
+        "xp": 30
       }
     ],
     "smith": [
@@ -352,6 +388,74 @@
         "tool": "hammer"
       },
       {
+        "id": "bronze_javelin",
+        "inputs": [
+          {
+            "item": "bronze_bar",
+            "quantity": 1
+          },
+          {
+            "item": "logs",
+            "quantity": 1
+          }
+        ],
+        "output": "bronze_javelin",
+        "quantity": 5,
+        "level": 7,
+        "xp": 14,
+        "tool": "hammer"
+      },
+      {
+        "id": "iron_javelin",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "iron_javelin",
+        "quantity": 5,
+        "level": 22,
+        "xp": 30,
+        "tool": "hammer"
+      },
+      {
+        "id": "steel_pilum",
+        "inputs": [
+          {
+            "item": "steel_bar",
+            "quantity": 1
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "steel_pilum",
+        "quantity": 5,
+        "level": 36,
+        "xp": 48,
+        "tool": "hammer"
+      },
+      {
+        "id": "lockpick",
+        "inputs": [
+          {
+            "item": "iron_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "lockpick",
+        "quantity": 5,
+        "level": 16,
+        "xp": 25,
+        "tool": "hammer"
+      },
+      {
         "id": "iron_axe",
         "inputs": [
           {
@@ -526,6 +630,128 @@
         "level": 30,
         "xp": 70,
         "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_pugio",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_pugio",
+        "level": 50,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_axe",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_axe",
+        "level": 51,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_galea",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_galea",
+        "level": 52,
+        "xp": 50,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_pickaxe",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "orichalcum_pickaxe",
+        "level": 53,
+        "xp": 100,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_gladius",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "orichalcum_gladius",
+        "level": 54,
+        "xp": 100,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_arrowheads",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_arrowheads",
+        "level": 55,
+        "xp": 50,
+        "tool": "hammer",
+        "quantity": 15
+      },
+      {
+        "id": "orichalcum_scutum",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          }
+        ],
+        "output": "orichalcum_scutum",
+        "level": 56,
+        "xp": 100,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_lorica",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "orichalcum_lorica",
+        "level": 58,
+        "xp": 150,
+        "tool": "hammer"
+      },
+      {
+        "id": "orichalcum_lituus",
+        "inputs": [
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "orichalcum_lituus",
+        "level": 57,
+        "xp": 100,
+        "tool": "hammer"
       }
     ],
     "cook": [
@@ -624,6 +850,20 @@
         "stop_burning": 55
       },
       {
+        "id": "cooked_eel",
+        "inputs": [
+          {
+            "item": "raw_eel",
+            "quantity": 1
+          }
+        ],
+        "output": "cooked_eel",
+        "level": 28,
+        "xp": 75,
+        "burnt": "burnt_food",
+        "stop_burning": 58
+      },
+      {
         "id": "cooked_tuna",
         "inputs": [
           {
@@ -636,6 +876,38 @@
         "xp": 100,
         "burnt": "burnt_food",
         "stop_burning": 65
+      },
+      {
+        "id": "bread",
+        "inputs": [
+          {
+            "item": "flour",
+            "quantity": 1
+          }
+        ],
+        "output": "bread",
+        "level": 10,
+        "xp": 30,
+        "burnt": "burnt_food",
+        "stop_burning": 40
+      },
+      {
+        "id": "honeyed_dormouse",
+        "inputs": [
+          {
+            "item": "dormouse",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "honeyed_dormouse",
+        "level": 50,
+        "xp": 140,
+        "burnt": "burnt_food",
+        "stop_burning": 80
       }
     ],
     "inscribe": [
@@ -858,6 +1130,44 @@
         "quantity": 15,
         "level": 30,
         "xp": 75
+      },
+      {
+        "id": "orichalcum_arrow",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 15
+          },
+          {
+            "item": "feather",
+            "quantity": 15
+          },
+          {
+            "item": "orichalcum_arrowheads",
+            "quantity": 15
+          }
+        ],
+        "output": "orichalcum_arrow",
+        "quantity": 15,
+        "level": 45,
+        "xp": 105
+      },
+      {
+        "id": "yew_longbow",
+        "inputs": [
+          {
+            "item": "yew_logs",
+            "quantity": 1
+          },
+          {
+            "item": "bowstring",
+            "quantity": 1
+          }
+        ],
+        "output": "yew_longbow",
+        "level": 60,
+        "xp": 120,
+        "tool": "knife"
       }
     ],
     "tan": [
@@ -872,6 +1182,18 @@
         "output": "leather",
         "level": 1,
         "xp": 5
+      },
+      {
+        "id": "goat_leather",
+        "inputs": [
+          {
+            "item": "goat_hide",
+            "quantity": 1
+          }
+        ],
+        "output": "leather",
+        "level": 1,
+        "xp": 4
       }
     ],
     "leatherwork": [
@@ -1015,6 +1337,48 @@
         "xp": 80,
         "tool": "needle",
         "requires_unlock": "venators_helm"
+      },
+      {
+        "id": "augurs_robe",
+        "inputs": [
+          {
+            "item": "linen",
+            "quantity": 5
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 3
+          }
+        ],
+        "output": "augurs_robe",
+        "level": 40,
+        "xp": 160,
+        "tool": "needle"
+      },
+      {
+        "id": "augurs_hood",
+        "inputs": [
+          {
+            "item": "linen",
+            "quantity": 3
+          },
+          {
+            "item": "silver_bar",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 2
+          }
+        ],
+        "output": "augurs_hood",
+        "level": 40,
+        "xp": 110,
+        "tool": "needle"
       }
     ],
     "garum": [
@@ -1187,6 +1551,23 @@
         "level": 45,
         "xp": 80,
         "tool": "jeweller"
+      },
+      {
+        "id": "silver_lituus",
+        "inputs": [
+          {
+            "item": "silver_bar",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "silver_lituus",
+        "level": 35,
+        "xp": 110,
+        "tool": "jeweller"
       }
     ],
     "throw": [
@@ -1330,6 +1711,64 @@
         "level": 30,
         "xp": 40
       }
+    ],
+    "press_oil": [
+      {
+        "id": "olive_oil",
+        "inputs": [
+          {
+            "item": "olives",
+            "quantity": 4
+          }
+        ],
+        "output": "olive_oil",
+        "level": 25,
+        "xp": 45
+      }
+    ],
+    "press_wine": [
+      {
+        "id": "estate_wine",
+        "inputs": [
+          {
+            "item": "grapes",
+            "quantity": 5
+          }
+        ],
+        "output": "estate_wine",
+        "level": 35,
+        "xp": 70
+      }
+    ],
+    "mill": [
+      {
+        "id": "flour",
+        "inputs": [
+          {
+            "item": "wheat",
+            "quantity": 1
+          }
+        ],
+        "output": "flour",
+        "level": 8,
+        "xp": 12
+      }
+    ],
+    "masonry": [
+      {
+        "id": "tesserae",
+        "inputs": [
+          {
+            "item": "marble_block",
+            "quantity": 1
+          }
+        ],
+        "output": "tesserae",
+        "quantity": 25,
+        "level": 40,
+        "xp": 55,
+        "tool": "chisel"
+      }
     ]
   },
   "trees": {
@@ -1365,6 +1804,17 @@
       "respawn_ticks": 40,
       "model": "tree_pineTallA",
       "examine": "A tall pine, heavy with resin."
+    },
+    "yew_tree": {
+      "name": "Yew",
+      "log": "yew_logs",
+      "level": 60,
+      "xp": 175,
+      "difficulty": 0.25,
+      "fell_chance": 0.1,
+      "respawn_ticks": 80,
+      "model": "tree_fat",
+      "examine": "An ancient yew, dark and slow-growing. Taxus: the bowyer's wood, and the tree of the dead."
     }
   },
   "fishing_spots": {
@@ -1406,6 +1856,18 @@
           "fish": "raw_tuna",
           "level": 40,
           "xp": 80
+        }
+      ]
+    },
+    "eel_spot": {
+      "name": "Eel pool",
+      "tool": "pot",
+      "examine": "Dark water under the reeds. Something long and thin flicks past.",
+      "catches": [
+        {
+          "fish": "raw_eel",
+          "level": 30,
+          "xp": 60
         }
       ]
     }

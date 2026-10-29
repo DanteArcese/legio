@@ -1,6 +1,7 @@
 extends "res://tools/playtest/scenario.gd"
 ## First-time hints: the controls tip on starting, the special-attack tip
-## on the first blow with a weapon that has one, each shown only once.
+## on the first blow with a weapon that has one, then the tips for getting
+## hurt, fighting above your level and dying, each shown only once.
 
 const PLAYER := 1
 
@@ -26,3 +27,14 @@ func run() -> void:
 	expect(hints.seen.has("special"), "remembered")
 	hints.hint("special")
 	expect(hints._queue.is_empty(), "not shown twice")
+
+	# Hurt below 40%: the eating tip. Hitting a far stronger monster: the
+	# level colours tip. Dying: the grave tip.
+	me.hp = 3
+	hints._on_sim_event({"type": "hit", "attacker": dummy.entity_id, "target": PLAYER, "damage": 1, "tick": driver().sim.tick})
+	expect(hints.seen.has("eat"), "the eating tip when badly hurt")
+	var boar: Node = get_tree().get_nodes_in_group("sim_entities").filter(func(e): return e.monster_id == "wild_boar")[0]
+	hints._on_sim_event({"type": "hit", "attacker": PLAYER, "target": boar.entity_id, "damage": 1, "tick": driver().sim.tick})
+	expect(hints.seen.has("danger"), "the level colours tip when fighting above your level")
+	hints._on_sim_event({"type": "death", "id": PLAYER, "tick": driver().sim.tick})
+	expect(hints.seen.has("death"), "the grave tip on dying")

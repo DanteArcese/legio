@@ -12,18 +12,19 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus", "games")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
-AMMO_TYPES = {"arrow", "sling_bullet", "tablet"}
+AMMO_TYPES = {"arrow", "sling_bullet", "javelin", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
 UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
-RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft"}
+RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft",
+                "press_oil", "press_wine", "mill", "masonry"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
 TREE_KEYS = {"name", "log", "level", "xp", "difficulty", "fell_chance", "respawn_ticks", "model", "examine"}
 SPOT_KEYS = {"name", "tool", "catches", "examine"}
@@ -31,14 +32,14 @@ CATCH_KEYS = {"fish", "level", "xp"}
 RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "tool", "burnt", "stop_burning", "requires_quest", "requires_unlock"}
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable"}
+ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable", "teleport"}
 MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
     "kaykit": set(),
-    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads"},
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads", "horns"},
     "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs", "one_eye", "snakes", "green_skin"},
     "bird": {"ear_tufts", "woman_face"},
 }
@@ -75,11 +76,14 @@ def validate(content: dict) -> list[str]:
             if "requires_unlock" in recipe and recipe["requires_unlock"] not in unlocks:
                 errors.append(f"skilling.recipes.{kind}[{i}].requires_unlock: unknown Slayer unlock {recipe['requires_unlock']!r}")
     _check_thieving(content.get("thieving", {}), items, errors)
+    _check_strongboxes(content.get("thieving", {}).get("strongboxes", {}), set(content.get("drops", {})), errors)
     _check_athletics(content.get("athletics", {}), errors)
     _check_hunter(content.get("hunter", {}), items, errors)
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
+    _check_circus(content.get("circus", {}), items, errors)
+    _check_games(content.get("games", {}), items, set(content.get("monsters", {})), errors)
     _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
@@ -131,6 +135,13 @@ def _check_item(where, item_id, item, items, errors):
         damage = throwable.get("damage")
         if not (isinstance(damage, list) and len(damage) == 2 and all(_is_int(d) and d >= 0 for d in damage) and damage[0] <= damage[1]):
             errors.append(f"{where}.throwable.damage: expected [min, max]")
+    if "teleport" in item:
+        teleport = item["teleport"]
+        _check_keys(f"{where}.teleport", teleport, {"place", "position"}, {"place", "position"}, errors)
+        _check_type(f"{where}.teleport", "place", teleport.get("place"), str, errors)
+        position = teleport.get("position")
+        if not (isinstance(position, list) and len(position) == 3 and all(isinstance(v, (int, float)) for v in position)):
+            errors.append(f"{where}.teleport.position: expected [x, y, z]")
     if "pet" in item:
         look = item["pet"]
         _check_keys(f"{where}.pet", look, {"model", "color", "accent", "size", "features"}, {"model", "color", "size"}, errors)
@@ -324,6 +335,61 @@ def _check_arena(arena, items, monsters, shops, errors):
         _check_int(where, "hunter", contract.get("hunter"), 1, errors, 99)
         for key in ("count", "coins", "xp"):
             _check_int(where, key, contract.get(key), 1, errors)
+CIRCUS_KEYS = {"name", "level", "fee", "laps", "speed", "speed_per_level", "countdown_ticks", "time_limit_ticks", "lap_xp",
+               "placing_xp", "prizes", "trophy", "rivals"}
+
+
+def _check_circus(circus, items, errors):
+    _check_keys("circus", circus, CIRCUS_KEYS, CIRCUS_KEYS, errors)
+    _check_type("circus", "name", circus.get("name"), str, errors)
+    _check_int("circus", "level", circus.get("level"), 1, errors, 99)
+    for key in ("fee", "laps", "countdown_ticks", "time_limit_ticks", "lap_xp"):
+        _check_int("circus", key, circus.get(key), 1, errors)
+    _check_number("circus", "speed", circus.get("speed"), 1.0, 30.0, errors)
+    _check_number("circus", "speed_per_level", circus.get("speed_per_level"), 0.0, 0.05, errors)
+    if circus.get("trophy") not in items:
+        errors.append(f"circus.trophy: unknown item {circus.get('trophy')!r}")
+    rivals = circus.get("rivals", [])
+    if not rivals:
+        errors.append("circus.rivals: at least one rival required")
+    for i, rival in enumerate(rivals):
+        where = f"circus.rivals[{i}]"
+        _check_keys(where, rival, {"name", "color", "speed"}, {"name", "color", "speed"}, errors)
+        _check_type(where, "name", rival.get("name"), str, errors)
+        if not (isinstance(rival.get("color"), str) and re.fullmatch(r"#[0-9a-fA-F]{6}", rival["color"])):
+            errors.append(f"{where}.color: expected #rrggbb")
+        _check_number(where, "speed", rival.get("speed"), 1.0, 30.0, errors)
+    for key in ("placing_xp", "prizes"):
+        values = circus.get(key)
+        if not (isinstance(values, list) and len(values) == len(rivals) + 1 and all(isinstance(v, int) and v >= 0 for v in values)):
+            errors.append(f"circus.{key}: expected one non-negative int per place ({len(rivals) + 1})")
+
+
+GAMES_KEYS = {"name", "combat_level", "rest_ticks", "spawn_radius", "leave_radius", "trophy", "waves"}
+
+
+def _check_games(games, items, monsters, errors):
+    _check_keys("games", games, GAMES_KEYS, GAMES_KEYS, errors)
+    _check_type("games", "name", games.get("name"), str, errors)
+    _check_int("games", "combat_level", games.get("combat_level"), 1, errors, 126)
+    _check_int("games", "rest_ticks", games.get("rest_ticks"), 1, errors)
+    _check_number("games", "spawn_radius", games.get("spawn_radius"), 1.0, 30.0, errors)
+    _check_number("games", "leave_radius", games.get("leave_radius"), 5.0, 60.0, errors)
+    if games.get("trophy") not in items:
+        errors.append(f"games.trophy: unknown item {games.get('trophy')!r}")
+    if not games.get("waves"):
+        errors.append("games.waves: at least one wave required")
+    for i, wave in enumerate(games.get("waves", [])):
+        where = f"games.waves[{i}]"
+        _check_keys(where, wave, {"monsters", "coins"}, {"monsters", "coins"}, errors)
+        _check_int(where, "coins", wave.get("coins"), 0, errors)
+        if not wave.get("monsters"):
+            errors.append(f"{where}.monsters: at least one monster required")
+        for monster in wave.get("monsters", []):
+            if monster not in monsters:
+                errors.append(f"{where}.monsters: unknown monster {monster!r}")
+
+
 TASK_FIELDS = {"obtain": {"item"}, "kill": {"monster"}, "quest": {"quest"}, "level": {"skill", "level"}, "visit": {"area"}}
 
 
@@ -514,7 +580,11 @@ def _check_shop(where, shop, items, errors):
     _check_keys(where, shop, {"name", "offers", "requires_quest", "buys"}, {"name", "offers"}, errors)
     if "buys" in shop:
         buys = shop["buys"]
-        _check_keys(f"{where}.buys", buys, {"items", "rate"}, {"items", "rate"}, errors)
+        _check_keys(f"{where}.buys", buys, {"items", "rate", "prices"}, {"items", "rate"}, errors)
+        for item_id, rate in buys.get("prices", {}).items():
+            if item_id not in items:
+                errors.append(f"{where}.buys.prices: unknown item {item_id!r}")
+            _check_number(f"{where}.buys.prices", item_id, rate, 0.05, 2.0, errors)
         _check_number(f"{where}.buys", "rate", buys.get("rate"), 0.05, 1.0, errors)
         wanted = buys.get("items")
         if wanted != "*":
@@ -623,8 +693,28 @@ MARK_KEYS = {"name", "level", "xp", "coins", "stun_ticks", "damage", "examine"}
 STALL_MODELS = {"stall-red", "stall-green"}
 
 
+STRONGBOX_KEYS = {"name", "level", "xp", "crack_ticks", "trap_chance", "damage", "relock_ticks", "drop_table", "examine"}
+
+
+def _check_strongboxes(strongboxes, drop_tables, errors):
+    for box_id, box in strongboxes.items():
+        where = f"thieving.strongboxes.{box_id}"
+        _check_id(where, box_id, errors)
+        _check_keys(where, box, STRONGBOX_KEYS, STRONGBOX_KEYS, errors)
+        _check_int(where, "level", box.get("level"), 1, errors, 99)
+        _check_number(where, "xp", box.get("xp"), 0.1, 10000, errors)
+        _check_int(where, "crack_ticks", box.get("crack_ticks"), 1, errors, 50)
+        _check_int(where, "relock_ticks", box.get("relock_ticks"), 1, errors)
+        _check_number(where, "trap_chance", box.get("trap_chance"), 0, 1, errors)
+        pair = box.get("damage")
+        if not (isinstance(pair, list) and len(pair) == 2 and all(_is_int(v) for v in pair) and 0 <= pair[0] <= pair[1]):
+            errors.append(f"{where}.damage: expected [min, max] whole numbers")
+        if box.get("drop_table") not in drop_tables:
+            errors.append(f"{where}.drop_table: unknown drop table {box.get('drop_table')!r}")
+
+
 def _check_thieving(thieving, items, errors):
-    _check_keys("thieving", thieving, {"stalls", "marks"}, {"stalls", "marks"}, errors)
+    _check_keys("thieving", thieving, {"stalls", "marks", "strongboxes"}, {"stalls", "marks"}, errors)
     for stall_id, stall in thieving.get("stalls", {}).items():
         where = f"thieving.stalls.{stall_id}"
         _check_id(where, stall_id, errors)
@@ -650,7 +740,7 @@ def _check_thieving(thieving, items, errors):
 
 
 OBSTACLE_KEYS = {"name", "verb", "kind", "level", "xp", "ticks", "fail_chance", "damage"}
-OBSTACLE_KINDS = {"log", "wall", "rope", "hurdles"}
+OBSTACLE_KINDS = {"log", "wall", "rope", "hurdles", "climb"}
 
 
 def _check_athletics(athletics, errors):
@@ -802,8 +892,8 @@ def _check_mercatura(mercatura, items, shops, errors):
 
 
 FURNITURE_KEYS = {"name", "hotspot", "level", "xp", "materials", "provides"}
-PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace"}, "altar": {"heavenly", "underworld"}, "bank": {True},
-            "patch": None, "travel": {"portus_salis"}}
+PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace", "olive_press", "wine_press"}, "altar": {"heavenly", "underworld"},
+            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}, "comfort": {True}}
 
 
 def _check_villa(villa, items, quests, farming, errors):

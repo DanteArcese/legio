@@ -29,6 +29,8 @@ const Hunter := preload("res://scripts/sim/hunter.gd")
 const Farming := preload("res://scripts/sim/farming.gd")
 const Mercatura := preload("res://scripts/sim/mercatura.gd")
 const Arena := preload("res://scripts/sim/arena.gd")
+const Circus := preload("res://scripts/sim/circus.gd")
+const Games := preload("res://scripts/sim/games.gd")
 const Tasks := preload("res://scripts/sim/tasks.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
@@ -59,6 +61,8 @@ var pietas := Pietas.new(self)
 var quests := Quests.new(self)
 var thieving := Thieving.new(self)
 var athletics := Athletics.new(self)
+var circus := Circus.new(self)
+var games := Games.new(self)
 var hunter := Hunter.new(self)
 var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
@@ -171,7 +175,7 @@ func ground_piles() -> Array:
 ## feet. Returns how many reached the inventory.
 func give_item(id: int, item_id: String, quantity: int, source: String, events: Array) -> int:
 	var player: Combatant = _combatants[id]
-	if player.account_mode == "solitarius" and source in SOLITARIUS_BLOCKED_SOURCES:
+	if player.is_solitarius() and source in SOLITARIUS_BLOCKED_SOURCES:
 		message(player, "As a Solitarius, you stand alone.", events)
 		return 0
 	if source in COLLECTION_SOURCES:
@@ -215,7 +219,8 @@ func sorted_ids() -> Array:
 
 
 func set_position(id: int, position: Vector3) -> void:
-	_combatants[id].position = position
+	if _combatants.has(id):
+		_combatants[id].position = position
 
 
 ## Takes a combatant out of the simulation, clearing anyone's aim at it.
@@ -275,8 +280,10 @@ func step() -> Array[Dictionary]:
 	skilling.process(players, events)
 	pietas.process(players, events)
 	quests.process(players, events)
-	thieving.process(events)
+	thieving.process(events, players)
 	athletics.process(players, events)
+	circus.process(players, events)
+	games.process(players, events)
 	hunter.process(events)
 	farming.process(events)
 	items.decay_remedies(players)
@@ -287,6 +294,8 @@ func step() -> Array[Dictionary]:
 
 
 func award_xp(combatant: Combatant, skill: String, amount: float, events: Array) -> void:
+	if Villa.is_rested(combatant, tick):
+		amount *= 1.0 + Villa.RESTED_XP_BONUS
 	var new_level: int = combatant.skills.add_xp(skill, amount)
 	events.append({"type": "xp", "id": combatant.id, "skill": skill, "amount": amount, "tick": tick})
 	if combatant.is_player():
@@ -307,6 +316,9 @@ func message(player: Combatant, text: String, events: Array) -> void:
 
 
 func kill(victim: Combatant, events: Array[Dictionary]) -> void:
+	# The arena's attendants carry a fallen fighter out instead.
+	if games.on_fall(victim, events):
+		return
 	victim.curses.clear()
 	victim.remedy_boosts.clear()
 	victim.target_id = -1
@@ -318,6 +330,10 @@ func kill(victim: Combatant, events: Array[Dictionary]) -> void:
 		victim.respawn_at_tick = tick + maxi(victim.respawn_ticks, 1)
 	events.append({"type": "death", "id": victim.id, "tick": tick})
 	boss.on_death(victim, events)
+	if victim.account_mode == "hardcore":
+		victim.account_mode = "solitarius"
+		message(victim, "Your one life is spent. You walk on as a Solitarius.", events)
+		events.append({"type": "account_mode_changed", "id": victim.id, "mode": "solitarius", "tick": tick})
 	if victim.inventory:
 		graves.on_player_death(victim, events)
 	var killer: Combatant = _combatants.get(victim.last_attacker_id)
@@ -406,6 +422,12 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			arena.capture(player, command.get("target", -1), events)
 		"hand_in_arena":
 			arena.hand_in(player, events)
+		"start_race":
+			circus.start(player, events)
+		"leave_race":
+			circus.leave(player, events)
+		"start_games":
+			games.start(player, events)
 		"special":
 			if player.equipment.weapon().get("special", {}).is_empty():
 				message(player, "This weapon has no special attack.", events)
@@ -413,7 +435,7 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 				player.special_armed = not player.special_armed
 				events.append({"type": "special_armed", "id": player.id, "armed": player.special_armed, "tick": tick})
 		"leave_solitarius":
-			if player.account_mode == "solitarius":
+			if player.is_solitarius():
 				player.account_mode = "standard"
 				message(player, "You give up the Solitarius path. From now on you may trade like anyone else.", events)
 				events.append({"type": "account_mode_changed", "id": player.id, "mode": "standard", "tick": tick})
@@ -423,6 +445,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			thieving.steal(player, command.get("stall", -1), events)
 		"pickpocket":
 			thieving.pickpocket(player, command.get("mark", -1), events)
+		"crack":
+			thieving.crack(player, command.get("strongbox", -1), events)
 		"obstacle":
 			athletics.start(player, command.get("obstacle", -1), events)
 		"trap":
@@ -432,9 +456,13 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 		"buy_villa":
 			villa.buy(player, events)
 		"build":
-			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events)
+			villa.build(player, command.get("hotspot", ""), command.get("furniture", ""), events, command.get("now", 0.0))
 		"remove_furniture":
 			villa.remove(player, command.get("hotspot", ""), events)
+		"rest":
+			villa.rest(player, command.get("hotspot", ""), events)
+		"collect_estate":
+			villa.collect(player, command.get("now", 0.0), events)
 		"take_contract":
 			mercatura.take(player, command.get("board", ""), command.get("contract", ""), events)
 		"abandon_contract":

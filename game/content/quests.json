@@ -66,6 +66,20 @@
         "Baa. That's all I've got left: the noise.",
         "Father says the hollow's no place for a girl. It's no place for sheep either, now."
       ]
+    },
+    "baker_sabina": {
+      "name": "Sabina the baker",
+      "examine": "The fort's baker, floured to the elbows. She feeds six hundred men a day.",
+      "idle": [
+        "Mind the stall. Bread doesn't grow on trees, you know. It grows in fields."
+      ]
+    },
+    "smith_tertius": {
+      "name": "Tertius the smith",
+      "examine": "The fort's smith: arms like hams, eyebrows singed off years ago.",
+      "idle": [
+        "Hot iron waits for no one. Neither do I."
+      ]
     }
   },
   "quests": {
@@ -760,6 +774,452 @@
           }
         ],
         "unlocks": "Nikias sells cyclops cheese"
+      }
+    },
+    "sacramentum": {
+      "name": "Sacramentum",
+      "summary": "Swear the legionary's oath and join the legion: sacrifice to the gods, prove yourself on the limes, and turn out in a legionary's kit.",
+      "giver": "centurion_varro",
+      "requirements": {
+        "quests": [
+          "decurio"
+        ],
+        "skills": {
+          "attack": 40,
+          "strength": 40,
+          "defence": 40
+        }
+      },
+      "start": [
+        "A citizen, are you? Then the auxilia's done with you, and the legion might not be.",
+        "A legionary swears the sacramentum before the gods. Take wine and incense to the sacerdos in the fort, so it's done properly.",
+        "Then show me you can hold the limes, and come back dressed like a legionary, not a farmer with a sword."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "sacerdos",
+          "items": [
+            {
+              "item": "wine",
+              "quantity": 1
+            },
+            {
+              "item": "incense",
+              "quantity": 5
+            }
+          ],
+          "log": "Bring the sacerdos in Castra Ferrea a jug of wine and five measures of incense for the oath's sacrifice.",
+          "remind": [
+            "Wine for the libation and incense for the altar. The gods won't hear an oath sworn on an empty hand."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "germanic_raider",
+          "count": 8,
+          "log": "Prove yourself on the limes: kill eight Germanic raiders beyond the palisade.",
+          "remind": [
+            "Eight raiders. The gate's behind me, and they're out there."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "centurion_varro",
+          "items": [
+            {
+              "item": "steel_scutum",
+              "quantity": 1
+            },
+            {
+              "item": "steel_pilum",
+              "quantity": 10
+            }
+          ],
+          "log": "Report to Centurion Varro with a legionary's kit: a steel scutum and ten steel pila.",
+          "remind": [
+            "A scutum and ten pila. Steel. The smith knows the pattern, if you don't."
+          ]
+        }
+      ],
+      "complete": [
+        "Raise your hand. Repeat after me: to follow the emperor wherever he leads, never to desert the standards, never to shirk death for Rome.",
+        "Good. You're a legionary now, for twenty-five years or until we bury you.",
+        "Keep the scutum. And put this on: a lorica segmentata. The quartermaster will sell you another when you break that one."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 3000,
+          "strength": 3000,
+          "defence": 3000,
+          "ranged": 1500,
+          "pietas": 500
+        },
+        "items": [
+          {
+            "item": "steel_scutum",
+            "quantity": 1
+          },
+          {
+            "item": "lorica_segmentata",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 1500
+          }
+        ],
+        "rank": "Legionarius",
+        "unlocks": "The lorica segmentata from the quartermaster",
+        "title": "Miles legionis"
+      }
+    },
+    "optio": {
+      "name": "Optio",
+      "summary": "Patrols on Seriphos are coming back as statues. Find out why from the shepherdess, deal with the gorgons, and bring proof to Centurion Varro.",
+      "giver": "centurion_varro",
+      "requirements": {
+        "quests": [
+          "sacramentum"
+        ],
+        "skills": {
+          "attack": 60,
+          "strength": 60,
+          "defence": 60,
+          "slayer": 60
+        }
+      },
+      "start": [
+        "The governor sent a patrol to Seriphos. They came back. As statues, by the ferry, standing to attention.",
+        "There's a shepherdess on that island who sees everything that walks the hills. Start with her.",
+        "Bring me proof it's done, and I'll need an optio I can trust."
+      ],
+      "steps": [
+        {
+          "kind": "talk",
+          "npc": "melissa",
+          "log": "Ask Melissa on Seriphos what happened to the patrol.",
+          "remind": [
+            "The shepherdess on Seriphos. Go and ask her."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "gorgon",
+          "count": 3,
+          "grants": [
+            {
+              "item": "gorgon_head",
+              "quantity": 1
+            }
+          ],
+          "log": "Melissa says the patrol went into the ruins in the south-west. Kill three of the gorgons nesting there, and don't look them in the eye.",
+          "remind": [
+            "The ruins, in the south-west of the island. A mirror shield, if you've any sense."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "centurion_varro",
+          "items": [
+            {
+              "item": "gorgon_head",
+              "quantity": 1
+            }
+          ],
+          "log": "Bring the gorgon's head back to Centurion Varro on the limes. Keep the sack closed.",
+          "remind": [
+            "Don't open that here."
+          ]
+        }
+      ],
+      "complete": [
+        "Is that... no, don't show me. I believe you.",
+        "You've done the governor a service, and he remembers names. So do I. You're my optio now: my second, my stick, and my eyes.",
+        "Wear these. Phalerae, for valour. The men will see them before they see you."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 6000,
+          "strength": 6000,
+          "defence": 6000,
+          "slayer": 3000
+        },
+        "items": [
+          {
+            "item": "phalerae",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 3000
+          }
+        ],
+        "rank": "Optio",
+        "title": "Optio legionis"
+      }
+    },
+    "bread_for_the_garrison": {
+      "name": "Bread for the Garrison",
+      "summary": "The fort's baker is short of flour with a cohort to feed. Grind some at the quern by the fields, then bake her a few loaves.",
+      "giver": "baker_sabina",
+      "requirements": {},
+      "start": [
+        "Six hundred soldiers, and the mill cart's stuck in the mud on the Vipasca road. They'll eat their own boots by Saturnalia.",
+        "There's a quern out by the fields, past the south gate. Grind me five pots of flour, would you? The Gaulish merchant sells seed wheat if you'd rather grow your own.",
+        "And then I'll show you what to do with it."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "baker_sabina",
+          "items": [
+            {
+              "item": "flour",
+              "quantity": 5
+            }
+          ],
+          "log": "Grind five pots of flour at the quern by the fields south of the fort (wheat from the grain fields, or from the Gaulish merchant's seed), and bring them to Sabina.",
+          "remind": [
+            "Five pots of flour. The quern's by the fields, south of the fort."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "baker_sabina",
+          "items": [
+            {
+              "item": "bread",
+              "quantity": 3
+            }
+          ],
+          "log": "Bake three loaves of bread from flour on a range or a campfire, and bring them to Sabina.",
+          "remind": [
+            "Flour on the fire, not in it. Three loaves, and don't eat them on the way."
+          ]
+        }
+      ],
+      "complete": [
+        "Not bad. A bit flat. The men won't notice.",
+        "Here: something for your trouble, and some seed for next year. Every soldier should know where his bread comes from."
+      ],
+      "rewards": {
+        "xp": {
+          "cooking": 450,
+          "farming": 300
+        },
+        "items": [
+          {
+            "item": "coins",
+            "quantity": 150
+          },
+          {
+            "item": "wheat_seed",
+            "quantity": 10
+          }
+        ]
+      }
+    },
+    "the_smiths_apprentice": {
+      "name": "The Smith's Apprentice",
+      "summary": "The fort's smith needs a pair of hands. Mine copper and tin, smelt bronze, and forge your first blade.",
+      "giver": "smith_tertius",
+      "requirements": {},
+      "start": [
+        "You've got a pickaxe and a hammer and no idea what to do with either. I can fix that.",
+        "Copper and tin from the quarry, east of the fort by the road. Five of each.",
+        "Then we'll see if you can work a furnace without losing your eyebrows. I didn't."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "smith_tertius",
+          "items": [
+            {
+              "item": "copper_ore",
+              "quantity": 5
+            },
+            {
+              "item": "tin_ore",
+              "quantity": 5
+            }
+          ],
+          "log": "Mine five copper ore and five tin ore at the quarry east of the fort, and bring them to Tertius at the smithy.",
+          "remind": [
+            "Five copper, five tin. The quarry's just east of the fort, by the road."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "smith_tertius",
+          "items": [
+            {
+              "item": "bronze_bar",
+              "quantity": 2
+            }
+          ],
+          "log": "Smelt two bronze bars at the furnace (a copper ore and a tin ore each) and show them to Tertius.",
+          "remind": [
+            "The furnace, by the anvil. One copper and one tin make a bar of bronze."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "smith_tertius",
+          "items": [
+            {
+              "item": "bronze_gladius",
+              "quantity": 1
+            }
+          ],
+          "log": "Forge a bronze gladius at the anvil (Smithing 5) and bring it to Tertius.",
+          "remind": [
+            "A gladius. Hammer, anvil, bronze. Smithing 5, so practise on daggers if you must."
+          ]
+        }
+      ],
+      "complete": [
+        "Not bad. It'll hold an edge, and that's all a blade has to do.",
+        "Keep the gladius, and take this scutum I had lying about. A smith's apprentice shouldn't go out naked."
+      ],
+      "rewards": {
+        "xp": {
+          "mining": 350,
+          "smithing": 600
+        },
+        "items": [
+          {
+            "item": "bronze_gladius",
+            "quantity": 1
+          },
+          {
+            "item": "bronze_scutum",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 100
+          }
+        ]
+      }
+    },
+    "gifts_for_the_gods": {
+      "name": "Gifts for the Gods",
+      "summary": "The sacerdos wants offerings for the Capitoline altar: bones from the beasts you've slain, and a wolf's pelt.",
+      "giver": "sacerdos",
+      "requirements": {},
+      "start": [
+        "The gods watch every fight, child. It's only polite to thank them for the ones you win.",
+        "Bring me five bones from what you've killed, and the pelt of a wolf from the woods. I'll show you what to do with them.",
+        "And after that, you can offer them yourself, at any altar. The gods aren't fussy, only greedy."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "sacerdos",
+          "items": [
+            {
+              "item": "bones",
+              "quantity": 5
+            },
+            {
+              "item": "wolf_pelt",
+              "quantity": 1
+            }
+          ],
+          "log": "Bring the sacerdos five bones (rats, wolves and boars drop them) and a wolf pelt from the woods.",
+          "remind": [
+            "Five bones and a wolf pelt. The rats in the granary are a good start; the wolves are a good finish."
+          ]
+        }
+      ],
+      "complete": [
+        "There. Smell that? That's Jupiter being pleased.",
+        "Take this incense. Offer it at the altar here, or bones at any altar, and you'll grow in the gods' favour. Blessings come with it."
+      ],
+      "rewards": {
+        "xp": {
+          "pietas": 450
+        },
+        "items": [
+          {
+            "item": "incense",
+            "quantity": 10
+          },
+          {
+            "item": "coins",
+            "quantity": 60
+          }
+        ]
+      }
+    },
+    "the_mountain_copper": {
+      "name": "The Mountain-Copper",
+      "summary": "Red-gold veins have been found at the bottom of the Vipasca pit. The procurator wants to know if it's really orichalcum.",
+      "giver": "procurator",
+      "requirements": {
+        "quests": [
+          "the_silent_gallery"
+        ],
+        "skills": {
+          "mining": 55,
+          "smithing": 50
+        }
+      },
+      "start": [
+        "My diggers swear there's orichalcum in the pit floor. Orichalcum! Plato's metal, the roofs of Atlantis.",
+        "I've heard it before, and it was copper and wishful thinking. Masculus will know. Take him some of the ore, and if he's satisfied, smelt it.",
+        "If it's real, the governor will make me a rich man. I'll make you a slightly less rich one."
+      ],
+      "steps": [
+        {
+          "kind": "deliver",
+          "npc": "foreman_masculus",
+          "items": [
+            {
+              "item": "orichalcum_ore",
+              "quantity": 3
+            }
+          ],
+          "log": "Mine three orichalcum ores from the red-gold veins at the bottom of the Vipasca pit, and show them to Foreman Masculus.",
+          "remind": [
+            "Three lumps of the red stuff, from the bottom of the pit. Then we'll talk."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "procurator",
+          "items": [
+            {
+              "item": "orichalcum_bar",
+              "quantity": 1
+            }
+          ],
+          "log": "Smelt an orichalcum bar (an ore and four coal, Smithing 50) and bring it to the procurator.",
+          "remind": [
+            "A bar. One proper bar, and the governor's courier leaves tonight."
+          ]
+        }
+      ],
+      "complete": [
+        "Look at it glow. The governor will weep.",
+        "Here: a pickaxe headed with it, the first ever made at Vipasca. Don't lose it in a hole."
+      ],
+      "rewards": {
+        "xp": {
+          "mining": 4000,
+          "smithing": 3000
+        },
+        "items": [
+          {
+            "item": "orichalcum_pickaxe",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 800
+          }
+        ]
       }
     }
   }

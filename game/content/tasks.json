@@ -38,13 +38,31 @@
           "id": "bread",
           "kind": "obtain",
           "item": "bread",
-          "text": "Lift a loaf from the baker's stall."
+          "text": "Get a loaf of bread: lift one from the baker's stall, or bake your own."
         },
         {
           "id": "wolf",
           "kind": "kill",
           "monster": "wolf",
           "text": "Kill a wolf."
+        },
+        {
+          "id": "bread_quest",
+          "kind": "quest",
+          "quest": "bread_for_the_garrison",
+          "text": "Help Sabina the baker feed the garrison."
+        },
+        {
+          "id": "smith_quest",
+          "kind": "quest",
+          "quest": "the_smiths_apprentice",
+          "text": "Forge your first blade for Tertius the smith."
+        },
+        {
+          "id": "gods_quest",
+          "kind": "quest",
+          "quest": "gifts_for_the_gods",
+          "text": "Bring the sacerdos gifts for the gods."
         },
         {
           "id": "tiro",
@@ -176,6 +194,12 @@
           "text": "Win back the eagle: finish The Lost Eagle."
         },
         {
+          "id": "sacramentum",
+          "kind": "quest",
+          "quest": "sacramentum",
+          "text": "Swear the sacramentum to Centurion Varro."
+        },
+        {
           "id": "hrodgar",
           "kind": "kill",
           "monster": "hrodgar",
@@ -240,6 +264,12 @@
           "text": "Work a gold bulla."
         },
         {
+          "id": "orichalcum",
+          "kind": "quest",
+          "quest": "the_mountain_copper",
+          "text": "Prove the mountain-copper is real."
+        },
+        {
           "id": "regulus",
           "kind": "kill",
           "monster": "regulus",
@@ -262,6 +292,12 @@
           "kind": "obtain",
           "item": "cyclops_cheese",
           "text": "Take a cyclops cheese."
+        },
+        {
+          "id": "eel",
+          "kind": "obtain",
+          "item": "cooked_eel",
+          "text": "Trap an eel in the grove pool and roast it."
         },
         {
           "id": "flock",

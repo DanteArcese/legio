@@ -1,6 +1,7 @@
 extends CanvasLayer
 ## Player HUD: hitpoints, combat style and levels, XP drops, and level-up banners.
 
+const LevelColors := preload("res://scripts/ui/level_colors.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
@@ -91,6 +92,15 @@ func _refresh() -> void:
 	if not c.arena_contract.is_empty():
 		var beast: String = ContentDB.data()["arena"]["contracts"][c.arena_contract["id"]]["monster"]
 		task_text += "   Arena: %s" % ("hand in to Marcia" if c.arena_contract["remaining"] == 0 else "net %d %s" % [c.arena_contract["remaining"], Slayer.plural_name(beast)])
+	if c.rested_until > driver.sim.tick:
+		task_text += "   Rested (%d min)" % ceili((c.rested_until - driver.sim.tick) * 0.6 / 60.0)
+	if not c.games.is_empty():
+		var waves: int = driver.sim.games.data()["waves"].size()
+		task_text += "   Munera: wave %d / %d%s" % [maxi(c.games["wave"], 1), waves, ", %d left" % c.games["alive"].size() if not c.games["alive"].is_empty() else " (resting)"]
+	if not c.race.is_empty():
+		var laps: int = driver.sim.circus.data()["laps"]
+		var place: int = driver.sim.circus.live_place(c)
+		task_text += "   Race: lap %d / %d, %s" % [mini(c.race["lap"] + 1, laps), laps, ["1st", "2nd", "3rd", "4th"][clampi(place - 1, 0, 3)]]
 	if c.pollution > 0.0:
 		task_text += "   Pollution %d%s" % [ceili(c.pollution), " (polluted)" if c.pollution >= 30.0 else ""]
 	var title := Quests.title(c)
@@ -98,6 +108,8 @@ func _refresh() -> void:
 		task_text = "%s   %s" % [title, task_text]
 	if c.account_mode == "solitarius":
 		task_text = "[Solitarius]  " + task_text
+	elif c.account_mode == "hardcore":
+		task_text = "[Hardcore Solitarius]  " + task_text
 	var ammo_text := ""
 	if c.uses_ammo():
 		var ammo: String = c.equipment.worn["ammo"]
@@ -151,6 +163,8 @@ func _refresh_target(c: RefCounted) -> void:
 	var entity: Node = driver.entity(target.id)
 	var name: String = entity.display_name() if entity else "?"
 	_target_name.text = "%s (level %d)" % [name, target.combat_level()] if not target.monster_id.is_empty() else name
+	var color := LevelColors.color_for(target.combat_level(), c.skills.combat_level()) if not target.monster_id.is_empty() else Color.WHITE
+	_target_name.add_theme_color_override("font_color", color)
 	var afflictions := PackedStringArray()
 	if target.is_bound(driver.sim.tick):
 		afflictions.append("bound")

@@ -25,6 +25,15 @@
         "quantity": 50
       },
       {
+        "item": "amentum",
+        "price": 40
+      },
+      {
+        "item": "bronze_javelin",
+        "price": 70,
+        "quantity": 10
+      },
+      {
         "item": "fishing_rod",
         "price": 25
       },
@@ -138,6 +147,11 @@
         "item": "beeswax",
         "price": 25,
         "quantity": 10
+      },
+      {
+        "item": "return_tablet_fort",
+        "price": 30,
+        "quantity": 5
       }
     ]
   },
@@ -171,6 +185,12 @@
         "quantity": 50
       },
       {
+        "item": "iron_javelin",
+        "price": 130,
+        "quantity": 10,
+        "requires_quest": "miles"
+      },
+      {
         "item": "lorica_hamata",
         "price": 450,
         "requires_quest": "miles"
@@ -195,6 +215,11 @@
         "item": "spatha",
         "price": 380,
         "requires_quest": "duplicarius"
+      },
+      {
+        "item": "lorica_segmentata",
+        "price": 1800,
+        "requires_quest": "sacramentum"
       }
     ],
     "buys": {
@@ -253,11 +278,22 @@
         "item": "cabbage_seed",
         "price": 10,
         "quantity": 10
+      },
+      {
+        "item": "wheat_seed",
+        "price": 10,
+        "quantity": 10
       }
     ],
     "buys": {
       "items": "*",
-      "rate": 0.4
+      "rate": 0.4,
+      "prices": {
+        "estate_wine": 1.2,
+        "garum": 1.0,
+        "cooked_tuna": 0.9,
+        "pearl": 0.9
+      }
     }
   },
   "fishmonger": {
@@ -292,6 +328,16 @@
         "item": "sand",
         "price": 12,
         "quantity": 10
+      },
+      {
+        "item": "lockpick",
+        "price": 45,
+        "quantity": 5
+      },
+      {
+        "item": "return_tablet_portus",
+        "price": 40,
+        "quantity": 5
       }
     ],
     "buys": {
@@ -305,7 +351,14 @@
         "cooked_sardine",
         "cooked_tuna"
       ],
-      "rate": 0.6
+      "rate": 0.6,
+      "prices": {
+        "olive_oil": 1.1,
+        "estate_wine": 0.9,
+        "iron_bar": 0.9,
+        "oak_logs": 0.8,
+        "linen": 0.9
+      }
     }
   },
   "procurator": {
@@ -362,7 +415,13 @@
         "steel_bar",
         "tin_ore"
       ],
-      "rate": 0.6
+      "rate": 0.6,
+      "prices": {
+        "bread": 1.0,
+        "cooked_meat": 1.0,
+        "olive_oil": 0.9,
+        "cooked_mackerel": 0.9
+      }
     }
   },
   "greek_merchant": {
@@ -381,8 +440,20 @@
         "price": 6
       },
       {
+        "item": "vine_cutting",
+        "price": 25
+      },
+      {
+        "item": "olive_sapling",
+        "price": 45
+      },
+      {
         "item": "cooked_tuna",
         "price": 20
+      },
+      {
+        "item": "eel_pot",
+        "price": 60
       },
       {
         "item": "cyclops_cheese",
@@ -397,11 +468,21 @@
       {
         "item": "blowpipe",
         "price": 30
+      },
+      {
+        "item": "chisel",
+        "price": 40
       }
     ],
     "buys": {
       "items": "*",
-      "rate": 0.45
+      "rate": 0.45,
+      "prices": {
+        "iron_bar": 0.9,
+        "steel_bar": 0.9,
+        "silver_fibula": 1.0,
+        "bread": 0.9
+      }
     }
   },
   "lanista": {

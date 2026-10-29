@@ -47,6 +47,10 @@
 [ext_resource type="Script" path="res://scripts/world/deep_gallery.gd" id="44_deep_gallery"]
 [ext_resource type="Script" path="res://scripts/world/seriphos.gd" id="45_seriphos"]
 [ext_resource type="Script" path="res://scripts/ui/hints.gd" id="46_hints"]
+[ext_resource type="Script" path="res://scripts/world/circus_grounds.gd" id="47_circus"]
+[ext_resource type="Script" path="res://scripts/world/strongbox_node.gd" id="48_strongbox"]
+[ext_resource type="Script" path="res://scripts/audio/music_director.gd" id="91_music"]
+[ext_resource type="Script" path="res://scripts/ui/feedback_note.gd" id="90_feedback"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -364,6 +368,30 @@ outline_size = 8
 
 [node name="Forum" type="Node3D" parent="."]
 
+[node name="BakerSabina" type="StaticBody3D" parent="Forum" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -3.6, 1, -6.5)
+collision_layer = 8
+metadata/npc_id = "baker_sabina"
+metadata/display_name = "Sabina the baker"
+metadata/examine = "The fort's baker, floured to the elbows. She feeds six hundred men a day."
+
+[node name="Mesh" type="MeshInstance3D" parent="Forum/BakerSabina"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Forum/BakerSabina"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Forum/BakerSabina"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+
+[node name="Label" type="Label3D" parent="Forum/BakerSabina"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Sabina the baker"
+font_size = 32
+outline_size = 8
+
 [node name="BakersStall" type="StaticBody3D" parent="Forum"]
 transform = Transform3D(0.0, 0, -1.0, 0, 1, 0, 1.0, 0, 0.0, -5.5, 0, -6.5)
 script = ExtResource("32_stall")
@@ -503,6 +531,21 @@ patch_type = "herb_patch"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.2, 0, 30.0)
 script = ExtResource("35_patch")
 patch_type = "allotment"
+
+[node name="GrainField1" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 33)
+script = ExtResource("35_patch")
+patch_type = "grain_field"
+
+[node name="GrainField2" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 37)
+script = ExtResource("35_patch")
+patch_type = "grain_field"
+
+[node name="Quern" type="StaticBody3D" parent="Farm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0, 31)
+script = ExtResource("11_station")
+kind = "quern"
 
 [node name="PortusSalis" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
 metadata/map_name = "Portus Salis"
@@ -761,6 +804,24 @@ script = ExtResource("39_hotspot")
 hotspot_id = "waystone"
 hotspot_type = "waystone"
 
+[node name="Hotspot_press_1" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, -6)
+script = ExtResource("39_hotspot")
+hotspot_id = "press_1"
+hotspot_type = "press"
+
+[node name="Hotspot_press_2" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 0)
+script = ExtResource("39_hotspot")
+hotspot_id = "press_2"
+hotspot_type = "press"
+
+[node name="Hotspot_office" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 342, 0, -6)
+script = ExtResource("39_hotspot")
+hotspot_id = "office"
+hotspot_type = "office"
+
 [node name="LandSurveyor" type="StaticBody3D" parent="Forum" groups=["surveyors", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 1, 6.5)
 collision_layer = 8
@@ -798,6 +859,31 @@ color = Color(0.45, 0.33, 0.22, 1)
 requires_villa = true
 
 [node name="Smithy" type="Node3D" parent="."]
+
+[node name="SmithTertius" type="StaticBody3D" parent="Smithy" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4, 1, -7.4)
+collision_layer = 8
+metadata/npc_id = "smith_tertius"
+metadata/display_name = "Tertius the smith"
+metadata/examine = "The fort's smith: arms like hams, eyebrows singed off years ago."
+
+[node name="Mesh" type="MeshInstance3D" parent="Smithy/SmithTertius"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Smithy/SmithTertius"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Smithy/SmithTertius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Barbarian"
+hide_meshes = Array[String](["Barbarian_Hat"])
+
+[node name="Label" type="Label3D" parent="Smithy/SmithTertius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Tertius the smith"
+font_size = 32
+outline_size = 8
 
 [node name="Furnace" type="StaticBody3D" parent="Smithy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -9.2)
@@ -1175,6 +1261,30 @@ monster_id = "gorgon"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -326, 0, 348)
 monster_id = "gorgon"
 
+[node name="Euryale" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -336, 0, 357)
+monster_id = "euryale"
+
+[node name="Goat1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 0, -17)
+monster_id = "goat"
+
+[node name="Goat2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, -14.5)
+monster_id = "goat"
+
+[node name="Goat3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, -21)
+monster_id = "goat"
+
+[node name="Goat4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, -13)
+monster_id = "goat"
+
+[node name="Goat5" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, -19)
+monster_id = "goat"
+
 [node name="Hydra" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -258, 0, 370)
 monster_id = "hydra"
@@ -1300,6 +1410,13 @@ driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 day_night = NodePath("../DayNight")
 
+[node name="Music" type="Node" parent="." node_paths=PackedStringArray("player", "world_map", "day_night", "driver")]
+script = ExtResource("91_music")
+player = NodePath("../Player")
+world_map = NodePath("../WorldMap")
+day_night = NodePath("../DayNight")
+driver = NodePath("../SimDriver")
+
 [node name="QuestUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
 script = ExtResource("29_quest_ui")
 driver = NodePath("../SimDriver")
@@ -1324,13 +1441,14 @@ script = ExtResource("31_minimap")
 player = NodePath("../Player")
 camera_rig = NodePath("../CameraRig")
 
-[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound", "skills_ui")]
+[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound", "skills_ui", "feedback")]
 layer = 10
 script = ExtResource("19_pause")
 settings = NodePath("../GraphicsSettings")
 game_ui = NodePath("../GameUi")
 sound = NodePath("../Sound")
 skills_ui = NodePath("../SkillsUi")
+feedback = NodePath("../FeedbackNote")
 
 [node name="DayNight" type="Node" parent="." node_paths=PackedStringArray("environment", "sun", "moon", "area_lighting")]
 script = ExtResource("21_daynight")
@@ -1365,6 +1483,24 @@ metadata/map_rect = Rect2(-60, -460, 120, 120)
 metadata/map_color = Color(0.36, 0.5, 0.32, 1)
 script = ExtResource("42_frontier")
 dresser = NodePath("../KitDresser")
+
+[node name="Yew1" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.3, 0, -381.9)
+script = ExtResource("27_tree")
+tree_type = "yew_tree"
+height = 7.0
+
+[node name="Yew2" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2, 0, -391.7)
+script = ExtResource("27_tree")
+tree_type = "yew_tree"
+height = 7.0
+
+[node name="Yew3" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.9, 0, -409.9)
+script = ExtResource("27_tree")
+tree_type = "yew_tree"
+height = 7.0
 
 [node name="FrontierSign" type="Label3D" parent="Frontier"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -347)
@@ -1682,6 +1818,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 415)
 script = ExtResource("10_rock")
 rock_type = "coal_rock"
 
+[node name="Orichalcum1" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 410)
+script = ExtResource("10_rock")
+rock_type = "orichalcum_rock"
+
+[node name="Orichalcum2" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 417)
+script = ExtResource("10_rock")
+rock_type = "orichalcum_rock"
+
+[node name="Orichalcum3" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 410)
+script = ExtResource("10_rock")
+rock_type = "orichalcum_rock"
+
 [node name="GalleryMouth" type="StaticBody3D" parent="Vipasca"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 440.2)
 script = ExtResource("15_transition")
@@ -1814,6 +1965,26 @@ text = "Nikias the merchant"
 font_size = 32
 outline_size = 8
 
+[node name="EelSpot" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1.0, 0, -0.0, 0, 1, 0, 0.0, 0, 1.0, -341.5, 0, 323.5)
+script = ExtResource("28_spot")
+spot_type = "eel_spot"
+
+[node name="DormouseNest1" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -349, 0, 296)
+script = ExtResource("34_burrow")
+spot_type = "dormouse_nest"
+
+[node name="DormouseNest2" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -338, 0, 303)
+script = ExtResource("34_burrow")
+spot_type = "dormouse_nest"
+
+[node name="DormouseNest3" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -346, 0, 311)
+script = ExtResource("34_burrow")
+spot_type = "dormouse_nest"
+
 [node name="GreekHouseWest" type="StaticBody3D" parent="Seriphos" groups=["houses", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -314, 1.75, 292)
 collision_layer = 16
@@ -1848,3 +2019,165 @@ shape = SubResource("GreekHouse_shape")
 script = ExtResource("46_hints")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
+
+[node name="Hotspot_atrium" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 320, 0, 4)
+script = ExtResource("39_hotspot")
+hotspot_id = "atrium"
+hotspot_type = "atrium"
+
+[node name="Marble1" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -309, 0, 329)
+script = ExtResource("10_rock")
+rock_type = "marble_rock"
+
+[node name="Marble2" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -305, 0, 331.5)
+script = ExtResource("10_rock")
+rock_type = "marble_rock"
+
+[node name="Marble3" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -308, 0, 333)
+script = ExtResource("10_rock")
+rock_type = "marble_rock"
+
+[node name="RoadToCircus" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.5, 0, 21)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to the circus"
+examine_text = "A road east to the circus, where the factions race chariots."
+destination = Vector3(268, 0, 160)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="Circus" type="StaticBody3D" parent="." node_paths=PackedStringArray("driver", "player_entity") groups=["map_regions"]]
+script = ExtResource("47_circus")
+driver = NodePath("../SimDriver")
+player_entity = NodePath("../Player/SimEntity")
+metadata/map_name = "Circus"
+metadata/map_rect = Rect2(262, 120, 116, 80)
+metadata/map_color = Color(0.8, 0.72, 0.55, 1)
+
+[node name="RoadToFort" type="StaticBody3D" parent="Circus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 264.5, 0, 160)
+script = ExtResource("15_transition")
+verb = "Travel"
+title = "Road to Castra Ferrea"
+examine_text = "The road west, back to the fort."
+destination = Vector3(48.5, 0, 22)
+size = Vector3(1.4, 2.2, 0.3)
+color = Color(0.45, 0.33, 0.22, 1)
+
+[node name="FactioAgent" type="StaticBody3D" parent="Circus" groups=["circus_agents", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 314, 1, 179)
+collision_layer = 8
+metadata/display_name = "Factio agent"
+metadata/examine = "An agent of the Reds, the faction with the shortest odds and the loudest supporters. He'll lend you a team if you pay the entry."
+
+[node name="Collision" type="CollisionShape3D" parent="Circus/FactioAgent"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Circus/FactioAgent"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+
+[node name="Label" type="Label3D" parent="Circus/FactioAgent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Factio agent
+(Chariot races)"
+font_size = 36
+
+[node name="WarehouseStrongbox" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -290.5, 0, -6.5)
+script = ExtResource("48_strongbox")
+box_type = "warehouse_strongbox"
+
+[node name="PayChest" type="StaticBody3D" parent="Vipasca"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, 363.5)
+script = ExtResource("48_strongbox")
+box_type = "procurators_strongbox"
+
+[node name="NikiasStrongbox" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -288.5, 0, 285.5)
+script = ExtResource("48_strongbox")
+box_type = "merchants_strongbox"
+
+[node name="ShortcutWestOut" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.4, 0, 8)
+script = ExtResource("33_obstacle")
+course = "shortcuts"
+end_offset = Vector3(-3.6, 0, 0)
+
+[node name="ShortcutWestIn" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 8)
+script = ExtResource("33_obstacle")
+course = "shortcuts"
+end_offset = Vector3(3.6, 0, 0)
+
+[node name="Editor" type="StaticBody3D" parent="Circus" groups=["games_editors", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 362, 1, 179.5)
+collision_layer = 8
+metadata/display_name = "Editor of the games"
+metadata/examine = "A rich man paying for the games to win votes. He'd like you to die entertainingly, but he'll settle for winning."
+
+[node name="Collision" type="CollisionShape3D" parent="Circus/Editor"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Circus/Editor"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+hide_meshes = Array[String](["Mage_Hat"])
+
+[node name="Label" type="Label3D" parent="Circus/Editor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Editor of the games
+(The munera)"
+font_size = 36
+
+[node name="Hotspot_orchard_1" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 9)
+script = ExtResource("39_hotspot")
+hotspot_id = "orchard_1"
+hotspot_type = "orchard"
+
+[node name="Hotspot_orchard_2" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 15)
+script = ExtResource("39_hotspot")
+hotspot_id = "orchard_2"
+hotspot_type = "orchard"
+
+[node name="BeachMast" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -295, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 0
+end_offset = Vector3(6, 0, 0)
+
+[node name="BeachHull" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -286, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 1
+end_offset = Vector3(3, 0, 0)
+
+[node name="BeachRope" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -280, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 2
+end_offset = Vector3(4, 0, 0)
+
+[node name="BeachNets" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -273, 0, 9)
+script = ExtResource("33_obstacle")
+course = "beach_course"
+index = 3
+end_offset = Vector3(6, 0, 0)
+
+[node name="FeedbackNote" type="CanvasLayer" parent="." node_paths=PackedStringArray("world_map", "driver")]
+script = ExtResource("90_feedback")
+world_map = NodePath("../WorldMap")
+driver = NodePath("../SimDriver")

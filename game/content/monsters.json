@@ -24,6 +24,33 @@
       ]
     }
   },
+  "goat": {
+    "name": "Wild goat",
+    "plural": "Wild goats",
+    "level": 3,
+    "stats": {
+      "attack": 1,
+      "strength": 1,
+      "defence": 2,
+      "vitality": 6
+    },
+    "attack_speed": 5,
+    "aggressive": false,
+    "respawn_ticks": 20,
+    "drops": "goat",
+    "examine": "A shaggy hill goat that's wandered down to graze. It butts, but only if you start it.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#d8d2c4",
+      "accent": "#6a5a48",
+      "size": 0.8,
+      "features": [
+        "ears",
+        "tail",
+        "horns"
+      ]
+    }
+  },
   "wolf": {
     "name": "Wolf",
     "plural": "Wolves",
@@ -535,6 +562,49 @@
         "tail",
         "lizard",
         "many_heads"
+      ]
+    }
+  },
+  "euryale": {
+    "name": "Euryale, the Gorgon Queen",
+    "level": 108,
+    "stats": {
+      "attack": 88,
+      "strength": 84,
+      "defence": 95,
+      "vitality": 99
+    },
+    "attack_speed": 5,
+    "aggressive": true,
+    "respawn_ticks": 120,
+    "drops": "euryale",
+    "slayer": {
+      "level": 70,
+      "ward_item": "aegis",
+      "unwarded_effect": "gorgon_gaze"
+    },
+    "boss": {
+      "throw_every": 3,
+      "throw_delay": 3,
+      "throw_radius": 2.0,
+      "throw_damage": [
+        16,
+        32
+      ],
+      "enrage_below": 0.3,
+      "enrage_speed": 3,
+      "throw_kind": "venom"
+    },
+    "examine": "The eldest gorgon, and the one who never died. A mirror won't fool her; only the goddess's own shield will.",
+    "appearance": {
+      "model": "humanoid",
+      "color": "#3a4a30",
+      "accent": "#c8a040",
+      "size": 1.9,
+      "features": [
+        "snakes",
+        "green_skin",
+        "glowing_eyes"
       ]
     }
   }

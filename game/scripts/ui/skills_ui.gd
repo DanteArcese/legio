@@ -1,6 +1,8 @@
 extends CanvasLayer
 ## The skills panel (K / left trigger): every skill's level in a grid, with
-## the focused or hovered skill's XP and XP to the next level underneath.
+## the focused or hovered skill's XP and XP to the next level underneath,
+## and an XP tracker: what each skill has gained this session, the rate per
+## hour, and roughly how long the next level will take at that rate.
 ## D-pad or arrow keys move between skills.
 
 const Skills := preload("res://scripts/sim/skills.gd")
@@ -14,11 +16,37 @@ var _panel: PanelContainer
 var _buttons := {}
 var _total: Label
 var _detail: Label
+## skill -> XP gained this session, and when the skill first gained (msec).
+var _gained := {}
+var _since := {}
 
 
 func _ready() -> void:
 	_build()
 	driver.ticked.connect(func(_tick): if is_open(): _refresh())
+	driver.sim_event.connect(_on_sim_event)
+
+
+func _on_sim_event(event: Dictionary) -> void:
+	if event["type"] != "xp" or event.get("id") != player.get_node("SimEntity").entity_id:
+		return
+	var skill: String = event["skill"]
+	if not _gained.has(skill):
+		_since[skill] = Time.get_ticks_msec()
+	_gained[skill] = _gained.get(skill, 0.0) + event["amount"]
+
+
+## XP an hour for a skill this session, counted from its first gain (at
+## least a minute, so one early drop doesn't read as a huge rate).
+func xp_per_hour(skill: String) -> float:
+	if not _gained.has(skill):
+		return 0.0
+	var hours := maxf((Time.get_ticks_msec() - _since[skill]) / 3600000.0, 1.0 / 60.0)
+	return _gained[skill] / hours
+
+
+func session_xp(skill: String) -> float:
+	return _gained.get(skill, 0.0)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -69,6 +97,11 @@ func _refresh() -> void:
 		total += level
 		_buttons[skill].text = "%s  %d" % [skill.capitalize(), level]
 	_total.text = "Total level %d     Combat level %d" % [total, skills.combat_level()]
+	var session := 0.0
+	for skill in _gained:
+		session += _gained[skill]
+	if session > 0.0:
+		_total.text += "     This session: +%s XP" % _thousands(session)
 	var focused := get_viewport().gui_get_focus_owner()
 	for skill in _buttons:
 		if _buttons[skill] == focused:
@@ -86,6 +119,19 @@ func _show_detail(skill: String) -> void:
 	else:
 		var remaining := Skills.xp_for_level(level + 1) - xp
 		_detail.text = "%s: %s XP, %s to level %d" % [skill.capitalize(), _thousands(xp), _thousands(remaining), level + 1]
+	var rate := xp_per_hour(skill)
+	if rate > 0.0:
+		_detail.text += "\nThis session: +%s XP, %s an hour" % [_thousands(session_xp(skill)), _thousands(rate)]
+		if level < Skills.MAX_LEVEL:
+			_detail.text += ", next level in %s" % _duration((Skills.xp_for_level(level + 1) - xp) / rate)
+
+
+## "45 min", "3 h 10 min".
+static func _duration(hours: float) -> String:
+	var minutes := ceili(hours * 60.0)
+	if minutes < 60:
+		return "%d min" % minutes
+	return "%d h %d min" % [minutes / 60, minutes % 60]
 
 
 static func _thousands(value: float) -> String:

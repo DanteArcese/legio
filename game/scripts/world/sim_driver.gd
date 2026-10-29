@@ -2,6 +2,7 @@ extends Node
 ## Runs the simulation on game ticks and relays its events to the scene.
 ## Press F3 to cycle tick lengths (debug only; the game uses 0.6 s).
 
+const MonsterScene := preload("res://scenes/monster.tscn")
 const Villa := preload("res://scripts/sim/villa.gd")
 const Simulation := preload("res://scripts/sim/simulation.gd")
 const TickClock := preload("res://scripts/sim/tick_clock.gd")
@@ -35,6 +36,7 @@ var _graves := {}
 var _rocks := {}
 var _trees := {}
 var _stalls := {}
+var _strongboxes := {}
 var _hunt_spots := {}
 var _patches := {}
 var _hotspots := {}
@@ -88,6 +90,14 @@ func _ready() -> void:
 		sim.villa.add_hotspot(hotspot.hotspot_id, hotspot.hotspot_type, hotspot.global_position)
 	for surveyor in get_tree().get_nodes_in_group("surveyors"):
 		sim.villa.set_surveyor(surveyor.global_position)
+	for circus in get_tree().get_nodes_in_group("circus"):
+		sim.circus.set_track(circus.CENTER, circus.HALF, circus.RADIUS)
+	for agent in get_tree().get_nodes_in_group("circus_agents"):
+		sim.circus.set_agent(agent.global_position)
+	for circus in get_tree().get_nodes_in_group("circus"):
+		sim.games.set_arena(circus.ARENA)
+	for editor in get_tree().get_nodes_in_group("games_editors"):
+		sim.games.set_editor(editor.global_position)
 	for board in get_tree().get_nodes_in_group("trade_boards"):
 		sim.mercatura.add_board(board.board_id, board.global_position)
 	for patch in get_tree().get_nodes_in_group("patches"):
@@ -107,6 +117,10 @@ func _ready() -> void:
 		stall.stall_id = _stalls.size() + 1
 		_stalls[stall.stall_id] = stall
 		sim.thieving.add_stall(stall.stall_id, stall.stall_type, stall.global_position)
+	for box in get_tree().get_nodes_in_group("strongboxes"):
+		box.strongbox_id = _strongboxes.size() + 1
+		_strongboxes[box.strongbox_id] = box
+		sim.thieving.add_strongbox(box.strongbox_id, box.box_type, box.global_position)
 	var mark_id := 0
 	for mark in get_tree().get_nodes_in_group("marks"):
 		mark_id += 1
@@ -127,6 +141,26 @@ func register(entity: Node) -> void:
 		_next_auto_id += 1
 	entity.register(sim)
 	_entities[entity.entity_id] = entity
+
+
+## Arena monsters come and go with the games: the sim spawns them and the
+## world gives them bodies, then takes the bodies away again.
+func _mirror_games(event: Dictionary) -> void:
+	match event["type"]:
+		"games_spawn":
+			for spec in event["monsters"]:
+				var body: Node3D = MonsterScene.instantiate()
+				body.monster_id = spec["monster"]
+				body.get_node("SimEntity").entity_id = spec["id"]
+				get_parent().add_child(body)
+				body.global_position = spec["position"] + Vector3(0, 0.1, 0)
+				register(body.get_node("SimEntity"))
+		"games_despawn":
+			for id in event["ids"]:
+				var entity: Node = _entities.get(id)
+				if entity:
+					_entities.erase(id)
+					entity.body().queue_free()
 
 
 func entity(id: int) -> Node:
@@ -157,6 +191,7 @@ func _physics_process(delta: float) -> void:
 			for entity in _entities.values():
 				entity.on_sim_event(event)
 			_mirror_ground(event)
+			_mirror_games(event)
 			sim_event.emit(event)
 		ticked.emit(sim.tick)
 
@@ -165,6 +200,7 @@ func _physics_process(delta: float) -> void:
 ## state restored from a save.
 func replay_event(event: Dictionary) -> void:
 	_mirror_ground(event)
+	_mirror_games(event)
 	sim_event.emit(event)
 
 
@@ -248,6 +284,8 @@ func _mirror_ground(event: Dictionary) -> void:
 			_hunt_spots[event["spot"]].set_trap_state("")
 		"stall_emptied", "stall_restocked":
 			_stalls[event["stall"]].set_empty(event["type"] == "stall_emptied")
+		"strongbox_emptied", "strongbox_refilled":
+			_strongboxes[event["strongbox"]].set_empty(event["type"] == "strongbox_emptied")
 		"tree_felled", "tree_regrown":
 			_trees[event["tree"]].set_felled(event["type"] == "tree_felled")
 		"grave_add":

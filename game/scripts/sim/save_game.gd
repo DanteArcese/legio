@@ -44,9 +44,11 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		},
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
+		"games_best": player.games_best,
 		"trade_contract": player.trade_contract.duplicate(),
 		"arena": {"contract": player.arena_contract.duplicate(), "done": player.arena_contracts_done},
-		"villa": {"owned": player.villa_owned, "furniture": player.villa_furniture.duplicate()},
+		"villa": {"owned": player.villa_owned, "furniture": player.villa_furniture.duplicate(), "steward_since": player.steward_since,
+			"rested_ticks": maxi(player.rested_until - sim.tick, 0)},
 		"contracts_done": player.contracts_done,
 		"collection": player.collection.duplicate(),
 		"pet": player.pet,
@@ -104,9 +106,13 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 	if player.arena_contract.has("remaining"):
 		player.arena_contract["remaining"] = int(player.arena_contract["remaining"])
 	player.arena_contracts_done = int(arena.get("done", 0))
+	player.games_best = int(data.get("games_best", 0))
 	var villa: Dictionary = data.get("villa", {})
 	player.villa_owned = bool(villa.get("owned", false))
 	player.villa_furniture = villa.get("furniture", {}).duplicate()
+	player.steward_since = float(villa.get("steward_since", 0.0))
+	var rested := int(villa.get("rested_ticks", 0))
+	player.rested_until = sim.tick + rested if rested > 0 else -1
 	sim.villa.restore(player, [])
 	player.contracts_done = int(data.get("contracts_done", 0))
 	player.pet = str(data.get("pet", ""))

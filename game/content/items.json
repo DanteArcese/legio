@@ -400,6 +400,71 @@
       "ammo_type": "sling_bullet"
     }
   },
+  "amentum": {
+    "name": "Amentum",
+    "value": 40,
+    "examine": "A leather throwing loop. Wound round a javelin's shaft, it spins the throw and nearly doubles the distance.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 10
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 5.0,
+      "ammo": "javelin",
+      "special": {
+        "name": "pilum volley",
+        "cost": 50,
+        "effect": "heavy"
+      }
+    }
+  },
+  "bronze_javelin": {
+    "name": "Bronze javelin",
+    "value": 6,
+    "examine": "A light verutum with a bronze head. Thrown, not shot.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 14
+      },
+      "ammo_type": "javelin"
+    }
+  },
+  "iron_javelin": {
+    "name": "Iron javelin",
+    "value": 12,
+    "examine": "An iron-headed verutum. It punches through hide.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 20
+      },
+      "ammo_type": "javelin"
+    },
+    "requirements": {
+      "ranged": 15
+    }
+  },
+  "steel_pilum": {
+    "name": "Steel pilum",
+    "value": 22,
+    "examine": "A legionary's pilum: a long steel shank that bends in a shield and won't come out.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 28
+      },
+      "ammo_type": "javelin"
+    },
+    "requirements": {
+      "ranged": 30
+    }
+  },
   "galena": {
     "name": "Galena",
     "value": 10,
@@ -1048,6 +1113,24 @@
     "value": 50,
     "examine": "A tunny steak, grilled over vine-wood.",
     "heals": 10
+  },
+  "eel_pot": {
+    "name": "Eel pot",
+    "value": 40,
+    "examine": "A narrow wicker trap. Eels swim in and can't find the way out.",
+    "tool": "pot",
+    "tool_tier": 1
+  },
+  "raw_eel": {
+    "name": "Raw eel",
+    "value": 22,
+    "examine": "A long, slippery marsh eel. It's still wriggling."
+  },
+  "cooked_eel": {
+    "name": "Eel",
+    "value": 38,
+    "examine": "Eel roasted on a skewer, the Greek way.",
+    "heals": 9
   },
   "harpy_feather": {
     "name": "Harpy feather",
@@ -1704,5 +1787,483 @@
       "defence": 60,
       "slayer": 70
     }
+  },
+  "vine_cutting": {
+    "name": "Vine cutting",
+    "value": 8,
+    "examine": "A rooted cane from a Greek vine. Plant it on a trellis."
+  },
+  "grapes": {
+    "name": "Grapes",
+    "value": 5,
+    "examine": "A heavy bunch of dark grapes, dusty with bloom.",
+    "heals": 3
+  },
+  "olive_oil": {
+    "name": "Olive oil",
+    "value": 35,
+    "examine": "A small amphora of green-gold oil, fresh from your own press."
+  },
+  "estate_wine": {
+    "name": "Estate wine",
+    "value": 48,
+    "examine": "An amphora of your villa's own red, sealed with pitch and stamped with your name."
+  },
+  "lockpick": {
+    "name": "Lockpick",
+    "value": 6,
+    "examine": "A bent iron pick and a tension wire. Not for honest work.",
+    "stackable": true
+  },
+  "victors_palm": {
+    "name": "Victor's palm",
+    "value": 50,
+    "examine": "A palm branch, given to the winning charioteer. The crowd's roar is worth more."
+  },
+  "lorica_segmentata": {
+    "name": "Lorica segmentata",
+    "value": 1400,
+    "examine": "Bands of steel laced over leather: the legion's own armour. It takes a squire to buckle and a legionary to wear.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 2,
+        "defence": 30,
+        "ranged_defence": 6,
+        "ritus_defence": -14
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "phalerae": {
+    "name": "Phalerae",
+    "value": 1600,
+    "examine": "Silver discs won for valour, worn on a harness over the armour.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 6,
+        "strength": 6,
+        "defence": 4
+      }
+    },
+    "requirements": {
+      "defence": 50
+    }
+  },
+  "gorgon_head": {
+    "name": "Gorgon's head",
+    "value": 0,
+    "examine": "Wrapped in a sack, eyes shut. You don't check.",
+    "quest_item": true
+  },
+  "wheat_seed": {
+    "name": "Seed wheat",
+    "value": 1,
+    "examine": "A pouch of emmer wheat for sowing.",
+    "stackable": true
+  },
+  "wheat": {
+    "name": "Wheat",
+    "value": 4,
+    "examine": "A sheaf of ripe emmer wheat."
+  },
+  "flour": {
+    "name": "Flour",
+    "value": 6,
+    "examine": "A pot of coarse stone-ground flour."
+  },
+  "marble_block": {
+    "name": "Marble block",
+    "value": 40,
+    "examine": "A block of Parian marble, white enough to glow."
+  },
+  "tesserae": {
+    "name": "Tesserae",
+    "value": 2,
+    "examine": "Little cubes of cut marble for laying a mosaic.",
+    "stackable": true
+  },
+  "chisel": {
+    "name": "Mason's chisel",
+    "value": 30,
+    "examine": "A claw chisel and a mallet for working stone.",
+    "tool": "chisel",
+    "tool_tier": 1
+  },
+  "orichalcum_ore": {
+    "name": "Orichalcum ore",
+    "value": 60,
+    "examine": "Ore with a red-gold sheen. Plato says Atlantis was roofed with it."
+  },
+  "orichalcum_bar": {
+    "name": "Orichalcum bar",
+    "value": 200,
+    "examine": "A bar of orichalcum, the mountain-copper. It glows like a coal in daylight."
+  },
+  "orichalcum_pugio": {
+    "name": "Orichalcum pugio",
+    "value": 160,
+    "examine": "A dagger of red-gold orichalcum, keen as the day it was forged.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 17,
+        "strength": 13,
+        "defence": 0
+      },
+      "attack_speed": 3,
+      "special": {
+        "name": "twin thrust",
+        "cost": 25,
+        "effect": "twin"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "orichalcum_gladius": {
+    "name": "Orichalcum gladius",
+    "value": 380,
+    "examine": "A gladius of orichalcum. It rings like a bell when it bites.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 28,
+        "strength": 25,
+        "defence": 0
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "legion's thrust",
+        "cost": 50,
+        "effect": "strong"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "orichalcum_galea": {
+    "name": "Orichalcum galea",
+    "value": 220,
+    "examine": "An orichalcum helmet with a horsehair crest.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 13,
+        "ritus_defence": -7
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "orichalcum_scutum": {
+    "name": "Orichalcum scutum",
+    "value": 440,
+    "examine": "A curved scutum faced with orichalcum plate.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 24,
+        "ritus_defence": -11
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "orichalcum_lorica": {
+    "name": "Orichalcum lorica",
+    "value": 620,
+    "examine": "Scales of orichalcum on a leather backing. It glows red at sunset.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 32,
+        "ritus_defence": -20
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "orichalcum_pickaxe": {
+    "name": "Orichalcum pickaxe",
+    "value": 480,
+    "examine": "An orichalcum-headed pickaxe. It bites rock like cheese.",
+    "tool": "pickaxe",
+    "tool_tier": 4,
+    "requirements": {
+      "mining": 41
+    }
+  },
+  "orichalcum_axe": {
+    "name": "Orichalcum axe",
+    "value": 440,
+    "examine": "An orichalcum felling axe.",
+    "tool": "axe",
+    "tool_tier": 4,
+    "requirements": {
+      "woodcutting": 41
+    }
+  },
+  "orichalcum_arrowheads": {
+    "name": "Orichalcum arrowheads",
+    "value": 14,
+    "examine": "Barbed orichalcum arrowheads.",
+    "stackable": true
+  },
+  "orichalcum_arrow": {
+    "name": "Orichalcum arrow",
+    "value": 22,
+    "examine": "An arrow with an orichalcum head. It flies true.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 22
+      },
+      "ammo_type": "arrow"
+    },
+    "requirements": {
+      "ranged": 40
+    }
+  },
+  "gorgoneion": {
+    "name": "Gorgoneion",
+    "value": 3000,
+    "examine": "A gorgon's face in gold, snakes and all. Euryale's sisters see one of their own, and look away.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 5,
+        "strength": 7,
+        "defence": 6,
+        "ritus_defence": -2
+      },
+      "wards": [
+        "aegis"
+      ]
+    },
+    "requirements": {
+      "defence": 55,
+      "slayer": 70
+    }
+  },
+  "rudis": {
+    "name": "Rudis",
+    "value": 800,
+    "examine": "The wooden sword of a gladiator who has won his freedom. Light, balanced, and it still hurts.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 24,
+        "strength": 20,
+        "defence": 2
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "crowd's favour",
+        "cost": 50,
+        "effect": "sure"
+      }
+    },
+    "requirements": {
+      "attack": 40
+    }
+  },
+  "yew_logs": {
+    "name": "Yew logs",
+    "value": 45,
+    "examine": "Dense, springy yew. Bowyers pay well for it."
+  },
+  "yew_longbow": {
+    "name": "Yew longbow",
+    "value": 900,
+    "examine": "A tall bow of a single yew stave. Slow to draw, and it reaches a long way.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 30
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 10.0,
+      "ammo": "arrow",
+      "special": {
+        "name": "volley",
+        "cost": 50,
+        "effect": "volley"
+      }
+    },
+    "requirements": {
+      "ranged": 50
+    }
+  },
+  "dormouse": {
+    "name": "Dormouse",
+    "value": 20,
+    "examine": "A plump edible dormouse, fattened on olives. Romans keep them in jars for the table."
+  },
+  "honeyed_dormouse": {
+    "name": "Honeyed dormouse",
+    "value": 60,
+    "examine": "Glis roasted with honey and poppy seed. A dish for a senator's table.",
+    "heals": 16
+  },
+  "silver_lituus": {
+    "name": "Silver lituus",
+    "value": 320,
+    "examine": "An augur's staff capped in worked silver. The Manes answer it more readily.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ritus_attack": 14,
+        "ritus_strength": 2
+      },
+      "attack_speed": 4,
+      "style": "ritus",
+      "range": 6.5,
+      "ammo": "tablet"
+    },
+    "requirements": {
+      "ritus": 30
+    }
+  },
+  "orichalcum_lituus": {
+    "name": "Orichalcum lituus",
+    "value": 900,
+    "examine": "A lituus of red-gold orichalcum. It hums faintly near graves.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ritus_attack": 22,
+        "ritus_strength": 4
+      },
+      "attack_speed": 4,
+      "style": "ritus",
+      "range": 7.0,
+      "ammo": "tablet"
+    },
+    "requirements": {
+      "ritus": 50
+    }
+  },
+  "augurs_robe": {
+    "name": "Augur's robe",
+    "value": 420,
+    "examine": "A white robe bordered in purple, sewn with silver thread. The gods notice it.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "defence": 4,
+        "ritus_attack": 9,
+        "ritus_defence": 12,
+        "ranged_defence": -5
+      }
+    },
+    "requirements": {
+      "ritus": 40
+    }
+  },
+  "augurs_hood": {
+    "name": "Augur's hood",
+    "value": 220,
+    "examine": "A fold of the robe drawn over the head, as an augur does when reading the sky.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "defence": 2,
+        "ritus_attack": 5,
+        "ritus_defence": 6,
+        "ranged_defence": -3
+      }
+    },
+    "requirements": {
+      "ritus": 40
+    }
+  },
+  "goat_hide": {
+    "name": "Goat hide",
+    "value": 8,
+    "examine": "A shaggy goat hide. The tanning rack will make leather of it."
+  },
+  "return_tablet_fort": {
+    "name": "Tablet of return (Castra Ferrea)",
+    "value": 15,
+    "examine": "A lead tablet asking the Lares of Castra Ferrea to bring you home. Read it and they will.",
+    "stackable": true,
+    "teleport": {
+      "place": "Castra Ferrea",
+      "position": [
+        2,
+        0,
+        3
+      ]
+    }
+  },
+  "return_tablet_portus": {
+    "name": "Tablet of return (Portus Salis)",
+    "value": 20,
+    "examine": "A lead tablet addressed to the harbour's Lares, sealed with a little salt.",
+    "stackable": true,
+    "teleport": {
+      "place": "Portus Salis",
+      "position": [
+        -300,
+        0,
+        -8
+      ]
+    }
+  },
+  "hydra_hatchling": {
+    "name": "Hydra hatchling",
+    "value": 0,
+    "examine": "Five heads, one appetite. They argue over who gets to bite you first.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#3e5a3a",
+      "accent": "#8aa060",
+      "size": 0.4,
+      "features": [
+        "long_snout",
+        "tail",
+        "lizard",
+        "many_heads"
+      ]
+    }
+  },
+  "foal": {
+    "name": "Foal",
+    "value": 0,
+    "examine": "A gangly circus foal with a Reds ribbon in its mane. It wants to race everything.",
+    "pet": {
+      "model": "quadruped",
+      "color": "#8a5a36",
+      "accent": "#3a2a1e",
+      "size": 0.55,
+      "features": [
+        "ears",
+        "long_snout",
+        "tail"
+      ]
+    }
+  },
+  "olive_sapling": {
+    "name": "Olive sapling",
+    "value": 30,
+    "examine": "A young olive tree in a pot. It'll outlive you."
   }
 }

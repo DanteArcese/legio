@@ -40,7 +40,7 @@ A first pass at Roman-themed skills. Names are working names.
 |---|---|
 | Attack, Strength, Defence | Kept as-is. Gladius, spatha, pilum, scutum. |
 | Vitality | Hitpoints. |
-| Ranged | Bows (*arcus*) and slings (*funda*, with lead *glandes*), with javelins and the hand-held *manuballista* later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
+| Ranged | Bows (*arcus*), slings (*funda*, with lead *glandes*), and javelins thrown with an *amentum* (a leather throwing loop; Aulus sells it with bronze javelins, the quartermaster sells iron ones after Miles, and the smith makes five from a bar and a log, up to the steel *pilum* at Ranged 30). Javelins reach 5 m and throw every 5 ticks but hit hardest. The hand-held *manuballista* comes later. Styles: Aimed (+accuracy), Rapid (one tick faster), Longrange (+2 m range, XP split with Defence). About 75% of fired ammunition can be picked up again. |
 | Pietas | Replaces Prayer. You make offerings at shrines and get buffs from patron gods. The heavenly gods are Mars (strength), Minerva (defence), Diana (ranged), and Mercury (movement and run energy). The underworld gods (Dis Pater, Proserpina, Hecate) favour Ritus. XP comes from offerings: incense, wine, votive objects, and hides and bones left at altars. See [Curses and Pietas](#curses-and-pietas). |
 | Ritus | The third combat style: curse tablets. See [Ritus](#ritus). |
 
@@ -68,15 +68,21 @@ Kept as a core skill and the center of progression.
 
 | Skill | Roman flavor |
 |---|---|
-| Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying. |
-| Woodcutting | Oak, pine, cedar, olive wood. |
-| Fishing | Anchovy and mackerel feed garum production; tuna and eels come later. |
+| Mining | Copper, tin, iron, silver, lead, gold, and marble quarrying (Parian marble on Seriphos, 45). |
+| Woodcutting | Oak, pine, and yew (*taxus*, beyond the Limes at 60), with cedar and olive wood later. |
+| Fishing | Anchovy and mackerel feed garum production. Tuna is harpooned off Portus Salis's pier (40), and eels are trapped in an eel pot in the reed pool below Seriphos's olive grove (30; Nikias sells the pots). |
 | Farming | Grain, olives, grapes, herbs. Patches take real time to grow. |
 
 **Built (#117): herbs and vegetables.** Two herb patches and two allotments in the boar-free fields south of the fort. Herbs: mint (1), fennel (9), sage (18), wormwood (27), poppy (36); vegetables: cabbage (1) and broad beans (8). Plant with seeds and a trowel (the Gaulish merchant sells mint and cabbage seeds and trowels; the rest drop from rats, boars, lemurs, and the strix). Crops grow in four stages over a few minutes of game time, and keep growing while the game is closed: saves record the real time, and loading turns the time away into growth. Harvests give 3 to 5 herbs or 4 to 7 vegetables. Grain, olives, and grapes come with the villa.
+
+**Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10). *Bread for the Garrison* (#231), a starter quest from Sabina the baker beside her forum stall, walks a new player through it: five pots of flour, then three loaves, for Cooking and Farming XP, coins and seed wheat.
+
+**Built (#249): more starter quests.** *The Smith's Apprentice*, from Tertius the smith by the anvil, walks a new player through Mining and Smithing: five copper and five tin, two bronze bars, then a bronze gladius (Smithing 5). The reward is XP, the gladius back, and a bronze scutum. *Gifts for the Gods*, from the sacerdos, asks for five bones and a wolf pelt, and teaches offering: Pietas XP and ten incense to offer at the altar.
 | Hunter | Traps and nets. Live capture for the arena. |
 
 **Built (#109): box traps.** Hare burrows south of the fields (Hunter 1) and fox dens at the wolf woods' edge (15). Set a box trap (from Aulus) at one; it springs by chance every few ticks, better with level. Checking a sprung trap gives raw meat and a pelt, XP, and the trap back. Traps left out when you save come back to your pack on load. Nets and live capture for the arena come later.
+
+**Built (#275): dormice.** Three dormouse nests in Seriphos's olive grove (Hunter 40) catch fat edible dormice. Roasted with honey (Cooking 50), a honeyed dormouse heals 16: the best food yet, and a dish for a senator's table.
 
 ### Artisan
 
@@ -85,7 +91,9 @@ Kept as a core skill and the center of progression.
 | Smithing | Bronze to iron to Noric steel to orichalcum to meteoric iron (our own metal tiers). |
 
 **Built (#154): Noric steel.** Coal (Mining 30) comes from the Vipasca pit. A steel bar is an iron ore and two coal (Smithing 30), and steel makes a pugio (30), axe (31), galea (32), pickaxe (33), gladius (34), arrowheads (35), scutum (36) and lorica (38), all needing level 20 to use. Steel tools are tier 3: as fast as iron, but they land more often. Silver bars smith into silver fibulae (32).
-| Cooking | Bread, garum, roasts, *posca*. Wine making could live here or under Farming. |
+
+**Built (#233): orichalcum.** Three orichalcum veins at the bottom of the Vipasca pit (Mining 55). A bar is an orichalcum ore and four coal (Smithing 50), and orichalcum makes a pugio (50), axe (51), galea (52), pickaxe (53), gladius (54), arrowheads (55, fletched into arrows at 45), scutum (56) and lorica (58), all needing level 40 to use. Orichalcum tools are tier 4, a tick faster than steel. The quest *The Mountain-Copper* (#264; The Silent Gallery, Mining 55, Smithing 50) introduces it: three ores for Foreman Masculus, then a bar for the procurator, for XP and the first orichalcum pickaxe made at Vipasca.
+| Cooking | Bread (from the fort's wheat), garum, roasts, *posca*, and pressing oil and wine at the villa. |
 
 **Built (#103): garum.** A garum vat by the pond ferments 4 anchovies and 2 salt into garum (Cooking 15). Garum goes into better food: anchovy relish (16) and mackerel in garum (25, heals 11). The Gaulish merchant in the forum sells salt, linen, and thread.
 | Crafting | Pottery and amphorae, glassblowing, leather, mosaics, jewelry. |
@@ -103,6 +111,10 @@ Kept as a core skill and the center of progression.
 
 **Built (#129): the villa.** Citizens (Decurio done) buy a villa from the land surveyor in the forum for 5000 denarii. A private road east of the fort leads to the villa grounds (a walled estate far east, past the barrow), closed to anyone without one. Logs are sawn into planks at the sawpit by the smithy (Engineering). Seven hotspots around the courtyard take furniture built from planks, nails, and iron with a hammer, and each piece is the real thing: the hearth holds a campfire (1) or a clay oven (20); the workshop a tanning rack (5) or an anvil (25); the shrine a lararium (10) to pray at; the strongroom a strongbox (30) that opens your bank; two garden beds take herb (1) or vegetable (8) beds that grow like any patch; and the road stone takes a waystone (40) that sends you straight to Portus Salis. Furniture can be removed and rebuilt, and the villa and everything in it are saved.
 
+**Built (#210): the estate.** Two press-house floors on the west lawn take an olive press (Engineering 30) or a wine press (38), working stations where four olives press into an amphora of olive oil (Cooking 25) and five bunches of grapes into estate wine (35). Garden beds can also take a vine trellis (15), planted with vine cuttings from Nikias (Farming 20) and harvested for grapes. A steward's desk in the office (25; 4 oak planks and 1,000 denarii to hire him) puts a freedman steward in charge: he fills an amphora per press every two hours of real time, even with the game closed, and keeps at most a day's worth for you to collect. Oil and wine sell for little in shops, but Mercatura contracts want them: oil for the harbour lamps (Mercatura 20) and wine for the Gauls (30). Two orchard plots by the west wall (#273) take an olive grove (Engineering 20), planted with olive saplings from Nikias (Farming 30). They grow over about ten minutes of real time, like any patch, and yield 12 to 20 olives, enough for three to five amphorae of oil.
+
+**Built (#219): marble and mosaics.** A small quarry in the hills south of Seriphos's town has outcrops of Parian marble (Mining 45). With a mason's chisel (Nikias sells one), a marble block carves into 25 tesserae anywhere (Crafting 40, the inventory's Carve option). The villa courtyard's centre takes a mosaic floor (Engineering 45; 150 tesserae and 2 oak planks), a rosette in a meander border. Resting on it leaves you rested: +5% XP in every skill for 30 minutes of play, shown on the HUD and kept in the save.
+
 ### Support
 
 | Skill | Roman flavor |
@@ -110,9 +122,19 @@ Kept as a core skill and the center of progression.
 | Athletics | Replaces Agility. Obstacle courses, plus chariot-racing laps in the circus. |
 
 **Built (#98).** A training course east of the fort: log balance, palisade wall, rope swing over a ditch, and hurdles. Each obstacle is a timed crossing; whether you fall is rolled when you start, so the client plays a clean crossing or a stumble back to the start (a little damage, never lethal). Falls stop by about level 25 to 40. Running the four in order earns a lap bonus. Each Athletics level adds 0.2% run speed. Content lives in `game/content/athletics.json`.
+
+**Built (#239): shortcuts.** A course of its own with no lap bonus: each shortcut is a single crossing, usable from either side. The first is a ladder over the fort's west wall to the grove (Athletics 10), which saves the walk round the south-west corner.
+
+**Built (#269): the beach run.** A second course along the sand east of Portus Salis's pier (Athletics 30): a drifted mast, an upturned hull, a rope over the inlet, and net racks. It's about twice the training course's XP an hour at its level.
+
+**Built (#217): chariot racing.** A road east from the fort leads to the circus: a sanded oval round a spina with turning posts and an obelisk, with stands along both straights. The Reds' factio agent enters you in a three-lap race (Athletics 20, 25 denarii) against the Blues and the Greens. After a short countdown you drive a two-horse chariot with the usual movement controls; it's faster with Athletics, but the corners are yours to take. The rivals hold a steady pace on their lanes. A lap counts only when you pass every quarter of the track in order, so cutting across doesn't help. Every lap gives XP, and your place adds more, plus prize money (250 and 80 denarii for first and second) and a victor's palm for a win. The HUD shows your lap and current place, and leaving the track forfeits the race.
+
+**Built (#255): the munera.** The editor of the games at the circus's east end sends a fighter of combat 20 or more out onto the sand past the east turning post, for ten waves of beasts and raiders (wolves and boars, latrones, dire wolves, Germanic raiders, and finally a cyclops), with a short rest between each. Every wave cleared pays coins, rising to 400 for the last, and clearing all ten wins a *rudis*, the wooden sword of a freed gladiator, which is a good weapon in its own right (Attack 40). Falling in the arena isn't a death: the attendants carry you out, with no grave and nothing lost but the rest of the games. Running from the sand forfeits. The monsters come from the sim (reserved ids, no respawn and no drops), and the world builds and removes their bodies.
 | Thieving | Pickpocket merchants and senators, crack strongboxes, run the Subura's underworld. |
 
 **Built (#95).** In Castra Ferrea's forum: three market stalls (baker at 1, cloth at 12, silversmith at 25) that empty for a while after a theft, and two marks to pickpocket (a townsman at 1, a merchant at 18) for coins. Stallholders sometimes catch you; inside the walls the vigiles then warn and fine you, as they do for Ritus. A failed pickpocket stuns you for a few ticks (no walking, attacking, or thieving) and does a little damage, never lethal. Content lives in `game/content/thieving.json`.
+
+**Built (#218): strongboxes.** Three strongboxes to crack with a lockpick (smithed five to an iron bar at Smithing 16, or bought from the Portus fishmonger, who asks no questions): a shipping agent's box in Portus Salis (Thieving 30), the Vipasca pay chest by the procurator (42), and Nikias's coffer on Seriphos (55). Working a lock takes a few ticks; a sprung needle trap hurts (never fatally) and snaps the pick half the time, and a cracked box pays out coins, silver, gold or pearls from its own table and stays empty for a while.
 | Mercatura | Trade contracts between provinces. See [Mercatura](#mercatura). A later addition, not part of the first vertical slice. |
 
 ### Mercatura
@@ -125,6 +147,8 @@ Mercatura works like a skill rather than a menu over the market:
 - **Links to other skills:** artisan products sell for more in the right region, so Mercatura rewards specialists.
 
 **Built (#120): trade contracts.** Trade boards at Portus Salis (cargoes wanted inland: garum and salt for the quartermaster, grilled tuna for the Gaulish merchant) and in the fort's forum (cargoes wanted at the coast: iron bars, oak logs, and linen for the fishmonger's shipwrights). Take one contract at a time, source the goods yourself (the fishmonger sells garum cheaply at the coast), and deliver to the named shopkeeper for coins and Mercatura XP. Higher levels unlock bigger contracts. The quest log tracks the current contract. Carts, wagons, ships, regional prices, and risk on the road come later.
+
+**Built (#237): regional prices.** Shops can want particular goods at their own price (`buys.prices`), above their usual rate and even when they don't otherwise trade in them. The Portus fishmonger pays well for olive oil, iron, oak and linen for the ships; the Gaulish merchant pays over the odds for estate wine (1.2× its value) and for garum; Nikias on Seriphos wants iron, steel and silver fibulae; and the procurator at Vipasca buys bread, meat and oil for the miners. Selling the same goods where they're wanted pays noticeably more than selling them anywhere.
 
 ## Replacing magic
 
@@ -174,6 +198,8 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 - Effects are subtle: the target shudders, stumbles, or falters under faint dark motes. There are no beams and no fireballs.
 - Curses invoke the powers the real tablets name: Dis Pater, Proserpina, Hecate, and the Manes. Item descriptions quote real tablet wording, such as "I bind his tongue, his hands, his feet."
 
+**Built (#277): Ritus gear tiers.** Beyond the plain lituus and the ritual robe and hood: a silver lituus (jewelled from two silver bars and an oak log, Crafting 35; Ritus 30), an orichalcum lituus (smithed from two orichalcum bars and an oak log, Smithing 57; Ritus 50), and an augur's robe and hood sewn from linen, silver and thread (Crafting 40; Ritus 40).
+
 ### Curses and Pietas
 
 Decided (#48) and built in #69. Numbers: 4 pollution per curse, polluted at 30, wears off 1 point every 15 seconds; polluted heavenly blessings work at half strength and underworld ones at 1.5×; cleansing costs 20 denarii. Cursing wasn't impious to Romans: curse tablets were addressed *to* gods. What Romans feared was **ritual pollution** from dealings with death, and the law punished harmful magic. So the tension is about pollution and the law, not divine anger.
@@ -195,10 +221,14 @@ Without teleports, travel becomes a progression system:
 - **Horses and carts** for overland travel, and **ships** for sea routes between provinces.
 - Rare consumables, such as a blessed token from a temple, return you to a shrine.
 
+**Built (#281): return tablets.** Single-use lead tablets that ask a town's Lares to bring you home: Castra Ferrea's from the sacerdos (5 for 30 denarii), Portus Salis's from the fishmonger (5 for 40). Read one from the inventory to be carried to the town's forum or harbour at once. They don't work in the munera or mid-race.
+
 ### Utility
 
 - Selling items: sell to merchants, or use the forum market.
 - Enchanting: you consecrate jewelry at temples, using Pietas.
+
+**Built (#235): later offerings.** Higher-level offerings come from newer content: dire wolf pelts (30 XP), pressed olive oil (40) and estate wine (65) at the heavenly altars; harpy feathers (55), basilisk eyes (85) and gorgon scales (115) at the underworld altars. As always, the wrong altar gives half.
 
 ## Combat
 
@@ -287,7 +317,9 @@ Decided: **both.**
 
 The first rank is **Tiro**, given by Optio Gaius by the forum. He hands out a sling, lead, a lituus, and binding tablets; the recruit strikes the training dummy with a blade, a sling, and a curse, clears three granary rats, and reports back for combat XP, a *parma* (round auxiliary shield), the rank, and the quartermaster's iron stores.
 
-The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). The third is **Duplicarius** (#102; needs Miles, Attack 15, and Thieving 5): silver is going missing from the strongroom. Ask the Gaulish merchant in the forum (also a pickpocket mark), kill the latro on the south-west road (the step grants the stolen pay chest), and hand it to the optio. The reward is XP, a *spatha* (cavalry long sword, Attack 20), the rank, and spathae from the quartermaster. The last is **Decurio** (#108; needs Duplicarius, Defence 25, and Slayer 15): a *larva* has woken in the barrow's depths. The sacerdos teaches the rite of the Lemuria and gives nine black beans; with them in your pack (a ward that works when carried, `ward_carried`), you can hurt the Larva, a level-40 boss in the deepest chamber that drops a *larval shroud* (Ritus neck item) now and then. Without the beans your blows pass through it. Reporting back ends the auxilia career: the rank of decurio, honourable discharge, a bronze diploma, and **citizenship**. The HUD shows quest titles (`rewards.title`), ending with *Civis Romanus*. The legions, the capital, and the villa are for citizens and come later.
+The second rank is **Miles** (#92; needs Tiro and Defence 5): kill five wolves on the woods road, bring the optio 10 logs and 15 bronze nails for the palisade (`deliver` step), and scout the old barrow (`reach` step). The reward is XP, a *lorica hamata* (mail shirt, Defence 15), the rank, and mail and heavier arms from the quartermaster (shop offers can carry their own `requires_quest`). The third is **Duplicarius** (#102; needs Miles, Attack 15, and Thieving 5): silver is going missing from the strongroom. Ask the Gaulish merchant in the forum (also a pickpocket mark), kill the latro on the south-west road (the step grants the stolen pay chest), and hand it to the optio. The reward is XP, a *spatha* (cavalry long sword, Attack 20), the rank, and spathae from the quartermaster. The last is **Decurio** (#108; needs Duplicarius, Defence 25, and Slayer 15): a *larva* has woken in the barrow's depths. The sacerdos teaches the rite of the Lemuria and gives nine black beans; with them in your pack (a ward that works when carried, `ward_carried`), you can hurt the Larva, a level-40 boss in the deepest chamber that drops a *larval shroud* (Ritus neck item) now and then. Without the beans your blows pass through it. Reporting back ends the auxilia career: the rank of decurio, honourable discharge, a bronze diploma, and **citizenship**. The HUD shows quest titles (`rewards.title`), ending with *Civis Romanus*. The capital is for citizens and comes later.
+
+**Built (#223): the legion.** A citizen can join the legion through Centurion Varro on the limes. *Sacramentum* (Decurio done; Attack, Strength and Defence 40) has you bring wine and five incense to the sacerdos for the oath's sacrifice, kill eight Germanic raiders, and report in a legionary's kit (a steel scutum and ten steel pila). The reward is XP, a *lorica segmentata* (Defence 40, the best body armour; the quartermaster sells more), the rank of *legionarius*, and the title *Miles legionis*. *Optio* (combat stats and Slayer 60) sends you to Seriphos, where a patrol came back as statues: Melissa points you to the ruins, and three gorgons later you bring Varro a gorgon's head in a sack. The reward is XP, *phalerae* (a neck piece for valour, Defence 50), and the rank of *optio*.
 
 ## IP guardrails
 
@@ -310,6 +342,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **Skills.** Attack, Strength, Defence, Vitality, Ranged, Ritus, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching. (Ranged was added in #36, Ritus in #45 and #46, and the gathering skills in #82, after the first build.)
 
 **Gathering (#82).** A grove west of the fort has common trees (fall after one log), oaks, and, at the edge of the wolf woods, pines; oaks and pines give several logs before they fall and regrow from the stump. The fort's pond has a net spot (sardines, then anchovies at 10) and a rod spot (mackerel at 20), with a campfire nearby for cooking. Fletching works anywhere with a knife: logs into arrow shafts, then shafts, feathers, and smithed arrowheads into arrows, and oak logs and a bowstring into a hunting bow. New players start with a bronze axe, a small net, and a knife.
+
+**Built (#257): yew.** Three ancient yews stand beside the path beyond the Limes (Woodcutting 60). Yew logs and a bowstring make a yew longbow (Fletching 60, Ranged 50): a tick slower than the composite bow, but more accurate and with 10 m of reach.
 
 **Monsters:**
 
@@ -347,6 +381,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 **The deep gallery (#167).** Once The Silent Gallery is done, the timber mouth at the end of Vipasca's track opens (before that a procurator's chain hangs across it; doorways can now require a quest). Steps lead down into a winding tunnel cut through red rock, built at startup on a 1 m grid: rough rock walls, timber frames every six metres, and torches. Two more basilisks lurk in the tunnel; a side alcove holds two silver and two gold rocks, away from the crowds in the pit; the tunnel ends in a round chamber. It lies in the underground band, so it gets cave lighting and dripping ambience.
 
 **Vipasca boss (#168): Regulus, the basilisk king.** Level 88, Slayer 50, in the round chamber at the end of the deep gallery ("basilisk" is Greek for "little king"; *regulus* is the Latin). His gaze petrifies like any basilisk's, so bring a mirror shield. Every third attack he spits venom at where you stand instead: a green ring marks it and the glob lands 3 ticks later for 12 to 26 damage; step out. Below 30% he enrages and attacks every 3 ticks. He drops coins, steel, silver, gold and basilisk eyes, and rarely the Crown of Regulus (Defence 45, Slayer 50): a head piece that wards the basilisk gaze, freeing the shield hand. One kill in 120 brings a basilisk hatchling pet. Ursa gives Regulus contracts (three to six kills) at combat 80 and Slayer 55. Boss throws now have a kind (`throw_kind`: spear or venom) with its own marker and warning.
+
+**Seriphos boss (#243): Euryale, the gorgon queen.** Level 108, Slayer 70, in the middle of the gorgons' ruins. A mirror shield fools her sisters but not her: unwarded (anything short of the Aegis), her gaze lands every time for half again the damage and drains your combat stats. Every third attack she hurls venom at where you stand (a green ring; step out), and below 30% she enrages. She drops coins, gorgon scales, gold, pearls, now and then the Aegis itself, and rarely the *gorgoneion*, a gold gorgon-face amulet (Defence 55, Slayer 70) that wards her gaze in place of the Aegis. Ursa gives Euryale contracts (three to six kills) at combat 95 and Slayer 70.
 
 **Fourth region (#171): Seriphos.** A Greek island far over the sea from Portus Salis (Perseus's island in the myth, fitting for gorgons and mirror shields), reached by a ferry from the end of the harbour pier for 25 denarii each way (doorways can now charge a fare). A sandy north shore and a pier where the boats tie up; a white harbour town with a bank chest and Nikias the merchant (olives, figs, wine and tuna; he buys anything at 45%, a little better than the Gauls); an olive grove to the west; the ruined temple of Athena to the east, a marble platform with standing and fallen columns; and rocky hills rising inland. The coast's surf ambience carries over. Room is left in the hills for cyclopes and in the south-west for the gorgons' ruins.
 
@@ -386,7 +422,8 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - Restrictions: you can't use the forum market, and you can't pick up items you didn't earn. In single-player, the restriction that matters is the market. You also can't buy materials from the trade contracts that Mercatura delivers.
 - **Architecture impact:** every item-acquisition path (shops, market, drops, rewards) goes through one place that checks the account mode. Content data marks shop stock that a Solitarius character can't buy.
 - **Built (#176): leaving.** A Solitarius can give the mode up from the pause menu ("Leave the Solitarius path", pressed twice to be sure); it's permanent. The new-character screen says plainly what each path means while there's no market yet.
-- Possible later: a "hardcore" variant with one life, and group modes in the MMO.
+- **Built (#209): Hardcore Solitarius.** A third choice on the new-character screen: a Solitarius with one life. The first death, anywhere, makes it a plain Solitarius for good (with a message), and the HUD shows which one you are. A hardcore character can also leave for the standard path from the pause menu.
+- Possible later: group modes in the MMO.
 
 ## Other decisions
 
@@ -394,7 +431,7 @@ Decided: **Ironman-style mode from day one** (working name ***Solitarius***).
 - **Start:** an open frontier town with an **optional** tutorial. New players get a guided starter questline that they can skip at any time.
 
 - **Tick length:** 0.6 s, for now. The F3 toggle stays as a debug tool for comparison.
-- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats and the training dummy first.
+- **Early difficulty:** wolves and boars stay dangerous for fresh characters, in the OSRS style. New players train on rats, the training dummy, and (#261) the wild goats grazing north-east of the fort: level 3, passive, and soft enough for a combat-2 character, with hides for leather.
 
 ## Open questions
 

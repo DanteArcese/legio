@@ -78,3 +78,23 @@ func test_traps_out_come_back_after_a_save() -> void:
 	loaded.add_player(PLAYER)
 	check(SaveGame.restore(loaded, PLAYER, data), "restored")
 	check_eq(loaded.get_combatant(PLAYER).inventory.count("box_trap"), 1, "the trap is back in the pack")
+
+
+func test_dormice_need_hunter_40_and_roast_with_honey() -> void:
+	var sim := _make_sim("dormouse_nest")
+	var player := _player(sim)
+	var events := _use(sim)
+	check_eq(player.inventory.count("box_trap"), 1, "Hunter 1 can't set a trap at a nest")
+	player.skills.xp["hunter"] = player.skills.xp_for_level(40)
+	_use(sim)
+	events = _run(sim, 600)
+	check(events.any(func(e): return e["type"] == "trap_caught"), "a dormouse walked in")
+	_use(sim)
+	check_eq(player.inventory.count("dormouse"), 1, "a dormouse")
+	player.skills.xp["cooking"] = player.skills.xp_for_level(80)
+	sim.skilling.add_station("range", Vector3(0, 0, 1))
+	sim.give_item(PLAYER, "honey", 1, "test", [])
+	sim.queue_item_action(PLAYER, "craft", {"kind": "cook", "recipe": "honeyed_dormouse", "count": 1})
+	_run(sim, 8)
+	check_eq(player.inventory.count("honeyed_dormouse"), 1, "honeyed dormouse")
+	check_eq(ContentDB.item("honeyed_dormouse")["heals"], 16, "heals 16")

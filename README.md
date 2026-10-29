@@ -2,7 +2,7 @@
 
 An RPG inspired by Old School RuneScape, set in a low-fantasy Roman world. Single-player for now, with controller support.
 
-See [docs/design.md](docs/design.md) for the design.
+See [docs/design.md](docs/design.md) for the design and [docs/roadmap.md](docs/roadmap.md) for what comes next.
 
 ## Playing
 
@@ -37,14 +37,16 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | Hide roofs | H | Right stick click |
 | World map | M | Share |
 | Pause menu (graphics, volume, controls, quit) | Esc | Start |
+| Leave a note for the developers (saved to `feedback.md` in the save folder) | F8 | Pause menu, then Leave a note |
 
 ### What's in the game
 
-- **Combat** in three styles: melee, ranged (bows and slings), and Ritus (curse tablets with a lituus), with Slayer contracts from Aulus the venator and a barrow dungeon of lemures, strix, and a boss.
-- **The auxilia career**: four ranked quests from Optio Gaius, from tiro to decurio and Roman citizenship.
-- **Skills**: Attack, Strength, Defence, Vitality, Ranged, Ritus, Pietas, Slayer, Mining, Smithing, Cooking, Woodcutting, Fishing, Fletching, Crafting, Thieving, Athletics, and Hunter.
-- **The town**: a bank, shops, a smithy, an altar and sacred spring, market stalls (mind the vigiles), a garum vat, and a training course.
-- A minimap, a quest log, a skills panel, a collection log, sound, a day and night cycle, and saving.
+- **Five regions, two dungeons and two estates**: Castra Ferrea, the frontier fort town; Portus Salis, a harbour on the coast; Beyond the Limes, the danger zone past the palisade; Vipasca, the silver mines of Hispania, with the deep gallery under them; and Seriphos, a Greek island across the sea. The barrow of the lemures lies under the woods, the circus is a road east of the fort, and citizens can own a villa. M shows the world map, with ! wherever a quest is waiting.
+- **Combat** in three styles (melee; ranged with bows, slings and javelins; and Ritus curse tablets, with foci and robes in tiers), with weapon special attacks (F / B), Pietas blessings, and five bosses: Hrodgar the War-chief, Regulus the basilisk king, Euryale the gorgon queen and the Hydra on Seriphos, plus the barrow's own. Monster levels are coloured green to red by how dangerous they are to you.
+- **Slayer** from two venatores, Aulus in the fort and Ursa beyond the Limes, with gear checks (whitethorn against the strix, earplugs against sirens, a mirror shield against basilisks and gorgons), points to spend, and a venator's helm. **Arena contracts** from Lanista Marcia: net beasts alive for the games. **The munera**: ten waves of beasts and raiders on the circus sands, and the rudis for surviving them all.
+- **Quests**: starter quests for the baker, the smith and the sacerdos, the auxilia career from tiro to citizen, the legion after it (*Sacramentum* and *Optio*), and quests at the harbour, the limes, the mines (including *The Mountain-Copper*) and on Seriphos. The quest log says what a locked quest still needs. **Region tasks** give each region a list worth working through.
+- **22 skills**: Attack, Strength, Defence, Vitality, Ranged, Ritus, Pietas, Slayer, Mining, Smithing (bronze, iron, Noric steel and orichalcum), Cooking (bread from the fort's wheat, garum, and oil and wine from your presses), Woodcutting (up to yew), Fishing (eels and tuna among them), Fletching (up to the yew longbow), Crafting (leather, pottery, glass, jewellery and marble mosaics), Thieving (stalls, pockets and strongboxes), Athletics (a training course, the Portus beach run, wall shortcuts and **chariot racing** in the circus), Hunter (hares, foxes and dormice for honeyed dormouse), Farming (herbs, vegetables, grain, vines and an olive orchard), Medicina, Mercatura (trade contracts and regional prices) and Engineering (your villa, its presses, and a steward who works while you're away).
+- **Shops buy and sell**, a shared bank with search and sort, return tablets to carry you home, an XP tracker in the skills panel, gear stats on examine, a collection log (the Tabularium), pets, Solitarius (ironman) and Hardcore Solitarius (one life) modes, first-time hints (including help when you're hurt or out of your depth), fullscreen (F11), music composed as you play (a lyre or aulos in each region's own mode, with drums for fights and the circus), and saves with a backup. The pause menu lists every control.
 
 ## Development
 

@@ -1,13 +1,15 @@
 extends CanvasLayer
 ## Esc / Start: pauses the game and offers Resume, the graphics preset,
 ## Hide roofs, volume sliders, leaving the Solitarius path (for those on
-## it), and Quit. Fully controller-navigable
+## it), leaving a note (F8), and Quit. Fully controller-navigable
 ## (left and right adjust a focused slider).
 
 @export var settings: Node
 @export var game_ui: Node
 @export var sound: Node
 @export var skills_ui: Node
+## The F8 note box, also opened from here for controller players.
+@export var feedback: Node
 
 const ControlsText := preload("res://scripts/input/controls_text.gd")
 
@@ -17,6 +19,7 @@ var _controls: PanelContainer
 var _controls_back: Button
 var _graphics_button: Button
 var _roofs_button: Button
+var _display_button: Button
 ## Shown to Solitarius players; the first press asks, the second gives it up.
 var _leave_button: Button
 var _leave_armed := false
@@ -52,11 +55,19 @@ func _ready() -> void:
 		settings.set_hide_roofs(not settings.hide_roofs())
 		_refresh())
 	column.add_child(_roofs_button)
+	_display_button = _button("", func():
+		settings.set_fullscreen(not settings.fullscreen)
+		_refresh())
+	column.add_child(_display_button)
 	if sound:
 		for bus in sound.BUSES:
 			column.add_child(_volume_row(bus))
 	_leave_button = _button("", _leave_solitarius)
 	column.add_child(_leave_button)
+	if feedback:
+		column.add_child(_button("Leave a note (F8)", func():
+			close()
+			feedback.open()))
 	column.add_child(_button("Controls", show_controls))
 	column.add_child(_button("Quit", func(): get_tree().quit()))
 	_panel.visible = false
@@ -156,8 +167,9 @@ func _build_controls(style: StyleBox) -> void:
 func _refresh() -> void:
 	_graphics_button.text = "Graphics: %s" % settings.preset.capitalize()
 	_roofs_button.text = "Hide roofs: %s" % ("On" if settings.hide_roofs() else "Off")
+	_display_button.text = "Display: %s (F11)" % ("Fullscreen" if settings.fullscreen else "Windowed")
 	var combatant := _combatant()
-	_leave_button.visible = combatant != null and combatant.account_mode == "solitarius" and not _left
+	_leave_button.visible = combatant != null and combatant.is_solitarius() and not _left
 	_leave_button.text = "Really give it up? Press again" if _leave_armed else "Leave the Solitarius path"
 
 

@@ -12,8 +12,8 @@ const ACTION_RANGE := 2.2
 const FISHING_RANGE := 3.0
 ## Ticks between mining and chopping attempts, by tool tier. Steel (3) is
 ## as fast as iron but lands more often (MINE_CHANCE_PER_TIER).
-const MINE_TICKS := {1: 4, 2: 3, 3: 3}
-const CHOP_TICKS := {1: 4, 2: 3, 3: 3}
+const MINE_TICKS := {1: 4, 2: 3, 3: 3, 4: 2}
+const CHOP_TICKS := {1: 4, 2: 3, 3: 3, 4: 2}
 const FISH_TICKS := 5
 const CRAFT_TICKS := 4
 ## Our own gathering formula: chance per attempt.
@@ -22,18 +22,18 @@ const MINE_CHANCE_PER_LEVEL := 0.015
 const MINE_CHANCE_PER_TIER := 0.1
 const FISH_BASE_CHANCE := 0.3
 ## What each fishing tool is called, for messages.
-const FISHING_TOOLS := {"net": "small net", "rod": "fishing rod", "harpoon": "harpoon"}
+const FISHING_TOOLS := {"net": "small net", "rod": "fishing rod", "harpoon": "harpoon", "pot": "eel pot"}
 ## Burn chance at the recipe's level, falling to 0 at its stop_burning level.
 const MAX_BURN_CHANCE := 0.5
 ## Where each kind of recipe is made. Fletching needs no station.
 const STATIONS_FOR_KIND := {"smelt": ["furnace"], "smith": ["anvil"], "cook": ["range", "fire"], "inscribe": ["tomb"], "fletch": [],
 	"tan": ["tanning_rack"], "leatherwork": [], "garum": ["garum_vat"], "medicina": [], "saw": ["sawpit"],
-	"throw": ["potters_wheel"], "kiln": ["kiln"], "jewelcraft": []}
+	"throw": ["potters_wheel"], "kiln": ["kiln"], "jewelcraft": [], "press_oil": ["olive_press"], "press_wine": ["wine_press"], "mill": ["quern"], "masonry": []}
 const SKILL_FOR_KIND := {"smelt": "smithing", "smith": "smithing", "cook": "cooking", "inscribe": "ritus", "fletch": "fletching",
 	"tan": "crafting", "leatherwork": "crafting", "garum": "cooking", "medicina": "medicina", "saw": "engineering",
-	"throw": "crafting", "kiln": "crafting", "jewelcraft": "crafting"}
+	"throw": "crafting", "kiln": "crafting", "jewelcraft": "crafting", "press_oil": "cooking", "press_wine": "cooking", "mill": "cooking", "masonry": "crafting"}
 ## Recipe kinds made anywhere, from the inventory, and the verb for each.
-const HANDHELD_KINDS := {"fletch": "Fletch", "leatherwork": "Sew", "medicina": "Mix", "jewelcraft": "Work"}
+const HANDHELD_KINDS := {"fletch": "Fletch", "leatherwork": "Sew", "medicina": "Mix", "jewelcraft": "Work", "masonry": "Carve"}
 
 ## Held weakly: the simulation owns this module, so a strong reference back
 ## would form a cycle that is never freed.

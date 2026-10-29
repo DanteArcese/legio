@@ -53,7 +53,11 @@ func animate(delta: float, speed: float) -> void:
 
 func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 	_body = _part(self, _box(Vector3(0.5, 0.4, 0.95), main), Vector3(0, 0.55, 0))
+	if features.has("human_torso"):
+		_build_rider_torso(accent)
 	var head := _part(_body, _box(Vector3(0.36, 0.34, 0.4), main), Vector3(0, 0.12, -0.6))
+	# A centaur's front is a man, not a horse's neck and head.
+	head.visible = not features.has("human_torso")
 	var snout_length := 0.32 if features.has("long_snout") else 0.18
 	_part(head, _box(Vector3(0.2, 0.18, snout_length), accent), Vector3(0, -0.06, -0.2 - snout_length / 2.0))
 	if features.has("ears"):
@@ -108,12 +112,16 @@ func _build_humanoid(main: Color, accent: Color, features: Array) -> void:
 			(eye.mesh.material as StandardMaterial3D).emission_enabled = true
 			(eye.mesh.material as StandardMaterial3D).emission = Color(0.5, 0.9, 1.0)
 	_part(_body, _box(Vector3(0.54, 0.36, 0.32), accent), Vector3(0, -0.42, 0))
+	if features.has("serpent_tail"):
+		_build_serpent_tail(main)
 	for side in [-1, 1]:
 		var shoulder := Node3D.new()
 		shoulder.position = Vector3(side * 0.33, 1.4, 0)
 		add_child(shoulder)
 		_part(shoulder, _box(Vector3(0.14, 0.55, 0.14), main), Vector3(0, -0.27, 0))
 		_arms.append(shoulder)
+		if features.has("serpent_tail"):
+			continue
 		var hip := Node3D.new()
 		hip.position = Vector3(side * 0.13, 0.75, 0)
 		add_child(hip)
@@ -121,6 +129,31 @@ func _build_humanoid(main: Color, accent: Color, features: Array) -> void:
 		_legs.append(hip)
 	if features.has("ghostly"):
 		_make_translucent(self, 0.55)
+
+
+## A lamia: below the waist, a serpent's body that coils back along the
+## ground, thinning to the tip.
+func _build_serpent_tail(scales: Color) -> void:
+	var segments := 7
+	for i in segments:
+		var t := float(i) / segments
+		var radius := lerpf(0.2, 0.05, t)
+		var at := Vector3(sin(t * PI * 1.5) * 0.25, lerpf(0.75, 0.12, minf(t * 2.0, 1.0)), t * 1.1)
+		_part(self, _sphere(radius, scales.darkened(0.1 * (i % 2))), at)
+
+
+## A centaur: a man's torso, head and arms rising from the front of the
+## horse, with a bow in the left hand.
+func _build_rider_torso(skin_tone: Color) -> void:
+	var skin := Color(0.76, 0.58, 0.43)
+	var torso := _part(_body, _box(Vector3(0.36, 0.5, 0.24), skin), Vector3(0, 0.42, -0.36))
+	_part(torso, _sphere(0.14, skin), Vector3(0, 0.38, 0))
+	_part(torso, _sphere(0.15, skin_tone), Vector3(0, 0.44, 0.03))
+	for side in [-1, 1]:
+		var arm := _part(torso, _box(Vector3(0.1, 0.42, 0.1), skin), Vector3(side * 0.24, 0.02, -0.08))
+		arm.rotation.x = -0.6
+	var bow := _part(torso, _box(Vector3(0.04, 0.7, 0.04), Color(0.4, 0.27, 0.15)), Vector3(-0.3, 0.05, -0.3))
+	bow.rotation.z = 0.15
 
 
 func _build_bird(main: Color, accent: Color, features: Array) -> void:

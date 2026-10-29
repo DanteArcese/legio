@@ -76,6 +76,9 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 		"eat":
 			if slot == null or not ContentDB.item(slot["item"]).has("heals"):
 				return
+			if sim.tick < player.charmed_until:
+				sim.message(player, "You can't take your eyes off her to eat.", events)
+				return
 			_remove_from_slot(player, slot_index, 1)
 			var heal: int = ContentDB.item(slot["item"])["heals"]
 			var healed := mini(heal, player.max_hp - player.hp)

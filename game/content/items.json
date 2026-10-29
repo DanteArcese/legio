@@ -1677,7 +1677,10 @@
         "attack": 3,
         "strength": 3,
         "defence": 4
-      }
+      },
+      "wards": [
+        "leather_bulla"
+      ]
     },
     "requirements": {
       "defence": 35
@@ -2310,5 +2313,22 @@
     "value": 0,
     "examine": "A fang from the basilisk king, as long as your hand. The legate asked for proof.",
     "quest_item": true
+  },
+  "leather_bulla": {
+    "name": "Leather bulla",
+    "value": 120,
+    "examine": "A leather locket, the kind freedmen's children wear against the evil eye. A lamia's charm slides off it.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "defence": 2,
+        "ritus_defence": 3
+      }
+    }
+  },
+  "lamia_scale": {
+    "name": "Lamia scale",
+    "value": 90,
+    "examine": "A scale from a lamia's coils, green-gold and cold. The underworld gods would take it."
   }
 }

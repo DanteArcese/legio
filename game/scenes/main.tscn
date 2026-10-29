@@ -50,6 +50,7 @@
 [ext_resource type="Script" path="res://scripts/world/circus_grounds.gd" id="47_circus"]
 [ext_resource type="Script" path="res://scripts/world/strongbox_node.gd" id="48_strongbox"]
 [ext_resource type="Script" path="res://scripts/audio/music_director.gd" id="91_music"]
+[ext_resource type="Script" path="res://scripts/ui/feedback_note.gd" id="90_feedback"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1440,13 +1441,14 @@ script = ExtResource("31_minimap")
 player = NodePath("../Player")
 camera_rig = NodePath("../CameraRig")
 
-[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound", "skills_ui")]
+[node name="PauseMenu" type="CanvasLayer" parent="." node_paths=PackedStringArray("settings", "game_ui", "sound", "skills_ui", "feedback")]
 layer = 10
 script = ExtResource("19_pause")
 settings = NodePath("../GraphicsSettings")
 game_ui = NodePath("../GameUi")
 sound = NodePath("../Sound")
 skills_ui = NodePath("../SkillsUi")
+feedback = NodePath("../FeedbackNote")
 
 [node name="DayNight" type="Node" parent="." node_paths=PackedStringArray("environment", "sun", "moon", "area_lighting")]
 script = ExtResource("21_daynight")
@@ -2174,3 +2176,8 @@ script = ExtResource("33_obstacle")
 course = "beach_course"
 index = 3
 end_offset = Vector3(6, 0, 0)
+
+[node name="FeedbackNote" type="CanvasLayer" parent="." node_paths=PackedStringArray("world_map", "driver")]
+script = ExtResource("90_feedback")
+world_map = NodePath("../WorldMap")
+driver = NodePath("../SimDriver")

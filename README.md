@@ -37,6 +37,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | Hide roofs | H | Right stick click |
 | World map | M | Share |
 | Pause menu (graphics, volume, controls, quit) | Esc | Start |
+| Leave a note for the developers (saved to `feedback.md` in the save folder) | F8 | Pause menu, then Leave a note |
 
 ### What's in the game
 

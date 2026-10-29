@@ -80,6 +80,13 @@
       "idle": [
         "Hot iron waits for no one. Neither do I."
       ]
+    },
+    "legate_sertorius": {
+      "name": "Legate Sertorius",
+      "examine": "The legate of the legion, in Rome to report to the Senate. He looks at you the way he'd look at a horse he might buy.",
+      "idle": [
+        "The Senate wants victories. I want centurions who come back from them."
+      ]
     }
   },
   "quests": {
@@ -1220,6 +1227,124 @@
             "quantity": 800
           }
         ]
+      }
+    },
+    "centurion": {
+      "name": "Centurion",
+      "summary": "Varro has put your name forward for a century. The legate in Rome will want to see what you're made of before he gives you the vine stick.",
+      "giver": "centurion_varro",
+      "requirements": {
+        "quests": [
+          "optio"
+        ],
+        "skills": {
+          "attack": 70,
+          "strength": 70,
+          "defence": 70,
+          "slayer": 70
+        }
+      },
+      "start": [
+        "A letter came from Rome. The legate needs centurions, and I gave him your name.",
+        "Don't make me regret it. Take the ship from Portus Salis and report to Legate Sertorius in the forum."
+      ],
+      "steps": [
+        {
+          "kind": "talk",
+          "npc": "legate_sertorius",
+          "log": "Report to Legate Sertorius in Rome's forum.",
+          "remind": [
+            "The legate is in Rome. The forum, by the basilica."
+          ],
+          "say": [
+            "Varro's optio. He says you don't lose men. Let's see.",
+            "The raiders beyond the Limes have been killing my road crews. Clear them off the road: ten of them."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "germanic_raider",
+          "count": 10,
+          "log": "Kill ten Germanic raiders beyond the Limes for the legate.",
+          "remind": [
+            "Ten raiders. They're beyond the Limes, where they always are."
+          ]
+        },
+        {
+          "kind": "talk",
+          "npc": "legate_sertorius",
+          "log": "Report back to Legate Sertorius.",
+          "remind": [
+            "Back to the legate in Rome."
+          ],
+          "say": [
+            "Good. Now something no road crew could do.",
+            "There's a basilisk king under the mines at Vipasca. The procurator wants his miners back. Kill it, and bring me a fang to show the Senate."
+          ]
+        },
+        {
+          "kind": "kill",
+          "monster": "regulus",
+          "count": 1,
+          "grants": [
+            {
+              "item": "regulus_fang",
+              "quantity": 1
+            }
+          ],
+          "log": "Kill Regulus, the basilisk king, in Vipasca's deep gallery, and take a fang as proof.",
+          "remind": [
+            "Regulus. A mirror shield, or his crown if you have one."
+          ]
+        },
+        {
+          "kind": "deliver",
+          "npc": "legate_sertorius",
+          "items": [
+            {
+              "item": "regulus_fang",
+              "quantity": 1
+            },
+            {
+              "item": "steel_pilum",
+              "quantity": 10
+            }
+          ],
+          "log": "Bring the legate the fang, and ten steel pila for your new century.",
+          "remind": [
+            "The fang, and pila for your men. A centurion doesn't arrive empty-handed."
+          ]
+        }
+      ],
+      "complete": [
+        "A fang as long as my hand. The Senate will like that.",
+        "Kneel. No, I'm joking. Take this: the vitis. It means you may strike a citizen, and every man in your century will know it.",
+        "And the crest, so they can find you in a fight. Centurion."
+      ],
+      "rewards": {
+        "xp": {
+          "attack": 10000,
+          "strength": 10000,
+          "defence": 10000,
+          "slayer": 5000
+        },
+        "items": [
+          {
+            "item": "vitis",
+            "quantity": 1
+          },
+          {
+            "item": "centurion_galea",
+            "quantity": 1
+          },
+          {
+            "item": "coins",
+            "quantity": 5000
+          }
+        ],
+        "rank": "Centurio",
+        "title": "Centurio legionis",
+        "unlocks": "The vitis and the centurion's galea"
       }
     }
   }

@@ -628,3 +628,40 @@ func test_the_mountain_copper() -> void:
 	talk.call("procurator")
 	check(Quests.is_done(player, "the_mountain_copper"), "done")
 	check_eq(player.inventory.count("orichalcum_pickaxe"), 1, "an orichalcum pickaxe")
+
+
+func test_centurion() -> void:
+	var sim := _make_sim()
+	var player := _player(sim)
+	sim.quests.add_npc("centurion_varro", Vector3(1, 0, 0))
+	sim.quests.add_npc("legate_sertorius", Vector3(-1, 0, 0))
+	for quest_id in ["decurio", "the_lost_eagle", "sacramentum", "optio"]:
+		player.quests[quest_id] = {"step": 0, "progress": 0, "done": true}
+	var talk := func(npc: String) -> Array:
+		sim.queue_item_action(PLAYER, "talk", {"npc": npc})
+		return _run(sim, 1)
+	for skill in ["attack", "strength", "defence", "slayer"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(69)
+	talk.call("centurion_varro")
+	check(Quests.status(player, "centurion") != "in_progress", "not before 70")
+	for skill in ["attack", "strength", "defence", "slayer"]:
+		player.skills.xp[skill] = player.skills.xp_for_level(70)
+	talk.call("centurion_varro")
+	check_eq(Quests.status(player, "centurion"), "in_progress", "Varro puts your name forward")
+	talk.call("legate_sertorius")
+	check_eq(player.quests["centurion"]["step"], 1, "reported to the legate")
+	for i in 10:
+		_kill_for_player(sim, RAT + i, "germanic_raider")
+	check_eq(player.quests["centurion"]["step"], 2, "ten raiders")
+	talk.call("legate_sertorius")
+	check_eq(player.quests["centurion"]["step"], 3, "sent after Regulus")
+	_kill_for_player(sim, RAT + 30, "regulus")
+	check_eq(player.inventory.count("regulus_fang"), 1, "a fang for the Senate")
+	sim.give_item(PLAYER, "steel_pilum", 10, "test", [])
+	talk.call("legate_sertorius")
+	check(Quests.is_done(player, "centurion"), "a centurion")
+	check_eq(Quests.rank(player), "Centurio", "the rank")
+	check_eq(Quests.title(player), "Centurio legionis", "the title")
+	check_eq(player.inventory.count("vitis"), 1, "the vine stick")
+	check_eq(player.inventory.count("centurion_galea"), 1, "the crested galea")
+	check_eq(player.inventory.count("steel_pilum"), 0, "the pila handed over")

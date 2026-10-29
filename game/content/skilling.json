@@ -1168,6 +1168,82 @@
         "level": 60,
         "xp": 120,
         "tool": "knife"
+      },
+      {
+        "id": "manuballista",
+        "inputs": [
+          {
+            "item": "cedar_logs",
+            "quantity": 2
+          },
+          {
+            "item": "steel_bar",
+            "quantity": 2
+          },
+          {
+            "item": "bowstring",
+            "quantity": 2
+          }
+        ],
+        "output": "manuballista",
+        "level": 75,
+        "xp": 320,
+        "tool": "knife"
+      },
+      {
+        "id": "steel_bolt",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 10
+          },
+          {
+            "item": "steel_arrowheads",
+            "quantity": 10
+          }
+        ],
+        "output": "steel_bolt",
+        "quantity": 10,
+        "level": 76,
+        "xp": 120
+      },
+      {
+        "id": "orichalcum_bolt",
+        "inputs": [
+          {
+            "item": "arrow_shaft",
+            "quantity": 10
+          },
+          {
+            "item": "orichalcum_arrowheads",
+            "quantity": 10
+          }
+        ],
+        "output": "orichalcum_bolt",
+        "quantity": 10,
+        "level": 82,
+        "xp": 180
+      },
+      {
+        "id": "olivewood_manuballista",
+        "inputs": [
+          {
+            "item": "old_olive_wood",
+            "quantity": 2
+          },
+          {
+            "item": "orichalcum_bar",
+            "quantity": 2
+          },
+          {
+            "item": "bowstring",
+            "quantity": 2
+          }
+        ],
+        "output": "olivewood_manuballista",
+        "level": 85,
+        "xp": 480,
+        "tool": "knife"
       }
     ],
     "tan": [
@@ -1815,6 +1891,28 @@
       "respawn_ticks": 80,
       "model": "tree_fat",
       "examine": "An ancient yew, dark and slow-growing. Taxus: the bowyer's wood, and the tree of the dead."
+    },
+    "cedar_tree": {
+      "name": "Cedar",
+      "log": "cedar_logs",
+      "level": 70,
+      "xp": 230,
+      "difficulty": 0.35,
+      "fell_chance": 0.08,
+      "respawn_ticks": 100,
+      "model": "tree_pineTallC",
+      "examine": "A cedar, broad and fragrant. Solomon roofed a temple with these."
+    },
+    "old_olive_tree": {
+      "name": "Old olive tree",
+      "log": "old_olive_wood",
+      "level": 80,
+      "xp": 300,
+      "difficulty": 0.45,
+      "fell_chance": 0.06,
+      "respawn_ticks": 120,
+      "model": "tree_fat",
+      "examine": "An olive tree with a trunk like twisted rope, planted before Rome was a city."
     }
   },
   "fishing_spots": {

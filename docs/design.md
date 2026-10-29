@@ -352,6 +352,8 @@ Decided scope for the first playable build (#6). Numbers are first guesses to be
 
 **Built (#257): yew.** Three ancient yews stand beside the path beyond the Limes (Woodcutting 60). Yew logs and a bowstring make a yew longbow (Fletching 60, Ranged 50): a tick slower than the composite bow, but more accurate and with 10 m of reach.
 
+**Built (#327): cedar, old olive and the manuballista.** On Seriphos three cedars stand on the hills east of the temple (Woodcutting 70), and two old olive trees, older than the Republic, grow in the grove (80). Their wood makes the manuballista, a hand-held torsion crossbow: a cedar one with steel fittings (Fletching 75, Ranged 65) and an olivewood one with orichalcum (85, Ranged 75), the best ranged weapons. They shoot bolts, not arrows: steel bolts (Fletching 76) and orichalcum bolts (82), ten from ten shafts and ten arrowheads.
+
 **Monsters:**
 
 | Monster | Level (approx.) | Where | Notes |

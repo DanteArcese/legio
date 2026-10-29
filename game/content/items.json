@@ -2265,5 +2265,93 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "cedar_logs": {
+    "name": "Cedar logs",
+    "value": 45,
+    "examine": "Fragrant red cedar, the timber of temples and fleets."
+  },
+  "old_olive_wood": {
+    "name": "Old olive wood",
+    "value": 80,
+    "examine": "Olive wood from a tree older than the Republic, hard and close-grained, figured like smoke."
+  },
+  "manuballista": {
+    "name": "Manuballista",
+    "value": 1600,
+    "examine": "A hand-held torsion crossbow of cedar and steel. It throws a bolt harder than any bow.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 38
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 9.0,
+      "ammo": "bolt",
+      "special": {
+        "name": "torsion shot",
+        "cost": 50,
+        "effect": "heavy"
+      }
+    },
+    "requirements": {
+      "ranged": 65
+    }
+  },
+  "olivewood_manuballista": {
+    "name": "Olivewood manuballista",
+    "value": 3200,
+    "examine": "A manuballista of ancient olive wood with orichalcum fittings. The skeins are sinew from a centaur's bow.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ranged_attack": 46
+      },
+      "attack_speed": 5,
+      "style": "ranged",
+      "range": 9.0,
+      "ammo": "bolt",
+      "special": {
+        "name": "torsion shot",
+        "cost": 50,
+        "effect": "heavy"
+      }
+    },
+    "requirements": {
+      "ranged": 75
+    }
+  },
+  "steel_bolt": {
+    "name": "Steel bolt",
+    "value": 18,
+    "examine": "A short, heavy bolt with a steel point.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 24
+      },
+      "ammo_type": "bolt"
+    },
+    "requirements": {
+      "ranged": 60
+    }
+  },
+  "orichalcum_bolt": {
+    "name": "Orichalcum bolt",
+    "value": 32,
+    "examine": "A bolt with a red-gold orichalcum point. It goes through mail.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 32
+      },
+      "ammo_type": "bolt"
+    },
+    "requirements": {
+      "ranged": 70
+    }
   }
 }

@@ -2185,3 +2185,28 @@ driver = NodePath("../SimDriver")
 
 [node name="VisibilityRanges" type="Node" parent="."]
 script = ExtResource("92_visranges")
+
+[node name="Cedar1" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -256, 0, 322)
+script = ExtResource("27_tree")
+tree_type = "cedar_tree"
+
+[node name="Cedar2" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -251, 0, 328)
+script = ExtResource("27_tree")
+tree_type = "cedar_tree"
+
+[node name="Cedar3" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -258, 0, 331)
+script = ExtResource("27_tree")
+tree_type = "cedar_tree"
+
+[node name="OldOlive1" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -349, 0, 297)
+script = ExtResource("27_tree")
+tree_type = "old_olive_tree"
+
+[node name="OldOlive2" type="StaticBody3D" parent="Seriphos"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -335, 0, 311)
+script = ExtResource("27_tree")
+tree_type = "old_olive_tree"

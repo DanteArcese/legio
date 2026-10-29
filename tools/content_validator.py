@@ -18,7 +18,7 @@ SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pieta
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
 EQUIP_SLOTS = {"head", "body", "weapon", "shield", "neck", "ammo"}
 BONUSES = {"attack", "strength", "defence", "ranged_attack", "ranged_strength", "ritus_attack", "ritus_strength", "ranged_defence", "ritus_defence"}
-AMMO_TYPES = {"arrow", "sling_bullet", "javelin", "tablet"}
+AMMO_TYPES = {"arrow", "sling_bullet", "javelin", "tablet", "bolt"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}

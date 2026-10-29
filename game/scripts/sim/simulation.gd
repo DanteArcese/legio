@@ -32,6 +32,7 @@ const Arena := preload("res://scripts/sim/arena.gd")
 const Circus := preload("res://scripts/sim/circus.gd")
 const Games := preload("res://scripts/sim/games.gd")
 const Tasks := preload("res://scripts/sim/tasks.gd")
+const Waystations := preload("res://scripts/sim/waystations.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
@@ -68,6 +69,7 @@ var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
 var arena := Arena.new(self)
 var tasks := Tasks.new(self)
+var waystations := Waystations.new(self)
 var pets := Pets.new(self)
 var boss := Boss.new(self)
 var villa := Villa.new(self)
@@ -290,6 +292,7 @@ func step() -> Array[Dictionary]:
 	farming.process(events)
 	items.decay_remedies(players)
 	tasks.process(players, events)
+	waystations.process(players, events)
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -430,6 +433,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			circus.leave(player, events)
 		"start_games":
 			games.start(player, events)
+		"waystation_travel":
+			waystations.travel(player, command.get("to", ""), events)
 		"special":
 			if player.equipment.weapon().get("special", {}).is_empty():
 				message(player, "This weapon has no special attack.", events)

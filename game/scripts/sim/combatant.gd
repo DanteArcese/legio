@@ -79,6 +79,8 @@ var race := {}
 var games := {}
 ## The most munera waves cleared in one go.
 var games_best := 0
+## Waystations of the cursus publicus this player is known at.
+var waystations: Array = []
 ## Saved sets of gear: each {} or {"worn": {slot: item}, "style": style}.
 const LOADOUT_COUNT := 4
 var loadouts: Array = [{}, {}, {}, {}]

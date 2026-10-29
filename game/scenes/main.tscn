@@ -52,6 +52,7 @@
 [ext_resource type="Script" path="res://scripts/audio/music_director.gd" id="91_music"]
 [ext_resource type="Script" path="res://scripts/ui/feedback_note.gd" id="90_feedback"]
 [ext_resource type="Script" path="res://scripts/world/visibility_ranges.gd" id="92_visranges"]
+[ext_resource type="Script" path="res://scripts/world/waystation_node.gd" id="96_waystation"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -2217,3 +2218,28 @@ driver = NodePath("../SimDriver")
 
 [node name="VisibilityRanges" type="Node" parent="."]
 script = ExtResource("92_visranges")
+
+[node name="Waystation_castra" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0, 48)
+script = ExtResource("96_waystation")
+station_id = "castra"
+
+[node name="Waystation_portus" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -295, 0, -41)
+script = ExtResource("96_waystation")
+station_id = "portus"
+
+[node name="Waystation_limes" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -343)
+script = ExtResource("96_waystation")
+station_id = "limes"
+
+[node name="Waystation_vipasca" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 349)
+script = ExtResource("96_waystation")
+station_id = "vipasca"
+
+[node name="Waystation_circus" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 270, 0, 165)
+script = ExtResource("96_waystation")
+station_id = "circus"

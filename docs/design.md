@@ -227,6 +227,8 @@ Without teleports, travel becomes a progression system:
 
 **Built (#281): return tablets.** Single-use lead tablets that ask a town's Lares to bring you home: Castra Ferrea's from the sacerdos (5 for 30 denarii), Portus Salis's from the fishmonger (5 for 40). Read one from the inventory to be carried to the town's forum or harbour at once. They don't work in the munera or mid-race.
 
+**Built (#343): the cursus publicus.** Waystations of the state post stand at the fort's south-west road, the end of the Portus Salis road, the limes yard, Vipasca's road end and the circus road: an open-sided stable, a milestone and a sign. Walk up to one and the stationmaster writes your name in the ledger; from then on any station rides the post to any other you're known at, for 20 to 40 denarii. Not mid-race or in the munera. The stations you know are saved (content in `waystations.json`).
+
 ### Utility
 
 - Selling items: sell to merchants, or use the forum market.

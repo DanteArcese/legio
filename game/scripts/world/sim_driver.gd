@@ -60,6 +60,8 @@ func _ready() -> void:
 		sim.add_libitinarius(undertaker.global_position)
 	for venator in get_tree().get_nodes_in_group("venatores"):
 		sim.add_venator(venator.get_meta("venator_id"), venator.global_position)
+	for station in get_tree().get_nodes_in_group("waystations"):
+		sim.waystations.add(station.station_id, station.global_position)
 	for altar in get_tree().get_nodes_in_group("altars"):
 		sim.pietas.add_altar(altar.kind, altar.global_position)
 	for npc in get_tree().get_nodes_in_group("quest_npcs"):

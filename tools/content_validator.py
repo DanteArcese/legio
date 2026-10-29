@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 CONTENT_DIR = Path(__file__).resolve().parent.parent / "game" / "content"
-FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus", "games")
+FILES = ("items", "monsters", "drops", "slayer", "player", "skilling", "shops", "pietas", "quests", "thieving", "athletics", "hunter", "farming", "mercatura", "villa", "collection", "pets", "arena", "tasks", "circus", "games", "waystations")
 
 SKILLS = {"attack", "strength", "defence", "vitality", "ranged", "ritus", "pietas", "slayer", "mining", "smithing", "cooking", "woodcutting", "fishing", "fletching", "thieving", "crafting", "athletics", "hunter", "farming", "medicina", "mercatura", "engineering"}
 COMBAT_STATS = {"attack", "strength", "defence", "vitality"}
@@ -87,6 +87,7 @@ def validate(content: dict) -> list[str]:
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
     _check_circus(content.get("circus", {}), items, errors)
     _check_games(content.get("games", {}), items, set(content.get("monsters", {})), errors)
+    _check_waystations(content.get("waystations", {}), errors)
     _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
     _check_collection(content.get("collection", {}), items, errors)
@@ -386,6 +387,20 @@ def _check_circus(circus, items, errors):
         values = circus.get(key)
         if not (isinstance(values, list) and len(values) == len(rivals) + 1 and all(isinstance(v, int) and v >= 0 for v in values)):
             errors.append(f"circus.{key}: expected one non-negative int per place ({len(rivals) + 1})")
+
+
+def _check_waystations(waystations, errors):
+    _check_keys("waystations", waystations, {"stations", "unlock_range", "use_range"}, {"stations", "unlock_range", "use_range"}, errors)
+    for key in ("unlock_range", "use_range"):
+        _check_number("waystations", key, waystations.get(key), 1, 20, errors)
+    stations = waystations.get("stations", {})
+    if len(stations) < 2:
+        errors.append("waystations.stations: at least two stations required")
+    for station_id, station in stations.items():
+        where = f"waystations.stations.{station_id}"
+        _check_id(where, station_id, errors)
+        _check_keys(where, station, {"name", "fee", "examine"}, {"name", "fee", "examine"}, errors)
+        _check_int(where, "fee", station.get("fee"), 0, errors)
 
 
 GAMES_KEYS = {"name", "combat_level", "rest_ticks", "spawn_radius", "leave_radius", "trophy", "waves"}

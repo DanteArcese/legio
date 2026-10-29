@@ -1,0 +1,31 @@
+{
+  "stations": {
+    "castra": {
+      "name": "Castra Ferrea",
+      "fee": 20,
+      "examine": "A waystation of the cursus publicus on the road out of the fort: a stable, a milestone, a man with a ledger."
+    },
+    "portus": {
+      "name": "Portus Salis",
+      "fee": 25,
+      "examine": "The post station at the harbour road's end. The horses smell the sea."
+    },
+    "vipasca": {
+      "name": "Vipasca",
+      "fee": 30,
+      "examine": "The mining town's post station, thick with red dust."
+    },
+    "limes": {
+      "name": "the limes",
+      "fee": 40,
+      "examine": "The last post station before the frontier. The riders here don't ask where you're going."
+    },
+    "circus": {
+      "name": "the circus road",
+      "fee": 20,
+      "examine": "A post station on the circus road, busy on race days."
+    }
+  },
+  "unlock_range": 6.0,
+  "use_range": 3.0
+}

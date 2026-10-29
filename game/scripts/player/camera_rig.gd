@@ -3,6 +3,8 @@ extends Node3D
 ## middle mouse drag orbits, and wheel / D-pad zooms. Pitch reaches a high
 ## overhead angle for an OSRS-like view.
 
+const UiFocus := preload("res://scripts/input/ui_focus.gd")
+
 @export var target: Node3D
 @export var stick_speed := 2.5
 @export var mouse_sensitivity := 0.005
@@ -25,6 +27,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		_orbit(-event.relative.x * mouse_sensitivity, -event.relative.y * mouse_sensitivity)
+	elif UiFocus.dpad_in_menu(event, get_viewport()):
+		return
 	elif event.is_action_pressed("camera_zoom_in"):
 		_arm.spring_length = clampf(_arm.spring_length - zoom_step, min_distance, max_distance)
 	elif event.is_action_pressed("camera_zoom_out"):

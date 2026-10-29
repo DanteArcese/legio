@@ -4,6 +4,7 @@ extends RefCounted
 
 const Skills := preload("res://scripts/sim/skills.gd")
 const CombatMath := preload("res://scripts/sim/combat_math.gd")
+const ContentDB := preload("res://scripts/content/content_db.gd")
 
 var id: int
 var max_hp := 10
@@ -77,6 +78,8 @@ var race := {}
 var games := {}
 ## The most munera waves cleared in one go.
 var games_best := 0
+## Kinds of jewellery consecrated at Rome's altar of Jupiter.
+var consecrated: Array = []
 ## Saved sets of gear: each {} or {"worn": {slot: item}, "style": style}.
 const LOADOUT_COUNT := 4
 var loadouts: Array = [{}, {}, {}, {}]
@@ -247,6 +250,12 @@ func current_attack_speed(tick := -1) -> int:
 ## Recomputes bonuses and attack speed from worn equipment.
 func apply_equipment() -> void:
 	bonuses = equipment.bonuses()
+	# A consecrated neck piece carries a little of the god's favour.
+	var neck: String = equipment.worn.get("neck", "")
+	if not neck.is_empty() and consecrated.has(neck):
+		var bonus: Dictionary = ContentDB.data()["pietas"].get("consecration", {}).get("bonus", {})
+		for key in bonus:
+			bonuses[key] = bonuses.get(key, 0) + int(bonus[key])
 	attack_speed = equipment.attack_speed()
 	# Keep the combat style valid for the weapon type.
 	var styles: Array = Skills.styles_for(combat_kind())

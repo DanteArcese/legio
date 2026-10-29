@@ -429,6 +429,8 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			circus.leave(player, events)
 		"start_games":
 			games.start(player, events)
+		"consecrate":
+			pietas.consecrate(player, command.get("item", ""), events)
 		"special":
 			if player.equipment.weapon().get("special", {}).is_empty():
 				message(player, "This weapon has no special attack.", events)

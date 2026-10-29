@@ -74,6 +74,8 @@ const UNDERGROUND_X := 100.0
 const UNDERGROUND_END_X := 230.0
 ## Portus Salis lies far west of the fort.
 const COAST_X := -150.0
+## Rome lies farther west still, past the sea: a city's murmur, not surf.
+const ROME_X := -470.0
 ## North of this is the frontier, beyond the Limes.
 const FRONTIER_Z := -300.0
 ## South of this are the silver mines of Vipasca.
@@ -334,6 +336,8 @@ func _update_ambience() -> void:
 	var next := "day"
 	if here.x > UNDERGROUND_X and here.x < UNDERGROUND_END_X:
 		next = "barrow"
+	elif here.x < ROME_X:
+		next = "town"
 	elif here.x < COAST_X:
 		next = "coast"
 	elif here.z < FRONTIER_Z:

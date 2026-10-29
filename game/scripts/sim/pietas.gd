@@ -58,8 +58,42 @@ func _init(p_sim: RefCounted) -> void:
 	sim = p_sim
 
 
-func add_altar(kind: String, position: Vector3) -> void:
-	altars.append({"kind": kind, "position": position})
+func add_altar(kind: String, position: Vector3, consecrates := false) -> void:
+	altars.append({"kind": kind, "position": position, "consecrates": consecrates})
+
+
+## Consecrates a kind of jewellery (a neck piece) the player has, once and for
+## good: every one of them they wear gives the consecration's bonus.
+func consecrate(player: RefCounted, item_id: String, events: Array) -> void:
+	var rules: Dictionary = ContentDB.data()["pietas"].get("consecration", {})
+	var altar := nearby_altar(player.position)
+	if rules.is_empty() or altar.is_empty() or not altar.get("consecrates", false):
+		return
+	if not consecratable(item_id):
+		sim.message(player, "The priests consecrate jewellery, nothing else.", events)
+		return
+	if player.consecrated.has(item_id):
+		sim.message(player, "Your %s are already consecrated." % ContentDB.item(item_id)["name"].to_lower(), events)
+		return
+	if player.skills.level("pietas") < rules["level"]:
+		sim.message(player, "The priests consecrate for the devout: you need Pietas %d." % rules["level"], events)
+		return
+	if player.inventory.count(item_id) == 0 and not player.equipment.is_wearing(item_id):
+		return
+	if player.inventory.count("coins") < rules["fee"]:
+		sim.message(player, "The priests ask %d denarii for the rite." % rules["fee"], events)
+		return
+	player.inventory.remove("coins", rules["fee"])
+	player.consecrated.append(item_id)
+	player.apply_equipment()
+	sim.message(player, "The priest anoints your %s and speaks the rite over it. It's Jupiter's now, as well as yours." % ContentDB.item(item_id)["name"].to_lower(), events)
+	events.append({"type": "equipment_changed", "id": player.id, "tick": sim.tick})
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+
+
+## Jewellery: anything worn at the neck.
+static func consecratable(item_id: String) -> bool:
+	return ContentDB.item(item_id).get("equip", {}).get("slot", "") == "neck"
 
 
 func add_spring(position: Vector3) -> void:

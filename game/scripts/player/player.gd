@@ -528,6 +528,11 @@ func pray(altar: Node3D) -> void:
 		sim_driver.sim.queue_item_action(_entity.entity_id, "pray"))
 
 
+func consecrate(altar: Node3D, item_id: String) -> void:
+	walk_and_do(altar.global_position, CLICK_USE_DISTANCE, func():
+		sim_driver.sim.queue_item_action(_entity.entity_id, "consecrate", {"item": item_id}))
+
+
 func offer(altar: Node3D, item_id: String) -> void:
 	walk_and_do(altar.global_position, CLICK_USE_DISTANCE, func():
 		sim_driver.sim.queue_item_action(_entity.entity_id, "offer", {"item": item_id}))

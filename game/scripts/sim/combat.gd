@@ -133,6 +133,16 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	if lands and not (effect == "no_damage" and attacker.is_player()):
 		damage = mini(protected(target, blow, sim.rng.randi_range(1, max_damage)), target.hp)
 	target.hp -= damage
+	# The Thunderbolt of Jupiter turns part of a blow back on the striker.
+	var reflect: float = target.blessing_boosts.get("reflect", 0.0)
+	if reflect > 0.0 and damage > 0:
+		var back := mini(maxi(1, roundi(damage * reflect)), attacker.hp)
+		if back > 0:
+			attacker.hp -= back
+			events.append({"type": "hit", "attacker": target.id, "target": attacker.id, "damage": back, "ranged": false, "kind": "reflect", "tick": tick})
+			if not attacker.is_alive():
+				sim.kill(attacker, events)
+				return
 	# Kills by a summoned shade count as its caster's.
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():

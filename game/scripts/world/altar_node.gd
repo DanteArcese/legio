@@ -4,6 +4,8 @@ extends StaticBody3D
 
 @export_enum("heavenly", "underworld") var kind := "heavenly"
 @export var title := "Altar"
+## Whether priests here consecrate jewellery (Rome's altar of Jupiter).
+@export var consecrates := false
 
 
 func _init() -> void:

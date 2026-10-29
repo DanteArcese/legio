@@ -35,7 +35,9 @@ ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable", "teleport"}
 MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate", "attack_kind"}
 ATTACK_KINDS = {"melee", "ranged", "ritus"}
-BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
+BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed", "stances"}
+STANCE_KEYS = {"kind", "attacks", "reach", "projectile", "tell"}
+PROJECTILES = {"arrow", "javelin", "sling_bullet"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
@@ -211,7 +213,23 @@ def _check_item(where, item_id, item, items, errors):
 
 
 def _check_boss(where, boss, attack_speed, errors):
-    _check_keys(where, boss, BOSS_KEYS | {"throw_kind"}, BOSS_KEYS, errors)
+    _check_keys(where, boss, BOSS_KEYS | {"throw_kind"}, BOSS_KEYS - {"stances"}, errors)
+    stances = boss.get("stances", [])
+    if not isinstance(stances, list) or ("stances" in boss and len(stances) < 2):
+        errors.append(f"{where}.stances: expected a list of at least two stances")
+        stances = []
+    for i, stance in enumerate(stances):
+        at = f"{where}.stances[{i}]"
+        _check_keys(at, stance, STANCE_KEYS, {"kind", "attacks", "tell"}, errors)
+        if stance.get("kind") not in ATTACK_KINDS:
+            errors.append(f"{at}.kind: must be one of {sorted(ATTACK_KINDS)}")
+        _check_int(at, "attacks", stance.get("attacks"), 1, errors)
+        if "reach" in stance:
+            _check_number(at, "reach", stance["reach"], 1, 12, errors)
+        if "projectile" in stance and stance["projectile"] not in PROJECTILES:
+            errors.append(f"{at}.projectile: must be one of {sorted(PROJECTILES)}")
+        if not isinstance(stance.get("tell"), str) or not stance.get("tell"):
+            errors.append(f"{at}.tell: expected text")
     if boss.get("throw_kind", "spear") not in ("spear", "venom", "boulder"):
         errors.append(f"{where}.throw_kind: must be spear, venom or boulder")
     _check_int(where, "throw_every", boss.get("throw_every"), 2, errors)

@@ -18,7 +18,28 @@ static func eligible_tasks(venator: Dictionary, combat_level: int, slayer_level:
 
 
 ## Picks a weighted task and amount. Returns {} if none are eligible.
-static func assign(venator_id: String, combat_level: int, slayer_level: int, rng: RandomNumberGenerator, blocked := []) -> Dictionary:
+## How much longer a contract is on a monster the player has paid to extend.
+const EXTENSION := 1.5
+
+
+## How many kinds of beast a player may block: the base, plus one for each
+## extra block they've bought.
+static func max_blocks(unlocks: Array) -> int:
+	var rewards := ContentDB.slayer_rewards()
+	var extra := 0
+	for unlock_id in unlocks:
+		if rewards["unlocks"].get(unlock_id, {}).get("extra_block", false):
+			extra += 1
+	return int(rewards["max_blocks"]) + extra
+
+
+## True if the player has bought longer contracts on this monster.
+static func extended(unlocks: Array, monster_id: String) -> bool:
+	var rewards := ContentDB.slayer_rewards()
+	return unlocks.any(func(u): return rewards["unlocks"].get(u, {}).get("extends", "") == monster_id)
+
+
+static func assign(venator_id: String, combat_level: int, slayer_level: int, rng: RandomNumberGenerator, blocked := [], unlocks := []) -> Dictionary:
 	var tasks := eligible_tasks(ContentDB.venator(venator_id), combat_level, slayer_level, blocked)
 	if tasks.is_empty():
 		return {}
@@ -30,6 +51,8 @@ static func assign(venator_id: String, combat_level: int, slayer_level: int, rng
 		pick -= task["weight"]
 		if pick <= 0:
 			var amount := rng.randi_range(task["amount"][0], task["amount"][1])
+			if extended(unlocks, task["monster"]):
+				amount = ceili(amount * EXTENSION)
 			return {"monster": task["monster"], "remaining": amount, "total": amount, "venator": venator_id}
 	return {}
 

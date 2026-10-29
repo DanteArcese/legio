@@ -546,5 +546,28 @@
         "pearl": 1.2
       }
     }
+  },
+  "subura_fence": {
+    "name": "Pollio the fence",
+    "offers": [
+      {
+        "item": "lockpick",
+        "price": 30
+      }
+    ],
+    "buys": {
+      "items": [
+        "pepper",
+        "pearl",
+        "gold_bar",
+        "silver_bar",
+        "silver_fibula",
+        "silver_pendant",
+        "gold_bulla",
+        "linen",
+        "bread"
+      ],
+      "rate": 0.75
+    }
   }
 }

@@ -2328,6 +2328,95 @@ text = "Gnaeus of the venatores\n(Slayer contracts)"
 font_size = 32
 outline_size = 8
 
+[node name="SpiceStall" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -545, 0, -13)
+script = ExtResource("32_stall")
+stall_type = "spice_stall"
+
+[node name="JewellersStall" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -536, 0, -13)
+script = ExtResource("32_stall")
+stall_type = "jewellers_stall"
+
+[node name="InsulaStrongbox" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -530, 0, -27)
+script = ExtResource("48_strongbox")
+box_type = "insula_strongbox"
+
+[node name="SenatorsStrongbox" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -540, 0, 7)
+script = ExtResource("48_strongbox")
+box_type = "senators_strongbox"
+
+[node name="Gambler" type="StaticBody3D" parent="Rome" groups=["marks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -528, 1, -17)
+collision_layer = 8
+metadata/mark_type = "gambler"
+metadata/display_name = "Gambler"
+metadata/examine = "A dice player from the Subura's taverns, flush tonight."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/Gambler"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/Gambler"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/Gambler"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue_Hooded"
+
+[node name="Label" type="Label3D" parent="Rome/Gambler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Gambler"
+font_size = 32
+outline_size = 8
+
+[node name="Senator" type="StaticBody3D" parent="Rome" groups=["marks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -552, 1, 4)
+collision_layer = 8
+metadata/mark_type = "senator"
+metadata/display_name = "Senator"
+metadata/examine = "A senator on his way to the curia, his purse on a slave's belt."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/Senator"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/Senator"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/Senator"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+
+[node name="Label" type="Label3D" parent="Rome/Senator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Senator"
+font_size = 32
+outline_size = 8
+
+[node name="PollioTheFence" type="StaticBody3D" parent="Rome" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -520, 1, -20)
+collision_layer = 8
+metadata/shop_id = "subura_fence"
+metadata/display_name = "Pollio the fence"
+metadata/examine = "He doesn't ask where things came from. He asks how many."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/PollioTheFence"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/PollioTheFence"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/PollioTheFence"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue_Hooded"
+
+[node name="Label" type="Label3D" parent="Rome/PollioTheFence"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Pollio the fence"
 [node name="LegateSertorius" type="StaticBody3D" parent="Rome" groups=["quest_npcs", "navigation_source"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -572, 1, -20)
 collision_layer = 8

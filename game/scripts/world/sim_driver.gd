@@ -212,7 +212,8 @@ func nearest_pile(origin: Vector3, max_distance: float, inventory: RefCounted = 
 	for pile in _piles.values():
 		if inventory and not pile.items.any(func(e): return inventory.space_for(e["item"], e["quantity"]) > 0):
 			continue
-		var distance := origin.distance_to(pile.global_position)
+		# Flat distance, as the simulation measures pickups.
+		var distance := Vector2(origin.x - pile.global_position.x, origin.z - pile.global_position.z).length()
 		if distance <= best_distance:
 			best = pile
 			best_distance = distance

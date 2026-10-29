@@ -28,7 +28,8 @@
           "amount": [
             15,
             30
-          ]
+          ],
+          "combat_level": 6
         },
         {
           "monster": "wild_boar",
@@ -36,7 +37,8 @@
           "amount": [
             15,
             30
-          ]
+          ],
+          "combat_level": 9
         },
         {
           "monster": "latro",

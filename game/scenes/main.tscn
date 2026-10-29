@@ -51,6 +51,7 @@
 [ext_resource type="Script" path="res://scripts/world/strongbox_node.gd" id="48_strongbox"]
 [ext_resource type="Script" path="res://scripts/audio/music_director.gd" id="91_music"]
 [ext_resource type="Script" path="res://scripts/ui/feedback_note.gd" id="90_feedback"]
+[ext_resource type="Script" path="res://scripts/world/visibility_ranges.gd" id="92_visranges"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1352,7 +1353,7 @@ margin = 0.2
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig/SpringArm3D"]
 fov = 45.0
-far = 400.0
+far = 170.0
 
 [node name="DebugHud" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver")]
 script = ExtResource("5_hud")
@@ -2181,3 +2182,6 @@ end_offset = Vector3(6, 0, 0)
 script = ExtResource("90_feedback")
 world_map = NodePath("../WorldMap")
 driver = NodePath("../SimDriver")
+
+[node name="VisibilityRanges" type="Node" parent="."]
+script = ExtResource("92_visranges")

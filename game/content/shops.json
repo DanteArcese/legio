@@ -292,7 +292,9 @@
         "estate_wine": 1.2,
         "garum": 1.0,
         "cooked_tuna": 0.9,
-        "pearl": 0.9
+        "pearl": 0.9,
+        "falernian_wine": 1.2,
+        "caecuban_wine": 1.2
       }
     }
   },
@@ -472,6 +474,22 @@
       {
         "item": "chisel",
         "price": 40
+      },
+      {
+        "item": "fig_sapling",
+        "price": 120
+      },
+      {
+        "item": "falernian_cutting",
+        "price": 200
+      },
+      {
+        "item": "caecuban_cutting",
+        "price": 500
+      },
+      {
+        "item": "cedar_sapling",
+        "price": 400
       }
     ],
     "buys": {

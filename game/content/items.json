@@ -2265,5 +2265,56 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "fig_sapling": {
+    "name": "Fig sapling",
+    "value": 60,
+    "examine": "A young fig tree in a pot of earth.",
+    "stackable": true
+  },
+  "cedar_sapling": {
+    "name": "Cedar sapling",
+    "value": 200,
+    "examine": "A cedar seedling from the mountains of Lebanon. It'll outlive you.",
+    "stackable": true
+  },
+  "cedar_logs": {
+    "name": "Cedar logs",
+    "value": 45,
+    "examine": "Fragrant red cedar, the timber of temples and fleets."
+  },
+  "falernian_cutting": {
+    "name": "Falernian vine cutting",
+    "value": 100,
+    "examine": "A cutting from a vine on the slopes of Mount Falernus.",
+    "stackable": true
+  },
+  "caecuban_cutting": {
+    "name": "Caecuban vine cutting",
+    "value": 250,
+    "examine": "A cutting from the marshes of Caecubum, whose wine Horace saved for victories.",
+    "stackable": true
+  },
+  "falernian_grapes": {
+    "name": "Falernian grapes",
+    "value": 18,
+    "examine": "Small, dark, sweet grapes. They want years in the amphora."
+  },
+  "caecuban_grapes": {
+    "name": "Caecuban grapes",
+    "value": 30,
+    "examine": "Grapes from the Caecuban vine, the first growth of Italy."
+  },
+  "falernian_wine": {
+    "name": "Falernian wine",
+    "value": 260,
+    "examine": "An amphora of Falernian, the wine consuls are named for the vintage of.",
+    "heals": 4
+  },
+  "caecuban_wine": {
+    "name": "Caecuban wine",
+    "value": 520,
+    "examine": "An amphora of Caecuban. Kept for a triumph, and you've earned one.",
+    "heals": 5
   }
 }

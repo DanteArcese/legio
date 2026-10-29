@@ -23,7 +23,7 @@
     "olive_grove": {
       "name": "Olive grove",
       "kind": "fruit_tree",
-      "examine": "Turned earth and stakes, laid out for a few olive trees."
+      "examine": "Turned earth and stakes, laid out for a few fruit trees: olives, figs, or a cedar."
     }
   },
   "crops": {
@@ -186,6 +186,70 @@
       "stage_ticks": 260,
       "stages": 4,
       "color": "#6b7a3a"
+    },
+    "fig": {
+      "name": "Fig trees",
+      "kind": "fruit_tree",
+      "seed": "fig_sapling",
+      "level": 45,
+      "plant_xp": 95,
+      "harvest_xp": 30,
+      "produce": "figs",
+      "yield": [
+        10,
+        16
+      ],
+      "stage_ticks": 280,
+      "stages": 4,
+      "color": "#5a6a2a"
+    },
+    "cedar": {
+      "name": "Cedar",
+      "kind": "fruit_tree",
+      "seed": "cedar_sapling",
+      "level": 70,
+      "plant_xp": 180,
+      "harvest_xp": 70,
+      "produce": "cedar_logs",
+      "yield": [
+        6,
+        10
+      ],
+      "stage_ticks": 360,
+      "stages": 4,
+      "color": "#2f4a2a"
+    },
+    "falernian": {
+      "name": "Falernian vine",
+      "kind": "vine",
+      "seed": "falernian_cutting",
+      "level": 60,
+      "plant_xp": 90,
+      "harvest_xp": 60,
+      "produce": "falernian_grapes",
+      "yield": [
+        5,
+        8
+      ],
+      "stage_ticks": 220,
+      "stages": 4,
+      "color": "#4a1d3e"
+    },
+    "caecuban": {
+      "name": "Caecuban vine",
+      "kind": "vine",
+      "seed": "caecuban_cutting",
+      "level": 75,
+      "plant_xp": 130,
+      "harvest_xp": 90,
+      "produce": "caecuban_grapes",
+      "yield": [
+        5,
+        8
+      ],
+      "stage_ticks": 260,
+      "stages": 4,
+      "color": "#3a1030"
     }
   }
 }

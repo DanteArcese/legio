@@ -1738,6 +1738,30 @@
         "output": "estate_wine",
         "level": 35,
         "xp": 70
+      },
+      {
+        "id": "falernian_wine",
+        "inputs": [
+          {
+            "item": "falernian_grapes",
+            "quantity": 5
+          }
+        ],
+        "output": "falernian_wine",
+        "level": 60,
+        "xp": 150
+      },
+      {
+        "id": "caecuban_wine",
+        "inputs": [
+          {
+            "item": "caecuban_grapes",
+            "quantity": 5
+          }
+        ],
+        "output": "caecuban_wine",
+        "level": 78,
+        "xp": 240
       }
     ],
     "mill": [

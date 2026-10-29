@@ -945,5 +945,91 @@
         "weight": 1
       }
     ]
+  },
+  "lamia": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 3
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          40,
+          120
+        ],
+        "weight": 5
+      },
+      {
+        "item": "lamia_scale",
+        "quantity": 1,
+        "weight": 4
+      },
+      {
+        "item": "silver_bar",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "gold_ore",
+        "quantity": 1,
+        "weight": 1
+      }
+    ]
+  },
+  "centaur": {
+    "always": [
+      {
+        "item": "bones",
+        "quantity": 1
+      },
+      {
+        "item": "raw_meat",
+        "quantity": 1
+      }
+    ],
+    "rolls": 1,
+    "table": [
+      {
+        "item": null,
+        "weight": 3
+      },
+      {
+        "item": "coins",
+        "quantity": [
+          60,
+          180
+        ],
+        "weight": 5
+      },
+      {
+        "item": "steel_arrow",
+        "quantity": [
+          8,
+          20
+        ],
+        "weight": 4
+      },
+      {
+        "item": "oak_logs",
+        "quantity": 1,
+        "weight": 2
+      },
+      {
+        "item": "steel_arrowheads",
+        "quantity": [
+          5,
+          15
+        ],
+        "weight": 2
+      }
+    ]
   }
 }

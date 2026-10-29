@@ -677,5 +677,67 @@
         "glowing_eyes"
       ]
     }
+  },
+  "lamia": {
+    "name": "Lamia",
+    "plural": "Lamiae",
+    "level": 44,
+    "stats": {
+      "attack": 40,
+      "strength": 38,
+      "defence": 36,
+      "vitality": 50
+    },
+    "attack_speed": 4,
+    "aggressive": true,
+    "respawn_ticks": 35,
+    "drops": "lamia",
+    "slayer": {
+      "level": 45,
+      "ward_item": "leather_bulla",
+      "unwarded_effect": "charm"
+    },
+    "examine": "A woman to the waist and a serpent below it. She smiles, and you forget why you came.",
+    "appearance": {
+      "model": "humanoid",
+      "color": "#6e8a4e",
+      "accent": "#c9a25a",
+      "size": 1.1,
+      "features": [
+        "serpent_tail",
+        "glowing_eyes"
+      ]
+    }
+  },
+  "centaur": {
+    "name": "Centaur",
+    "plural": "Centaurs",
+    "level": 56,
+    "stats": {
+      "attack": 50,
+      "strength": 48,
+      "defence": 46,
+      "vitality": 70
+    },
+    "attack_speed": 5,
+    "attack_kind": "ranged",
+    "reach": 7.0,
+    "aggressive": true,
+    "respawn_ticks": 40,
+    "drops": "centaur",
+    "slayer": {
+      "level": 55
+    },
+    "examine": "A man to the waist and a horse below, with a bow. He keeps his distance, and his arrows don't.",
+    "appearance": {
+      "model": "quadruped",
+      "color": "#7a5536",
+      "accent": "#4a3322",
+      "size": 1.6,
+      "features": [
+        "tail",
+        "human_torso"
+      ]
+    }
   }
 }

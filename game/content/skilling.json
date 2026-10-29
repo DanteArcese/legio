@@ -1379,6 +1379,23 @@
         "level": 40,
         "xp": 110,
         "tool": "needle"
+      },
+      {
+        "id": "leather_bulla",
+        "inputs": [
+          {
+            "item": "leather",
+            "quantity": 1
+          },
+          {
+            "item": "thread",
+            "quantity": 1
+          }
+        ],
+        "output": "leather_bulla",
+        "level": 35,
+        "xp": 70,
+        "tool": "needle"
       }
     ],
     "garum": [

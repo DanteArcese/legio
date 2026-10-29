@@ -1218,6 +1218,38 @@ monster_id = "basilisk"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 438)
 monster_id = "basilisk"
 
+[node name="Lamia1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, 422)
+monster_id = "lamia"
+
+[node name="Lamia2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43, 0, 427)
+monster_id = "lamia"
+
+[node name="Lamia3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41, 0, 421)
+monster_id = "lamia"
+
+[node name="Lamia4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0, 428)
+monster_id = "lamia"
+
+[node name="Centaur1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 0, 355)
+monster_id = "centaur"
+
+[node name="Centaur2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, 358)
+monster_id = "centaur"
+
+[node name="Centaur3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 354)
+monster_id = "centaur"
+
+[node name="Centaur4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, 363)
+monster_id = "centaur"
+
 [node name="GalleryBasilisk1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168, 0, 387)
 monster_id = "basilisk"

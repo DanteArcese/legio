@@ -310,6 +310,48 @@
         "name": "the venator's helm",
         "cost": 60,
         "teaches": "How to sew a venator's helm: a wolfskin hood with a whitethorn charm sewn in. Wear it on contract and you'll hit your quarry harder."
+      },
+      "fifth_block": {
+        "name": "a fifth block",
+        "cost": 100,
+        "teaches": "You can now refuse five kinds of beast. Aulus and Ursa will both remember.",
+        "extra_block": true
+      },
+      "sixth_block": {
+        "name": "a sixth block",
+        "cost": 150,
+        "teaches": "You can now refuse six kinds of beast.",
+        "extra_block": true
+      },
+      "longer_harpies": {
+        "name": "longer harpy contracts",
+        "cost": 60,
+        "teaches": "Harpy contracts will be half as long again: the harbour wants its sky back.",
+        "extends": "harpy"
+      },
+      "longer_dire_wolves": {
+        "name": "longer dire wolf contracts",
+        "cost": 70,
+        "teaches": "Dire wolf contracts will be half as long again. Bring more food.",
+        "extends": "dire_wolf"
+      },
+      "longer_basilisks": {
+        "name": "longer basilisk contracts",
+        "cost": 90,
+        "teaches": "Basilisk contracts will be half as long again. Polish the mirror.",
+        "extends": "basilisk"
+      },
+      "longer_cyclopes": {
+        "name": "longer cyclops contracts",
+        "cost": 90,
+        "teaches": "Cyclops contracts will be half as long again. Melissa's father will be glad.",
+        "extends": "cyclops"
+      },
+      "longer_gorgons": {
+        "name": "longer gorgon contracts",
+        "cost": 110,
+        "teaches": "Gorgon contracts will be half as long again. Don't look up.",
+        "extends": "gorgon"
       }
     }
   }

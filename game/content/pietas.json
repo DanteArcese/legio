@@ -142,6 +142,105 @@
       "boost": {
         "protect_ritus": 0.6
       }
+    },
+    "mercury_wings": {
+      "name": "Wings of Mercury",
+      "god": "Mercury",
+      "family": "heavenly",
+      "aspect": "movement",
+      "level": 35,
+      "drain_ticks": 10,
+      "boost": {
+        "run_speed": 0.3
+      }
+    },
+    "hecate_crossroads": {
+      "name": "Crossroads of Hecate",
+      "god": "Hecate",
+      "family": "underworld",
+      "aspect": "ritus",
+      "level": 38,
+      "drain_ticks": 8,
+      "boost": {
+        "ritus": 0.15
+      }
+    },
+    "jupiter_thunder": {
+      "name": "Thunder of Jupiter",
+      "god": "Jupiter",
+      "family": "heavenly",
+      "aspect": "attack",
+      "level": 48,
+      "drain_ticks": 8,
+      "boost": {
+        "attack": 0.1
+      }
+    },
+    "mars_wrath": {
+      "name": "Wrath of Mars",
+      "god": "Mars",
+      "family": "heavenly",
+      "aspect": "strength",
+      "level": 50,
+      "drain_ticks": 6,
+      "boost": {
+        "strength": 0.15
+      }
+    },
+    "minerva_wisdom": {
+      "name": "Wisdom of Minerva",
+      "god": "Minerva",
+      "family": "heavenly",
+      "aspect": "defence",
+      "level": 53,
+      "drain_ticks": 6,
+      "boost": {
+        "defence": 0.15
+      }
+    },
+    "diana_moon": {
+      "name": "Moon of Diana",
+      "god": "Diana",
+      "family": "heavenly",
+      "aspect": "ranged",
+      "level": 56,
+      "drain_ticks": 6,
+      "boost": {
+        "ranged": 0.15
+      }
+    },
+    "proserpina_harvest": {
+      "name": "Harvest of Proserpina",
+      "god": "Proserpina",
+      "family": "underworld",
+      "aspect": "harvest",
+      "level": 60,
+      "drain_ticks": 6,
+      "boost": {
+        "ritus_lifesteal": 0.25
+      }
+    },
+    "dis_pater_bond": {
+      "name": "Bond of Dis Pater",
+      "god": "Dis Pater",
+      "family": "underworld",
+      "aspect": "binding",
+      "level": 65,
+      "drain_ticks": 6,
+      "boost": {
+        "binding_chance": 0.5
+      }
+    },
+    "jupiter_majesty": {
+      "name": "Majesty of Jupiter",
+      "god": "Jupiter",
+      "family": "heavenly",
+      "aspect": "attack",
+      "level": 70,
+      "drain_ticks": 5,
+      "boost": {
+        "attack": 0.2
+      }
     }
   },
   "offerings": {
@@ -200,6 +299,14 @@
     "lamia_scale": {
       "xp": 70,
       "altar": "underworld"
+    },
+    "cyclops_cheese": {
+      "xp": 25,
+      "altar": "heavenly"
+    },
+    "pearl": {
+      "xp": 90,
+      "altar": "heavenly"
     }
   },
   "altars": {

@@ -139,6 +139,10 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():
 		attacker.hp = mini(attacker.hp + damage, attacker.max_hp)
+	# The Harvest of Proserpina: a curse that bites feeds its caster.
+	var lifesteal: float = attacker.blessing_boosts.get("ritus_lifesteal", 0.0)
+	if lifesteal > 0.0 and blow == "ritus" and damage > 0:
+		attacker.hp = mini(attacker.hp + floori(damage * lifesteal), attacker.max_hp)
 	# A basilisk's gaze stiffens an unwarded player's limbs, a level at a time.
 	if effect in ["petrify", "gorgon_gaze"] and target.is_player():
 		_petrify(target, events)

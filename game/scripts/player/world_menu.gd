@@ -327,14 +327,24 @@ static func _venator_options(player: Node3D, node: Node) -> Array:
 		var monsters := Slayer.plural_name(task["monster"])
 		options.append(["Cancel the %s contract (%d points)" % [monsters, rewards["cancel"]],
 			player.slayer_reward.bind(node, "cancel")])
-		if combatant.slayer_blocked.size() < rewards["max_blocks"]:
+		if combatant.slayer_blocked.size() < Slayer.max_blocks(combatant.slayer_unlocks):
 			options.append(["Never hunt %s again (%d points)" % [monsters, rewards["block"]],
 				player.slayer_reward.bind(node, "block")])
 	for monster_id in combatant.slayer_blocked:
 		options.append(["Hunt %s again" % Slayer.plural_name(monster_id), player.slayer_reward.bind(node, "unblock", {"monster": monster_id})])
+	var block_offered := false
 	for unlock_id in rewards["unlocks"]:
 		if not combatant.slayer_unlocks.has(unlock_id):
 			var unlock: Dictionary = rewards["unlocks"][unlock_id]
+			# Longer contracts are offered while on that monster, so the menu
+			# stays short.
+			if unlock.has("extends") and task.get("monster", "") != unlock["extends"]:
+				continue
+			# Extra blocks come one at a time: the fifth before the sixth.
+			if unlock.get("extra_block", false):
+				if block_offered:
+					continue
+				block_offered = true
 			options.append(["Learn %s (%d points)" % [unlock["name"], unlock["cost"]],
 				player.slayer_reward.bind(node, "unlock", {"unlock": unlock_id})])
 	options.append(["Examine " + node.get_meta("display_name", "venator"), player.examine.bind(node.get_meta("examine", ""))])

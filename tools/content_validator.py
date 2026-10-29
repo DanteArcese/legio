@@ -66,7 +66,7 @@ def validate(content: dict) -> list[str]:
         _check_drop_table(f"drops.{table_id}", table, items, errors)
     for venator_id, venator in content.get("slayer", {}).get("venatores", {}).items():
         _check_venator(f"slayer.venatores.{venator_id}", venator, monsters, items, errors)
-    _check_slayer_rewards(content.get("slayer", {}).get("rewards", {}), errors)
+    _check_slayer_rewards(content.get("slayer", {}).get("rewards", {}), content.get("monsters", {}), errors)
     _check_skilling(content.get("skilling", {}), items, errors)
     _check_pietas(content.get("pietas", {}), items, errors)
     quests = content.get("quests", {})
@@ -450,7 +450,7 @@ def _check_tasks(tasks, items, monsters, quests, errors):
                     errors.append(f"{task_where}.area: expected [x, z, width, depth]")
 
 
-def _check_slayer_rewards(rewards, errors):
+def _check_slayer_rewards(rewards, monsters, errors):
     where = "slayer.rewards"
     _check_keys(where, rewards, {"cancel", "block", "max_blocks", "streaks", "unlocks"}, {"cancel", "block", "max_blocks", "streaks", "unlocks"}, errors)
     for key in ("cancel", "block", "max_blocks"):
@@ -464,8 +464,12 @@ def _check_slayer_rewards(rewards, errors):
         errors.append(f"{where}.streaks: list the longest streak first")
     for unlock_id, unlock in rewards.get("unlocks", {}).items():
         _check_id(f"{where}.unlocks.{unlock_id}", unlock_id, errors)
-        _check_keys(f"{where}.unlocks.{unlock_id}", unlock, {"name", "cost", "teaches"}, {"name", "cost", "teaches"}, errors)
+        _check_keys(f"{where}.unlocks.{unlock_id}", unlock, {"name", "cost", "teaches", "extra_block", "extends"}, {"name", "cost", "teaches"}, errors)
         _check_int(f"{where}.unlocks.{unlock_id}", "cost", unlock.get("cost"), 1, errors)
+        if "extra_block" in unlock and unlock["extra_block"] is not True:
+            errors.append(f"{where}.unlocks.{unlock_id}.extra_block: must be true if present")
+        if "extends" in unlock and unlock["extends"] not in monsters:
+            errors.append(f"{where}.unlocks.{unlock_id}.extends: unknown monster {unlock['extends']!r}")
 
 
 def _check_venator(where, venator, monsters, items, errors):
@@ -569,7 +573,7 @@ def _check_skilling(skilling, items, errors):
                 _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
 
 
-BOOSTS = {"strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus"}
+BOOSTS = {"attack", "strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus", "ritus_lifesteal"}
 ALTAR_KINDS = {"heavenly", "underworld"}
 
 

@@ -130,7 +130,7 @@ func is_blessings_open() -> bool:
 
 
 func _build_blessings() -> void:
-	_blessings_panel = _panel(Control.PRESET_CENTER_LEFT, Vector2(30, -260))
+	_blessings_panel = _panel(Control.PRESET_CENTER_LEFT, Vector2(30, -300))
 	var column := VBoxContainer.new()
 	_blessings_panel.add_child(column)
 	column.add_child(_heading("Blessings  (P / D-pad left)"))
@@ -139,13 +139,17 @@ func _build_blessings() -> void:
 	var blessings: Dictionary = ContentDB.data()["pietas"]["blessings"]
 	var ids := blessings.keys()
 	ids.sort_custom(func(a, b): return blessings[a]["level"] < blessings[b]["level"])
+	# Two columns, so twenty-odd blessings fit on a 720p screen.
+	var grid := GridContainer.new()
+	grid.columns = 2
+	column.add_child(grid)
 	for id in ids:
 		var button := Button.new()
 		button.toggle_mode = true
-		button.custom_minimum_size = Vector2(330, 34)
+		button.custom_minimum_size = Vector2(330, 31)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.pressed.connect(_act.bind("bless", {"blessing": id}))
-		column.add_child(button)
+		grid.add_child(button)
 		_blessing_buttons[id] = button
 	_blessings_panel.visible = false
 

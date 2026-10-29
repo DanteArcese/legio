@@ -330,6 +330,59 @@
           "text": "Defeat the Hydra."
         }
       ]
+    },
+    "rome": {
+      "name": "Rome",
+      "reward": 6000,
+      "tasks": [
+        {
+          "id": "arrive",
+          "kind": "visit",
+          "area": [
+            -640,
+            -70,
+            140,
+            126
+          ],
+          "text": "Sail up the Tiber to Rome."
+        },
+        {
+          "id": "forum",
+          "kind": "visit",
+          "area": [
+            -602,
+            -22,
+            52,
+            30
+          ],
+          "text": "Stand in the forum of Rome."
+        },
+        {
+          "id": "gorgon",
+          "kind": "kill",
+          "monster": "gorgon",
+          "text": "Kill a gorgon for the capital's venator."
+        },
+        {
+          "id": "oil",
+          "kind": "obtain",
+          "item": "olive_oil",
+          "text": "Press an amphora of olive oil, the kind Rome pays for."
+        },
+        {
+          "id": "slayer",
+          "kind": "level",
+          "skill": "slayer",
+          "level": 70,
+          "text": "Reach Slayer 70."
+        },
+        {
+          "id": "optio",
+          "kind": "quest",
+          "quest": "optio",
+          "text": "Win the rank of optio."
+        }
+      ]
     }
   }
 }

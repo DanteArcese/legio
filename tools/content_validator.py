@@ -85,7 +85,11 @@ def validate(content: dict) -> list[str]:
     _check_farming(content.get("farming", {}), items, errors)
     _check_mercatura(content.get("mercatura", {}), items, set(content.get("shops", {})), errors)
     _check_arena(content.get("arena", {}), items, monsters, set(content.get("shops", {})), errors)
-    _check_circus(content.get("circus", {}), items, errors)
+    circuses = content.get("circus", {}).get("circuses", {})
+    if not circuses:
+        errors.append("circus.circuses: at least one circus required")
+    for circus_id, circus in circuses.items():
+        _check_circus(circus_id, circus, items, errors)
     _check_games(content.get("games", {}), items, set(content.get("monsters", {})), errors)
     _check_tasks(content.get("tasks", {}), items, monsters, set(quests.get("quests", {})), errors)
     _check_villa(content.get("villa", {}), items, quests, content.get("farming", {}), errors)
@@ -360,30 +364,39 @@ CIRCUS_KEYS = {"name", "level", "fee", "laps", "speed", "speed_per_level", "coun
                "placing_xp", "prizes", "trophy", "rivals"}
 
 
-def _check_circus(circus, items, errors):
-    _check_keys("circus", circus, CIRCUS_KEYS, CIRCUS_KEYS, errors)
-    _check_type("circus", "name", circus.get("name"), str, errors)
-    _check_int("circus", "level", circus.get("level"), 1, errors, 99)
+def _check_circus(circus_id, circus, items, errors):
+    where = f"circus.circuses.{circus_id}"
+    _check_keys(where, circus, CIRCUS_KEYS | {"champion", "horses"}, CIRCUS_KEYS, errors)
+    if "horses" in circus and circus["horses"] not in (2, 4):
+        errors.append(f"{where}.horses: a biga (2) or a quadriga (4)")
+    champion = circus.get("champion")
+    if champion is not None:
+        _check_keys(f"{where}.champion", champion, {"wins", "item"}, {"wins", "item"}, errors)
+        _check_int(f"{where}.champion", "wins", champion.get("wins"), 1, errors)
+        if champion.get("item") not in items:
+            errors.append(f"{where}.champion.item: unknown item {champion.get('item')!r}")
+    _check_type(where, "name", circus.get("name"), str, errors)
+    _check_int(where, "level", circus.get("level"), 1, errors, 99)
     for key in ("fee", "laps", "countdown_ticks", "time_limit_ticks", "lap_xp"):
-        _check_int("circus", key, circus.get(key), 1, errors)
-    _check_number("circus", "speed", circus.get("speed"), 1.0, 30.0, errors)
-    _check_number("circus", "speed_per_level", circus.get("speed_per_level"), 0.0, 0.05, errors)
+        _check_int(where, key, circus.get(key), 1, errors)
+    _check_number(where, "speed", circus.get("speed"), 1.0, 30.0, errors)
+    _check_number(where, "speed_per_level", circus.get("speed_per_level"), 0.0, 0.05, errors)
     if circus.get("trophy") not in items:
-        errors.append(f"circus.trophy: unknown item {circus.get('trophy')!r}")
+        errors.append(f"{where}.trophy: unknown item {circus.get('trophy')!r}")
     rivals = circus.get("rivals", [])
     if not rivals:
-        errors.append("circus.rivals: at least one rival required")
+        errors.append(f"{where}.rivals: at least one rival required")
     for i, rival in enumerate(rivals):
-        where = f"circus.rivals[{i}]"
-        _check_keys(where, rival, {"name", "color", "speed"}, {"name", "color", "speed"}, errors)
-        _check_type(where, "name", rival.get("name"), str, errors)
+        at = f"{where}.rivals[{i}]"
+        _check_keys(at, rival, {"name", "color", "speed"}, {"name", "color", "speed"}, errors)
+        _check_type(at, "name", rival.get("name"), str, errors)
         if not (isinstance(rival.get("color"), str) and re.fullmatch(r"#[0-9a-fA-F]{6}", rival["color"])):
-            errors.append(f"{where}.color: expected #rrggbb")
-        _check_number(where, "speed", rival.get("speed"), 1.0, 30.0, errors)
+            errors.append(f"{at}.color: expected #rrggbb")
+        _check_number(at, "speed", rival.get("speed"), 1.0, 30.0, errors)
     for key in ("placing_xp", "prizes"):
         values = circus.get(key)
         if not (isinstance(values, list) and len(values) == len(rivals) + 1 and all(isinstance(v, int) and v >= 0 for v in values)):
-            errors.append(f"circus.{key}: expected one non-negative int per place ({len(rivals) + 1})")
+            errors.append(f"{where}.{key}: expected one non-negative int per place ({len(rivals) + 1})")
 
 
 GAMES_KEYS = {"name", "combat_level", "rest_ticks", "spawn_radius", "leave_radius", "trophy", "waves"}

@@ -36,7 +36,7 @@ func _start(sim: Simulation) -> Array:
 ## Drives round the racing line, a step of `per_tick` metres each tick.
 func _drive(sim: Simulation, metres: float, per_tick: float) -> Array:
 	var events := []
-	var track: Dictionary = sim.circus.track
+	var track: Dictionary = sim.circus.tracks["castra"]
 	var s := Circus.progress(track, _player(sim).position)
 	var driven := 0.0
 	while driven < metres and Circus.is_racing(_player(sim)):
@@ -48,7 +48,7 @@ func _drive(sim: Simulation, metres: float, per_tick: float) -> Array:
 
 func test_progress_and_points_agree_all_round() -> void:
 	var sim := _make_sim()
-	var track: Dictionary = sim.circus.track
+	var track: Dictionary = sim.circus.tracks["castra"]
 	var length := Circus.lap_length(track)
 	check(is_equal_approx(length, 120.0 + TAU * 12.0), "lap length")
 	for s in [0.0, 10.0, 29.0, 40.0, 67.0, 80.0, 120.0, 150.0, 170.0, length - 1.0]:
@@ -74,7 +74,7 @@ func test_a_fast_driver_wins_the_palm() -> void:
 	check(Circus.is_racing(_player(sim)), "racing")
 	check_eq(_player(sim).inventory.count("coins"), 75, "fee paid")
 	check(events.any(func(e): return e["type"] == "race_started"), "started")
-	var length := Circus.lap_length(sim.circus.track)
+	var length := Circus.lap_length(sim.circus.tracks["castra"])
 	events = _drive(sim, length * 3.0 + 5.0, 9.0)
 	check(not Circus.is_racing(_player(sim)), "race over")
 	var finished := events.filter(func(e): return e["type"] == "race_finished")
@@ -88,7 +88,7 @@ func test_a_fast_driver_wins_the_palm() -> void:
 func test_a_slow_driver_comes_last() -> void:
 	var sim := _make_sim()
 	_start(sim)
-	var length := Circus.lap_length(sim.circus.track)
+	var length := Circus.lap_length(sim.circus.tracks["castra"])
 	var events := _drive(sim, length * 3.0 + 5.0, 3.0)
 	var finished := events.filter(func(e): return e["type"] == "race_finished")
 	check_eq(finished[0]["place"] if finished else 0, 3, "third behind both rivals")
@@ -98,7 +98,7 @@ func test_a_slow_driver_comes_last() -> void:
 func test_cutting_across_does_not_count_a_lap() -> void:
 	var sim := _make_sim()
 	_start(sim)
-	var track: Dictionary = sim.circus.track
+	var track: Dictionary = sim.circus.tracks["castra"]
 	var length := Circus.lap_length(track)
 	# Jump from the start to the far straight and straight back.
 	_player(sim).position = Circus.point_at(track, length * 0.6)
@@ -125,3 +125,47 @@ func test_leaving_the_track_abandons_the_race() -> void:
 	events = sim.step()
 	check(not Circus.is_racing(_player(sim)), "abandoned")
 	check(events.any(func(e): return e["type"] == "race_ended"), "ended")
+
+
+## The Circus Maximus: its own track and agent, four rivals, a quadriga's
+## rules, and a laurel crown for the season's champion.
+func _maximus_sim() -> Simulation:
+	var sim := Simulation.new(5)
+	sim.add_player(PLAYER)
+	var player: RefCounted = sim.get_combatant(PLAYER)
+	player.skills.xp["athletics"] = player.skills.xp_for_level(99)
+	sim.give_item(PLAYER, "coins", 5000, "test", [])
+	sim.circus.set_track(CENTER, 30.0, 12.0)
+	sim.circus.set_agent(CENTER + Vector3(0, 0, 20))
+	var rome := Vector3(-536, 0, 31)
+	sim.circus.set_track(rome, 20.0, 10.0, "maximus")
+	sim.circus.set_agent(rome + Vector3(-20, 0, -18), "maximus")
+	player.position = rome + Vector3(-20, 0, -18)
+	return sim
+
+
+func test_the_maximus_is_its_own_race() -> void:
+	var sim := _maximus_sim()
+	var player: RefCounted = _player(sim)
+	player.skills.xp["athletics"] = player.skills.xp_for_level(49)
+	sim.queue_item_action(PLAYER, "start_race")
+	sim.step()
+	check(player.race.is_empty(), "Athletics 50 to drive in Rome")
+	player.skills.xp["athletics"] = player.skills.xp_for_level(50)
+	sim.queue_item_action(PLAYER, "start_race")
+	sim.step()
+	check_eq(player.race.get("circus", ""), "maximus", "racing at the Maximus")
+	check_eq(player.race["finishes"].size(), 4, "against four rivals")
+	check_eq(player.inventory.count("coins"), 5000 - Circus.data("maximus")["fee"], "the Maximus's fee")
+	check(player.position.distance_to(Vector3(-536, 0, 31)) < 35.0, "on the Roman track")
+
+
+func test_a_champion_every_five_wins() -> void:
+	var sim := _maximus_sim()
+	var player: RefCounted = _player(sim)
+	for win in 5:
+		player.race = {"circus": "maximus", "start": 0, "lap": 0, "sector": 0, "finishes": [sim.tick + 1000, sim.tick + 1000, sim.tick + 1000, sim.tick + 1000]}
+		sim.circus._finish(player, [])
+		check_eq(player.inventory.count("laurel_crown"), 1 if win == 4 else 0, "crown after win %d" % (win + 1))
+	check_eq(player.circus_wins["maximus"], 5, "five wins counted")
+	check_eq(player.inventory.count("victors_palm"), 5, "a palm for each")

@@ -73,6 +73,7 @@ func _ready() -> void:
 	_build_rostra()
 	_build_insulae()
 	_build_houses()
+	_build_circus()
 	if dresser:
 		_dress()
 
@@ -300,6 +301,40 @@ func _build_houses() -> void:
 		_box(Vector3(1.4, 2.2, 0.1), Vector3(at.x, 1.1, at.z + size.z / 2.0 + 0.05), TIMBER)
 		var roof := _box(Vector3(size.x + 0.6, 0.5, size.z + 0.6), Vector3(at.x, size.y + 0.25, at.z), TILE)
 		roof.name = "HouseRoof%d" % get_child_count()
+
+
+## The Circus Maximus: a sanded oval round a long spina (with turning posts
+## at each end and an obelisk in the middle), tiered stands along the south
+## straight, and a parapet along the north with a gap where the street
+## comes in. Its racing line is CircusMaximus (circus_track.gd) in the scene.
+func _build_circus() -> void:
+	var centre := Vector3(CIRCUS.get_center().x, 0, CIRCUS.get_center().y)
+	var spina := 16.0
+	_box(Vector3(spina * 2.0, 1.0, 2.6), centre + Vector3(0, 0.5, 0), TRAVERTINE)
+	_solid(Vector3(spina * 2.0, 1.0, 2.6), centre + Vector3(0, 0.5, 0))
+	_box(Vector3(spina * 1.6, 0.1, 1.4), centre + Vector3(0, 1.05, 0), Color(0.35, 0.55, 0.62))
+	for side in [-1.0, 1.0]:
+		var base := centre + Vector3(side * (spina + 1.4), 0, 0)
+		_box(Vector3(2.2, 0.8, 2.2), base + Vector3(0, 0.4, 0), TRAVERTINE.darkened(0.1))
+		_solid(Vector3(2.2, 0.8, 2.2), base + Vector3(0, 0.4, 0))
+		for offset in [-0.55, 0.0, 0.55]:
+			var cone := _cylinder(0.3, 2.4, Color(0.78, 0.62, 0.28))
+			(cone.mesh as CylinderMesh).top_radius = 0.05
+			cone.position = base + Vector3(0, 2.0, offset)
+	var obelisk := _cylinder(0.5, 9.0, Color(0.72, 0.52, 0.42))
+	(obelisk.mesh as CylinderMesh).top_radius = 0.22
+	(obelisk.mesh as CylinderMesh).radial_segments = 4
+	obelisk.position = centre + Vector3(0, 5.5, 0)
+	for tier in 4:
+		var z := CIRCUS.end.y - 1.0 + tier * 1.2
+		var size := Vector3(CIRCUS.size.x - 6.0, 0.8 + tier * 0.8, 1.2)
+		_box(size, Vector3(centre.x, size.y / 2.0, z), TRAVERTINE.darkened(0.05 * tier))
+		_solid(size, Vector3(centre.x, size.y / 2.0, z))
+	for span in [[CIRCUS.position.x + 2.0, -560.0], [-552.0, CIRCUS.end.x - 2.0]]:
+		var length: float = span[1] - span[0]
+		var at := Vector3(span[0] + length / 2.0, 0.6, CIRCUS.position.y + 1.0)
+		_box(Vector3(length, 1.2, 0.6), at, TRAVERTINE)
+		_solid(Vector3(length, 1.2, 0.6), at)
 
 
 ## Cypresses and pines in the gardens, statues and lanterns in the forum,

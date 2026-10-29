@@ -77,6 +77,8 @@ var race := {}
 var games := {}
 ## The most munera waves cleared in one go.
 var games_best := 0
+## Races won, by circus (the Circus Maximus crowns a season's champion).
+var circus_wins := {}
 ## Saved sets of gear: each {} or {"worn": {slot: item}, "style": style}.
 const LOADOUT_COUNT := 4
 var loadouts: Array = [{}, {}, {}, {}]

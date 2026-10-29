@@ -1,34 +1,91 @@
 {
-  "name": "Circus of Castra Ferrea",
-  "level": 20,
-  "fee": 25,
-  "laps": 3,
-  "speed": 9.0,
-  "speed_per_level": 0.004,
-  "countdown_ticks": 5,
-  "time_limit_ticks": 220,
-  "lap_xp": 70,
-  "placing_xp": [
+ "circuses": {
+  "castra": {
+   "name": "Circus of Castra Ferrea",
+   "level": 20,
+   "fee": 25,
+   "laps": 3,
+   "speed": 9.0,
+   "speed_per_level": 0.004,
+   "countdown_ticks": 5,
+   "time_limit_ticks": 220,
+   "lap_xp": 70,
+   "placing_xp": [
     240,
     120,
     50
-  ],
-  "prizes": [
+   ],
+   "prizes": [
     250,
     80,
     0
-  ],
-  "trophy": "victors_palm",
-  "rivals": [
+   ],
+   "trophy": "victors_palm",
+   "rivals": [
     {
-      "name": "the Blues",
-      "color": "#3a62c4",
-      "speed": 8.1
+     "name": "the Blues",
+     "color": "#3a62c4",
+     "speed": 8.1
     },
     {
-      "name": "the Greens",
-      "color": "#3a9a48",
-      "speed": 8.9
+     "name": "the Greens",
+     "color": "#3a9a48",
+     "speed": 8.9
     }
-  ]
+   ]
+  },
+  "maximus": {
+   "name": "Circus Maximus",
+   "level": 50,
+   "fee": 200,
+   "laps": 4,
+   "speed": 11.0,
+   "speed_per_level": 0.004,
+   "countdown_ticks": 5,
+   "time_limit_ticks": 360,
+   "lap_xp": 260,
+   "placing_xp": [
+    1100,
+    600,
+    320,
+    150,
+    60
+   ],
+   "prizes": [
+    2500,
+    900,
+    350,
+    0,
+    0
+   ],
+   "trophy": "victors_palm",
+   "champion": {
+    "wins": 5,
+    "item": "laurel_crown"
+   },
+   "rivals": [
+    {
+     "name": "the Whites",
+     "color": "#e6e0d0",
+     "speed": 10.3
+    },
+    {
+     "name": "the Blues",
+     "color": "#3a62c4",
+     "speed": 10.8
+    },
+    {
+     "name": "the Greens",
+     "color": "#3a9a48",
+     "speed": 11.3
+    },
+    {
+     "name": "the Golds",
+     "color": "#d8b13a",
+     "speed": 11.7
+    }
+   ],
+   "horses": 4
+  }
+ }
 }

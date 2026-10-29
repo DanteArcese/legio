@@ -53,6 +53,8 @@
 [ext_resource type="Script" path="res://scripts/ui/feedback_note.gd" id="90_feedback"]
 [ext_resource type="Script" path="res://scripts/world/visibility_ranges.gd" id="92_visranges"]
 [ext_resource type="Script" path="res://scripts/world/rome.gd" id="93_rome"]
+[ext_resource type="Script" path="res://scripts/world/race_rivals.gd" id="94_rivals"]
+[ext_resource type="Script" path="res://scripts/world/circus_track.gd" id="95_track"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -2066,10 +2068,8 @@ destination = Vector3(268, 0, 160)
 size = Vector3(1.4, 2.2, 0.3)
 color = Color(0.45, 0.33, 0.22, 1)
 
-[node name="Circus" type="StaticBody3D" parent="." node_paths=PackedStringArray("driver", "player_entity") groups=["map_regions"]]
+[node name="Circus" type="StaticBody3D" parent="." groups=["map_regions"]]
 script = ExtResource("47_circus")
-driver = NodePath("../SimDriver")
-player_entity = NodePath("../Player/SimEntity")
 metadata/map_name = "Circus"
 metadata/map_rect = Rect2(262, 120, 116, 80)
 metadata/map_color = Color(0.8, 0.72, 0.55, 1)
@@ -2293,5 +2293,40 @@ weapon = "weapons/dagger"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 text = "Gnaeus of the venatores\n(Slayer contracts)"
+font_size = 32
+outline_size = 8
+
+[node name="RaceRivals" type="Node3D" parent="." node_paths=PackedStringArray("driver", "player_entity")]
+script = ExtResource("94_rivals")
+driver = NodePath("../SimDriver")
+player_entity = NodePath("../Player/SimEntity")
+
+[node name="CircusMaximus" type="Node3D" parent="Rome" groups=["circus"]]
+script = ExtResource("95_track")
+CENTER = Vector3(-536, 0, 31)
+metadata/circus_id = "maximus"
+
+[node name="MaximusAgent" type="StaticBody3D" parent="Rome" groups=["circus_agents", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -556, 1, 12.5)
+collision_layer = 8
+metadata/circus_id = "maximus"
+metadata/display_name = "Agent of the Reds"
+metadata/examine = "The Reds' agent at the Circus Maximus. Four horses, five factions, two hundred thousand people watching."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/MaximusAgent"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/MaximusAgent"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/MaximusAgent"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+
+[node name="Label" type="Label3D" parent="Rome/MaximusAgent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Agent of the Reds
+(Circus Maximus)"
 font_size = 32
 outline_size = 8

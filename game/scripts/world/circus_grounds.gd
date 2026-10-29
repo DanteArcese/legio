@@ -2,12 +2,10 @@ extends StaticBody3D
 ## The circus, east of the fort (x around 320, z around 160): a sanded oval
 ## track round a long spina with turning posts and an obelisk, stands
 ## along both straights, and hills beyond the walls. Built at startup in
-## the overworld's low-poly style. During a race it also drives the rival
-## chariots round the racing line.
+## the overworld's low-poly style. (race_rivals.gd drives the rival
+## chariots during a race.)
 
 const Circus := preload("res://scripts/sim/circus.gd")
-const ChariotModel := preload("res://scripts/world/chariot_model.gd")
-const KaykitCharacter := preload("res://scripts/world/kaykit_character.gd")
 
 const X_MIN := 262.0
 const X_MAX := 378.0
@@ -32,13 +30,7 @@ const SAND := Color(0.86, 0.76, 0.56)
 const STONE := Color(0.8, 0.76, 0.68)
 const MARBLE := Color(0.93, 0.91, 0.86)
 
-@export var driver: Node
-@export var player_entity: Node
-
 var _noise := FastNoiseLite.new()
-## Rival chariots during a race: [{"node", "speed", "lane", "s"}].
-var _rivals := []
-var _race_start := -1
 
 
 func _init() -> void:
@@ -54,8 +46,6 @@ func _ready() -> void:
 	_build_spina()
 	_build_stands()
 	_build_walls()
-	if driver:
-		driver.sim_event.connect(_on_sim_event)
 
 
 func height_at(x: float, z: float) -> float:
@@ -202,67 +192,3 @@ func _material(color: Color) -> StandardMaterial3D:
 	material.albedo_color = color
 	material.roughness = 0.95
 	return material
-
-
-func _on_sim_event(event: Dictionary) -> void:
-	if player_entity == null or event.get("id") != player_entity.entity_id:
-		return
-	match event["type"]:
-		"race_started":
-			_spawn_rivals(event["start"])
-		"race_ended":
-			_clear_rivals()
-
-
-func _spawn_rivals(start: int) -> void:
-	_clear_rivals()
-	_race_start = start
-	var rivals: Array = Circus.data()["rivals"]
-	for i in rivals.size():
-		var rival: Dictionary = rivals[i]
-		var node := Node3D.new()
-		node.name = "Rival%d" % i
-		node.add_child(ChariotModel.build(Color(rival["color"])))
-		var figure := KaykitCharacter.create({"scene": "adventurers/Rogue"})
-		figure.position.y = 0.45
-		node.add_child(figure)
-		var label := Label3D.new()
-		label.text = String(rival["name"]).capitalize()
-		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-		label.font_size = 32
-		label.outline_size = 8
-		label.position.y = 2.6
-		node.add_child(label)
-		add_child(node)
-		var lane := Circus.LANE_WIDTH * (-1.0 if i % 2 == 0 else 1.0) * (1 + i / 2)
-		_rivals.append({"node": node, "speed": rival["speed"], "lane": lane, "figure": figure})
-	_place_rivals()
-
-
-func _clear_rivals() -> void:
-	for rival in _rivals:
-		rival["node"].queue_free()
-	_rivals.clear()
-	_race_start = -1
-
-
-func _process(_delta: float) -> void:
-	if not _rivals.is_empty():
-		_place_rivals()
-
-
-## Rivals hold their pace on their lane from the start tick, smoothed
-## between ticks.
-func _place_rivals() -> void:
-	var sim: RefCounted = driver.sim
-	var ticks := maxf(0.0, sim.tick - _race_start + driver.clock.progress())
-	var track: Dictionary = sim.circus.track
-	var finish_s: float = Circus.START_PROGRESS + Circus.data()["laps"] * Circus.lap_length(track)
-	for rival in _rivals:
-		var s: float = minf(Circus.START_PROGRESS + rival["speed"] * ticks * Circus.TICK_SECONDS, finish_s)
-		var here := Circus.point_at(track, s, rival["lane"])
-		var ahead := Circus.point_at(track, s + 1.0, rival["lane"])
-		var node: Node3D = rival["node"]
-		node.position = here - global_position
-		node.look_at(ahead, Vector3.UP)
-		rival["figure"].animate(0.0, 0.0)

@@ -92,10 +92,13 @@ func _on_sim_event(event: Dictionary) -> void:
 		_on_arrival = {}
 		global_position = event["position"] + Vector3(0, 1, 0)
 		rotation.y = -PI / 2.0
-		if _chariot == null:
-			_chariot = ChariotModel.build(Color(0.75, 0.2, 0.18))
-			_chariot.position.y = -1.0
-			add_child(_chariot)
+		# A fresh car each race: a biga at the frontier, a quadriga in Rome.
+		if _chariot:
+			_chariot.queue_free()
+		var circus_id: String = _entity.combatant.race.get("circus", "castra")
+		_chariot = ChariotModel.build(Color(0.75, 0.2, 0.18), Circus.data(circus_id).get("horses", 2))
+		_chariot.position.y = -1.0
+		add_child(_chariot)
 		return
 	if event["type"] in ["games_started", "games_ended", "teleported"]:
 		destination = null
@@ -653,7 +656,7 @@ func _physics_process(delta: float) -> void:
 	# In a race the horses set the pace, held back until the start.
 	if _entity.combatant and Circus.is_racing(_entity.combatant):
 		var race: Dictionary = _entity.combatant.race
-		speed = 0.0 if sim_driver.sim.tick < race["start"] else Circus.chariot_speed(_entity.combatant.skills.level("athletics"))
+		speed = 0.0 if sim_driver.sim.tick < race["start"] else Circus.chariot_speed(_entity.combatant.skills.level("athletics"), race.get("circus", "castra"))
 
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed

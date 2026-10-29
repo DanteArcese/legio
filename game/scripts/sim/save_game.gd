@@ -45,6 +45,7 @@ static func capture(sim: RefCounted, player_id: int, now := 0) -> Dictionary:
 		"quests": player.quests.duplicate(true),
 		"laps": player.laps,
 		"games_best": player.games_best,
+		"market": sim.market.prices.duplicate(),
 		"loadouts": player.loadouts,
 		"trade_contract": player.trade_contract.duplicate(),
 		"arena": {"contract": player.arena_contract.duplicate(), "done": player.arena_contracts_done},
@@ -108,6 +109,10 @@ static func restore(sim: RefCounted, player_id: int, data: Dictionary, now := 0)
 		player.arena_contract["remaining"] = int(player.arena_contract["remaining"])
 	player.arena_contracts_done = int(arena.get("done", 0))
 	player.games_best = int(data.get("games_best", 0))
+	sim.market.prices.clear()
+	var market: Dictionary = data.get("market", {})
+	for item_id in market:
+		sim.market.prices[item_id] = float(market[item_id])
 	var loadouts: Array = data.get("loadouts", [])
 	for i in mini(loadouts.size(), player.LOADOUT_COUNT):
 		player.loadouts[i] = loadouts[i] if loadouts[i] is Dictionary else {}

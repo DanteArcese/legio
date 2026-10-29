@@ -11,6 +11,9 @@ const Items := preload("res://scripts/sim/items.gd")
 const Arena := preload("res://scripts/sim/arena.gd")
 const Circus := preload("res://scripts/sim/circus.gd")
 const Games := preload("res://scripts/sim/games.gd")
+const Market := preload("res://scripts/sim/market.gd")
+const GameUi := preload("res://scripts/ui/game_ui.gd")
+const MARKET_CATEGORY_NAMES := {"gear": "gear", "tools": "tools", "food": "food and remedies", "other": "materials and other"}
 
 ## How far the controller menu looks for things.
 ## Menus longer than this fold a shopkeeper's wares into a Trade submenu.
@@ -45,7 +48,7 @@ static func options_kind(node: Node) -> String:
 	var entity: Node = node.get_node_or_null("SimEntity")
 	if entity and entity.attackable and entity.combatant and entity.combatant.is_alive():
 		return "monster"
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "strongboxes", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "circus_agents", "games_editors", "stewards", "villa_hotspots", "shopkeepers", "pets"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "springs", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "strongboxes", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "market_brokers", "waystones", "circus_agents", "games_editors", "stewards", "villa_hotspots", "shopkeepers", "pets"]:
 		if node.is_in_group(group):
 			return group
 	return ""
@@ -150,6 +153,8 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 				["Examine libitinarius", player.examine.bind(node.get_meta("examine", ""))]]
 		"venatores":
 			return _venator_options(player, node)
+		"market_brokers":
+			return _market_options(player, node)
 		"surveyors":
 			var combatant: RefCounted = player.get_node("SimEntity").combatant
 			var options := []
@@ -276,7 +281,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 ## in fighting range, then objects, loot, and graves within reach.
 static func options_nearby(player: Node3D) -> Array:
 	var candidates := []
-	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "strongboxes", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "waystones", "circus_agents", "games_editors", "stewards", "villa_hotspots", "shopkeepers"]:
+	for group in ["rocks", "trees", "fishing_spots", "stations", "banks", "libitinarii", "venatores", "transitions", "altars", "loot_piles", "graves", "quest_npcs", "marks", "stalls", "strongboxes", "obstacles", "hunt_spots", "patches", "trade_boards", "surveyors", "market_brokers", "waystones", "circus_agents", "games_editors", "stewards", "villa_hotspots", "shopkeepers"]:
 		for node in player.get_tree().get_nodes_in_group(group):
 			if candidates.any(func(c): return c[1] == node):
 				continue
@@ -363,3 +368,37 @@ static func _shop_open_to(player: Node3D, shop_id: String) -> bool:
 
 static func _quest_done(player: Node3D, quest_id: String) -> bool:
 	return player.get_node("SimEntity").combatant.quests.get(quest_id, {}).get("done", false)
+
+
+## The forum market: sell what's in the pack at today's prices, or buy
+## anything tradeable, by category so the lists stay short enough to scroll.
+static func _market_options(player: Node3D, node: Node) -> Array:
+	var market: RefCounted = player.sim_driver.sim.market
+	var inventory: RefCounted = player.get_node("SimEntity").combatant.inventory
+	var options := []
+	var sales := []
+	var seen := {}
+	for slot in inventory.slots:
+		if slot == null or seen.has(slot["item"]) or not Market.tradeable(slot["item"]):
+			continue
+		seen[slot["item"]] = true
+		var count: int = inventory.count(slot["item"])
+		var name: String = ContentDB.item(slot["item"])["name"]
+		sales.append(["Sell %s x%d (%d denarii)" % [name, count, market.sell_return(slot["item"], count)], player.market_sell.bind(node, slot["item"], count)])
+	if not sales.is_empty():
+		options.append(["Sell at the market (%d)" % sales.size(), player.show_options.bind(sales)])
+	var by_category := {}
+	var ids: Array = ContentDB.data()["items"].keys().filter(func(id): return Market.tradeable(id))
+	ids.sort_custom(func(a, b): return ContentDB.item(a)["name"] < ContentDB.item(b)["name"])
+	for item_id in ids:
+		var category: String = GameUi.item_category(item_id)
+		if not by_category.has(category):
+			by_category[category] = []
+		var quantity := 10 if ContentDB.item(item_id).get("stackable", false) else 1
+		by_category[category].append(["Buy %s%s (%d denarii)" % [ContentDB.item(item_id)["name"], " x10" if quantity > 1 else "", market.buy_cost(item_id, quantity)],
+			player.market_buy.bind(node, item_id, quantity)])
+	for category in ["gear", "tools", "food", "other"]:
+		if by_category.has(category):
+			options.append(["Buy %s (%d)" % [MARKET_CATEGORY_NAMES[category], by_category[category].size()], player.show_options.bind(by_category[category])])
+	options.append(["Examine " + node.get_meta("display_name", "broker"), player.examine.bind(node.get_meta("examine", ""))])
+	return options

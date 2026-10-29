@@ -32,6 +32,7 @@ const Arena := preload("res://scripts/sim/arena.gd")
 const Circus := preload("res://scripts/sim/circus.gd")
 const Games := preload("res://scripts/sim/games.gd")
 const Tasks := preload("res://scripts/sim/tasks.gd")
+const Market := preload("res://scripts/sim/market.gd")
 const Pets := preload("res://scripts/sim/pets.gd")
 const Boss := preload("res://scripts/sim/boss.gd")
 const Villa := preload("res://scripts/sim/villa.gd")
@@ -68,6 +69,7 @@ var farming := Farming.new(self)
 var mercatura := Mercatura.new(self)
 var arena := Arena.new(self)
 var tasks := Tasks.new(self)
+var market := Market.new(self)
 var pets := Pets.new(self)
 var boss := Boss.new(self)
 var villa := Villa.new(self)
@@ -289,6 +291,7 @@ func step() -> Array[Dictionary]:
 	farming.process(events)
 	items.decay_remedies(players)
 	tasks.process(players, events)
+	market.process()
 	if tick % REGEN_INTERVAL == 0:
 		_regenerate()
 	return events
@@ -429,6 +432,10 @@ func _apply_player_command(player: Combatant, command: Dictionary, events: Array
 			circus.leave(player, events)
 		"start_games":
 			games.start(player, events)
+		"market_buy":
+			market.buy(player, command.get("item", ""), command.get("quantity", 1), events)
+		"market_sell":
+			market.sell(player, command.get("item", ""), command.get("quantity", 0), events)
 		"special":
 			if player.equipment.weapon().get("special", {}).is_empty():
 				message(player, "This weapon has no special attack.", events)

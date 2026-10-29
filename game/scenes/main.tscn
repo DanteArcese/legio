@@ -2295,3 +2295,28 @@ billboard = 1
 text = "Gnaeus of the venatores\n(Slayer contracts)"
 font_size = 32
 outline_size = 8
+
+[node name="BrokerLucius" type="StaticBody3D" parent="Rome" groups=["market_brokers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -586, 1, -22)
+collision_layer = 8
+metadata/display_name = "Lucius the broker"
+metadata/examine = "A broker of the forum market. He'll buy or sell anything, at today's price, and today's price is whatever the city says it is."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/BrokerLucius"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/BrokerLucius"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/BrokerLucius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+hide_meshes = Array[String](["Mage_Hat"])
+
+[node name="Label" type="Label3D" parent="Rome/BrokerLucius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Lucius the broker
+(Forum market)"
+font_size = 32
+outline_size = 8

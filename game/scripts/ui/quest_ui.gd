@@ -6,6 +6,7 @@ extends CanvasLayer
 ## after the player in the tree, so it sees input first and keeps Interact
 ## from also talking to the NPC again.
 
+const UiFocus := preload("res://scripts/input/ui_focus.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Quests := preload("res://scripts/sim/quests.gd")
 const Tasks := preload("res://scripts/sim/tasks.gd")
@@ -42,7 +43,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif is_dialogue_open() and event.is_action_pressed("ui_cancel"):
 		close_dialogue()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("quest_log"):
+	elif event.is_action_pressed("quest_log") and (is_log_open() or not UiFocus.dpad_in_menu(event, get_viewport())):
 		toggle_log()
 		get_viewport().set_input_as_handled()
 	# On a controller the d-pad scrolls the open log (it zooms otherwise).

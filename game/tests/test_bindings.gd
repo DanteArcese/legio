@@ -17,8 +17,12 @@ func test_every_action_has_keyboard_or_mouse_and_gamepad_binding() -> void:
 
 
 func test_no_input_is_bound_to_two_actions() -> void:
+	# The menu actions (ui_*) share buttons with world actions on purpose:
+	# A interacts in the world and presses a button in a menu.
 	var seen := {}
 	for action in Bindings.DEFAULTS:
+		if action.begins_with("ui_"):
+			continue
 		for spec in Bindings.DEFAULTS[action]:
 			var key := str(spec)
 			check(not seen.has(key), "%s bound to both %s and %s" % [key, seen.get(key), action])
@@ -54,3 +58,19 @@ func test_controls_rows_name_both_bindings() -> void:
 	var special: Array = ControlsText.rows().filter(func(r): return r[0] == "Special attack")[0]
 	check_eq(special[1], "F", "keyboard")
 	check_eq(special[2], "B", "controller")
+
+
+func test_a_and_b_work_menus() -> void:
+	Bindings.apply()
+	var a := InputEventJoypadButton.new()
+	a.button_index = JOY_BUTTON_A
+	a.pressed = true
+	check(a.is_action_pressed("ui_accept") and a.is_action_pressed("interact"), "A presses menu buttons and interacts")
+	var b := InputEventJoypadButton.new()
+	b.button_index = JOY_BUTTON_B
+	b.pressed = true
+	check(b.is_action_pressed("ui_cancel"), "B backs out of menus")
+	var enter := InputEventKey.new()
+	enter.physical_keycode = KEY_ENTER
+	enter.pressed = true
+	check(enter.is_action_pressed("ui_accept"), "Enter still works")

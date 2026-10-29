@@ -79,6 +79,9 @@ func start(player: Combatant, events: Array) -> void:
 
 
 func process(players: Array, events: Array) -> void:
+	# No arena in this world (some tests build a bare simulation).
+	if arena_center == null:
+		return
 	for player: Combatant in players:
 		if not in_games(player):
 			continue

@@ -1484,6 +1484,82 @@
         "level": 34,
         "xp": 80,
         "tool": "pestle"
+      },
+      {
+        "id": "rue_antidote",
+        "inputs": [
+          {
+            "item": "rue",
+            "quantity": 1
+          },
+          {
+            "item": "wine",
+            "quantity": 1
+          }
+        ],
+        "output": "rue_antidote",
+        "level": 45,
+        "xp": 110,
+        "tool": "pestle"
+      },
+      {
+        "id": "hellebore_draught",
+        "inputs": [
+          {
+            "item": "hellebore",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "hellebore_draught",
+        "level": 55,
+        "xp": 145,
+        "tool": "pestle"
+      },
+      {
+        "id": "saffron_salve",
+        "inputs": [
+          {
+            "item": "saffron",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 1
+          }
+        ],
+        "output": "saffron_salve",
+        "level": 62,
+        "xp": 180,
+        "tool": "pestle"
+      },
+      {
+        "id": "theriac",
+        "inputs": [
+          {
+            "item": "poppy",
+            "quantity": 1
+          },
+          {
+            "item": "rue",
+            "quantity": 1
+          },
+          {
+            "item": "saffron",
+            "quantity": 1
+          },
+          {
+            "item": "honey",
+            "quantity": 2
+          }
+        ],
+        "output": "theriac",
+        "level": 80,
+        "xp": 320,
+        "tool": "pestle"
       }
     ],
     "saw": [

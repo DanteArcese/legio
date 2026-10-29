@@ -585,6 +585,11 @@
       {
         "item": null,
         "weight": 3
+      },
+      {
+        "item": "saffron_corm",
+        "quantity": 1,
+        "weight": 1
       }
     ]
   },
@@ -680,6 +685,11 @@
       {
         "item": null,
         "weight": 3
+      },
+      {
+        "item": "rue_seed",
+        "quantity": 2,
+        "weight": 2
       }
     ]
   },
@@ -723,6 +733,11 @@
       {
         "item": null,
         "weight": 3
+      },
+      {
+        "item": "hellebore_seed",
+        "quantity": 2,
+        "weight": 2
       }
     ]
   },

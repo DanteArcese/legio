@@ -185,6 +185,18 @@ func _drink(player: Combatant, item_id: String, events: Array) -> void:
 	var name: String = ContentDB.item(item_id)["name"].to_lower()
 	player.next_attack_tick = maxi(player.next_attack_tick, sim.tick + EAT_DELAY)
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+	# An antidote lifts every drain (a basilisk's or a gorgon's gaze),
+	# leaving any boosts alone.
+	if remedy.get("restores", false):
+		var lifted := 0
+		for skill in player.remedy_boosts.keys():
+			if player.remedy_boosts[skill]["amount"] < 0:
+				player.remedy_boosts.erase(skill)
+				lifted += 1
+		sim.message(player, "You drink the %s. %s" % [name, "Your limbs loosen." if lifted > 0 else "You feel no different."], events)
+		events.append({"type": "drank", "id": player.id, "item": item_id, "skill": "", "amount": 0, "tick": sim.tick})
+		if not remedy.has("heals"):
+			return
 	if remedy.has("heals"):
 		var healed := mini(remedy["heals"], player.max_hp - player.hp)
 		player.hp += healed

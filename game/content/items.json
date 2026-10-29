@@ -2265,5 +2265,75 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "rue_seed": {
+    "name": "Rue seed",
+    "value": 30,
+    "examine": "Seeds of rue, the herb of grace. Weasels eat it before they fight snakes, they say.",
+    "stackable": true
+  },
+  "hellebore_seed": {
+    "name": "Hellebore seed",
+    "value": 45,
+    "examine": "Hellebore seed. The plant cures madness, or causes it; it depends on the dose.",
+    "stackable": true
+  },
+  "saffron_corm": {
+    "name": "Saffron corm",
+    "value": 90,
+    "examine": "A crocus corm, the kind whose stigmas are worth their weight in silver.",
+    "stackable": true
+  },
+  "rue": {
+    "name": "Rue",
+    "value": 45,
+    "examine": "A sprig of rue, bitter and blue-green. The physicians' antidote."
+  },
+  "hellebore": {
+    "name": "Hellebore",
+    "value": 60,
+    "examine": "Hellebore root. Hippocrates purged with it; you'll take a little less."
+  },
+  "saffron": {
+    "name": "Saffron",
+    "value": 110,
+    "examine": "A pinch of saffron threads, dearer than pepper."
+  },
+  "rue_antidote": {
+    "name": "Rue antidote",
+    "value": 140,
+    "examine": "Rue pounded in wine: it loosens a stone gaze's grip.",
+    "remedy": {
+      "restores": true
+    }
+  },
+  "hellebore_draught": {
+    "name": "Hellebore draught",
+    "value": 160,
+    "examine": "Hellebore in honey. Your arms feel like someone else's, someone stronger.",
+    "remedy": {
+      "skill": "strength",
+      "flat": 5,
+      "percent": 0.14
+    }
+  },
+  "saffron_salve": {
+    "name": "Saffron salve",
+    "value": 200,
+    "examine": "A golden salve for the skin. It turns blows that ought to land.",
+    "remedy": {
+      "skill": "defence",
+      "flat": 5,
+      "percent": 0.14
+    }
+  },
+  "theriac": {
+    "name": "Theriac",
+    "value": 600,
+    "examine": "Galen's theriac, sixty ingredients and a year to mature. It cures everything, the emperor's physicians swear.",
+    "remedy": {
+      "restores": true,
+      "heals": 30
+    }
   }
 }

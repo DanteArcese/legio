@@ -472,6 +472,14 @@
       {
         "item": "chisel",
         "price": 40
+      },
+      {
+        "item": "rue_seed",
+        "price": 60
+      },
+      {
+        "item": "saffron_corm",
+        "price": 260
       }
     ],
     "buys": {

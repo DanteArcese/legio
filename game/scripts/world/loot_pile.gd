@@ -28,8 +28,18 @@ static func spawn(parent: Node, id: int, at: Vector3, p_items: Array) -> Node3D:
 	pile.items = p_items
 	pile.add_to_group("loot_piles")
 	parent.add_child(pile)
-	pile.global_position = Vector3(at.x, 0.0, at.z)
+	pile.global_position = Vector3(at.x, _ground_y(pile, at), at.z)
 	return pile
+
+
+## The ground under a drop: a ray down onto the terrain (layer 1) from just
+## above where the body stood, so piles sit on hills instead of sinking
+## into them (and never land on a dungeon's roof). Flat ground is y 0.
+static func _ground_y(node: Node3D, at: Vector3) -> float:
+	var space := node.get_world_3d().direct_space_state
+	var query := PhysicsRayQueryParameters3D.create(Vector3(at.x, at.y + 2.0, at.z), Vector3(at.x, at.y - 8.0, at.z), 1)
+	var hit := space.intersect_ray(query)
+	return hit["position"].y if not hit.is_empty() else 0.0
 
 
 func set_items(p_items: Array) -> void:

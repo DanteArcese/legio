@@ -5,6 +5,7 @@ extends CanvasLayer
 ## focused slot, Y opens its options menu, and B closes the bank. With mouse:
 ## left-click uses, right-click opens options.
 
+const UiFocus := preload("res://scripts/input/ui_focus.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Equipment := preload("res://scripts/sim/equipment.gd")
 const Skilling := preload("res://scripts/sim/skilling.gd")
@@ -22,6 +23,8 @@ var _bonus_label: Label
 var _bank_panel: PanelContainer
 var _bank_grid: GridContainer
 var _bank_search: LineEdit
+var _bank_filter: Button
+var _bank_category := "all"
 var _bank_sort: Button
 var _bank_sorted := false
 var _menu: PopupMenu
@@ -68,11 +71,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("inventory"):
 		toggle_inventory()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("pietas_menu"):
+	elif event.is_action_pressed("pietas_menu") and (is_blessings_open() or not UiFocus.dpad_in_menu(event, get_viewport())):
 		toggle_blessings()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("ui_cancel") and _bank_panel.visible:
 		close_bank()
+		get_viewport().set_input_as_handled()
+	# B / Esc backs out of the inventory and the blessings too.
+	elif event.is_action_pressed("ui_cancel") and (_inventory_panel.visible or _blessings_panel.visible):
+		_blessings_panel.visible = false
+		_release_focus()
 		get_viewport().set_input_as_handled()
 
 
@@ -136,6 +144,8 @@ func toggle_inventory() -> void:
 
 func open_bank() -> void:
 	_bank_search.text = ""
+	_bank_category = "all"
+	_bank_filter.text = BANK_CATEGORY_NAMES["all"]
 	_bank_panel.visible = true
 	_inventory_panel.visible = true
 	_refresh()
@@ -310,6 +320,13 @@ func _build_bank() -> void:
 		_bank_sort.text = "Sort: by name" if _bank_sorted else "Sort: as deposited"
 		_refresh_bank_now())
 	tools.add_child(_bank_sort)
+	_bank_filter = Button.new()
+	_bank_filter.text = BANK_CATEGORY_NAMES["all"]
+	_bank_filter.pressed.connect(func():
+		_bank_category = BANK_CATEGORIES[(BANK_CATEGORIES.find(_bank_category) + 1) % BANK_CATEGORIES.size()]
+		_bank_filter.text = BANK_CATEGORY_NAMES[_bank_category]
+		_refresh_bank_now())
+	column.add_child(_bank_filter)
 	var scroll := ScrollContainer.new()
 	# Short enough to end above the HUD at the bottom of the screen.
 	scroll.custom_minimum_size = Vector2(4 * (SLOT_SIZE.x + 4) + 16, 340)
@@ -374,9 +391,30 @@ func _refresh() -> void:
 
 ## The bank's slots to show: those whose item name contains the search
 ## text (any case), in deposit order or by name.
-static func bank_view(slots: Array, search: String, by_name: bool) -> Array:
+## The bank's category filter, cycled by a button so a controller can narrow
+## the bank without typing a search.
+const BANK_CATEGORIES := ["all", "gear", "tools", "food", "other"]
+const BANK_CATEGORY_NAMES := {"all": "Show: everything", "gear": "Show: gear", "tools": "Show: tools", "food": "Show: food and remedies", "other": "Show: materials and other"}
+
+
+## An item's bank category: tools (anything that works as a tool, even if
+## worn), gear (anything else worn), food and remedies, or other.
+static func item_category(item_id: String) -> String:
+	var data := ContentDB.item(item_id)
+	if data.has("tool"):
+		return "tools"
+	if data.has("equip"):
+		return "gear"
+	if data.has("heals") or data.has("remedy"):
+		return "food"
+	return "other"
+
+
+static func bank_view(slots: Array, search: String, by_name: bool, category := "all") -> Array:
 	var needle := search.strip_edges().to_lower()
-	var shown := slots.filter(func(slot): return slot != null and (needle.is_empty() or needle in String(ContentDB.item(slot["item"])["name"]).to_lower()))
+	var shown := slots.filter(func(slot): return slot != null \
+		and (needle.is_empty() or needle in String(ContentDB.item(slot["item"])["name"]).to_lower()) \
+		and (category == "all" or item_category(slot["item"]) == category))
 	if by_name:
 		shown.sort_custom(func(a, b): return ContentDB.item(a["item"])["name"] < ContentDB.item(b["item"])["name"])
 	return shown
@@ -394,7 +432,7 @@ func _refresh_bank(c: RefCounted) -> void:
 	for child in _bank_grid.get_children():
 		_bank_grid.remove_child(child)
 		child.queue_free()
-	for slot in bank_view(c.bank.slots, _bank_search.text, _bank_sorted):
+	for slot in bank_view(c.bank.slots, _bank_search.text, _bank_sorted, _bank_category):
 		var button := _slot_button()
 		button.text = _slot_text(slot)
 		button.pressed.connect(_act.bind("withdraw", {"item": slot["item"], "quantity": 1}))

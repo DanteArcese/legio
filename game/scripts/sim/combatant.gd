@@ -116,6 +116,8 @@ var monster_id := ""
 var drop_table := ""
 ## Shown level, used to decide aggression.
 var display_level := 1
+## How a monster attacks: "melee", "ranged" or "ritus" (players use their weapon).
+var attack_kind := "melee"
 
 ## AI brain (monsters only).
 var has_brain := false
@@ -164,9 +166,17 @@ func effective_level(skill: String) -> int:
 	return CombatMath.effective_level(boosted, style_bonus)
 
 
-## "melee", "ranged", or "ritus". Monsters fight in melee.
+## "melee", "ranged", or "ritus": how this combatant's weapon works (range,
+## ammunition, which levels it uses). Monsters fight in melee.
 func combat_kind() -> String:
 	return equipment.combat_kind() if equipment else "melee"
+
+
+## The kind of blow this combatant lands, which the target defends against
+## and can be protected from: a player's weapon kind, or a monster's
+## attack_kind (a lemur's touch is a curse, though it fights up close).
+func attack_type() -> String:
+	return equipment.combat_kind() if equipment else attack_kind
 
 
 func is_ranged() -> bool:

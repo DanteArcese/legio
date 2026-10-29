@@ -39,6 +39,20 @@ func press(action: String) -> void:
 	Input.parse_input_event(event)
 
 
+## Presses and releases a controller button, the way a real pad does: every
+## action bound to it sees the press, not just one.
+func press_joy(button: JoyButton) -> void:
+	var event := InputEventJoypadButton.new()
+	event.button_index = button
+	event.pressed = true
+	Input.parse_input_event(event)
+	await get_tree().physics_frame
+	event = event.duplicate()
+	event.pressed = false
+	Input.parse_input_event(event)
+	await get_tree().physics_frame
+
+
 ## Holds the left stick so the player walks toward a world position.
 ## If it stops making progress (snagged on something), it sidesteps briefly.
 ## Returns once within tolerance or after timeout seconds.

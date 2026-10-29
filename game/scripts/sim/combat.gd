@@ -7,6 +7,8 @@ const CombatMath := preload("res://scripts/sim/combat_math.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 
+## The most of a blow a protection blessing can turn aside.
+const PROTECT_CAP := 0.8
 ## Chance per idle tick that a monster wanders somewhere new.
 const WANDER_CHANCE := 0.1
 ## Aggressive monsters ignore players above this multiple of their level.
@@ -112,8 +114,9 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	var roll: Array = attacker.attack_roll_parts()
 	var boost := Slayer.boost(attacker, target)
 	var special := _take_special(attacker, events)
+	var blow := attacker.attack_type()
 	var chance := CombatMath.hit_chance(floori(roll[0] * boost * special.get("accuracy", 1.0)), roll[1],
-		target.effective_level("defence"), target.defence_bonus_against(kind))
+		target.effective_level("defence"), target.defence_bonus_against(blow))
 	var max_damage := floori(attacker.max_hit() * boost * special.get("damage", 1.0))
 	# A gorgon's gaze holds an unwarded player still for the blow.
 	if effect == "gorgon_gaze" and target.is_player():
@@ -128,7 +131,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		attacker.curses.erase("silenced")
 		events.append({"type": "silenced_miss", "id": attacker.id, "tick": tick})
 	if lands and not (effect == "no_damage" and attacker.is_player()):
-		damage = mini(sim.rng.randi_range(1, max_damage), target.hp)
+		damage = mini(protected(target, blow, sim.rng.randi_range(1, max_damage)), target.hp)
 	target.hp -= damage
 	# Kills by a summoned shade count as its caster's.
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
@@ -150,7 +153,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	if special.get("hits", 1) > 1 and target.is_alive():
 		var second := 0
 		if sim.rng.randf() < chance and not (effect == "no_damage" and attacker.is_player()):
-			second = mini(sim.rng.randi_range(1, max_damage), target.hp)
+			second = mini(protected(target, blow, sim.rng.randi_range(1, max_damage)), target.hp)
 		target.hp -= second
 		damage += second
 		if attacker.uses_ammo():
@@ -177,6 +180,14 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
 	if not target.is_alive():
 		sim.kill(target, events)
+
+
+## A hit after the target's protection blessing against that kind of attack
+## (protect_melee and so on): a share of it, rounded, never more than
+## PROTECT_CAP, so a protected blow still lands.
+static func protected(target: Combatant, kind: String, damage: int) -> int:
+	var share: float = minf(target.blessing_boosts.get("protect_" + kind, 0.0), PROTECT_CAP)
+	return roundi(damage * (1.0 - share))
 
 
 ## Drains Attack, Strength and Defence by a level each (eating into any

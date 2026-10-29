@@ -109,6 +109,39 @@
       "boost": {
         "binding_chance": 0.25
       }
+    },
+    "minerva_shield": {
+      "name": "Shield of Minerva",
+      "god": "Minerva",
+      "family": "heavenly",
+      "aspect": "protection",
+      "level": 40,
+      "drain_ticks": 4,
+      "boost": {
+        "protect_melee": 0.6
+      }
+    },
+    "diana_veil": {
+      "name": "Veil of Diana",
+      "god": "Diana",
+      "family": "heavenly",
+      "aspect": "protection",
+      "level": 43,
+      "drain_ticks": 4,
+      "boost": {
+        "protect_ranged": 0.6
+      }
+    },
+    "hecate_ward": {
+      "name": "Ward of Hecate",
+      "god": "Hecate",
+      "family": "underworld",
+      "aspect": "protection",
+      "level": 46,
+      "drain_ticks": 4,
+      "boost": {
+        "protect_ritus": 0.6
+      }
     }
   },
   "offerings": {

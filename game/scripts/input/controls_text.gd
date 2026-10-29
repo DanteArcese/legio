@@ -24,6 +24,8 @@ const ROWS := [
 	["World map", ["world_map"]],
 	["Hide roofs", ["toggle_roofs"]],
 	["Pause menu", ["pause_menu"]],
+	["Choose in a menu", ["ui_accept"]],
+	["Back out of a menu", ["ui_cancel"]],
 ]
 const JOY_BUTTONS := {
 	JOY_BUTTON_A: "A", JOY_BUTTON_B: "B", JOY_BUTTON_X: "X", JOY_BUTTON_Y: "Y",

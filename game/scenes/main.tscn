@@ -2327,3 +2327,27 @@ billboard = 1
 text = "Gnaeus of the venatores\n(Slayer contracts)"
 font_size = 32
 outline_size = 8
+
+[node name="LegateSertorius" type="StaticBody3D" parent="Rome" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -572, 1, -20)
+collision_layer = 8
+metadata/npc_id = "legate_sertorius"
+metadata/display_name = "Legate Sertorius"
+metadata/examine = "The legate of the legion, in Rome to report to the Senate."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/LegateSertorius"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/LegateSertorius"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/LegateSertorius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+
+[node name="Label" type="Label3D" parent="Rome/LegateSertorius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Legate Sertorius"
+font_size = 32
+outline_size = 8

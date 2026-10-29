@@ -2269,6 +2269,51 @@
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
   },
+  "vitis": {
+    "name": "Vitis",
+    "value": 3000,
+    "examine": "A centurion's vine stick. It means you can strike a citizen, and every legionary knows it.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 34,
+        "strength": 30,
+        "defence": 2
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "centurion's command",
+        "cost": 50,
+        "effect": "sure"
+      }
+    },
+    "requirements": {
+      "attack": 70
+    }
+  },
+  "centurion_galea": {
+    "name": "Centurion's galea",
+    "value": 3000,
+    "examine": "A steel helmet with a transverse crest, so the century can find its centurion in a fight.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 2,
+        "strength": 2,
+        "defence": 16,
+        "ritus_defence": -6
+      }
+    },
+    "requirements": {
+      "defence": 70
+    }
+  },
+  "regulus_fang": {
+    "name": "Regulus's fang",
+    "value": 0,
+    "examine": "A fang from the basilisk king, as long as your hand. The legate asked for proof.",
+    "quest_item": true
+  },
   "leather_bulla": {
     "name": "Leather bulla",
     "value": 120,

@@ -104,6 +104,7 @@ func add_monster(id: int, monster_id: String, spawn: Vector3) -> Combatant:
 	for skill in ["attack", "strength", "defence"]:
 		combatant.levels[skill] = data["stats"][skill]
 	combatant.attack_speed = data["attack_speed"]
+	combatant.attack_kind = data.get("attack_kind", "melee")
 	combatant.respawn_ticks = data["respawn_ticks"]
 	combatant.has_brain = true
 	combatant.aggressive = data["aggressive"]

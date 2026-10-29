@@ -33,7 +33,8 @@ RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable", "teleport"}
-MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate"}
+MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate", "attack_kind"}
+ATTACK_KINDS = {"melee", "ranged", "ritus"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed"}
 COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
@@ -232,7 +233,9 @@ def _check_boss(where, boss, attack_speed, errors):
 
 def _check_monster(where, monster_id, monster, items, drops, errors):
     _check_id(where, monster_id, errors)
-    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss", "regenerate"}, errors)
+    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss", "regenerate", "attack_kind"}, errors)
+    if "attack_kind" in monster and monster["attack_kind"] not in ATTACK_KINDS:
+        errors.append(f"{where}.attack_kind: must be one of {sorted(ATTACK_KINDS)}")
     if "regenerate" in monster:
         _check_keys(f"{where}.regenerate", monster["regenerate"], {"amount"}, {"amount"}, errors)
         _check_int(f"{where}.regenerate", "amount", monster["regenerate"].get("amount"), 1, errors, 10)
@@ -546,7 +549,7 @@ def _check_skilling(skilling, items, errors):
                 _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
 
 
-BOOSTS = {"strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance"}
+BOOSTS = {"strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus"}
 ALTAR_KINDS = {"heavenly", "underworld"}
 
 

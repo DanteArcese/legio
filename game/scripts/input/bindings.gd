@@ -37,6 +37,10 @@ const DEFAULTS := {
 	"world_map": [["key", KEY_M], ["joy_button", JOY_BUTTON_MISC1]],
 	"collection_log": [["key", KEY_L], ["joy_axis", JOY_AXIS_TRIGGER_RIGHT, 1.0]],
 	"pause_menu": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_START]],
+	# Godot's own menu actions, with A and B added: without them a controller
+	# could move between buttons but never press one, or back out.
+	"ui_accept": [["key", KEY_ENTER], ["key", KEY_KP_ENTER], ["key", KEY_SPACE], ["joy_button", JOY_BUTTON_A]],
+	"ui_cancel": [["key", KEY_ESCAPE], ["joy_button", JOY_BUTTON_B]],
 }
 
 

@@ -228,6 +228,8 @@ Without teleports, travel becomes a progression system:
 - Selling items: sell to merchants, or use the forum market.
 - Enchanting: you consecrate jewelry at temples, using Pietas.
 
+**Built (#293): protection blessings.** Three blessings share a *protection* aspect, so only one is up at a time: the Shield of Minerva against melee (Pietas 40), the Veil of Diana against ranged (43), and the Ward of Hecate against Ritus (46, an underworld blessing, so pollution strengthens it). Each turns aside 60% of a matching blow (never more than 80%, however strong) and drains a point of favour every 4 ticks, three times faster than a boost. Monsters now say what kind of blow they land (`attack_kind`, melee unless stated): lemurs, the Larva and sirens strike with curses, so ritual robes defend against them better than mail does.
+
 **Built (#235): later offerings.** Higher-level offerings come from newer content: dire wolf pelts (30 XP), pressed olive oil (40) and estate wine (65) at the heavenly altars; harpy feathers (55), basilisk eyes (85) and gorgon scales (115) at the underworld altars. As always, the wrong altar gives half.
 
 ## Combat

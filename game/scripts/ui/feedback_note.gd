@@ -38,7 +38,7 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 20)
 	column.add_child(title)
 	_edit = LineEdit.new()
-	_edit.placeholder_text = "What did you notice? Enter saves, Esc cancels."
+	_edit.placeholder_text = "What did you notice? Enter saves, Esc cancels. (On a controller, A saves where you are.)"
 	_edit.custom_minimum_size = Vector2(528, 40)
 	_edit.text_submitted.connect(func(text: String): save(text); close())
 	column.add_child(_edit)

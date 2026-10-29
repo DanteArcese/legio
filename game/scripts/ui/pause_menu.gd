@@ -75,6 +75,14 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# B backs out of the menu (Esc is already pause_menu).
+	if event is InputEventJoypadButton and event.is_action_pressed("ui_cancel") and is_open():
+		if is_controls_open():
+			_hide_controls()
+		else:
+			close()
+		get_viewport().set_input_as_handled()
+		return
 	if not event.is_action_pressed("pause_menu"):
 		return
 	# Esc also closes the bank; let that happen first.

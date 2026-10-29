@@ -19,6 +19,7 @@ signal station_opened(station: Node)
 signal world_menu_requested(options: Array, at: Vector2)
 signal message_requested(text: String)
 
+const UiFocus := preload("res://scripts/input/ui_focus.gd")
 const MoveMath := preload("res://scripts/player/move_math.gd")
 const Skills := preload("res://scripts/sim/skills.gd")
 const Navigation := preload("res://scripts/world/navigation.gd")
@@ -184,6 +185,9 @@ func _on_combat_moment(moment: String, info: Dictionary) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# A controller press a menu didn't use isn't meant for the world.
+	if UiFocus.pad_in_menu(event, get_viewport()):
+		return
 	if event.is_action_pressed("run_toggle"):
 		running = not running
 	elif event.is_action_pressed("combat_style") and sim_driver:

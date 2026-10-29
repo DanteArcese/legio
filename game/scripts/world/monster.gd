@@ -27,6 +27,11 @@ var _near_player := true
 ## Monsters ease apart from each other and the player rather than collide
 ## (so crowds never trap the player): this fast, scaled by how deep the overlap is.
 const SEPARATION_SPEED := 3.0
+## Only monsters this close to the player keep apart; farther ones can't be
+## seen overlapping.
+const SEPARATION_RANGE := 20.0
+static var _bodies: Array = []
+static var _bodies_frame := -1
 const PLAYER_RADIUS := 0.35
 
 ## Frames a cached waypoint lasts before the path is queried again.
@@ -118,15 +123,33 @@ func radius() -> float:
 ## Which way, and how hard, to ease out of overlaps with other living
 ## monsters and the player: 0 when clear, up to 1 per overlap when centred.
 func _separation() -> Vector3:
-	var push := Vector3.ZERO
-	for other in get_tree().get_nodes_in_group("monster_bodies"):
-		if other == self or not other.visible:
-			continue
-		push += _away_from(other.global_position, _radius + other.radius())
 	var player := get_tree().get_first_node_in_group("player") as Node3D
+	if player and player.global_position.distance_squared_to(global_position) > SEPARATION_RANGE * SEPARATION_RANGE:
+		return Vector3.ZERO
+	var push := Vector3.ZERO
+	for other in _nearby_bodies():
+		if other == self:
+			continue
+		var clearance: float = _radius + other.radius()
+		if global_position.distance_squared_to(other.global_position) < clearance * clearance:
+			push += _away_from(other.global_position, clearance)
 	if player:
 		push += _away_from(player.global_position, _radius + PLAYER_RADIUS)
 	return push
+
+
+## The visible monster bodies within SEPARATION_RANGE of the player, found
+## once per physics frame and shared by every monster.
+func _nearby_bodies() -> Array:
+	var frame := Engine.get_physics_frames()
+	if frame != _bodies_frame:
+		_bodies_frame = frame
+		_bodies.clear()
+		var player := get_tree().get_first_node_in_group("player") as Node3D
+		for body in get_tree().get_nodes_in_group("monster_bodies"):
+			if body.visible and (player == null or player.global_position.distance_squared_to(body.global_position) <= SEPARATION_RANGE * SEPARATION_RANGE):
+				_bodies.append(body)
+	return _bodies
 
 
 func _away_from(point: Vector3, clearance: float) -> Vector3:

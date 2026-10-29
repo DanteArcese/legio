@@ -23,7 +23,7 @@ const REGION_STYLES := {
 	"Castra Ferrea": "fort", "Portus Salis": "coast", "Villa": "villa",
 	"Barrow of the Lemures": "underground", "The deep gallery": "underground",
 	"Beyond the Limes": "frontier", "Vipasca": "vipasca", "Seriphos": "seriphos",
-	"Circus": "circus",
+	"Circus": "circus", "Rome": "rome",
 }
 ## Styles night replaces: the open, settled places.
 const NIGHT_STYLES := ["fort", "roads", "villa"]

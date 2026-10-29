@@ -34,6 +34,7 @@ const STYLES := {
 	"frontier": {"mode": "aeolian", "root": -12, "bpm": 62, "voice": "aulos", "notes": [3, 6], "rest": [4, 8], "drone": true, "drums": 0.25, "echo": 0.3},
 	"vipasca": {"mode": "phrygian", "root": -9, "bpm": 68, "voice": "aulos", "notes": [4, 7], "rest": [3, 6], "drone": true, "drums": 0.2, "echo": 0.35},
 	"seriphos": {"mode": "lydian", "root": -7, "bpm": 74, "voice": "lyre", "notes": [5, 8], "rest": [2, 5], "drone": false, "drums": 0.0, "echo": 0.45},
+	"rome": {"mode": "ionian", "root": -7, "bpm": 80, "voice": "lyre", "notes": [6, 9], "rest": [2, 4], "drone": false, "drums": 0.15, "echo": 0.45},
 	"circus": {"mode": "mixolydian", "root": -10, "bpm": 96, "voice": "aulos", "notes": [6, 9], "rest": [1, 3], "drone": false, "drums": 0.7, "echo": 0.4},
 	"battle": {"mode": "phrygian", "root": -12, "bpm": 104, "voice": "aulos", "notes": [5, 8], "rest": [1, 2], "drone": true, "drums": 0.9, "echo": 0.5},
 }

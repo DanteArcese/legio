@@ -493,5 +493,57 @@
         "price": 15
       }
     ]
+  },
+  "forum_dealer": {
+    "name": "Faustus the dealer",
+    "offers": [
+      {
+        "item": "bread",
+        "price": 3
+      },
+      {
+        "item": "cooked_meat",
+        "price": 6
+      },
+      {
+        "item": "wine",
+        "price": 6
+      },
+      {
+        "item": "incense",
+        "price": 5
+      },
+      {
+        "item": "olive_oil",
+        "price": 30
+      },
+      {
+        "item": "thread",
+        "price": 2
+      },
+      {
+        "item": "needle",
+        "price": 8
+      },
+      {
+        "item": "leather",
+        "price": 20
+      },
+      {
+        "item": "return_tablet_portus",
+        "price": 8,
+        "quantity": 1
+      }
+    ],
+    "buys": {
+      "items": "*",
+      "rate": 0.5,
+      "prices": {
+        "estate_wine": 1.4,
+        "olive_oil": 1.3,
+        "gold_bar": 1.1,
+        "pearl": 1.2
+      }
+    }
   }
 }

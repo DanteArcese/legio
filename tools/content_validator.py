@@ -571,12 +571,19 @@ def _check_skilling(skilling, items, errors):
                 _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
 
 
-BOOSTS = {"attack", "strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus", "ritus_lifesteal"}
+BOOSTS = {"attack", "strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus", "ritus_lifesteal", "reflect"}
 ALTAR_KINDS = {"heavenly", "underworld"}
 
 
 def _check_pietas(pietas, items, errors):
-    _check_keys("pietas", pietas, {"blessings", "offerings", "altars"}, {"blessings", "offerings", "altars"}, errors)
+    _check_keys("pietas", pietas, {"blessings", "offerings", "altars", "consecration"}, {"blessings", "offerings", "altars"}, errors)
+    consecration = pietas.get("consecration")
+    if consecration is not None:
+        _check_keys("pietas.consecration", consecration, {"level", "fee", "bonus", "altar"}, {"level", "fee", "bonus", "altar"}, errors)
+        _check_int("pietas.consecration", "level", consecration.get("level"), 1, errors, 99)
+        _check_int("pietas.consecration", "fee", consecration.get("fee"), 0, errors)
+        if consecration.get("altar") not in ALTAR_KINDS:
+            errors.append(f"pietas.consecration.altar: must be one of {sorted(ALTAR_KINDS)}")
     if set(pietas.get("altars", {})) != ALTAR_KINDS:
         errors.append(f"pietas.altars: expected {sorted(ALTAR_KINDS)}")
     for blessing_id, blessing in pietas.get("blessings", {}).items():

@@ -252,6 +252,19 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 				if slot and not offered.has(slot["item"]) and not ContentDB.offering(slot["item"]).is_empty():
 					offered.append(slot["item"])
 					options.append(["Offer " + ContentDB.item(slot["item"])["name"].to_lower(), player.offer.bind(node, slot["item"])])
+			if node.consecrates:
+				var combatant: RefCounted = player.get_node("SimEntity").combatant
+				var pieces := []
+				for slot in inventory.slots:
+					if slot and Pietas.consecratable(slot["item"]) and not pieces.has(slot["item"]):
+						pieces.append(slot["item"])
+				var worn: String = combatant.equipment.worn.get("neck", "")
+				if not worn.is_empty() and not pieces.has(worn):
+					pieces.append(worn)
+				for item_id in pieces:
+					if not combatant.consecrated.has(item_id):
+						options.append(["Consecrate your %s (%d denarii)" % [ContentDB.item(item_id)["name"].to_lower(), ContentDB.data()["pietas"]["consecration"]["fee"]],
+							player.consecrate.bind(node, item_id)])
 			options.append(["Examine " + node.title.to_lower(), player.examine.bind("Pray here to restore favour, or make offerings to the gods.")])
 			return options
 		"transitions":

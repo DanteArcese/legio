@@ -2240,6 +2240,7 @@ shape = SubResource("chest_shape")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -604, 0, -7)
 script = ExtResource("26_altar")
 title = "Altar of Jupiter Optimus Maximus"
+consecrates = true
 
 [node name="RomeUnderworldAltar" type="StaticBody3D" parent="Rome"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -604, 0, 7)

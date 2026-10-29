@@ -241,6 +241,86 @@
       "boost": {
         "attack": 0.2
       }
+    },
+    "mercury_flight": {
+      "name": "Flight of Mercury",
+      "god": "Mercury",
+      "family": "heavenly",
+      "aspect": "movement",
+      "level": 74,
+      "drain_ticks": 8,
+      "boost": {
+        "run_speed": 0.45
+      }
+    },
+    "mars_vengeance": {
+      "name": "Vengeance of Mars",
+      "god": "Mars",
+      "family": "heavenly",
+      "aspect": "strength",
+      "level": 80,
+      "drain_ticks": 4,
+      "boost": {
+        "strength": 0.2
+      }
+    },
+    "minerva_wall": {
+      "name": "Wall of Minerva",
+      "god": "Minerva",
+      "family": "heavenly",
+      "aspect": "defence",
+      "level": 84,
+      "drain_ticks": 4,
+      "boost": {
+        "defence": 0.2
+      }
+    },
+    "diana_arrow": {
+      "name": "Arrow of Diana",
+      "god": "Diana",
+      "family": "heavenly",
+      "aspect": "ranged",
+      "level": 87,
+      "drain_ticks": 4,
+      "boost": {
+        "ranged": 0.2
+      }
+    },
+    "jupiter_thunderbolt": {
+      "name": "Thunderbolt of Jupiter",
+      "god": "Jupiter",
+      "family": "heavenly",
+      "aspect": "protection",
+      "level": 90,
+      "drain_ticks": 3,
+      "boost": {
+        "protect_melee": 0.6,
+        "reflect": 0.15
+      }
+    },
+    "hecate_night": {
+      "name": "Night of Hecate",
+      "god": "Hecate",
+      "family": "underworld",
+      "aspect": "ritus",
+      "level": 93,
+      "drain_ticks": 4,
+      "boost": {
+        "ritus": 0.2
+      }
+    },
+    "capitoline_triad": {
+      "name": "Favour of the Capitoline Triad",
+      "god": "Jupiter, Juno and Minerva",
+      "family": "heavenly",
+      "aspect": "triad",
+      "level": 99,
+      "drain_ticks": 3,
+      "boost": {
+        "attack": 0.08,
+        "strength": 0.08,
+        "defence": 0.08
+      }
     }
   },
   "offerings": {
@@ -312,5 +392,14 @@
     "underworld": {
       "name": "Altar of Dis Pater"
     }
+  },
+  "consecration": {
+    "level": 75,
+    "fee": 500,
+    "bonus": {
+      "defence": 2,
+      "ritus_defence": 2
+    },
+    "altar": "heavenly"
   }
 }

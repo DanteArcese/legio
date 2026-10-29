@@ -115,7 +115,7 @@ def test_shop_items_must_exist(content):
 def test_ranged_weapons_need_range_and_ammo_type(content):
     def mutate(c):
         del c["items"]["hunting_bow"]["equip"]["range"]
-        c["items"]["bronze_arrow"]["equip"]["ammo_type"] = "bolt"
+        c["items"]["bronze_arrow"]["equip"]["ammo_type"] = "pebble"
 
     errors = errors_after(content, mutate)
     assert any("hunting_bow.equip.range" in e for e in errors)

@@ -196,6 +196,10 @@
     "gorgon_scale": {
       "xp": 115,
       "altar": "underworld"
+    },
+    "lamia_scale": {
+      "xp": 70,
+      "altar": "underworld"
     }
   },
   "altars": {

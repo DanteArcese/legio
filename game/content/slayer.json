@@ -124,6 +124,26 @@
             20
           ],
           "combat_level": 55
+        },
+        {
+          "monster": "lamia",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 45,
+          "combat_level": 45
+        },
+        {
+          "monster": "centaur",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 55,
+          "combat_level": 55
         }
       ]
     },
@@ -249,6 +269,24 @@
           ],
           "slayer_level": 70,
           "combat_level": 95
+        },
+        {
+          "monster": "lamia",
+          "weight": 5,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 45
+        },
+        {
+          "monster": "centaur",
+          "weight": 5,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 55
         }
       ]
     }

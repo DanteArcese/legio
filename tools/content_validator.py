@@ -22,7 +22,7 @@ AMMO_TYPES = {"arrow", "sling_bullet", "javelin", "tablet"}
 CURSES = {"binding", "withering", "silencing", "manes"}
 # Must match SPECIAL_EFFECTS in game/scripts/sim/combat.gd.
 SPECIAL_EFFECTS = {"twin", "strong", "heavy", "sure", "volley"}
-UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze"}
+UNWARDED_EFFECTS = {"drain_vitality", "no_damage", "entrance", "petrify", "gorgon_gaze", "charm"}
 RECIPE_KINDS = {"smelt", "smith", "cook", "inscribe", "fletch", "tan", "leatherwork", "garum", "medicina", "saw", "throw", "kiln", "jewelcraft",
                 "press_oil", "press_wine", "mill", "masonry"}
 ROCK_KEYS = {"name", "ore", "level", "xp", "difficulty", "respawn_ticks", "color", "examine"}
@@ -33,7 +33,7 @@ RECIPE_KEYS = {"id", "inputs", "output", "quantity", "level", "xp", "success", "
 ID_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ITEM_KEYS = {"name", "value", "examine", "stackable", "heals", "equip", "requirements", "tool", "tool_tier", "remedy", "pet", "quest_item", "throwable", "teleport"}
-MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate", "attack_kind"}
+MONSTER_KEYS = {"name", "plural", "level", "stats", "attack_speed", "aggressive", "respawn_ticks", "drops", "examine", "slayer", "boss", "appearance", "regenerate", "attack_kind", "reach"}
 ATTACK_KINDS = {"melee", "ranged", "ritus"}
 BOSS_KEYS = {"throw_every", "throw_delay", "throw_radius", "throw_damage", "enrage_below", "enrage_speed", "stances"}
 STANCE_KEYS = {"kind", "attacks", "reach", "projectile", "tell"}
@@ -42,8 +42,8 @@ COLOR_PATTERN = re.compile(r"^#[0-9a-fA-F]{6}$")
 # Must match what game/scripts/world/creature_model.gd knows how to build.
 MODEL_FEATURES = {
     "kaykit": set(),
-    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads", "horns"},
-    "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs", "one_eye", "snakes", "green_skin"},
+    "quadruped": {"ears", "round_ears", "long_snout", "tusks", "bristles", "tail", "lizard", "many_heads", "horns", "human_torso"},
+    "humanoid": {"hood", "helmet", "glowing_eyes", "ghostly", "bare_legs", "one_eye", "snakes", "green_skin", "serpent_tail"},
     "bird": {"ear_tufts", "woman_face"},
 }
 
@@ -251,7 +251,9 @@ def _check_boss(where, boss, attack_speed, errors):
 
 def _check_monster(where, monster_id, monster, items, drops, errors):
     _check_id(where, monster_id, errors)
-    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss", "regenerate", "attack_kind"}, errors)
+    _check_keys(where, monster, MONSTER_KEYS, MONSTER_KEYS - {"plural", "slayer", "boss", "regenerate", "attack_kind", "reach"}, errors)
+    if "reach" in monster:
+        _check_number(where, "reach", monster["reach"], 1, 12, errors)
     if "attack_kind" in monster and monster["attack_kind"] not in ATTACK_KINDS:
         errors.append(f"{where}.attack_kind: must be one of {sorted(ATTACK_KINDS)}")
     if "regenerate" in monster:

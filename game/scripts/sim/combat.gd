@@ -7,6 +7,8 @@ const CombatMath := preload("res://scripts/sim/combat_math.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
 
+## How long an unwarded player stays charmed by a lamia (no eating).
+const CHARM_TICKS := 6
 ## The most of a blow a protection blessing can turn aside.
 const PROTECT_CAP := 0.8
 ## Chance per idle tick that a monster wanders somewhere new.
@@ -123,7 +125,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		max_damage = floori(max_damage * GORGON_DAMAGE)
 	var damage := 0
 	var lands: bool = sim.rng.randf() < chance
-	if effect in ["drain_vitality", "entrance", "petrify", "gorgon_gaze"] and target.is_player():
+	if effect in ["drain_vitality", "entrance", "petrify", "gorgon_gaze", "charm"] and target.is_player():
 		lands = true
 	# Silenced: this attack falls on nothing, and the curse is spent.
 	if attacker.curses.has("silenced"):
@@ -140,6 +142,11 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	# A basilisk's gaze stiffens an unwarded player's limbs, a level at a time.
 	if effect in ["petrify", "gorgon_gaze"] and target.is_player():
 		_petrify(target, events)
+	# A lamia's charm: an unwarded player can't take their eyes off her to eat.
+	if effect == "charm" and target.is_player():
+		if tick >= target.charmed_until:
+			sim.message(target, "The lamia smiles at you. You can't bring yourself to look away, even to eat.", events)
+		target.charmed_until = tick + CHARM_TICKS
 	# A siren's song holds an unwarded player: they can't strike for a while.
 	if effect == "entrance" and target.is_player():
 		if tick >= target.entranced_until:

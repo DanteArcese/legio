@@ -26,6 +26,12 @@ const PIT_RADIUS := 15.0
 ## Where the track ends, under the hill: the gallery mouth.
 const GALLERY := Rect2(-30, 428, 20, 14)
 const WHEEL := Vector3(8, 0, 399)
+## The lamiae's ruined shrine in the south-east hills, and the centaurs'
+## grassland in the north-east, both kept flat.
+const SHRINE := Vector2(40, 425)
+const SHRINE_RADIUS := 7.0
+const GRASSLAND := Rect2(28, 350, 24, 18)
+const MARBLE := Color(0.84, 0.8, 0.72)
 const SCRUB_COUNT := 140
 const SCRUB_CLEARANCE := 3.5
 
@@ -57,6 +63,7 @@ func _ready() -> void:
 	_build_bounds()
 	_plant_scrub()
 	_build_wheel()
+	_build_shrine()
 	if dresser:
 		_dress()
 
@@ -68,6 +75,8 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(2.5, 6.0, _path_distance(p)))
 	flat = maxf(flat, 1.0 - smoothstep(PIT_RADIUS, PIT_RADIUS + 2.0, p.distance_to(PIT)))
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 3.0, _rect_distance(GALLERY, p)))
+	flat = maxf(flat, 1.0 - smoothstep(SHRINE_RADIUS, SHRINE_RADIUS + 3.0, p.distance_to(SHRINE)))
+	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(GRASSLAND, p)))
 	h = lerpf(h, 0.0, flat)
 	# Spoil heaps ring the pit: everything dug out of it, piled up round it.
 	var ring := absf(p.distance_to(PIT) - (PIT_RADIUS + 5.0))
@@ -182,6 +191,8 @@ func _clear_for_scrub(p: Vector2) -> bool:
 		return false
 	if Vector2(WHEEL.x, WHEEL.z).distance_to(p) < 6.0:
 		return false
+	if p.distance_to(SHRINE) < SHRINE_RADIUS + 2.0 or _rect_distance(GRASSLAND, p) < 1.0:
+		return false
 	return not _scrub.any(func(other: Vector2): return other.distance_to(p) < 3.0)
 
 
@@ -210,6 +221,25 @@ func _build_wheel() -> void:
 		var bucket := _box(wheel, Vector3(1.0, 0.4, 0.4), Vector3(0, cos(angle), sin(angle)) * 3.45, TIMBER.darkened(0.15))
 		bucket.rotation.x = angle
 	_solid(Vector3(2.4, 4.0, 3.4), WHEEL + Vector3(0, 2.0, 0))
+
+
+## A ruined shrine where the lamiae nest: a marble floor, a ring of columns
+## (most broken off), and a fallen one across the steps.
+func _build_shrine() -> void:
+	var shrine := Node3D.new()
+	shrine.name = "LamiaShrine"
+	shrine.position = Vector3(SHRINE.x, 0, SHRINE.y)
+	add_child(shrine)
+	_box(shrine, Vector3(9, 0.3, 9), Vector3(0, 0.15, 0), MARBLE.darkened(0.1))
+	var heights := [3.4, 1.2, 2.6, 0.8, 3.4, 1.6, 0.6, 2.2]
+	for i in heights.size():
+		var angle := TAU * i / heights.size()
+		var at := Vector3(cos(angle), 0, sin(angle)) * 3.6
+		var column := _box(shrine, Vector3(0.55, heights[i], 0.55), at + Vector3(0, 0.3 + heights[i] / 2.0, 0), MARBLE)
+		column.rotation.y = angle
+		_solid(Vector3(0.55, heights[i], 0.55), Vector3(SHRINE.x, 0.3 + heights[i] / 2.0, SHRINE.y) + at)
+	var fallen := _box(shrine, Vector3(0.55, 0.55, 3.0), Vector3(-1.0, 0.58, -5.3), MARBLE.darkened(0.05))
+	fallen.rotation.y = 0.4
 
 
 func _process(delta: float) -> void:

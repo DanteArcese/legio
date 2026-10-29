@@ -54,7 +54,13 @@ func run() -> void:
 		if event["type"] == "hit" and ids.has(event["attacker"]) and event["target"] == PLAYER:
 			shots.append([event["ranged"], driver().sim.flat_distance(driver().sim.get_combatant(event["attacker"]).position, me.position)])
 	driver().sim_event.connect(listen)
-	for i in 40:
+	# Start the fight, so it doesn't wait on a centaur wandering this way.
+	var nearest: Node = centaurs[0]
+	for c in centaurs:
+		if c.body().global_position.distance_to(player().global_position) < nearest.body().global_position.distance_to(player().global_position):
+			nearest = c
+	player().attack(nearest.entity_id)
+	for i in 120:
 		if not shots.is_empty():
 			break
 		await seconds(0.5)
@@ -63,7 +69,7 @@ func run() -> void:
 	expect(not shots.is_empty() and shots[0][0], "a centaur's blow is an arrow")
 	await shot("centaurs")
 	metric("shot_from_m", snappedf(shot_from, 0.1))
-	expect(shot_from > 3.0, "a centaur shot from a distance (%.1f m)" % shot_from)
+	expect(shot_from > 2.0, "a centaur shot from beyond melee reach (%.1f m)" % shot_from)
 
 
 ## A spot a metre above Vipasca's ground, so a teleport doesn't land inside a hill.

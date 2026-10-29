@@ -245,6 +245,7 @@ Decided: **OSRS-style tick combat**, adapted for free movement and controllers. 
   - **Pietas buffs and protections**, switched in response to what a boss is doing.
   - **Movement** out of telegraphed attacks, such as ground areas that are about to be hit or charges.
   - **Special attacks** (working name *Impetus*). Weapons spend a regenerating bar on a strong special attack.
+  - **Built (#295): loadouts.** Four saved sets of worn gear and combat style. In the inventory, Y (right-click) on a loadout's button saves what you wear; A (click), 1 to 4, or holding the left shoulder and pressing a D-pad direction changes into it in one action, from what's in your pack. Missing pieces are named, and the sets are kept in the save.
   - **Eating and potion timing.**
 - **Why this model:** it keeps the AFK-friendly grind, it is easy to play on a controller, and it tolerates network latency well, which matters for the MMO later.
 

@@ -4,12 +4,13 @@ extends Node
 ## steps follow their movement, every button clicks, and ambient loops
 ## crossfade by area and time of day.
 ##
-## Volumes live on three buses (Master, Effects, Ambient) and are saved to
+## Volumes live on four buses (Master, Effects, Ambient, and Music, which
+## music_director.gd plays on) and are saved to
 ## user://settings.cfg alongside the graphics settings.
 
 const SETTINGS_PATH := "user://settings.cfg"
-const BUSES := ["Master", "Effects", "Ambient"]
-const DEFAULT_VOLUMES := {"Master": 0.8, "Effects": 0.8, "Ambient": 0.6}
+const BUSES := ["Master", "Effects", "Ambient", "Music"]
+const DEFAULT_VOLUMES := {"Master": 0.8, "Effects": 0.8, "Ambient": 0.6, "Music": 0.5}
 const KENNEY := "res://assets/kenney/audio/%s.ogg"
 const SYNTH := "res://assets/audio/synth/%s.wav"
 ## Each sound name maps to variants; one is picked at random per play.

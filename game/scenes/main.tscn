@@ -49,6 +49,7 @@
 [ext_resource type="Script" path="res://scripts/ui/hints.gd" id="46_hints"]
 [ext_resource type="Script" path="res://scripts/world/circus_grounds.gd" id="47_circus"]
 [ext_resource type="Script" path="res://scripts/world/strongbox_node.gd" id="48_strongbox"]
+[ext_resource type="Script" path="res://scripts/audio/music_director.gd" id="91_music"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -1407,6 +1408,13 @@ script = ExtResource("27_sound")
 driver = NodePath("../SimDriver")
 player = NodePath("../Player")
 day_night = NodePath("../DayNight")
+
+[node name="Music" type="Node" parent="." node_paths=PackedStringArray("player", "world_map", "day_night", "driver")]
+script = ExtResource("91_music")
+player = NodePath("../Player")
+world_map = NodePath("../WorldMap")
+day_night = NodePath("../DayNight")
+driver = NodePath("../SimDriver")
 
 [node name="QuestUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("driver", "player")]
 script = ExtResource("29_quest_ui")

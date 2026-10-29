@@ -77,6 +77,9 @@ var race := {}
 var games := {}
 ## The most munera waves cleared in one go.
 var games_best := 0
+## Saved sets of gear: each {} or {"worn": {slot: item}, "style": style}.
+const LOADOUT_COUNT := 4
+var loadouts: Array = [{}, {}, {}, {}]
 var course_next := 0
 var laps := 0
 ## Stunned (by a failed pickpocket) until this tick: no attacks, thefts, or walking.

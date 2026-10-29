@@ -45,6 +45,14 @@ const MOUSE_BUTTONS := {
 }
 
 
+## Controls that aren't actions of their own (chords and plain keys):
+## [what it does, keyboard and mouse, controller].
+const EXTRA_ROWS := [
+	["Wear loadout 1 to 4", "1 / 2 / 3 / 4", "Hold left shoulder + D-pad up / right / down / left"],
+	["Leave a note for the developers", "F8", "Pause menu, then Leave a note"],
+]
+
+
 ## Each row as [what it does, keyboard and mouse, controller].
 static func rows() -> Array:
 	var out := []
@@ -61,6 +69,7 @@ static func rows() -> Array:
 		if keyboard == "Left Right Up Down":
 			keyboard = "Arrow keys"
 		out.append([row[0], keyboard, " / ".join(pads)])
+	out.append_array(EXTRA_ROWS)
 	return out
 
 

@@ -3,6 +3,7 @@ extends RefCounted
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
+const Skills := preload("res://scripts/sim/skills.gd")
 const Equipment := preload("res://scripts/sim/equipment.gd")
 
 ## Ground items disappear after this many ticks (2 minutes).
@@ -57,6 +58,10 @@ func apply_command(player: Combatant, command: Dictionary, events: Array[Diction
 			if not previous.is_empty():
 				player.inventory.slots[slot_index] = {"item": previous, "quantity": 1}
 			equipment_changed(player, events)
+		"save_loadout":
+			_save_loadout(player, command.get("index", -1), events)
+		"wear_loadout":
+			_wear_loadout(player, command.get("index", -1), events)
 		"unequip":
 			var item_id: String = player.equipment.worn.get(command.get("equip_slot", ""), "")
 			if item_id.is_empty():
@@ -245,6 +250,64 @@ func expire_ground(events: Array[Dictionary]) -> void:
 
 ## Ammo is worn as a whole stack. Wearing more of the same kind adds to it;
 ## a different kind swaps places with the worn stack.
+## Remembers what's worn now, and the combat style, as a loadout.
+func _save_loadout(player: Combatant, index: int, events: Array[Dictionary]) -> void:
+	if index < 0 or index >= Combatant.LOADOUT_COUNT:
+		return
+	var worn := {}
+	for slot in player.equipment.worn:
+		if not String(player.equipment.worn[slot]).is_empty():
+			worn[slot] = player.equipment.worn[slot]
+	player.loadouts[index] = {"worn": worn, "style": player.style}
+	sim.message(player, "Loadout %d saved: %s." % [index + 1, loadout_summary(player.loadouts[index])], events)
+	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
+
+
+## Puts on a loadout's gear from the pack, in one action, and takes up its
+## style. Gear that's already worn stays; gear that isn't in the pack is
+## named. Nothing worn is taken off without a replacement.
+func _wear_loadout(player: Combatant, index: int, events: Array[Dictionary]) -> void:
+	if index < 0 or index >= Combatant.LOADOUT_COUNT or player.loadouts[index].is_empty():
+		sim.message(player, "Loadout %d is empty. Save one from the inventory (Y on a loadout)." % (index + 1), events)
+		return
+	var loadout: Dictionary = player.loadouts[index]
+	var missing: Array[String] = []
+	for slot in loadout["worn"]:
+		var item_id: String = loadout["worn"][slot]
+		if player.equipment.worn.get(slot, "") == item_id:
+			continue
+		var at := _slot_with(player, item_id)
+		if at == -1:
+			missing.append(ContentDB.item(item_id)["name"])
+			continue
+		apply_command(player, {"type": "equip", "slot": at}, events)
+	var style: String = loadout.get("style", player.style)
+	if style in Skills.styles_for(player.combat_kind()):
+		player.style = style
+	if missing.is_empty():
+		sim.message(player, "You change into loadout %d." % (index + 1), events)
+	else:
+		sim.message(player, "Loadout %d: not in your pack: %s." % [index + 1, ", ".join(missing)], events)
+
+
+## A loadout in a few words: what it wields, or "empty".
+static func loadout_summary(loadout: Dictionary) -> String:
+	if loadout.is_empty() or loadout.get("worn", {}).is_empty():
+		return "empty"
+	var worn: Dictionary = loadout["worn"]
+	var lead: String = worn.get("weapon", worn.values()[0])
+	var others: int = worn.size() - 1
+	return ContentDB.item(lead)["name"] + (" and %d more" % others if others > 0 else "")
+
+
+func _slot_with(player: Combatant, item_id: String) -> int:
+	for i in player.inventory.size:
+		var slot: Variant = player.inventory.slots[i]
+		if slot != null and slot["item"] == item_id:
+			return i
+	return -1
+
+
 func _equip_ammo(player: Combatant, slot_index: int, events: Array[Dictionary]) -> void:
 	var slot: Dictionary = player.inventory.take_slot(slot_index)
 	var equipment: RefCounted = player.equipment

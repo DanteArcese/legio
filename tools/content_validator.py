@@ -121,7 +121,13 @@ def _check_item(where, item_id, item, items, errors):
         _check_int(where, "heals", item["heals"], 1, errors)
     if "remedy" in item:
         remedy = item["remedy"]
-        if "heals" in remedy:
+        if "restores" in remedy:
+            _check_keys(f"{where}.remedy", remedy, {"restores", "heals"}, {"restores"}, errors)
+            if remedy["restores"] is not True:
+                errors.append(f"{where}.remedy.restores: must be true")
+            if "heals" in remedy:
+                _check_int(f"{where}.remedy", "heals", remedy["heals"], 1, errors)
+        elif "heals" in remedy:
             _check_keys(f"{where}.remedy", remedy, {"heals"}, {"heals"}, errors)
             _check_int(f"{where}.remedy", "heals", remedy["heals"], 1, errors)
         else:

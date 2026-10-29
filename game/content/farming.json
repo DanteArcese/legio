@@ -186,6 +186,54 @@
       "stage_ticks": 260,
       "stages": 4,
       "color": "#6b7a3a"
+    },
+    "rue": {
+      "name": "Rue",
+      "kind": "herb",
+      "seed": "rue_seed",
+      "level": 45,
+      "plant_xp": 48,
+      "harvest_xp": 62,
+      "produce": "rue",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 170,
+      "stages": 4,
+      "color": "#8fbf4a"
+    },
+    "hellebore": {
+      "name": "Hellebore",
+      "kind": "herb",
+      "seed": "hellebore_seed",
+      "level": 55,
+      "plant_xp": 62,
+      "harvest_xp": 80,
+      "produce": "hellebore",
+      "yield": [
+        3,
+        5
+      ],
+      "stage_ticks": 180,
+      "stages": 4,
+      "color": "#d8d8b0"
+    },
+    "saffron": {
+      "name": "Saffron crocus",
+      "kind": "herb",
+      "seed": "saffron_corm",
+      "level": 62,
+      "plant_xp": 75,
+      "harvest_xp": 98,
+      "produce": "saffron",
+      "yield": [
+        2,
+        4
+      ],
+      "stage_ticks": 200,
+      "stages": 4,
+      "color": "#9a6ad0"
     }
   }
 }

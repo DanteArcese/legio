@@ -9,6 +9,10 @@ const UiFocus := preload("res://scripts/input/ui_focus.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Equipment := preload("res://scripts/sim/equipment.gd")
 const Skilling := preload("res://scripts/sim/skilling.gd")
+const Items := preload("res://scripts/sim/items.gd")
+const Combatant := preload("res://scripts/sim/combatant.gd")
+## D-pad directions, held with the left shoulder, for loadouts 1 to 4.
+const LOADOUT_DPAD := [JOY_BUTTON_DPAD_UP, JOY_BUTTON_DPAD_RIGHT, JOY_BUTTON_DPAD_DOWN, JOY_BUTTON_DPAD_LEFT]
 
 const SLOT_SIZE := Vector2(92, 60)
 const MESSAGE_DURATION := 4.0
@@ -20,6 +24,8 @@ var _inventory_panel: PanelContainer
 var _inventory_buttons: Array[Button] = []
 var _equipment_buttons := {}
 var _bonus_label: Label
+## The inventory's row of loadout buttons, one per saved set.
+var _loadout_buttons: Array[Button] = []
 var _bank_panel: PanelContainer
 var _bank_grid: GridContainer
 var _bank_search: LineEdit
@@ -65,6 +71,31 @@ func _ready() -> void:
 	player.world_menu_requested.connect(_show_menu)
 	player.message_requested.connect(show_message)
 	_refresh.call_deferred()
+
+
+## Loadouts: 1 to 4 on the keyboard, or hold the left shoulder and press a
+## D-pad direction (up 1, right 2, down 3, left 4). Handled before anything
+## else, so the D-pad doesn't also open a panel or zoom.
+func _input(event: InputEvent) -> void:
+	var index := -1
+	if event is InputEventKey and event.pressed and not event.echo and event.physical_keycode >= KEY_1 and event.physical_keycode <= KEY_4:
+		if get_viewport().gui_get_focus_owner() is LineEdit:
+			return
+		index = event.physical_keycode - KEY_1
+	elif event is InputEventJoypadButton and event.pressed and Input.is_joy_button_pressed(event.device, JOY_BUTTON_LEFT_SHOULDER):
+		index = LOADOUT_DPAD.find(event.button_index)
+	if index >= 0:
+		wear_loadout(index)
+		get_viewport().set_input_as_handled()
+
+
+func wear_loadout(index: int) -> void:
+	_act("wear_loadout", {"index": index})
+
+
+func _loadout_options(index: int) -> Array:
+	return [["Wear loadout %d" % (index + 1), wear_loadout.bind(index)],
+		["Save what I'm wearing as loadout %d" % (index + 1), _act.bind("save_loadout", {"index": index})]]
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -289,7 +320,23 @@ func _build_inventory() -> void:
 		button.gui_input.connect(_on_slot_input.bind(button, _inventory_options.bind(i)))
 		grid.add_child(button)
 		_inventory_buttons.append(button)
-	column.add_child(_heading("Equipment"))
+	# The Equipment heading shares its line with the loadout buttons, which
+	# keeps the panel short enough for 720p.
+	var equip_row := HBoxContainer.new()
+	column.add_child(equip_row)
+	var equip_heading := _heading("Equipment")
+	equip_heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	equip_row.add_child(equip_heading)
+	var sets := Label.new()
+	sets.text = "Loadouts"
+	equip_row.add_child(sets)
+	for i in Combatant.LOADOUT_COUNT:
+		var button := Button.new()
+		button.custom_minimum_size = Vector2(40, 32)
+		button.pressed.connect(wear_loadout.bind(i))
+		button.gui_input.connect(_on_slot_input.bind(button, _loadout_options.bind(i)))
+		equip_row.add_child(button)
+		_loadout_buttons.append(button)
 	var equip_grid := GridContainer.new()
 	equip_grid.columns = 3
 	column.add_child(equip_grid)
@@ -375,6 +422,10 @@ func _refresh() -> void:
 	var c := _combatant()
 	if c == null:
 		return
+	for i in _loadout_buttons.size():
+		var summary: String = Items.loadout_summary(c.loadouts[i])
+		_loadout_buttons[i].text = str(i + 1) if summary == "empty" else "%d*" % (i + 1)
+		_loadout_buttons[i].tooltip_text = "Loadout %d: %s. A / click (or %d, or left shoulder + D-pad) wears it; Y / right-click saves what you wear now." % [i + 1, summary, i + 1]
 	for i in 28:
 		var slot: Variant = c.inventory.slots[i]
 		_inventory_buttons[i].text = _slot_text(slot)

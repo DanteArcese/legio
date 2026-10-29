@@ -38,6 +38,7 @@ You start as a peregrinus in Castra Ferrea, a fort town on the frontier. A yello
 | World map | M | Share |
 | Pause menu (graphics, volume, controls, quit) | Esc | Start |
 | Choose / back out in menus | Enter / Esc | A / B |
+| Wear loadout 1 to 4 (save one with Y / right-click on its button in the inventory) | 1 2 3 4 | Hold left shoulder + D-pad up / right / down / left |
 | Leave a note for the developers (saved to `feedback.md` in the save folder) | F8 | Pause menu, then Leave a note |
 
 ### What's in the game

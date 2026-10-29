@@ -513,7 +513,7 @@ func _slayer_task(player: Combatant, venator_id: String, events: Array[Dictionar
 	if not task.is_empty():
 		message(player, "You still need to hunt %d %s." % [task["remaining"], Slayer.plural_name(task["monster"])], events)
 		return
-	task = Slayer.assign(venator_id, player.combat_level(), player.skills.level("slayer"), rng, player.slayer_blocked)
+	task = Slayer.assign(venator_id, player.combat_level(), player.skills.level("slayer"), rng, player.slayer_blocked, player.slayer_unlocks)
 	if task.is_empty():
 		var needed: int = ContentDB.venator(venator_id)["combat_level"]
 		if player.combat_level() < needed:
@@ -543,8 +543,9 @@ func _slayer_reward(player: Combatant, command: Dictionary, events: Array[Dictio
 		"block":
 			if task.is_empty():
 				return
-			if player.slayer_blocked.size() >= rewards["max_blocks"]:
-				message(player, "You can't block more than %d creatures. Unblock one first." % rewards["max_blocks"], events)
+			var most := Slayer.max_blocks(player.slayer_unlocks)
+			if player.slayer_blocked.size() >= most:
+				message(player, "You can't block more than %d creatures. Unblock one first." % most, events)
 				return
 			cost = rewards["block"]
 		"unblock":

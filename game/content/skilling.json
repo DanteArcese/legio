@@ -998,6 +998,50 @@
         "level": 50,
         "xp": 80,
         "tool": "stylus"
+      },
+      {
+        "id": "draining_tablet",
+        "inputs": [
+          {
+            "item": "lead_sheet",
+            "quantity": 1
+          },
+          {
+            "item": "iron_nails",
+            "quantity": 1
+          },
+          {
+            "item": "basilisk_eye",
+            "quantity": 1
+          }
+        ],
+        "output": "draining_tablet",
+        "quantity": 5,
+        "level": 65,
+        "xp": 130,
+        "tool": "stylus"
+      },
+      {
+        "id": "turning_tablet",
+        "inputs": [
+          {
+            "item": "lead_sheet",
+            "quantity": 1
+          },
+          {
+            "item": "iron_nails",
+            "quantity": 1
+          },
+          {
+            "item": "gorgon_scale",
+            "quantity": 1
+          }
+        ],
+        "output": "turning_tablet",
+        "quantity": 4,
+        "level": 80,
+        "xp": 200,
+        "tool": "stylus"
       }
     ],
     "fletch": [
@@ -1567,6 +1611,27 @@
         "output": "silver_lituus",
         "level": 35,
         "xp": 110,
+        "tool": "jeweller"
+      },
+      {
+        "id": "torch_of_hecate",
+        "inputs": [
+          {
+            "item": "gold_bar",
+            "quantity": 2
+          },
+          {
+            "item": "gorgon_scale",
+            "quantity": 2
+          },
+          {
+            "item": "oak_logs",
+            "quantity": 1
+          }
+        ],
+        "output": "torch_of_hecate",
+        "level": 70,
+        "xp": 300,
         "tool": "jeweller"
       }
     ],

@@ -119,6 +119,8 @@ var monster_id := ""
 var drop_table := ""
 ## Shown level, used to decide aggression.
 var display_level := 1
+## How much a draining curse saps Attack and Defence (matches curses.gd).
+const DRAIN_SHARE := 0.1
 ## How a monster attacks: "melee", "ranged" or "ritus" (players use their weapon).
 var attack_kind := "melee"
 
@@ -166,6 +168,9 @@ func effective_level(skill: String) -> int:
 		style_bonus = CombatMath.STYLE_BONUS
 	# Blessings raise the level itself, e.g. +5% Strength.
 	var boosted := floori(level(skill) * (1.0 + blessing_boosts.get(skill, 0.0))) + remedy_boost(skill)
+	# A draining curse saps the arm and the guard.
+	if curses.has("drained") and skill in ["attack", "defence"]:
+		boosted = floori(boosted * (1.0 - DRAIN_SHARE))
 	return CombatMath.effective_level(boosted, style_bonus)
 
 

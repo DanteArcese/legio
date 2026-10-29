@@ -2265,5 +2265,59 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "draining_tablet": {
+    "name": "Draining tablet",
+    "value": 110,
+    "stackable": true,
+    "examine": "A basilisk's eye pressed into the lead. 'May his arm weaken and his guard fall.'",
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ritus_strength": 7
+      },
+      "ammo_type": "tablet",
+      "curse": "draining"
+    },
+    "requirements": {
+      "ritus": 65
+    }
+  },
+  "turning_tablet": {
+    "name": "Turning tablet",
+    "value": 180,
+    "stackable": true,
+    "examine": "A gorgon's scale nailed into the lead. 'Let every blow he strikes fall on himself.'",
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ritus_strength": 8
+      },
+      "ammo_type": "tablet",
+      "curse": "turning"
+    },
+    "requirements": {
+      "ritus": 80
+    }
+  },
+  "torch_of_hecate": {
+    "name": "Torch of Hecate",
+    "value": 2400,
+    "examine": "A gold-bound torch that burns cold. Hecate walks the crossroads by its light, and so do her curses.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "ritus_attack": 30,
+        "ritus_strength": 8,
+        "defence": 2
+      },
+      "attack_speed": 4,
+      "style": "ritus",
+      "range": 7.0,
+      "ammo": "tablet"
+    },
+    "requirements": {
+      "ritus": 75
+    }
   }
 }

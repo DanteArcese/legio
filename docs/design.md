@@ -202,6 +202,8 @@ Decided. Ritus is built on real Roman curse practice. People wrote curses on thi
 
 **Built (#277): Ritus gear tiers.** Beyond the plain lituus and the ritual robe and hood: a silver lituus (jewelled from two silver bars and an oak log, Crafting 35; Ritus 30), an orichalcum lituus (smithed from two orichalcum bars and an oak log, Smithing 57; Ritus 50), and an augur's robe and hood sewn from linen, silver and thread (Crafting 40; Ritus 40).
 
+**Built (#334): Ritus past 50.** Two more tablets. *Draining* (Ritus 65, inscribed with a basilisk eye) saps the target's Attack and Defence by a tenth for 20 ticks. *Turning* (80, with a gorgon scale) makes half of every blow the target lands come back on it for 15 ticks. And an underworld focus: the Torch of Hecate (Ritus 75; worked from two gold bars, two gorgon scales and an oak log at Crafting 70), the best focus.
+
 ### Curses and Pietas
 
 Decided (#48) and built in #69. Numbers: 4 pollution per curse, polluted at 30, wears off 1 point every 15 seconds; polluted heavenly blessings work at half strength and underworld ones at 1.5×; cleansing costs 20 denarii. Cursing wasn't impious to Romans: curse tablets were addressed *to* gods. What Romans feared was **ritual pollution** from dealings with death, and the law punished harmful magic. So the tension is about pollution and the law, not divine anger.

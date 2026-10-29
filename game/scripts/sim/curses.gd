@@ -1,6 +1,6 @@
 extends RefCounted
-## Ritus curses (binding, withering, silencing) and the shades raised by
-## Calling the Manes.
+## Ritus curses (binding, withering, silencing, draining and turning) and
+## the shades raised by Calling the Manes.
 
 const Combatant := preload("res://scripts/sim/combatant.gd")
 
@@ -10,6 +10,12 @@ const BINDING_TICKS := 10
 ## Withering: damage every few ticks, a set number of times.
 const WITHERING_INTERVAL := 3
 const WITHERING_PULSES := 5
+## Draining: the target's Attack and Defence sapped by this share for a while.
+const DRAIN_SHARE := 0.1
+const DRAIN_TICKS := 20
+## Turning: the target's own blows hurt it, by this share, for a while.
+const TURN_SHARE := 0.5
+const TURN_TICKS := 15
 ## Calling the Manes: a shade fights for its caster for a while.
 const SHADE_ID_BASE := 100000
 const SHADE_LIFETIME := 30
@@ -41,6 +47,12 @@ func apply(caster: Combatant, target: Combatant, curse: String, events: Array[Di
 			target.curses["bound"] = until
 		"silencing":
 			target.curses["silenced"] = true
+		"draining":
+			until = tick + DRAIN_TICKS
+			target.curses["drained"] = until
+		"turning":
+			until = tick + TURN_TICKS
+			target.curses["turned"] = until
 		"manes":
 			_call_the_manes(caster, events)
 			until = tick + SHADE_LIFETIME
@@ -83,8 +95,9 @@ func process(events: Array[Dictionary]) -> void:
 		if not victim.is_alive():
 			victim.curses.clear()
 			continue
-		if victim.curses.get("bound", tick) <= tick:
-			victim.curses.erase("bound")
+		for timed in ["bound", "drained", "turned"]:
+			if victim.curses.get(timed, tick) <= tick:
+				victim.curses.erase(timed)
 		var wither: Dictionary = victim.curses.get("withering", {})
 		if wither.is_empty():
 			continue

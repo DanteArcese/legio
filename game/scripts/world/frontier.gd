@@ -36,6 +36,11 @@ const MINE := Rect2(-38, -440, 16, 12)
 ## Hrodgar's clearing, ringed with standing stones, north of the camp.
 const CLEARING := Vector2(36, -440)
 const CLEARING_RADIUS := 10.0
+## Where a star fell, west of the camp: a scorched bowl inside a raised rim,
+## with lumps of meteoric iron in its floor.
+const CRATER := Vector2(-44, -388)
+const CRATER_RADIUS := 7.0
+const SCORCHED := Color(0.24, 0.22, 0.2)
 const TREE_COUNT := 260
 ## Trees keep clear of the paths, the camp, the mine, and the palisade.
 const TREE_CLEARANCE := 4.0
@@ -84,7 +89,12 @@ func height_at(x: float, z: float) -> float:
 	flat = maxf(flat, 1.0 - smoothstep(0.0, 4.0, _rect_distance(MINE, p)))
 	flat = maxf(flat, 1.0 - smoothstep(CLEARING_RADIUS, CLEARING_RADIUS + 4.0, p.distance_to(CLEARING)))
 	flat = maxf(flat, 1.0 - smoothstep(1.0, 4.0, absf(z - LIMES_Z)))
+	flat = maxf(flat, 1.0 - smoothstep(CRATER_RADIUS, CRATER_RADIUS + 5.0, p.distance_to(CRATER)))
 	h = lerpf(h, 0.0, flat)
+	# The rim thrown up round the crater, broken on its east side for a way in.
+	var rim := 1.0 - smoothstep(0.0, 2.0, absf(p.distance_to(CRATER) - CRATER_RADIUS - 1.0))
+	var gap := smoothstep(0.6, 0.9, (p - CRATER).normalized().dot(Vector2.RIGHT))
+	h += rim * 1.4 * (1.0 - gap)
 	# Hills rise beyond the walkable edges, framing the view.
 	var edge := maxf(smoothstep(X_MAX - 6.0, X_MAX + PAD, x), smoothstep(X_MIN + 6.0, X_MIN - PAD, x))
 	edge = maxf(edge, maxf(smoothstep(Z_MIN + 6.0, Z_MIN - PAD, z), smoothstep(Z_MAX - 2.0, Z_MAX + PAD, z)))
@@ -99,6 +109,8 @@ func color_at(x: float, z: float, height: float) -> Color:
 	if _path_distance(p) < 1.8 or YARD.grow(-1.0).has_point(p) or p.distance_to(CAMP) < CAMP_RADIUS - 2.0 \
 			or p.distance_to(CLEARING) < CLEARING_RADIUS - 2.0:
 		return DIRT
+	if p.distance_to(CRATER) < CRATER_RADIUS + 2.5:
+		return SCORCHED.lerp(ROCK, smoothstep(CRATER_RADIUS - 2.0, CRATER_RADIUS + 2.5, p.distance_to(CRATER)))
 	if MINE.has_point(p) or height > 2.6:
 		return ROCK
 	var shade := _noise.get_noise_2d(x * 4.0, z * 4.0) * 0.5 + 0.5
@@ -220,6 +232,8 @@ func _clear_for_tree(p: Vector2) -> bool:
 			or p.distance_to(CLEARING) < CLEARING_RADIUS + 2.0:
 		return false
 	if _rect_distance(MINE, p) < TREE_CLEARANCE or _rect_distance(YARD, p) < TREE_CLEARANCE:
+		return false
+	if p.distance_to(CRATER) < CRATER_RADIUS + 5.0:
 		return false
 	return not _trees.any(func(other: Vector2): return other.distance_to(p) < 3.0)
 

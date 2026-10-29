@@ -2265,5 +2265,152 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "meteoric_ore": {
+    "name": "Meteoric ore",
+    "value": 120,
+    "examine": "A lump of star-iron from the crater, pitted and heavy for its size."
+  },
+  "meteoric_bar": {
+    "name": "Meteoric bar",
+    "value": 420,
+    "examine": "A bar of meteoric iron. Iron from a fallen star: grey-black, flecked, and harder than anything a mine gives."
+  },
+  "meteoric_pugio": {
+    "name": "Meteoric pugio",
+    "value": 420,
+    "examine": "A star-iron dagger with a blade that never seems to dull.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 21,
+        "strength": 16,
+        "defence": 0
+      },
+      "attack_speed": 3,
+      "special": {
+        "name": "twin thrust",
+        "cost": 25,
+        "effect": "twin"
+      }
+    },
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "meteoric_gladius": {
+    "name": "Meteoric gladius",
+    "value": 1000,
+    "examine": "A gladius forged from a fallen star. The edge shows a pattern like frost.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 32,
+        "strength": 29,
+        "defence": 0
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "legion's thrust",
+        "cost": 50,
+        "effect": "strong"
+      }
+    },
+    "requirements": {
+      "attack": 60
+    }
+  },
+  "meteoric_galea": {
+    "name": "Meteoric galea",
+    "value": 600,
+    "examine": "A star-iron helmet, lighter than it looks.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 15,
+        "ritus_defence": -7
+      }
+    },
+    "requirements": {
+      "defence": 60
+    }
+  },
+  "meteoric_scutum": {
+    "name": "Meteoric scutum",
+    "value": 1300,
+    "examine": "A curved scutum faced with star-iron.",
+    "equip": {
+      "slot": "shield",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 28,
+        "ritus_defence": -12
+      }
+    },
+    "requirements": {
+      "defence": 60
+    }
+  },
+  "meteoric_lorica": {
+    "name": "Meteoric lorica",
+    "value": 1700,
+    "examine": "Plates of meteoric iron, hinged like a segmentata but half the weight.",
+    "equip": {
+      "slot": "body",
+      "bonuses": {
+        "attack": 0,
+        "strength": 0,
+        "defence": 38,
+        "ritus_defence": -22
+      }
+    },
+    "requirements": {
+      "defence": 60
+    }
+  },
+  "meteoric_pickaxe": {
+    "name": "Meteoric pickaxe",
+    "value": 1200,
+    "examine": "A star-iron pickaxe. Rock seems to give way before it touches.",
+    "tool": "pickaxe",
+    "tool_tier": 5,
+    "requirements": {
+      "mining": 61
+    }
+  },
+  "meteoric_axe": {
+    "name": "Meteoric axe",
+    "value": 1100,
+    "examine": "A star-iron felling axe.",
+    "tool": "axe",
+    "tool_tier": 5,
+    "requirements": {
+      "woodcutting": 61
+    }
+  },
+  "meteoric_arrowheads": {
+    "name": "Meteoric arrowheads",
+    "value": 30,
+    "examine": "Star-iron arrowheads, barbed and black.",
+    "stackable": true
+  },
+  "meteoric_arrow": {
+    "name": "Meteoric arrow",
+    "value": 40,
+    "examine": "An arrow tipped with star-iron. It goes through what it hits.",
+    "stackable": true,
+    "equip": {
+      "slot": "ammo",
+      "bonuses": {
+        "ranged_strength": 28
+      },
+      "ammo_type": "arrow"
+    },
+    "requirements": {
+      "ranged": 60
+    }
   }
 }

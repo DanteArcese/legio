@@ -1522,6 +1522,21 @@ destination = Vector3(0, 0, -43)
 size = Vector3(1.4, 2.2, 0.3)
 color = Color(0.45, 0.33, 0.22, 1)
 
+[node name="Meteoric1" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, -390)
+script = ExtResource("10_rock")
+rock_type = "meteoric_rock"
+
+[node name="Meteoric2" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42, 0, -386)
+script = ExtResource("10_rock")
+rock_type = "meteoric_rock"
+
+[node name="Meteoric3" type="StaticBody3D" parent="Frontier"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44, 0, -391)
+script = ExtResource("10_rock")
+rock_type = "meteoric_rock"
+
 [node name="Gold1" type="StaticBody3D" parent="Frontier"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31, 0, -433)
 script = ExtResource("10_rock")

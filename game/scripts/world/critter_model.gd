@@ -3,7 +3,7 @@ extends Node3D
 ## style: soft capsule and sphere shapes, big heads, stubby legs, and big
 ## eyes. Kinds come from content "appearance": quadruped (rat, wolf, boar)
 ## and bird (strix, sirens, harpies), with optional features (ears, round_ears, horns, long_snout,
-## tusks, bristles, tail, lizard, many_heads, ear_tufts, woman_face).
+## tusks, bristles, tail, lizard, many_heads, human_torso, ear_tufts, woman_face).
 ##
 ## Same API as KaykitCharacter: create(), animate(delta, speed), attack(),
 ## hurt(), die(), revive(), set_work().
@@ -172,6 +172,8 @@ func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 		var length := 0.6 if thin else (0.95 if features.has("lizard") else 0.45)
 		var tail_mesh := _capsule(0.035 if thin else 0.09, length, PINK if thin else main.darkened(0.1), true)
 		_part(_tail, tail_mesh, Vector3(0, 0.05, 0.5 if features.has("lizard") else 0.25), Vector3(0.12 if features.has("lizard") else 0.35, 0, 0))
+	if features.has("human_torso"):
+		_build_rider(accent)
 	# Lizards (the basilisk) sprawl: a long, low body on short splayed legs,
 	# a ridge of spines, and a crown.
 	var lizard := features.has("lizard")
@@ -193,6 +195,20 @@ func _build_quadruped(main: Color, accent: Color, features: Array) -> void:
 		_part(hip, _capsule(0.08, leg, main.darkened(0.08), false), Vector3(0, -leg * 0.42, 0))
 		_part(hip, _sphere(0.085, main.darkened(0.25)), Vector3(0, -leg * 0.92, -0.02))
 		_legs.append(hip)
+
+
+## A centaur: the horse's head gives way to a man's torso rising from the
+## front of the body, with a head, arms, and a bow in the left hand.
+func _build_rider(hair: Color) -> void:
+	var skin := Color(0.82, 0.62, 0.46)
+	_head.visible = false
+	var torso := _part(_body, _capsule(0.16, 0.55, skin, false), Vector3(0, 0.42, -0.36))
+	_head = _part(torso, _sphere(0.22, skin), Vector3(0, 0.42, 0))
+	_part(_head, _sphere(0.23, hair), Vector3(0, 0.06, 0.05))
+	_add_eyes(_head, 0.22, 0.06)
+	for side in [-1, 1]:
+		_part(torso, _capsule(0.06, 0.42, skin, false), Vector3(side * 0.21, 0.04, -0.1), Vector3(-0.7, 0, side * 0.2))
+	_part(torso, _capsule(0.025, 0.75, Color(0.4, 0.27, 0.15), false), Vector3(-0.3, 0.12, -0.32), Vector3(0, 0, 0.15))
 
 
 func _build_bird(main: Color, accent: Color, features: Array) -> void:

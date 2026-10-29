@@ -1232,6 +1232,38 @@ monster_id = "basilisk"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 438)
 monster_id = "basilisk"
 
+[node name="Lamia1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, 422)
+monster_id = "lamia"
+
+[node name="Lamia2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43, 0, 427)
+monster_id = "lamia"
+
+[node name="Lamia3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 41, 0, 421)
+monster_id = "lamia"
+
+[node name="Lamia4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37, 0, 428)
+monster_id = "lamia"
+
+[node name="Centaur1" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33, 0, 355)
+monster_id = "centaur"
+
+[node name="Centaur2" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 0, 358)
+monster_id = "centaur"
+
+[node name="Centaur3" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 354)
+monster_id = "centaur"
+
+[node name="Centaur4" parent="Monsters" instance=ExtResource("7_monster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 0, 363)
+monster_id = "centaur"
+
 [node name="GalleryBasilisk1" parent="Monsters" instance=ExtResource("7_monster")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 168, 0, 387)
 monster_id = "basilisk"
@@ -2346,5 +2378,115 @@ scene = "adventurers/Rogue"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 billboard = 1
 text = "Aurelia the goldsmith"
+[node name="SpiceStall" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -545, 0, -13)
+script = ExtResource("32_stall")
+stall_type = "spice_stall"
+
+[node name="JewellersStall" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -536, 0, -13)
+script = ExtResource("32_stall")
+stall_type = "jewellers_stall"
+
+[node name="InsulaStrongbox" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -530, 0, -27)
+script = ExtResource("48_strongbox")
+box_type = "insula_strongbox"
+
+[node name="SenatorsStrongbox" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -540, 0, 7)
+script = ExtResource("48_strongbox")
+box_type = "senators_strongbox"
+
+[node name="Gambler" type="StaticBody3D" parent="Rome" groups=["marks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -528, 1, -17)
+collision_layer = 8
+metadata/mark_type = "gambler"
+metadata/display_name = "Gambler"
+metadata/examine = "A dice player from the Subura's taverns, flush tonight."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/Gambler"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/Gambler"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/Gambler"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue_Hooded"
+
+[node name="Label" type="Label3D" parent="Rome/Gambler"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Gambler"
+font_size = 32
+outline_size = 8
+
+[node name="Senator" type="StaticBody3D" parent="Rome" groups=["marks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -552, 1, 4)
+collision_layer = 8
+metadata/mark_type = "senator"
+metadata/display_name = "Senator"
+metadata/examine = "A senator on his way to the curia, his purse on a slave's belt."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/Senator"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/Senator"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/Senator"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+
+[node name="Label" type="Label3D" parent="Rome/Senator"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Senator"
+font_size = 32
+outline_size = 8
+
+[node name="PollioTheFence" type="StaticBody3D" parent="Rome" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -520, 1, -20)
+collision_layer = 8
+metadata/shop_id = "subura_fence"
+metadata/display_name = "Pollio the fence"
+metadata/examine = "He doesn't ask where things came from. He asks how many."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/PollioTheFence"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/PollioTheFence"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/PollioTheFence"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue_Hooded"
+
+[node name="Label" type="Label3D" parent="Rome/PollioTheFence"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Pollio the fence"
+[node name="LegateSertorius" type="StaticBody3D" parent="Rome" groups=["quest_npcs", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -572, 1, -20)
+collision_layer = 8
+metadata/npc_id = "legate_sertorius"
+metadata/display_name = "Legate Sertorius"
+metadata/examine = "The legate of the legion, in Rome to report to the Senate."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/LegateSertorius"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/LegateSertorius"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/LegateSertorius"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+
+[node name="Label" type="Label3D" parent="Rome/LegateSertorius"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Legate Sertorius"
 font_size = 32
 outline_size = 8

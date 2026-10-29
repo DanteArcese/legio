@@ -37,6 +37,9 @@ const TOWN := Rect2(-20, -20, 40, 40)
 ## A second offence within this many ticks of a warning is fined.
 const WATCH_MEMORY_TICKS := 500
 const WATCH_FINE := 25
+## Rome (the map region): the urban cohorts fine harder than the vigiles.
+const ROME := Rect2(-640, -70, 140, 126)
+const ROME_FINE := 75
 ## The watch fines at most once per this many ticks (a minute).
 const WATCH_FINE_COOLDOWN := 100
 
@@ -92,9 +95,14 @@ static func in_town(position: Vector3) -> bool:
 	return TOWN.has_point(Vector2(position.x, position.z))
 
 
+## Rome's streets, where the urban cohorts keep order.
+static func in_rome(position: Vector3) -> bool:
+	return ROME.has_point(Vector2(position.x, position.z))
+
+
 ## The vigiles saw an offence: a warning first, then fines for repeat
 ## offences while they remember you (at most one fine a minute).
-func town_watch(player: RefCounted, events: Array, warning: String, offence: String) -> void:
+func town_watch(player: RefCounted, events: Array, warning: String, offence: String, watch := "vigiles", amount := WATCH_FINE) -> void:
 	if player.watch_warned_at == -1 or sim.tick - player.watch_warned_at > WATCH_MEMORY_TICKS:
 		player.watch_warned_at = sim.tick
 		sim.message(player, warning, events)
@@ -103,10 +111,10 @@ func town_watch(player: RefCounted, events: Array, warning: String, offence: Str
 	player.watch_warned_at = sim.tick
 	if player.watch_fined_at != -1 and sim.tick - player.watch_fined_at < WATCH_FINE_COOLDOWN:
 		return
-	var fine: int = mini(WATCH_FINE, player.inventory.count("coins"))
+	var fine: int = mini(amount, player.inventory.count("coins"))
 	player.inventory.remove("coins", fine)
 	player.watch_fined_at = sim.tick
-	sim.message(player, "The vigiles fine you %d denarii for %s." % [fine, offence], events)
+	sim.message(player, "The %s fine you %d denarii for %s." % [watch, fine, offence], events)
 	events.append({"type": "watch_fine", "id": player.id, "amount": fine, "tick": sim.tick})
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 

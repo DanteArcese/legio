@@ -87,7 +87,8 @@
         "lemur_ash",
         "strix_feather",
         "wolf_pelt",
-        "gorgon_scale"
+        "gorgon_scale",
+        "lamia_scale"
       ],
       "rate": 0.6
     }
@@ -604,6 +605,29 @@
         "cameo_glass_vase"
       ],
       "rate": 0.8
+    }
+  },
+  "subura_fence": {
+    "name": "Pollio the fence",
+    "offers": [
+      {
+        "item": "lockpick",
+        "price": 30
+      }
+    ],
+    "buys": {
+      "items": [
+        "pepper",
+        "pearl",
+        "gold_bar",
+        "silver_bar",
+        "silver_fibula",
+        "silver_pendant",
+        "gold_bulla",
+        "linen",
+        "bread"
+      ],
+      "rate": 0.75
     }
   }
 }

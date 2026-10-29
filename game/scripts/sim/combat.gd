@@ -6,6 +6,7 @@ const Skills := preload("res://scripts/sim/skills.gd")
 const CombatMath := preload("res://scripts/sim/combat_math.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 const Slayer := preload("res://scripts/sim/slayer.gd")
+const Curses := preload("res://scripts/sim/curses.gd")
 
 ## The most of a blow a protection blessing can turn aside.
 const PROTECT_CAP := 0.8
@@ -133,6 +134,15 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 	if lands and not (effect == "no_damage" and attacker.is_player()):
 		damage = mini(protected(target, blow, sim.rng.randi_range(1, max_damage)), target.hp)
 	target.hp -= damage
+	# A turning curse: the blow comes back on the one who struck it.
+	if attacker.curses.has("turned") and damage > 0:
+		var back := mini(floori(damage * Curses.TURN_SHARE), attacker.hp)
+		if back > 0:
+			attacker.hp -= back
+			events.append({"type": "hit", "attacker": target.id, "target": attacker.id, "damage": back, "ranged": false, "kind": "turning", "tick": tick})
+			if not attacker.is_alive():
+				sim.kill(attacker, events)
+				return
 	# Kills by a summoned shade count as its caster's.
 	target.last_attacker_id = attacker.summoned_by if attacker.summoned_by != -1 else attacker.id
 	if effect == "drain_vitality" and target.is_player():

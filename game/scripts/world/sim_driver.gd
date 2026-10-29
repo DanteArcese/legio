@@ -13,7 +13,7 @@ const StrikeMarker := preload("res://scripts/world/strike_marker.gd")
 const Projectile := preload("res://scripts/world/projectile.gd")
 const CurseVisuals := preload("res://scripts/world/curse_visuals.gd")
 const CURSE_TINTS := {"binding": Color(0.1, 0.06, 0.16), "withering": Color(0.12, 0.14, 0.06),
-	"silencing": Color(0.1, 0.16, 0.3), "manes": Color(0.2, 0.3, 0.45)}
+	"silencing": Color(0.1, 0.16, 0.3), "manes": Color(0.2, 0.3, 0.45), "draining": Color(0.25, 0.08, 0.08), "turning": Color(0.3, 0.22, 0.05)}
 const ShadeBody := preload("res://scripts/world/shade_body.gd")
 const ContentDB := preload("res://scripts/content/content_db.gd")
 

@@ -138,6 +138,7 @@
       "vitality": 22
     },
     "attack_speed": 4,
+    "attack_kind": "ritus",
     "aggressive": true,
     "respawn_ticks": 30,
     "drops": "lemur",
@@ -192,6 +193,7 @@
       "vitality": 90
     },
     "attack_speed": 4,
+    "attack_kind": "ritus",
     "aggressive": true,
     "respawn_ticks": 300,
     "drops": "larva",
@@ -356,6 +358,7 @@
       "vitality": 40
     },
     "attack_speed": 5,
+    "attack_kind": "ritus",
     "aggressive": true,
     "respawn_ticks": 35,
     "drops": "siren",

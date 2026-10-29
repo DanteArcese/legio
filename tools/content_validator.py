@@ -567,7 +567,7 @@ def _check_skilling(skilling, items, errors):
                 _check_int(where, "stop_burning", recipe["stop_burning"], recipe.get("level", 1), errors, 99)
 
 
-BOOSTS = {"strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus"}
+BOOSTS = {"attack", "strength", "defence", "ranged", "ritus", "run_speed", "withering_damage", "binding_chance", "protect_melee", "protect_ranged", "protect_ritus", "ritus_lifesteal"}
 ALTAR_KINDS = {"heavenly", "underworld"}
 
 

@@ -917,8 +917,8 @@ def _check_mercatura(mercatura, items, shops, errors):
 
 
 FURNITURE_KEYS = {"name", "hotspot", "level", "xp", "materials", "provides"}
-PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace", "olive_press", "wine_press"}, "altar": {"heavenly", "underworld"},
-            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}, "comfort": {True}}
+PROVIDES = {"station": {"fire", "range", "anvil", "tanning_rack", "furnace", "olive_press", "wine_press", "tomb"}, "altar": {"heavenly", "underworld"},
+            "bank": {True}, "patch": None, "travel": {"portus_salis"}, "steward": {True}, "comfort": {True, 2}, "bath": {True}}
 
 
 def _check_villa(villa, items, quests, farming, errors):

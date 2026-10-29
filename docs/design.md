@@ -117,6 +117,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#219): marble and mosaics.** A small quarry in the hills south of Seriphos's town has outcrops of Parian marble (Mining 45). With a mason's chisel (Nikias sells one), a marble block carves into 25 tesserae anywhere (Crafting 40, the inventory's Carve option). The villa courtyard's centre takes a mosaic floor (Engineering 45; 150 tesserae and 2 oak planks), a rosette in a meander border. Resting on it leaves you rested: +5% XP in every skill for 30 minutes of play, shown on the HUD and kept in the save.
 
+**Built (#333): villa rooms past 60.** Three new rooms on the villa's east side. A bath house (Engineering 60; marble, planks and iron): a bath (hot, warm, then cold) restores you fully and washes away ritual pollution. A library and scriptorium (70; planks, linen and nails), where curse tablets can be inscribed at home. A peristyle garden (90; marble, planks and tesserae), a ring of columns round box hedges and a fountain: resting there leaves you rested for twice the mosaic's bonus, +10% XP for 30 minutes. A trophy hall is still to come with the endgame (M6).
+
 ### Support
 
 | Skill | Roman flavor |

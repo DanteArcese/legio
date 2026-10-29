@@ -2138,6 +2138,24 @@ text = "Editor of the games
 (The munera)"
 font_size = 36
 
+[node name="Hotspot_bath" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 342, 0, 6)
+script = ExtResource("39_hotspot")
+hotspot_id = "bath"
+hotspot_type = "bath"
+
+[node name="Hotspot_library" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 342, 0, 14)
+script = ExtResource("39_hotspot")
+hotspot_id = "library"
+hotspot_type = "library"
+
+[node name="Hotspot_peristyle" type="StaticBody3D" parent="Villa"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 330, 0, 16)
+script = ExtResource("39_hotspot")
+hotspot_id = "peristyle"
+hotspot_type = "peristyle"
+
 [node name="Hotspot_orchard_1" type="StaticBody3D" parent="Villa"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 298, 0, 9)
 script = ExtResource("39_hotspot")

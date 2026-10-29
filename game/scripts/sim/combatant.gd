@@ -92,6 +92,8 @@ var last_attacker_id := -1
 var villa_owned := false
 ## Rested on the villa's mosaic: a small XP bonus until this tick.
 var rested_until := -1
+## How much more XP while rested (a mosaic 5%, the peristyle garden 10%).
+var rested_bonus := 0.05
 var villa_furniture := {}
 ## Real time (seconds) the villa's steward last settled the books.
 var steward_since := 0.0

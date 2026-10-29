@@ -92,7 +92,9 @@ func show_furniture(furniture_id: String, patch_id := -1) -> Node3D:
 	elif provides.has("travel"):
 		_built = _waystone()
 	elif provides.has("comfort"):
-		_built = _mosaic()
+		_built = _peristyle() if int(provides["comfort"]) >= 2 else _mosaic()
+	elif provides.has("bath"):
+		_built = _bath()
 	elif provides.has("steward"):
 		_built = _steward()
 	add_child(_built)
@@ -118,6 +120,90 @@ func _strongbox() -> Node3D:
 
 ## A mosaic floor laid flush with the paving: a border, a meander band,
 ## and a rosette in the middle, in white marble and coloured stone.
+## A bath house: a marble-rimmed pool of warm water under a tiled roof.
+func _bath() -> Node3D:
+	var bath := Node3D.new()
+	var marble := StandardMaterial3D.new()
+	marble.albedo_color = Color(0.9, 0.88, 0.82)
+	for side in [[Vector3(4.4, 0.5, 0.3), Vector3(0, 0.25, -1.6)], [Vector3(4.4, 0.5, 0.3), Vector3(0, 0.25, 1.6)],
+			[Vector3(0.3, 0.5, 3.5), Vector3(-2.2, 0.25, 0)], [Vector3(0.3, 0.5, 3.5), Vector3(2.2, 0.25, 0)]]:
+		var rim := MeshInstance3D.new()
+		var box := BoxMesh.new()
+		box.size = side[0]
+		box.material = marble
+		rim.mesh = box
+		rim.position = side[1]
+		bath.add_child(rim)
+	var water := MeshInstance3D.new()
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(4.1, 3.0)
+	var material := ShaderMaterial.new()
+	material.shader = preload("res://shaders/water.gdshader")
+	plane.material = material
+	water.mesh = plane
+	water.position.y = 0.4
+	bath.add_child(water)
+	var roof := MeshInstance3D.new()
+	var tiles := BoxMesh.new()
+	tiles.size = Vector3(5.2, 0.3, 4.4)
+	var tile := StandardMaterial3D.new()
+	tile.albedo_color = Color(0.62, 0.3, 0.2)
+	tiles.material = tile
+	roof.mesh = tiles
+	roof.position.y = 3.2
+	bath.add_child(roof)
+	for corner in [Vector3(-2.3, 1.6, -1.9), Vector3(2.3, 1.6, -1.9), Vector3(-2.3, 1.6, 1.9), Vector3(2.3, 1.6, 1.9)]:
+		var post := MeshInstance3D.new()
+		var column := CylinderMesh.new()
+		column.top_radius = 0.18
+		column.bottom_radius = 0.2
+		column.height = 3.2
+		column.material = marble
+		post.mesh = column
+		post.position = corner
+		bath.add_child(post)
+	return bath
+
+
+## A peristyle garden: a ring of columns round clipped box hedges and a
+## fountain.
+func _peristyle() -> Node3D:
+	var garden := Node3D.new()
+	var marble := StandardMaterial3D.new()
+	marble.albedo_color = Color(0.92, 0.9, 0.86)
+	var hedge := StandardMaterial3D.new()
+	hedge.albedo_color = Color(0.25, 0.42, 0.2)
+	for i in 10:
+		var angle := TAU * i / 10.0
+		var post := MeshInstance3D.new()
+		var column := CylinderMesh.new()
+		column.top_radius = 0.16
+		column.bottom_radius = 0.18
+		column.height = 2.8
+		column.material = marble
+		post.mesh = column
+		post.position = Vector3(cos(angle) * 3.0, 1.4, sin(angle) * 3.0)
+		garden.add_child(post)
+	var box := MeshInstance3D.new()
+	var ring := TorusMesh.new()
+	ring.inner_radius = 1.2
+	ring.outer_radius = 1.7
+	ring.material = hedge
+	box.mesh = ring
+	box.position.y = 0.25
+	garden.add_child(box)
+	var fountain := MeshInstance3D.new()
+	var basin := CylinderMesh.new()
+	basin.top_radius = 0.6
+	basin.bottom_radius = 0.7
+	basin.height = 0.5
+	basin.material = marble
+	fountain.mesh = basin
+	fountain.position.y = 0.25
+	garden.add_child(fountain)
+	return garden
+
+
 func _mosaic() -> Node3D:
 	var size := 48
 	var image := Image.create(size, size, false, Image.FORMAT_RGB8)

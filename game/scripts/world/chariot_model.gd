@@ -11,7 +11,8 @@ const MANE := Color(0.16, 0.12, 0.1)
 
 
 ## color: the faction's colour, on the car's front and the horses' plumes.
-static func build(color: Color) -> Node3D:
+## horses: two for a biga, four for a quadriga.
+static func build(color: Color, horses := 2) -> Node3D:
 	var root := Node3D.new()
 	root.name = "Chariot"
 	# The car: a floor, a curved front screen, and low sides.
@@ -25,9 +26,11 @@ static func build(color: Color) -> Node3D:
 	_box(root, Vector3(1.5, 0.06, 0.06), Vector3(0, 0.42, 0.1), WOOD)
 	# The pole and yoke out to the horses.
 	_box(root, Vector3(0.08, 0.08, 1.9), Vector3(0, 0.55, -1.35), WOOD)
-	_box(root, Vector3(1.4, 0.08, 0.1), Vector3(0, 0.95, -2.2), WOOD)
-	for x in [-0.42, 0.42]:
-		_horse(root, Vector3(x, 0, -2.5), color, 0 if x < 0.0 else 1)
+	var spacing := 0.84 if horses <= 2 else 0.5
+	_box(root, Vector3(spacing * horses + 0.2, 0.08, 0.1), Vector3(0, 0.95, -2.2), WOOD)
+	for i in horses:
+		var x := (i - (horses - 1) / 2.0) * spacing
+		_horse(root, Vector3(x, 0, -2.5), color, i % 2)
 	return root
 
 

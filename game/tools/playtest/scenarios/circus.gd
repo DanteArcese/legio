@@ -31,7 +31,7 @@ func run() -> void:
 	await seconds(1.0)
 	expect(player().global_position.distance_to(start) < 0.5, "held at the line until the cloth drops")
 
-	var track: Dictionary = driver().sim.circus.track
+	var track: Dictionary = driver().sim.circus.tracks["castra"]
 	var shot_taken := false
 	var finished := false
 	driver().sim_event.connect(func(e): if e["type"] == "race_finished": metric("place", e["place"]))

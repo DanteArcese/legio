@@ -165,7 +165,7 @@ static func _options_by_kind(player: Node3D, node: Node) -> Array:
 			return [["Fight in the munera (combat %d%s)" % [Games.data()["combat_level"], record], player.start_games.bind(node)],
 				["Examine " + node.get_meta("display_name", "editor"), player.examine.bind(node.get_meta("examine", ""))]]
 		"circus_agents":
-			var rules: Dictionary = Circus.data()
+			var rules: Dictionary = Circus.data(node.get_meta("circus_id", "castra"))
 			return [["Race a chariot (Athletics %d, %d denarii)" % [rules["level"], rules["fee"]], player.start_race.bind(node)],
 				["Examine " + node.get_meta("display_name", "agent"), player.examine.bind(node.get_meta("examine", ""))]]
 		"stewards":

@@ -1,5 +1,7 @@
 extends RefCounted
-## Chariot racing in the circus (Athletics). The factio agent enters you in
+## Chariot racing in the circuses (Athletics): the frontier's circus east of
+## the fort ("castra") and the Circus Maximus in Rome ("maximus"), each with
+## its own track, agent and rules in circus.json. A factio agent enters you in
 ## a race against rival chariots: a few ticks' countdown, then laps of an
 ## oval track round the spina. You drive; the rivals hold a steady pace on
 ## the racing line, so their finishing ticks are known from the start, and
@@ -33,25 +35,32 @@ var sim: RefCounted:
 	set(value):
 		_sim_ref = weakref(value)
 var _sim_ref: WeakRef
-## {"center": Vector3, "half": float, "radius": float}, set by the world.
-var track := {}
-var agent_position: Variant = null
+## circus id -> {"center": Vector3, "half": float, "radius": float}, set by the world.
+var tracks := {}
+## circus id -> where its factio agent stands.
+var agents := {}
 
 
 func _init(p_sim: RefCounted) -> void:
 	sim = p_sim
 
 
-static func data() -> Dictionary:
-	return ContentDB.data()["circus"]
+## A circus's rules (the frontier's unless named).
+static func data(circus_id := "castra") -> Dictionary:
+	return ContentDB.data()["circus"]["circuses"][circus_id]
 
 
-func set_track(center: Vector3, half: float, radius: float) -> void:
-	track = {"center": center, "half": half, "radius": radius}
+func set_track(center: Vector3, half: float, radius: float, circus_id := "castra") -> void:
+	tracks[circus_id] = {"center": center, "half": half, "radius": radius}
 
 
-func set_agent(position: Vector3) -> void:
-	agent_position = position
+func set_agent(position: Vector3, circus_id := "castra") -> void:
+	agents[circus_id] = position
+
+
+## The track a player is racing on, or the frontier's.
+func track_of(player: Combatant) -> Dictionary:
+	return tracks.get(player.race.get("circus", "castra"), {})
 
 
 static func lap_length(t: Dictionary) -> float:
@@ -93,8 +102,9 @@ static func point_at(t: Dictionary, s: float, lane := 0.0) -> Vector3:
 	return c + Vector3(s - lap_length(t), 0, r)
 
 
-static func chariot_speed(level: int) -> float:
-	return data()["speed"] * (1.0 + level * data()["speed_per_level"])
+static func chariot_speed(level: int, circus_id := "castra") -> float:
+	var rules := data(circus_id)
+	return rules["speed"] * (1.0 + level * rules["speed_per_level"])
 
 
 static func is_racing(player: Combatant) -> bool:
@@ -102,13 +112,13 @@ static func is_racing(player: Combatant) -> bool:
 
 
 ## Ticks a rival takes to finish every lap from the start.
-func rival_ticks(rival: Dictionary) -> int:
-	return ceili(data()["laps"] * lap_length(track) / rival["speed"] / TICK_SECONDS)
+func rival_ticks(rival: Dictionary, circus_id := "castra") -> int:
+	return ceili(data(circus_id)["laps"] * lap_length(tracks[circus_id]) / rival["speed"] / TICK_SECONDS)
 
 
 ## Why the player can't race now, or "".
-func start_problem(player: Combatant) -> String:
-	var rules := data()
+func start_problem(player: Combatant, circus_id := "castra") -> String:
+	var rules := data(circus_id)
 	if player.skills.level("athletics") < rules["level"]:
 		return "You need Athletics %d to drive a chariot." % rules["level"]
 	if player.inventory.count("coins") < rules["fee"]:
@@ -116,16 +126,21 @@ func start_problem(player: Combatant) -> String:
 	return ""
 
 
+## Enters the player in a race at whichever circus's agent they're beside.
 func start(player: Combatant, events: Array) -> void:
-	if track.is_empty() or agent_position == null or is_racing(player):
+	if is_racing(player):
 		return
-	if sim.flat_distance(agent_position, player.position) > AGENT_RANGE:
+	var circus_id := ""
+	for id in agents:
+		if tracks.has(id) and sim.flat_distance(agents[id], player.position) <= AGENT_RANGE:
+			circus_id = id
+	if circus_id.is_empty():
 		return
-	var problem := start_problem(player)
+	var problem := start_problem(player, circus_id)
 	if not problem.is_empty():
 		sim.message(player, problem, events)
 		return
-	var rules := data()
+	var rules := data(circus_id)
 	player.inventory.remove("coins", rules["fee"])
 	player.target_id = -1
 	player.move_target = null
@@ -133,9 +148,9 @@ func start(player: Combatant, events: Array) -> void:
 	var begins: int = sim.tick + rules["countdown_ticks"]
 	var finishes := []
 	for rival in rules["rivals"]:
-		finishes.append(begins + rival_ticks(rival))
-	player.race = {"start": begins, "lap": 0, "sector": 0, "finishes": finishes}
-	var grid := point_at(track, START_PROGRESS)
+		finishes.append(begins + rival_ticks(rival, circus_id))
+	player.race = {"circus": circus_id, "start": begins, "lap": 0, "sector": 0, "finishes": finishes}
+	var grid := point_at(tracks[circus_id], START_PROGRESS)
 	player.position = grid
 	events.append({"type": "inventory_changed", "id": player.id, "tick": sim.tick})
 	events.append({"type": "race_started", "id": player.id, "start": begins, "position": grid, "tick": sim.tick})
@@ -153,6 +168,8 @@ func process(players: Array, events: Array) -> void:
 		if not is_racing(player):
 			continue
 		var race: Dictionary = player.race
+		var track := track_of(player)
+		var rules := data(race.get("circus", "castra"))
 		if sim.tick == race["start"]:
 			sim.message(player, "The cloth drops. They're off!", events)
 		if sim.tick < race["start"]:
@@ -160,7 +177,7 @@ func process(players: Array, events: Array) -> void:
 		var c: Vector3 = track["center"]
 		var off_track: bool = absf(player.position.x - c.x) > track["half"] + track["radius"] + LEAVE_MARGIN \
 			or absf(player.position.z - c.z) > track["radius"] + LEAVE_MARGIN
-		if off_track or sim.tick > race["start"] + data()["time_limit_ticks"] or not player.is_alive():
+		if off_track or sim.tick > race["start"] + rules["time_limit_ticks"] or not player.is_alive():
 			_end(player, events)
 			sim.message(player, "The race goes on without you.", events)
 			continue
@@ -172,12 +189,12 @@ func process(players: Array, events: Array) -> void:
 		if sector != 0:
 			continue
 		race["lap"] += 1
-		sim.award_xp(player, "athletics", data()["lap_xp"], events)
-		if race["lap"] >= data()["laps"]:
+		sim.award_xp(player, "athletics", rules["lap_xp"], events)
+		if race["lap"] >= rules["laps"]:
 			_finish(player, events)
 		else:
 			events.append({"type": "race_lap", "id": player.id, "lap": race["lap"], "tick": sim.tick})
-			sim.message(player, "Lap %d of %d." % [race["lap"] + 1, data()["laps"]], events)
+			sim.message(player, "Lap %d of %d." % [race["lap"] + 1, rules["laps"]], events)
 
 
 ## Where the player would place if the race ended now, by distance run.
@@ -186,17 +203,19 @@ func live_place(player: Combatant) -> int:
 	if race.is_empty():
 		return 0
 	var elapsed := maxf(0.0, (sim.tick - race["start"]) * TICK_SECONDS)
+	var track := track_of(player)
 	var length := lap_length(track)
 	var mine: float = race["lap"] * length + progress(track, player.position)
 	var place := 1
-	for rival in data()["rivals"]:
+	for rival in data(race.get("circus", "castra"))["rivals"]:
 		if START_PROGRESS + rival["speed"] * elapsed > mine:
 			place += 1
 	return place
 
 
 func _finish(player: Combatant, events: Array) -> void:
-	var rules := data()
+	var circus_id: String = player.race.get("circus", "castra")
+	var rules := data(circus_id)
 	var place := 1
 	for finish in player.race["finishes"]:
 		if finish < sim.tick:
@@ -209,6 +228,12 @@ func _finish(player: Combatant, events: Array) -> void:
 	if place == 1:
 		sim.give_item(player.id, rules["trophy"], 1, "skilling", events)
 		sim.message(player, "You cross the line first! The crowd is on its feet. (%d denarii and a victor's palm)" % prize, events)
+		# A season's champion: every few wins here, a crown.
+		player.circus_wins[circus_id] = int(player.circus_wins.get(circus_id, 0)) + 1
+		var champion: Dictionary = rules.get("champion", {})
+		if not champion.is_empty() and player.circus_wins[circus_id] % int(champion["wins"]) == 0:
+			sim.give_item(player.id, champion["item"], 1, "skilling", events)
+			sim.message(player, "%d wins at the %s: you're the champion of the season, and they crown you with laurel." % [player.circus_wins[circus_id], rules["name"]], events)
 	elif prize > 0:
 		sim.message(player, "You finish %s. (%d denarii)" % [ORDINALS[place - 1], prize], events)
 	else:

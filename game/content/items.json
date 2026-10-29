@@ -2265,5 +2265,20 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "laurel_crown": {
+    "name": "Laurel crown",
+    "value": 3000,
+    "examine": "The crown of the season's champion at the Circus Maximus. The Reds' faction will never let you pay for a drink again.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 3,
+        "strength": 3,
+        "defence": 4,
+        "ranged_attack": 3,
+        "ritus_attack": 3
+      }
+    }
   }
 }

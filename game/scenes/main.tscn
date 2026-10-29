@@ -52,6 +52,9 @@
 [ext_resource type="Script" path="res://scripts/audio/music_director.gd" id="91_music"]
 [ext_resource type="Script" path="res://scripts/ui/feedback_note.gd" id="90_feedback"]
 [ext_resource type="Script" path="res://scripts/world/visibility_ranges.gd" id="92_visranges"]
+[ext_resource type="Script" path="res://scripts/world/rome.gd" id="93_rome"]
+[ext_resource type="Script" path="res://scripts/world/race_rivals.gd" id="94_rivals"]
+[ext_resource type="Script" path="res://scripts/world/circus_track.gd" id="95_track"]
 
 [sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
 
@@ -583,6 +586,19 @@ destination = Vector3(-300, 0.35, 262)
 size = Vector3(2.4, 2.2, 0.3)
 color = Color(0.34, 0.45, 0.6, 1)
 fare = 25
+
+[node name="ShipToRome" type="StaticBody3D" parent="PortusSalis"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -298.6, 0.35, 24)
+script = ExtResource("15_transition")
+verb = "Sail"
+title = "Ship to Rome"
+examine_text = "A grain freighter bound for the Tiber and the capital. Citizens only; the master takes 60 denarii."
+destination = Vector3(-590, 0.5, 52.5)
+size = Vector3(2.4, 2.2, 0.3)
+color = Color(0.55, 0.3, 0.2, 1)
+requires_quest = "decurio"
+fare = 60
+locked_message = "The ship's master looks you over. \"Rome is for citizens. Come back when you've earned your diploma.\""
 
 [node name="LanistaMarcia" type="StaticBody3D" parent="PortusSalis" groups=["shopkeepers", "navigation_source"]]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -314, 1, 4)
@@ -2052,10 +2068,8 @@ destination = Vector3(268, 0, 160)
 size = Vector3(1.4, 2.2, 0.3)
 color = Color(0.45, 0.33, 0.22, 1)
 
-[node name="Circus" type="StaticBody3D" parent="." node_paths=PackedStringArray("driver", "player_entity") groups=["map_regions"]]
+[node name="Circus" type="StaticBody3D" parent="." groups=["map_regions"]]
 script = ExtResource("47_circus")
-driver = NodePath("../SimDriver")
-player_entity = NodePath("../Player/SimEntity")
 metadata/map_name = "Circus"
 metadata/map_rect = Rect2(262, 120, 116, 80)
 metadata/map_color = Color(0.8, 0.72, 0.55, 1)
@@ -2185,3 +2199,134 @@ driver = NodePath("../SimDriver")
 
 [node name="VisibilityRanges" type="Node" parent="."]
 script = ExtResource("92_visranges")
+
+[node name="Rome" type="StaticBody3D" parent="." node_paths=PackedStringArray("dresser") groups=["map_regions"]]
+metadata/map_name = "Rome"
+metadata/map_rect = Rect2(-640, -70, 140, 126)
+metadata/map_color = Color(0.74, 0.66, 0.52, 1)
+script = ExtResource("93_rome")
+dresser = NodePath("../KitDresser")
+
+[node name="ShipToPortus" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -586, 0.5, 55.4)
+script = ExtResource("15_transition")
+verb = "Sail"
+title = "Ship to Portus Salis"
+examine_text = "Back down the Tiber and over the sea to the province. The master takes 60 denarii."
+destination = Vector3(-300, 0.35, 23)
+size = Vector3(2.4, 2.2, 0.3)
+color = Color(0.55, 0.3, 0.2, 1)
+fare = 60
+
+[node name="RomeSign" type="Label3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -590, 3.4, 46)
+billboard = 1
+text = "ROMA"
+font_size = 64
+outline_size = 12
+
+[node name="RomeBank" type="StaticBody3D" parent="Rome" groups=["banks", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -566, 0.45, -24)
+collision_layer = 8
+metadata/examine = "An argentarius's strongbox under the basilica's colonnade. Your bank is shared across the empire."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/RomeBank"]
+mesh = SubResource("chest_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/RomeBank"]
+shape = SubResource("chest_shape")
+
+[node name="RomeHeavenlyAltar" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -604, 0, -7)
+script = ExtResource("26_altar")
+title = "Altar of Jupiter Optimus Maximus"
+
+[node name="RomeUnderworldAltar" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -604, 0, 7)
+script = ExtResource("26_altar")
+kind = "underworld"
+title = "Altar of Dis Pater and Proserpina"
+
+[node name="FaustusTheDealer" type="StaticBody3D" parent="Rome" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -582, 1, -4)
+collision_layer = 8
+metadata/shop_id = "forum_dealer"
+metadata/display_name = "Faustus the dealer"
+metadata/examine = "A dealer with a table in the forum. He buys anything, and pays the capital's price for the province's oil and wine."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/FaustusTheDealer"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/FaustusTheDealer"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/FaustusTheDealer"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+
+[node name="Label" type="Label3D" parent="Rome/FaustusTheDealer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Faustus the dealer"
+font_size = 32
+outline_size = 8
+
+[node name="VenatorGnaeus" type="StaticBody3D" parent="Rome" groups=["venatores", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -560, 1, -2)
+collision_layer = 8
+metadata/venator_id = "gnaeus"
+metadata/display_name = "Gnaeus of the venatores"
+metadata/examine = "The capital's guild of beast-hunters supplies the games. Gnaeus picks its hunters, and only the best."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/VenatorGnaeus"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/VenatorGnaeus"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/VenatorGnaeus"]
+script = ExtResource("24_npc")
+scene = "adventurers/Knight"
+weapon = "weapons/dagger"
+
+[node name="Label" type="Label3D" parent="Rome/VenatorGnaeus"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Gnaeus of the venatores\n(Slayer contracts)"
+font_size = 32
+outline_size = 8
+
+[node name="RaceRivals" type="Node3D" parent="." node_paths=PackedStringArray("driver", "player_entity")]
+script = ExtResource("94_rivals")
+driver = NodePath("../SimDriver")
+player_entity = NodePath("../Player/SimEntity")
+
+[node name="CircusMaximus" type="Node3D" parent="Rome" groups=["circus"]]
+script = ExtResource("95_track")
+CENTER = Vector3(-536, 0, 31)
+metadata/circus_id = "maximus"
+
+[node name="MaximusAgent" type="StaticBody3D" parent="Rome" groups=["circus_agents", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -556, 1, 12.5)
+collision_layer = 8
+metadata/circus_id = "maximus"
+metadata/display_name = "Agent of the Reds"
+metadata/examine = "The Reds' agent at the Circus Maximus. Four horses, five factions, two hundred thousand people watching."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/MaximusAgent"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/MaximusAgent"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/MaximusAgent"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+
+[node name="Label" type="Label3D" parent="Rome/MaximusAgent"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Agent of the Reds
+(Circus Maximus)"
+font_size = 32
+outline_size = 8

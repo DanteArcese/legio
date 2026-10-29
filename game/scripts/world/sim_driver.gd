@@ -91,11 +91,13 @@ func _ready() -> void:
 	for surveyor in get_tree().get_nodes_in_group("surveyors"):
 		sim.villa.set_surveyor(surveyor.global_position)
 	for circus in get_tree().get_nodes_in_group("circus"):
-		sim.circus.set_track(circus.CENTER, circus.HALF, circus.RADIUS)
+		var circus_id: String = circus.get_meta("circus_id", "castra")
+		sim.circus.set_track(circus.CENTER, circus.HALF, circus.RADIUS, circus_id)
+		# The munera are fought on the frontier circus's sand.
+		if circus_id == "castra":
+			sim.games.set_arena(circus.ARENA)
 	for agent in get_tree().get_nodes_in_group("circus_agents"):
-		sim.circus.set_agent(agent.global_position)
-	for circus in get_tree().get_nodes_in_group("circus"):
-		sim.games.set_arena(circus.ARENA)
+		sim.circus.set_agent(agent.global_position, agent.get_meta("circus_id", "castra"))
 	for editor in get_tree().get_nodes_in_group("games_editors"):
 		sim.games.set_editor(editor.global_position)
 	for board in get_tree().get_nodes_in_group("trade_boards"):

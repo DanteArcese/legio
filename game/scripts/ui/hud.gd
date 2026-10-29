@@ -98,9 +98,9 @@ func _refresh() -> void:
 		var waves: int = driver.sim.games.data()["waves"].size()
 		task_text += "   Munera: wave %d / %d%s" % [maxi(c.games["wave"], 1), waves, ", %d left" % c.games["alive"].size() if not c.games["alive"].is_empty() else " (resting)"]
 	if not c.race.is_empty():
-		var laps: int = driver.sim.circus.data()["laps"]
+		var laps: int = driver.sim.circus.data(c.race.get("circus", "castra"))["laps"]
 		var place: int = driver.sim.circus.live_place(c)
-		task_text += "   Race: lap %d / %d, %s" % [mini(c.race["lap"] + 1, laps), laps, ["1st", "2nd", "3rd", "4th"][clampi(place - 1, 0, 3)]]
+		task_text += "   Race: lap %d / %d, %s" % [mini(c.race["lap"] + 1, laps), laps, ["1st", "2nd", "3rd", "4th", "5th"][clampi(place - 1, 0, 4)]]
 	if c.pollution > 0.0:
 		task_text += "   Pollution %d%s" % [ceili(c.pollution), " (polluted)" if c.pollution >= 30.0 else ""]
 	var title := Quests.title(c)

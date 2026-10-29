@@ -79,6 +79,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#221): grain.** Two grain fields in the fort's farmland grow emmer wheat from seed wheat (Farming 10; the Gaulish merchant sells it, and rats sometimes drop it). A quern beside the fields grinds a sheaf into flour (Cooking 8), and flour bakes into bread on any range or fire (Cooking 10). *Bread for the Garrison* (#231), a starter quest from Sabina the baker beside her forum stall, walks a new player through it: five pots of flour, then three loaves, for Cooking and Farming XP, coins and seed wheat.
 
+**Built (#330): orchards and fine vines.** The villa's orchard plots take fig trees (Farming 45) and cedars (70; harvested for cedar logs) as well as olives, and the trellises take the Falernian vine (60) and the Caecuban (75), the two great wines of Italy, pressed at the wine press (Cooking 60 and 78) into amphorae worth 260 and 520 denarii. Nikias sells the saplings and cuttings, and the Gaulish merchant pays over the odds for both wines.
+
 **Built (#249): more starter quests.** *The Smith's Apprentice*, from Tertius the smith by the anvil, walks a new player through Mining and Smithing: five copper and five tin, two bronze bars, then a bronze pugio. The reward is XP, a bronze gladius, and a bronze scutum. *Gifts for the Gods*, from the sacerdos, asks for five bones and a goat hide (goats always drop both), and teaches offering: Pietas XP and ten incense to offer at the altar. After the first-hour pass (#289), the smith's last step is a pugio (level 1) rather than a gladius (Smithing 5, which hid about twenty bars of practice); the reward still includes a gladius.
 | Hunter | Traps and nets. Live capture for the arena. |
 

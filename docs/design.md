@@ -119,6 +119,8 @@ Kept as a core skill and the center of progression.
 
 **Built (#219): marble and mosaics.** A small quarry in the hills south of Seriphos's town has outcrops of Parian marble (Mining 45). With a mason's chisel (Nikias sells one), a marble block carves into 25 tesserae anywhere (Crafting 40, the inventory's Carve option). The villa courtyard's centre takes a mosaic floor (Engineering 45; 150 tesserae and 2 oak planks), a rosette in a meander border. Resting on it leaves you rested: +5% XP in every skill for 30 minutes of play, shown on the HUD and kept in the save.
 
+**Built (#314): Rome's artisans.** Crafting past 60 in the capital. Aurelia the goldsmith sells gold bars, pearls and jeweller's tools, and buys gold work at 80%: gold signet rings (Crafting 60), a pearl necklace (66; neck, Defence 40), and a corona aurea, the crown of gold leaves (75; head, Defence 60). Ennion the glassmaker, from Sidon, keeps a glass furnace off the western street and sells sand, cobalt and blowpipes: glass cups (55), jugs (62), blue glass flasks coloured with cobalt (70), and cameo glass vases, blue cased in white and carved (85). Frescoes are still to come (#322).
+
 ### Support
 
 | Skill | Roman flavor |

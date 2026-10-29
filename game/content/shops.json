@@ -547,6 +547,66 @@
       }
     }
   },
+  "goldsmith": {
+    "name": "Aurelia the goldsmith",
+    "offers": [
+      {
+        "item": "jewellers_tools",
+        "price": 60
+      },
+      {
+        "item": "gold_bar",
+        "price": 260
+      },
+      {
+        "item": "pearl",
+        "price": 320
+      }
+    ],
+    "buys": {
+      "items": [
+        "gold_ring",
+        "pearl_necklace",
+        "corona_aurea",
+        "gold_bulla",
+        "gold_torc",
+        "silver_pendant",
+        "amulet_of_diana",
+        "gold_bar",
+        "pearl"
+      ],
+      "rate": 0.8
+    }
+  },
+  "glassworks": {
+    "name": "Ennion the glassmaker",
+    "offers": [
+      {
+        "item": "sand",
+        "price": 10,
+        "quantity": 10
+      },
+      {
+        "item": "cobalt",
+        "price": 45
+      },
+      {
+        "item": "blowpipe",
+        "price": 30
+      }
+    ],
+    "buys": {
+      "items": [
+        "glass_vial",
+        "glass_bowl",
+        "glass_cup",
+        "glass_jug",
+        "blue_glass_flask",
+        "cameo_glass_vase"
+      ],
+      "rate": 0.8
+    }
+  },
   "subura_fence": {
     "name": "Pollio the fence",
     "offers": [

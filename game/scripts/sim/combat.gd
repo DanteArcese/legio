@@ -147,8 +147,7 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.entranced_until = tick + ENTRANCE_TICKS
 		target.next_attack_tick = maxi(target.next_attack_tick, target.entranced_until)
 	attacker.next_attack_tick = tick + attacker.current_attack_speed(tick)
-	events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage,
-		"ranged": kind == "ranged", "kind": kind, "tick": tick})
+	events.append(_hit_event(attacker, target, damage, blow, tick))
 	# A twin thrust or a volley strikes again at once.
 	if special.get("hits", 1) > 1 and target.is_alive():
 		var second := 0
@@ -158,8 +157,9 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		damage += second
 		if attacker.uses_ammo():
 			_use_ammo(attacker, target.position, events)
-		events.append({"type": "hit", "attacker": attacker.id, "target": target.id, "damage": second,
-			"ranged": kind == "ranged", "kind": kind, "tick": tick})
+		events.append(_hit_event(attacker, target, second, blow, tick))
+	if attacker.has_brain:
+		sim.boss.after_attack(attacker, target, events)
 	if attacker.is_player():
 		sim.quests.on_attack(attacker, target, kind, events)
 	var curse: String = attacker.equipment.curse() if kind == "ritus" else ""
@@ -180,6 +180,18 @@ func process_attack(attacker: Combatant, events: Array[Dictionary]) -> void:
 		target.next_attack_tick = maxi(target.next_attack_tick, tick + ceili(target.attack_speed / 2.0))
 	if not target.is_alive():
 		sim.kill(target, events)
+
+
+## A hit event for the client: the kind of blow decides its look (an arrow
+## or javelin for ranged, a puff of shadow for Ritus); a boss's stance can
+## name what it throws.
+func _hit_event(attacker: Combatant, target: Combatant, damage: int, blow: String, tick: int) -> Dictionary:
+	var event := {"type": "hit", "attacker": attacker.id, "target": target.id, "damage": damage,
+		"ranged": blow == "ranged", "kind": blow, "tick": tick}
+	var projectile: String = sim.boss.stance(attacker).get("projectile", "")
+	if not projectile.is_empty():
+		event["ammo"] = projectile
+	return event
 
 
 ## A hit after the target's protection blessing against that kind of attack

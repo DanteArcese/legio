@@ -336,7 +336,21 @@
         28
       ],
       "enrage_below": 0.33,
-      "enrage_speed": 3
+      "enrage_speed": 3,
+      "stances": [
+        {
+          "kind": "melee",
+          "attacks": 4,
+          "tell": "{name} closes in, his axe raised. (Melee)"
+        },
+        {
+          "kind": "ranged",
+          "attacks": 3,
+          "reach": 7.0,
+          "projectile": "javelin",
+          "tell": "{name} steps back and hefts a framea. (Ranged)"
+        }
+      ]
     },
     "appearance": {
       "model": "kaykit",
@@ -438,7 +452,20 @@
       ],
       "enrage_below": 0.3,
       "enrage_speed": 3,
-      "throw_kind": "venom"
+      "throw_kind": "venom",
+      "stances": [
+        {
+          "kind": "melee",
+          "attacks": 4,
+          "tell": "{name} lunges, jaws wide. (Melee)"
+        },
+        {
+          "kind": "ritus",
+          "attacks": 3,
+          "reach": 6.0,
+          "tell": "{name} lifts his crowned head and fixes you with his stare. (Ritus)"
+        }
+      ]
     },
     "examine": "The little king of the old workings, crowned in gold horn. Its gaze is stone; its spit is worse.",
     "appearance": {
@@ -549,7 +576,27 @@
       ],
       "enrage_below": 0.3,
       "enrage_speed": 3,
-      "throw_kind": "venom"
+      "throw_kind": "venom",
+      "stances": [
+        {
+          "kind": "melee",
+          "attacks": 3,
+          "tell": "The {name}'s heads lunge to bite. (Melee)"
+        },
+        {
+          "kind": "ranged",
+          "attacks": 3,
+          "reach": 7.0,
+          "projectile": "sling_bullet",
+          "tell": "The {name}'s heads rear back to spit. (Ranged)"
+        },
+        {
+          "kind": "ritus",
+          "attacks": 2,
+          "reach": 6.0,
+          "tell": "The {name}'s deathless head hisses a curse. (Ritus)"
+        }
+      ]
     },
     "regenerate": {
       "amount": 2
@@ -596,7 +643,27 @@
       ],
       "enrage_below": 0.3,
       "enrage_speed": 3,
-      "throw_kind": "venom"
+      "throw_kind": "venom",
+      "stances": [
+        {
+          "kind": "ritus",
+          "attacks": 3,
+          "reach": 6.0,
+          "tell": "{name} turns her gaze on you. (Ritus)"
+        },
+        {
+          "kind": "melee",
+          "attacks": 3,
+          "tell": "{name} comes at you with her bronze claws. (Melee)"
+        },
+        {
+          "kind": "ranged",
+          "attacks": 2,
+          "reach": 7.0,
+          "projectile": "sling_bullet",
+          "tell": "{name}'s hair hisses, and the snakes rear to spit. (Ranged)"
+        }
+      ]
     },
     "examine": "The eldest gorgon, and the one who never died. A mirror won't fool her; only the goddess's own shield will.",
     "appearance": {

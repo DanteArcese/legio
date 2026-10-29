@@ -50,6 +50,8 @@ var impetus := MAX_IMPETUS
 var special_armed := false
 ## Held by a siren's song until this tick (see combat.gd).
 var entranced_until := 0
+## Charmed by a lamia until this tick: no eating.
+var charmed_until := 0
 ## Pietas: favour points, active blessing ids, and their summed boosts
 ## (e.g. {"strength": 0.05}); see pietas.gd.
 var favour := 1.0

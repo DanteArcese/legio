@@ -124,6 +124,26 @@
             20
           ],
           "combat_level": 55
+        },
+        {
+          "monster": "lamia",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 45,
+          "combat_level": 45
+        },
+        {
+          "monster": "centaur",
+          "weight": 3,
+          "amount": [
+            15,
+            30
+          ],
+          "slayer_level": 55,
+          "combat_level": 55
         }
       ]
     },
@@ -246,6 +266,152 @@
           "amount": [
             3,
             6
+          ],
+          "slayer_level": 70,
+          "combat_level": 95
+        },
+        {
+          "monster": "lamia",
+          "weight": 5,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 45
+        },
+        {
+          "monster": "centaur",
+          "weight": 5,
+          "amount": [
+            25,
+            40
+          ],
+          "slayer_level": 55
+        }
+      ]
+    },
+    "gnaeus": {
+      "name": "Gnaeus of the venatores",
+      "location": "rome",
+      "combat_level": 70,
+      "points_per_task": 15,
+      "tasks": [
+        {
+          "monster": "cyclops",
+          "weight": 6,
+          "amount": [
+            30,
+            50
+          ]
+        },
+        {
+          "monster": "basilisk",
+          "weight": 5,
+          "amount": [
+            30,
+            50
+          ],
+          "slayer_level": 40
+        },
+        {
+          "monster": "gorgon",
+          "weight": 6,
+          "amount": [
+            30,
+            45
+          ],
+          "slayer_level": 60
+        },
+        {
+          "monster": "regulus",
+          "weight": 1,
+          "amount": [
+            4,
+            8
+          ],
+          "slayer_level": 55,
+          "combat_level": 80
+        },
+        {
+          "monster": "hydra",
+          "weight": 1,
+          "amount": [
+            3,
+            6
+          ],
+          "slayer_level": 75,
+          "combat_level": 90
+        },
+        {
+          "monster": "euryale",
+          "weight": 1,
+          "amount": [
+            4,
+            8
+          ],
+          "slayer_level": 70,
+          "combat_level": 95
+        }
+      ]
+    },
+    "gnaeus": {
+      "name": "Gnaeus of the venatores",
+      "location": "rome",
+      "combat_level": 70,
+      "points_per_task": 15,
+      "tasks": [
+        {
+          "monster": "cyclops",
+          "weight": 6,
+          "amount": [
+            30,
+            50
+          ]
+        },
+        {
+          "monster": "basilisk",
+          "weight": 5,
+          "amount": [
+            30,
+            50
+          ],
+          "slayer_level": 40
+        },
+        {
+          "monster": "gorgon",
+          "weight": 6,
+          "amount": [
+            30,
+            45
+          ],
+          "slayer_level": 60
+        },
+        {
+          "monster": "regulus",
+          "weight": 1,
+          "amount": [
+            4,
+            8
+          ],
+          "slayer_level": 55,
+          "combat_level": 80
+        },
+        {
+          "monster": "hydra",
+          "weight": 1,
+          "amount": [
+            3,
+            6
+          ],
+          "slayer_level": 75,
+          "combat_level": 90
+        },
+        {
+          "monster": "euryale",
+          "weight": 1,
+          "amount": [
+            4,
+            8
           ],
           "slayer_level": 70,
           "combat_level": 95

@@ -1677,7 +1677,10 @@
         "attack": 3,
         "strength": 3,
         "defence": 4
-      }
+      },
+      "wards": [
+        "leather_bulla"
+      ]
     },
     "requirements": {
       "defence": 35
@@ -2271,5 +2274,67 @@
     "value": 60,
     "stackable": true,
     "examine": "Black pepper from India. A pound of it would buy a slave, if anyone still asked."
+  },
+  "vitis": {
+    "name": "Vitis",
+    "value": 3000,
+    "examine": "A centurion's vine stick. It means you can strike a citizen, and every legionary knows it.",
+    "equip": {
+      "slot": "weapon",
+      "bonuses": {
+        "attack": 34,
+        "strength": 30,
+        "defence": 2
+      },
+      "attack_speed": 4,
+      "special": {
+        "name": "centurion's command",
+        "cost": 50,
+        "effect": "sure"
+      }
+    },
+    "requirements": {
+      "attack": 70
+    }
+  },
+  "centurion_galea": {
+    "name": "Centurion's galea",
+    "value": 3000,
+    "examine": "A steel helmet with a transverse crest, so the century can find its centurion in a fight.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 2,
+        "strength": 2,
+        "defence": 16,
+        "ritus_defence": -6
+      }
+    },
+    "requirements": {
+      "defence": 70
+    }
+  },
+  "regulus_fang": {
+    "name": "Regulus's fang",
+    "value": 0,
+    "examine": "A fang from the basilisk king, as long as your hand. The legate asked for proof.",
+    "quest_item": true
+  },
+  "leather_bulla": {
+    "name": "Leather bulla",
+    "value": 120,
+    "examine": "A leather locket, the kind freedmen's children wear against the evil eye. A lamia's charm slides off it.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "defence": 2,
+        "ritus_defence": 3
+      }
+    }
+  },
+  "lamia_scale": {
+    "name": "Lamia scale",
+    "value": 90,
+    "examine": "A scale from a lamia's coils, green-gold and cold. The underworld gods would take it."
   }
 }

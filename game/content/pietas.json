@@ -296,6 +296,10 @@
       "xp": 115,
       "altar": "underworld"
     },
+    "lamia_scale": {
+      "xp": 70,
+      "altar": "underworld"
+    },
     "cyclops_cheese": {
       "xp": 25,
       "altar": "heavenly"

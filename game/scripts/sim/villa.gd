@@ -138,9 +138,28 @@ func rest(player: Combatant, hotspot_id: String, events: Array) -> void:
 	var furniture_id: String = player.villa_furniture.get(hotspot_id, "")
 	if furniture_id.is_empty() or not ContentDB.furniture(furniture_id)["provides"].has("comfort"):
 		return
+	# The peristyle garden (comfort 2) rests you twice as well as a mosaic.
+	var comfort := int(ContentDB.furniture(furniture_id)["provides"]["comfort"])
 	player.rested_until = sim.tick + REST_TICKS
+	player.rested_bonus = RESTED_XP_BONUS * comfort
 	events.append({"type": "rested", "id": player.id, "until": player.rested_until, "tick": sim.tick})
-	sim.message(player, "You sit a while and admire your mosaic. You feel rested. (+5% XP for 30 minutes)", events)
+	var place: String = "your mosaic" if comfort == 1 else "the garden, among the columns"
+	sim.message(player, "You sit a while and admire %s. You feel rested. (+%d%% XP for 30 minutes)" % [place, roundi(player.rested_bonus * 100.0)], events)
+
+
+## A bath in the villa's bath house: hot, warm, then cold. It heals you
+## fully and washes away ritual pollution.
+func bathe(player: Combatant, hotspot_id: String, events: Array) -> void:
+	if not hotspots.has(hotspot_id) or sim.flat_distance(hotspots[hotspot_id]["position"], player.position) > BUILD_RANGE:
+		return
+	var furniture_id: String = player.villa_furniture.get(hotspot_id, "")
+	if furniture_id.is_empty() or not ContentDB.furniture(furniture_id)["provides"].has("bath"):
+		return
+	player.hp = player.max_hp
+	sim.message(player, "Caldarium, tepidarium, frigidarium. You come out new.", events)
+	if player.pollution > 0.0:
+		sim.pietas._purify(player, events)
+	events.append({"type": "bathed", "id": player.id, "tick": sim.tick})
 
 
 static func is_rested(player: Combatant, tick: int) -> bool:

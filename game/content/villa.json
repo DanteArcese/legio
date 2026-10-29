@@ -41,6 +41,18 @@
     "orchard": {
       "name": "Orchard plot",
       "examine": "A sunny plot by the west wall, good for trees."
+    },
+    "bath": {
+      "name": "Bath-house floor",
+      "examine": "A raised floor on brick pillars, with a furnace pit below: room for a bath house."
+    },
+    "library": {
+      "name": "Library room",
+      "examine": "A dry room off the courtyard, with niches in the walls for scrolls."
+    },
+    "peristyle": {
+      "name": "Peristyle court",
+      "examine": "An open court on the east side, waiting for a colonnade and a garden."
     }
   },
   "furniture": {
@@ -323,6 +335,75 @@
       ],
       "provides": {
         "patch": "olive_grove"
+      }
+    },
+    "bath_house": {
+      "name": "Bath house",
+      "hotspot": "bath",
+      "level": 60,
+      "xp": 900,
+      "materials": [
+        {
+          "item": "marble_block",
+          "quantity": 6
+        },
+        {
+          "item": "oak_plank",
+          "quantity": 6
+        },
+        {
+          "item": "iron_bar",
+          "quantity": 4
+        }
+      ],
+      "provides": {
+        "bath": true
+      }
+    },
+    "library": {
+      "name": "Library and scriptorium",
+      "hotspot": "library",
+      "level": 70,
+      "xp": 1200,
+      "materials": [
+        {
+          "item": "oak_plank",
+          "quantity": 12
+        },
+        {
+          "item": "linen",
+          "quantity": 10
+        },
+        {
+          "item": "bronze_nails",
+          "quantity": 30
+        }
+      ],
+      "provides": {
+        "station": "tomb"
+      }
+    },
+    "peristyle_garden": {
+      "name": "Peristyle garden",
+      "hotspot": "peristyle",
+      "level": 90,
+      "xp": 2400,
+      "materials": [
+        {
+          "item": "marble_block",
+          "quantity": 16
+        },
+        {
+          "item": "oak_plank",
+          "quantity": 8
+        },
+        {
+          "item": "tesserae",
+          "quantity": 100
+        }
+      ],
+      "provides": {
+        "comfort": 2
       }
     }
   }

@@ -2265,5 +2265,70 @@
     "name": "Olive sapling",
     "value": 30,
     "examine": "A young olive tree in a pot. It'll outlive you."
+  },
+  "gold_ring": {
+    "name": "Gold ring",
+    "value": 380,
+    "examine": "A heavy gold signet ring. Equestrians wear them; everyone else wants to."
+  },
+  "pearl_necklace": {
+    "name": "Pearl necklace",
+    "value": 1400,
+    "examine": "Red Sea pearls on a gold chain. A senator's wife would notice it across the forum.",
+    "equip": {
+      "slot": "neck",
+      "bonuses": {
+        "attack": 2,
+        "strength": 2,
+        "defence": 5,
+        "ritus_defence": 6
+      }
+    },
+    "requirements": {
+      "defence": 40
+    }
+  },
+  "corona_aurea": {
+    "name": "Corona aurea",
+    "value": 2600,
+    "examine": "A crown of gold leaves, the reward for the first man over an enemy wall. You made your own.",
+    "equip": {
+      "slot": "head",
+      "bonuses": {
+        "attack": 4,
+        "strength": 4,
+        "defence": 7,
+        "ritus_defence": 2
+      }
+    },
+    "requirements": {
+      "defence": 60
+    }
+  },
+  "cobalt": {
+    "name": "Cobalt",
+    "value": 40,
+    "stackable": true,
+    "examine": "A blue mineral that turns glass the colour of deep water."
+  },
+  "glass_cup": {
+    "name": "Glass cup",
+    "value": 150,
+    "examine": "A thin-walled drinking cup, so clear you can see the wine through it."
+  },
+  "glass_jug": {
+    "name": "Glass jug",
+    "value": 220,
+    "examine": "A handled jug of blown glass, for pouring at a good dinner."
+  },
+  "blue_glass_flask": {
+    "name": "Blue glass flask",
+    "value": 420,
+    "examine": "A flask of deep blue glass, for perfume. The colour is the expensive part."
+  },
+  "cameo_glass_vase": {
+    "name": "Cameo glass vase",
+    "value": 1500,
+    "examine": "Blue glass cased in white, then carved away into figures. It took a week, and one slip would have ruined it."
   }
 }

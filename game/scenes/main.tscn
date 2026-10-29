@@ -2295,3 +2295,56 @@ billboard = 1
 text = "Gnaeus of the venatores\n(Slayer contracts)"
 font_size = 32
 outline_size = 8
+
+[node name="RomeGlassFurnace" type="StaticBody3D" parent="Rome"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -604, 0, 36)
+script = ExtResource("11_station")
+kind = "kiln"
+
+[node name="EnnionTheGlassmaker" type="StaticBody3D" parent="Rome" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -600, 1, 38)
+collision_layer = 8
+metadata/shop_id = "glassworks"
+metadata/display_name = "Ennion the glassmaker"
+metadata/examine = "A glassmaker from Sidon. He signs his work, which nobody else bothers to do."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/EnnionTheGlassmaker"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/EnnionTheGlassmaker"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/EnnionTheGlassmaker"]
+script = ExtResource("24_npc")
+scene = "adventurers/Mage"
+
+[node name="Label" type="Label3D" parent="Rome/EnnionTheGlassmaker"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Ennion the glassmaker"
+font_size = 32
+outline_size = 8
+
+[node name="AureliaTheGoldsmith" type="StaticBody3D" parent="Rome" groups=["shopkeepers", "navigation_source"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -606, 1, -34)
+collision_layer = 8
+metadata/shop_id = "goldsmith"
+metadata/display_name = "Aurelia the goldsmith"
+metadata/examine = "A goldsmith with a workshop off the forum. She weighs everything twice."
+
+[node name="Mesh" type="MeshInstance3D" parent="Rome/AureliaTheGoldsmith"]
+mesh = SubResource("venator_mesh")
+
+[node name="Collision" type="CollisionShape3D" parent="Rome/AureliaTheGoldsmith"]
+shape = SubResource("undertaker_shape")
+
+[node name="Look" type="Node" parent="Rome/AureliaTheGoldsmith"]
+script = ExtResource("24_npc")
+scene = "adventurers/Rogue"
+
+[node name="Label" type="Label3D" parent="Rome/AureliaTheGoldsmith"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+billboard = 1
+text = "Aurelia the goldsmith"
+font_size = 32
+outline_size = 8

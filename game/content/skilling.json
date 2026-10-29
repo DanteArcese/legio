@@ -1568,6 +1568,49 @@
         "level": 35,
         "xp": 110,
         "tool": "jeweller"
+      },
+      {
+        "id": "gold_ring",
+        "inputs": [
+          {
+            "item": "gold_bar",
+            "quantity": 1
+          }
+        ],
+        "output": "gold_ring",
+        "level": 60,
+        "xp": 120,
+        "tool": "jeweller"
+      },
+      {
+        "id": "pearl_necklace",
+        "inputs": [
+          {
+            "item": "gold_bar",
+            "quantity": 1
+          },
+          {
+            "item": "pearl",
+            "quantity": 3
+          }
+        ],
+        "output": "pearl_necklace",
+        "level": 66,
+        "xp": 220,
+        "tool": "jeweller"
+      },
+      {
+        "id": "corona_aurea",
+        "inputs": [
+          {
+            "item": "gold_bar",
+            "quantity": 3
+          }
+        ],
+        "output": "corona_aurea",
+        "level": 75,
+        "xp": 360,
+        "tool": "jeweller"
       }
     ],
     "throw": [
@@ -1710,6 +1753,66 @@
         "output": "firepot",
         "level": 30,
         "xp": 40
+      },
+      {
+        "id": "glass_cup",
+        "inputs": [
+          {
+            "item": "sand",
+            "quantity": 3
+          }
+        ],
+        "output": "glass_cup",
+        "level": 55,
+        "xp": 95,
+        "tool": "blowpipe"
+      },
+      {
+        "id": "glass_jug",
+        "inputs": [
+          {
+            "item": "sand",
+            "quantity": 5
+          }
+        ],
+        "output": "glass_jug",
+        "level": 62,
+        "xp": 140,
+        "tool": "blowpipe"
+      },
+      {
+        "id": "blue_glass_flask",
+        "inputs": [
+          {
+            "item": "sand",
+            "quantity": 4
+          },
+          {
+            "item": "cobalt",
+            "quantity": 1
+          }
+        ],
+        "output": "blue_glass_flask",
+        "level": 70,
+        "xp": 210,
+        "tool": "blowpipe"
+      },
+      {
+        "id": "cameo_glass_vase",
+        "inputs": [
+          {
+            "item": "sand",
+            "quantity": 6
+          },
+          {
+            "item": "cobalt",
+            "quantity": 2
+          }
+        ],
+        "output": "cameo_glass_vase",
+        "level": 85,
+        "xp": 480,
+        "tool": "blowpipe"
       }
     ],
     "press_oil": [
